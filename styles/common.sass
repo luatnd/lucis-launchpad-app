@@ -1,0 +1,30 @@
+@mixin flex-rear
+  display: flex
+  flex-flow: row nowrap
+  justify-content: space-between
+  align-items: center
+
+@mixin flex-rear-wrap
+  @include flex-rear
+  flex-wrap: wrap
+
+@mixin flex-center
+  display: flex
+  flex-flow: row wrap
+  justify-content: space-around
+  align-items: center
+
+@mixin my-border($width, $color)
+  border: $width solid $color
+
+@mixin my-text($size, $height, $weight)
+  font-size: $size
+  font-weight: $weight
+  line-height: $height
+  
+@mixin container()
+  max-width: 1440px
+  margin: 0 auto
+  padding: 0px 100px 0px 100px
+  // border: 1px solid #fff
+

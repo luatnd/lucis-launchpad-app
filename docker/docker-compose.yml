@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  caddy:
+    image: caddy:2.4.6
+    restart: unless-stopped
+    # Disable port binding because use host network
+    #ports:
+    #  - "80:80"
+    #  - "443:443"
+    volumes:
+      - $PWD/Caddyfile:/etc/caddy/Caddyfile
+      - $PWD/site:/srv
+      - caddy_data:/data
+      - caddy_config:/config
+    # https://newbedev.com/how-to-use-host-network-for-docker-compose
+    network_mode: "host"
+
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:

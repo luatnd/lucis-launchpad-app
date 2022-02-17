@@ -1,0 +1,71 @@
+@import "styles/common"
+
+.container
+  @include container
+  .block_roadmap
+    margin-top: 80px
+    .item_roadmap
+      @apply flex flex-row items-center justify-between flex-wrap
+      margin: 80px 0px
+
+// @media (max-width: 1439px)
+//   .container
+//     .item_roadmap 
+//       justify-content: center !important
+
+// @media (min-width: 640px) and (max-width: 768px)
+//   .container
+//     max-width: 640px
+//     padding: 0px 2rem
+
+// @media (min-width: 540px) and (max-width: 639px)
+//   .container
+//     padding: 0px 2rem
+// @media (min-width: 414px) and (max-width: 539px)
+//   .container
+//     padding: 0px 2rem
+
+// @media (min-width: 0px) and (max-width: 413px)
+//   .container
+//     padding: 0px 2rem
+
+@media (min-width: 1280px) and (max-width: 1439px)
+  .container
+    max-width: 1280px
+    padding: 0 5rem
+@media (min-width: 1025px) and (max-width: 1279px)
+  .container
+    max-width: 1025px
+    padding: 0 4rem
+
+@media (min-width: 992px) and (max-width: 1024px)
+  .container
+    max-width: 992px
+    padding: 0 3rem
+@media (min-width: 769px) and (max-width: 991px)
+  .container
+    max-width: 769px
+    padding: 0px 2rem
+    .item_roadmap 
+      justify-content: center !important
+      flex-direction: column
+
+@media (min-width: 640px) and (max-width: 768px)
+  .container
+    max-width: 640px
+    padding: 0px 2rem
+
+@media (min-width: 540px) and (max-width: 639px)
+  .container
+    max-width: 540px
+    padding: 0px 1rem
+@media (min-width: 414px) and (max-width: 539px)
+  .container
+    margin-top: 60px
+    max-width: 414px
+    padding: 0px 1rem
+
+@media (min-width: 0px) and (max-width: 413px)
+  .container
+    margin-top: 60px
+    padding: 0px 1rem

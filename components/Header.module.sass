@@ -1,0 +1,50 @@
+@import "styles/common"
+
+
+.pcMenu
+  background: none
+  position: relative
+  z-index: 10
+.logo
+  height: 75px
+  width: 268px
+  align-items: center
+  display: flex
+  cursor: pointer
+
+
+.groundSubMenu
+  position: relative
+  .subMenu
+    position: absolute
+    top: 50px  
+    left: -120px
+    width: 280px
+    background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 1000%)
+    backdrop-filter: blur(4px)
+    border-radius: 12px
+    transform: scale(0) translateX(100px)
+    opacity: 0
+    transition: 0.3s
+  .subMenu > li 
+    color: #fff
+    font-size: 20px
+    padding: 12px 24px
+    cursor: pointer
+    transition: 0.3s
+  .subMenu > li:hover
+    opacity: 0.8
+
+.groundSubMenu:hover .subMenu
+  opacity: 1
+  transform: scale(1)
+
+@media (min-width: 992px) and (max-width: 1024px)
+  .container
+    max-width: 992px
+    padding: 0px 3rem
+
+@media (min-width: 0px) and (max-width: 414px)
+  .container
+    max-width: 360px
+    padding: 0px 1rem

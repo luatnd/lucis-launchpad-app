@@ -28,6 +28,7 @@ body {
   background-color: transparent !important;
   overflow-x: hidden;
   overflow-y: auto;
+  height: auto !important;
 }
 
 body .ant-Layout {

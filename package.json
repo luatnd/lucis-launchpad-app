@@ -21,6 +21,7 @@
     "antd": "^4.17.3",
     "enquire-js": "^0.2.1",
     "fbemitter": "^3.0.0",
+    "firebase": "^9.6.7",
     "framer-motion": "6.0.0-beta.5",
     "framer-motion-3d": "6.0.0-beta.5",
     "highcharts": "^9.3.2",

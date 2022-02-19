@@ -8,15 +8,18 @@ type Props = {
     nameGame: string;
     title: string;
     statusTime: string;
+    styleBg: boolean;
 };
 
 export default function CardItem(props: Props) {
     const typeTime = props.statusTime == 'UpComing'? s.time
     :props.statusTime == 'SoldOut'? s.Sold
     :s.sale
+    const bg_card = props.styleBg? s.bg_1
+    :s.bg_2
 
     return (
-        <div className={s.CardContainer}>
+        <div className={`${s.CardContainer} ${bg_card}`}>
             <div className={s.img_game}>
                 <img src={props.srcGame} alt="" />
             </div>

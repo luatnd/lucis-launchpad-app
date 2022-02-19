@@ -33,7 +33,7 @@
   //     box-shadow: (0px 2px 40px rgba(255, 255, 255, 0.5))
 .logo
   img
-    width: 305px
+    width: 297px
     margin-top: 0
   .r
     padding-left: 20px
@@ -118,6 +118,19 @@
       color: #e7e7e7!important
       background: linear-gradient(83.51deg, #b62fcc 3.41%, #02af9e 106.98%)!important
 
+.groupLink
+  display: flex
+  align-items: center
+  justify-content: space-between
+  flex-wrap: wrap
+  a
+    color: #FFF
+    font-size: 28px
+    font-weight: 400
+    line-height: 56px
+    transition: 0.3s
+  a:hover
+    opacity: 0.5
 @media (min-width: 992px) and (max-width: 1024px)
   .heading_footer
     flex-direction: column
@@ -138,6 +151,11 @@
     .group_ic
       margin-top: 20px
       justify-content: space-between
+  .groupLink
+    justify-content: center
+    a
+      font-size: 24px
+      padding: 0px 24px
 
 @media (min-width: 540px) and (max-width: 639px)
   .heading_footer
@@ -146,7 +164,11 @@
     .group_ic
       margin-top: 20px
       justify-content: space-between
-
+  .groupLink
+    justify-content: center
+    a
+      font-size: 22px
+      padding: 0px 12px
 @media (min-width: 540px) and (max-width: 1024px)
   .logo
     margin-bottom: 50px
@@ -180,6 +202,11 @@
     .btn
       height: 54px
       flex-basis: 100px
+  .groupLink
+    justify-content: center
+    a
+      font-size: 20px
+      padding: 0px 12px
 @media (min-width: 0px) and (max-width: 413px)
   .heading_footer
     flex-direction: column
@@ -207,3 +234,8 @@
     .btn
       height: 54px
       flex-basis: 100px
+  .groupLink
+    justify-content: center
+    a
+      font-size: 18px
+      padding: 0px 12px

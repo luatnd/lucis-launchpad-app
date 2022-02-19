@@ -6,6 +6,9 @@ import styles from "../styles/Home.module.css";
 // import HotGame from "components/Games";
 import useScroll from 'hooks/useScroll';
 import UpComing from "./UpComingPage/UpcomingCampaign";
+import Opening from "./OpeningCampaign/OpeningCampaign";
+import ClosedCampaign from "./ClosedCampaign/ClosedCampaign";
+import Footer from "components/Footer";
 
 const Home: NextPage = () => {
   const title = "Lucis Gaming Guild - Redefine Play to Earn ecosystem";
@@ -65,6 +68,9 @@ const Home: NextPage = () => {
       {/*  <Backer />*/}
       {/*</AnimWhenVisible>*/}
       <UpComing />
+      <Opening />
+      <ClosedCampaign />
+      <Footer />
       {showButton && (
         <button onClick={scrollToTop} className="btn-scrollTop">
           &#8679;

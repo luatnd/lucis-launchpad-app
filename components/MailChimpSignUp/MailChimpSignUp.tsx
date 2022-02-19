@@ -156,7 +156,7 @@ export default function MailChimpSignUp(props: Props) {
                   onClick={() => onSubmit(subscribe)}
                   disabled={hasError}
                 >
-                  Subscribe
+                  Submit
                 </button>
               </div>
             {/* </AnimWhenVisible> */}

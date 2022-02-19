@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "export-static": "next export",
+    "export": "next export",
     "type-check": "tsc --pretty --noEmit",
     "format": "prettier --write .",
     "lint-new": "eslint . --ext ts --ext tsx --ext js",

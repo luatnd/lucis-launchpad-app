@@ -1,0 +1,19 @@
+version: '3.1'
+
+services:
+  lucis_lunchpad:
+    build:
+      context: ../
+      dockerfile: deploy/Dockerfile
+    image: lucis_lunchpad:1.0
+    container_name: "lucis_lunchpad"
+    restart: always
+    # volumes:
+    #   - ../logs/:/app/logs/
+    ports:
+      - 3000:3000
+
+networks:
+  default:
+     external:
+        name: lucis_network 

@@ -2,7 +2,7 @@ import { DetailedHTMLProps } from "react";
 import { useCallback, useState } from "react";
 // @ts-ignore
 import MailchimpSubscribe from "react-mailchimp-subscribe";
-import AnimWhenVisible from "../Anim";
+// import AnimWhenVisible from "../Anim";
 import s from "./MailChimpSignUp.module.sass";
 
 type AppMailChimpPayload = {
@@ -127,20 +127,20 @@ export default function MailChimpSignUp(props: Props) {
         url={url}
         render={({ subscribe, status, message }: any) => (
           <>
-            <AnimWhenVisible
+            {/* <AnimWhenVisible
               variants={{
                 visible: { opacity: 1, x: 0 },
                 hidden: { opacity: 0, x: -20 },
               }}
-            >
+            > */}
               <p className={s.title}>SUBSCRIBE TO OUR NEWSLETTER</p>
-            </AnimWhenVisible>
-            <AnimWhenVisible
+            {/* </AnimWhenVisible> */}
+            {/* <AnimWhenVisible
               variants={{
                 visible: { opacity: 1, x: 0 },
                 hidden: { opacity: 0, x: 20 },
               }}
-            >
+            > */}
               <div className={s.form}>
                 <div className={s.inputC}>
                   <input
@@ -159,7 +159,7 @@ export default function MailChimpSignUp(props: Props) {
                   Subscribe
                 </button>
               </div>
-            </AnimWhenVisible>
+            {/* </AnimWhenVisible> */}
 
             {status === "error" ? (
               <p

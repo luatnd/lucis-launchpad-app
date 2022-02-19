@@ -7,9 +7,14 @@ type Props = {
     time: string;
     nameGame: string;
     title: string;
+    statusTime: string;
 };
 
 export default function CardItem(props: Props) {
+    const typeTime = props.statusTime == 'UpComing'? s.time
+    :props.statusTime == 'SoldOut'? s.Sold
+    :s.sale
+
     return (
         <div className={s.CardContainer}>
             <div className={s.img_game}>
@@ -17,7 +22,7 @@ export default function CardItem(props: Props) {
             </div>
             <div className={s.content}>
                 <div className={s.headingCard}>
-                    <div className={s.time}>{props.time}</div>
+                    <div className={`${s.styleTime} ${typeTime}`}>{props.time}</div>
                     <h5>{props.nameGame}</h5>
                     <p>{props.title}</p>
                 </div>

@@ -38,22 +38,22 @@ export const Navigation = () => {
       scrollTarget: "#Investors",
       statusMenu: true,
     },
-    {
-      color: "#FF008C",
-      statusMenu: false,
-      text: (
-        <GradientButton
-          onClick={() => {
-            setIsModalVisible(true);
-          }}
-          type={1}
-          className="text-white font-saira text-20px leading-28px nw"
-          style={{ whiteSpace: "nowrap" }}
-        >
-          Connect wallet 
-        </GradientButton>
-      ),
-    },
+    // {
+    //   color: "#FF008C",
+    //   statusMenu: false,
+    //   text: (
+    //     <GradientButton
+    //       onClick={() => {
+    //         setIsModalVisible(true);
+    //       }}
+    //       type={1}
+    //       className="text-white font-saira text-20px leading-28px nw"
+    //       style={{ whiteSpace: "nowrap" }}
+    //     >
+    //       Connect wallet
+    //     </GradientButton>
+    //   ),
+    // },
   ];
 
   useEffect(() => {

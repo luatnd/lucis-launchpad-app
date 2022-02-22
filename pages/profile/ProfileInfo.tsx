@@ -31,7 +31,7 @@ const Info = ()=> {
                     <p>{userProfile.id}</p>
                 </div>
                 <p className={s.balance}>Balance: {userProfile.balance} BNB</p>
-                <p className={s.affilate}>Affilate ID: {userProfile.affilateId} 
+                <p className={s.affilate}>Affilate ID: {userProfile.affilateId}  
                     <button>
                         <img src="/assets/MyProfile/copy.svg" alt="" />
                     </button>

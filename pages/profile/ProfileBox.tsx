@@ -23,8 +23,7 @@ const Box = () => {
 
     const handleOpenVerifyModal = () => {
         setOpenVerifyModal(true)
-        console.log(":Hello");
-        
+        console.log("Open Modal");
     }
 
     const handleCloseVerifyModal = () => {
@@ -67,6 +66,7 @@ const Box = () => {
                 </div>
             </div>
         </div>
+        <Modal visible={openVerifyModal} onCancel={handleCloseVerifyModal}/> 
         </>
        
     )

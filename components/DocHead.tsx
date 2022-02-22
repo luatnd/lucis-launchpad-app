@@ -8,7 +8,7 @@ export default function DocHead(props: Props) {
   const titleSuffix = props.title ?? "Redefine Play to Earn ecosystem";
   const title = "Lucis Gaming Guild - " + titleSuffix;
   const desc = "One of the most effective investment platforms for investors. We create a hybrid platform to connect investors and skilled scholars in the world of \"Play to Earn\" gaming and metaverse.";
-  const thumb = "/assets/img/howwework.png";
+  const thumb = "https://lucis.network/assets/lucis_preview_169.jpg";
 
   return <Head>
     <link rel="icon" href="/assets/favicon.png" />

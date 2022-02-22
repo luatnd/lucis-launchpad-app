@@ -12,44 +12,72 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
     position: absolute
     top: 0
     width: 100%
-
     > img
         width: 100%
 // Info component
-.content 
+.info 
     color: white
+    display: flex
+    align-items: center
+    justify-content: center
+    gap: 10px
+    margin: 16px 0 36px 0
+    overflow: hidden
+    word-wrap: break-word
+    word-break: break-word
     font-size: $font14
-    .info 
+    h1
+        color: white
+        font-weight: bold
+    p 
+        margin: 0
+
+    .fullName
+        p
+            font-size: $font9
+
+    .avatar 
+        border-radius: 50%
+        overflow: hidden
+        width: 25%
+        img
+            width: 100%
+
+    .balance 
+        margin: 8px 0
+        font-weight: 100
+
+    .affilate 
         display: flex
         align-items: center
-        gap: 30px
-        margin: 16px 0 36px 0
-        overflow: hidden
-        word-wrap: break-word
-        word-break: break-word
-        h1 
-            color: white
-            // font-size: $font14
-            font-weight: bold
-        p 
-            margin: 0
-        .avatar 
-            border-radius: 50%
-            overflow: hidden
-            width: 30%
+        gap: 8px
+        font-weight: 600
+
+        img 
+            width: 50%
+
+    @media screen and ( min-width:767px )
+        gap: 60px
+        font-size: $font24
+        .fullName
+            p
+                font-size: $font14
+        .affilate
+            gap: 16px
             img
-                width: 100%
-        .balance 
-            // font-size: $font14
-            margin: 8px 0
-            font-weight: 400
-        .affilate 
-            // font-size: $font14
-            font-weight: bold
-            button 
-                margin-left: 12px
-            img 
                 width: 60%
+
+    @media screen and ( min-width:1023px )
+        font-size: $font36
+        .fullName
+            p
+                font-size: $font24
+
+    @media screen and ( min-width:1279px )
+        font-size: $font48
+        .affilate
+            img
+                width: 90%
 
 // Box component
 .box 
@@ -66,19 +94,19 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
     p
         margin: 0
     .wrapper 
-        padding: 18px 10px
+        padding: 10px 10px 10px 20px
         background: linear-gradient(126.08deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%)
         .contact 
             display: flex
             align-items: flex-start
-            margin: 25px 0px
+            margin: 15px 0px
             .title 
                 display: flex
                 align-items: center
                 gap: 10px
                 width: 30%
                 img 
-                    width: 10%   
+                    width: 15%   
             .social
                 display: flex
                 flex-direction: column
@@ -96,40 +124,28 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
                 padding: 4px 10px 
                 border-radius: 8px
                 margin-left: 12px
-
-@media (min-width: 768px) 
-    .content
+    @media screen and ( min-width:767px )
         font-size: $font24
-        .info 
-            gap: 60px
-        .affilate, .balance, h1
-            font-size: $font36
-            font-weight: bold
+        .wrapper
+            padding: 30px 20px 30px 100px
+            .contact
+                .title 
+                    gap: 20px
 
-    .box
-        font-size: $font24
+    @media screen and ( min-width:1023px )
+        font-size: $font36
         .wrapper 
-            padding: 20px 40px
-            .title 
-                width: 40% !important
-                img
-                    width: 20%
+            padding: 30px 30px 30px 100px
 
-
-@media (min-width: 1024px)
-    .box
+    @media screen and ( min-width:1279px )
         .wrapper 
-            padding: 40px 60px
-            font-size: $font36
-            .contact 
-                span
-                    width: 40%
-                .social 
-                    img
-                        max-width: 100% !important
-
-@media (min-width: 1280px)
-    .box
-        .wrapper 
-            padding: 77px 120px
-
+            padding: 30px 30px 30px 170px
+            .contact
+                gap: 100px
+                .title 
+                    gap: 50px
+                .social
+                    a
+                        img
+                            max-width: 30%
+                    

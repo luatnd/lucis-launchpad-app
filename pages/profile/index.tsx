@@ -26,7 +26,7 @@ const MyProfile = () => {
       <div className={s.banner}>
         <img src="/assets/MyProfile/banner.png" alt="" />
 
-        <div className={`container ${s.content}`}>
+        <div className="container">
           <Info />
           <Box />
         </div>

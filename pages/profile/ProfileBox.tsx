@@ -62,7 +62,7 @@ const Box = () => {
                         <a href="#"><img src="/assets/MyProfile/tw.svg" alt="" />{userProfile.twitter}</a>
                         <a href="#"><img src="/assets/MyProfile/dis.svg" alt="" />{userProfile.discord}</a>
                         <a href="#"><img src="/assets/MyProfile/tele.svg" alt="" />{userProfile.tele}</a>
-                    </div>
+                    </div>  
                 </div>
             </div>
         </div>

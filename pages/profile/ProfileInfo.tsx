@@ -19,7 +19,6 @@ const userProfile = {
 const Info = ()=> {
 
     return (
- 
         <div className={s.info}>
             <div className={s.avatar}>
                 <img src="/assets/MyProfile/defaultAvatar.png" alt="" />
@@ -31,11 +30,12 @@ const Info = ()=> {
                     <p>{userProfile.id}</p>
                 </div>
                 <p className={s.balance}>Balance: {userProfile.balance} BNB</p>
-                <p className={s.affilate}>Affilate ID: {userProfile.affilateId}  
+                <div className={s.affilate}>
+                    <p>Affilate ID: {userProfile.affilateId}</p>  
                     <button>
                         <img src="/assets/MyProfile/copy.svg" alt="" />
                     </button>
-                </p>
+                </div>
             </div>
         </div>
 

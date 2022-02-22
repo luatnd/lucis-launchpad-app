@@ -4,13 +4,14 @@ import "antd/lib/style/themes/default.less";
 import "antd/dist/antd.less";
 import "../styles/globals.css";
 // @ts-ignore
-import smoothscroll from 'smoothscroll-polyfill';
+import smoothscroll from "smoothscroll-polyfill";
 
 import type { AppProps } from "next/app";
 import Layout from "components/layout";
+import { ApolloProvider } from "@apollo/client";
+import client from "utils/apollo_client";
 
-
-const isClient = typeof window !== 'undefined';
+const isClient = typeof window !== "undefined";
 
 if (isClient) {
   // kick off the polyfill!
@@ -19,9 +20,11 @@ if (isClient) {
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <ApolloProvider client={client}>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </ApolloProvider>
   );
 }
 

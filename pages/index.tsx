@@ -4,18 +4,22 @@ import Head from "next/head";
 
 import styles from "../styles/Home.module.css";
 // import HotGame from "components/Games";
-import useScroll from 'hooks/useScroll';
+import useScroll from "hooks/useScroll";
 import UpComing from "./UpComingPage/UpcomingCampaign";
 import Opening from "./OpeningCampaign/OpeningCampaign";
 import ClosedCampaign from "./ClosedCampaign/ClosedCampaign";
 import Footer from "components/Footer";
+import { useHome } from "hooks/home/useHome";
 
 const Home: NextPage = () => {
   const title = "Lucis Gaming Guild - Redefine Play to Earn ecosystem";
-  const desc = "One of the most effective investment platforms for investors. We create a hybrid platform to connect investors and skilled scholars in the world of \"Play to Earn\" gaming and metaverse.";
+  const desc =
+    'One of the most effective investment platforms for investors. We create a hybrid platform to connect investors and skilled scholars in the world of "Play to Earn" gaming and metaverse.';
   const thumb = "https://lucis.network/assets/lucis_preview_169.jpg";
-  useScroll()
+  useScroll();
   const [showButton, setShowButton] = useState(false);
+  const {} = useHome();
+
   useEffect(() => {
     window.addEventListener("scroll", () => {
       if (window.pageYOffset > 300) {
@@ -29,7 +33,7 @@ const Home: NextPage = () => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   };
 

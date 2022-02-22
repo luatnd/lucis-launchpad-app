@@ -11,8 +11,10 @@ type Props = DetailedHTMLProps<any, any> & {
       : '') + (props.small ? ` ${s.small}` : '');
 
     const {
-    className,
-    ...restProps
+      className,
+      type,
+      small,
+      ...restProps
     } = props;
 
     return (

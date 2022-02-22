@@ -24,7 +24,7 @@ export default function Header(props: Props) {
   return (
     <GradientButton
       onClick={showModal} type={1}
-      small={props.small}
+      small={!!props.small}
       className={`text-white text-24px leading-28px px-40px py-15px ${props.small ? '' : 'ml-15px'}`}
       style={{whiteSpace: 'nowrap', fontWeight: '600'}}
     >

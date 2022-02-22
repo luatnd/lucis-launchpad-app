@@ -4,14 +4,17 @@ import Head from "next/head";
 
 import styles from "../styles/Home.module.css";
 // import HotGame from "components/Games";
-import useScroll from 'hooks/useScroll';
+import useScroll from "hooks/useScroll";
 import UpComing from "./UpComingPage/UpcomingCampaign";
 import Opening from "./OpeningCampaign/OpeningCampaign";
 import ClosedCampaign from "./ClosedCampaign/ClosedCampaign";
 import Footer from "components/Footer";
 import DocHead from "../components/DocHead";
+import { useHome } from "hooks/home/useHome";
 
 const Home: NextPage = () => {
+  const {} = useHome();
+
   // useScroll()
   // const [showButton, setShowButton] = useState(false);
   // useEffect(() => {

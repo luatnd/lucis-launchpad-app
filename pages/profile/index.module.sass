@@ -1,0 +1,135 @@
+$font48: 48px
+$font36: 36px
+$font24: 24px
+$font14: 14px
+$font9: 9px
+
+$gradientBox: linear-gradient(126.08deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%)
+$gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123, 246, 0.4), rgba(251, 76, 222, 0.4), rgba(210, 0, 215, 0.6)) border-box
+
+
+.banner 
+    position: absolute
+    top: 0
+    width: 100%
+
+    > img
+        width: 100%
+// Info component
+.content 
+    color: white
+    font-size: $font14
+    .info 
+        display: flex
+        align-items: center
+        gap: 30px
+        margin: 16px 0 36px 0
+        overflow: hidden
+        word-wrap: break-word
+        word-break: break-word
+        h1 
+            color: white
+            // font-size: $font14
+            font-weight: bold
+        p 
+            margin: 0
+        .avatar 
+            border-radius: 50%
+            overflow: hidden
+            width: 30%
+            img
+                width: 100%
+        .balance 
+            // font-size: $font14
+            margin: 8px 0
+            font-weight: 400
+        .affilate 
+            // font-size: $font14
+            font-weight: bold
+            button 
+                margin-left: 12px
+            img 
+                width: 60%
+
+// Box component
+.box 
+    background: linear-gradient(#000031,#000031) padding-box, linear-gradient(to right, rgba(255, 255, 255, 0.7), rgba(210, 0, 215, 0.6), rgba(251, 76, 222, 0.4), rgba(244, 123, 246, 0.4) ) border-box
+    color: white
+    border: 1px solid transparent
+    border-radius: 25px
+    display: inline-block
+    width: 100%
+    overflow: hidden
+    word-wrap: break-word
+    word-break: break-word
+    font-size: 14px
+    p
+        margin: 0
+    .wrapper 
+        padding: 18px 10px
+        background: linear-gradient(126.08deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%)
+        .contact 
+            display: flex
+            align-items: flex-start
+            margin: 25px 0px
+            .title 
+                display: flex
+                align-items: center
+                gap: 10px
+                width: 30%
+                img 
+                    width: 10%   
+            .social
+                display: flex
+                flex-direction: column
+                gap: 10px
+                a
+                    display: flex
+                    align-items: center
+                    gap: 16px
+                    color: white
+                    img 
+                        background: #fff
+                        border-radius: 50%
+                        max-width: 10%
+            .verifyBtn
+                padding: 4px 10px 
+                border-radius: 8px
+                margin-left: 12px
+
+@media (min-width: 768px) 
+    .content
+        font-size: $font24
+        .info 
+            gap: 60px
+        .affilate, .balance, h1
+            font-size: $font36
+            font-weight: bold
+
+    .box
+        font-size: $font24
+        .wrapper 
+            padding: 20px 40px
+            .title 
+                width: 40% !important
+                img
+                    width: 20%
+
+
+@media (min-width: 1024px)
+    .box
+        .wrapper 
+            padding: 40px 60px
+            font-size: $font36
+            .contact 
+                span
+                    width: 40%
+                .social 
+                    img
+                        max-width: 100% !important
+
+@media (min-width: 1280px)
+    .box
+        .wrapper 
+            padding: 77px 120px
+

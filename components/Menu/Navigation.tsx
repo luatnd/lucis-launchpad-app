@@ -34,6 +34,24 @@ export const Navigation = () => {
     },
     {
       color: "#FF008C",
+      text: "Opening",
+      scrollTarget: "#Opening",
+      statusMenu: false,
+    },
+    {
+      color: "#FF008C",
+      text: "Upcoming",
+      scrollTarget: "#Upcoming",
+      statusMenu: false,
+    },
+    {
+      color: "#FF008C",
+      text: "Closed",
+      scrollTarget: "#Closed",
+      statusMenu: false,
+    },
+    {
+      color: "#FF008C",
       text: "Investors",
       scrollTarget: "#Investors",
       statusMenu: true,

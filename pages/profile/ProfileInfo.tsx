@@ -1,5 +1,4 @@
-import Modal from 'antd/lib/modal/Modal';
-import { useState } from 'react';
+import { useRef } from 'react';
 import s from './index.module.sass';
 
 const userProfile = {
@@ -17,6 +16,13 @@ const userProfile = {
   }
 
 const Info = ()=> {
+    const affilateIdRef = useRef<any>(null);
+
+    const handleCopyAffilateId = () => {
+        if (affilateIdRef) {
+            console.log(affilateIdRef.current.innerText);
+        }  
+    }
 
     return (
         <div className={s.info}>
@@ -31,8 +37,8 @@ const Info = ()=> {
                 </div>
                 <p className={s.balance}>Balance: {userProfile.balance} BNB</p>
                 <div className={s.affilate}>
-                    <p>Affilate ID: {userProfile.affilateId}</p>  
-                    <button>
+                    <p>Affilate ID: <span ref={affilateIdRef}>{userProfile.affilateId}</span></p>  
+                    <button onClick={handleCopyAffilateId}>
                         <img src="/assets/MyProfile/copy.svg" alt="" />
                     </button>
                 </div>

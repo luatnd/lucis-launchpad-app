@@ -382,7 +382,7 @@ body .ant-menu{
   .lucis-container {
     margin-top: 60px !important;
     max-width: 360px;
-    padding: 0 1rem;
+    padding: 0;
   }
 }
 

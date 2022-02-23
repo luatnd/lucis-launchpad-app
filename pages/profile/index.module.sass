@@ -14,6 +14,9 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
     width: 100%
     > img
         width: 100%
+.verifyModal
+    .ant-modal-content
+        color: blue
 // Info component
 .info 
     color: white
@@ -33,6 +36,11 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
         margin: 0
 
     .fullName
+        .name 
+            display: flex
+            gap: 10px
+            img 
+                width: 20%
         p
             font-size: $font9
 
@@ -60,6 +68,10 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
         gap: 60px
         font-size: $font24
         .fullName
+            .name 
+                gap: 16px
+                img 
+                    width: 40%
             p
                 font-size: $font14
         .affilate
@@ -129,6 +141,7 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
         .wrapper
             padding: 30px 20px 30px 100px
             .contact
+                margin: 20px 0
                 .title 
                     gap: 20px
 
@@ -141,6 +154,7 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
         .wrapper 
             padding: 30px 30px 30px 170px
             .contact
+                margin: 50px 0 
                 gap: 100px
                 .title 
                     gap: 50px

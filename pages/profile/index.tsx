@@ -1,9 +1,10 @@
 import DocHead from "components/DocHead";
-import s from './index.module.sass'
+import s from "./index.module.sass";
 import Footer from "components/Footer";
 import Info from "./ProfileInfo";
 import Box from "./ProfileBox";
 import Modal from "antd/lib/modal/Modal";
+import { useHome } from "hooks/home/useHome";
 
 const userProfile = {
   fullName: "Nguyen Thi Kieu Oanh",
@@ -16,13 +17,16 @@ const userProfile = {
   twitter: "Lucis network",
   discord: "Lucis channel",
   tele: "Lucis9999",
-  verify: false
-}
+  verify: false,
+};
 
 const MyProfile = () => {
+  const { data, loading, error } = useHome();
+  console.log(data);
+
   return (
     <>
-      <DocHead title="My Profile"/>
+      <DocHead title="My Profile" />
       <div className={s.banner}>
         <img src="/assets/MyProfile/banner.png" alt="" />
 
@@ -30,12 +34,9 @@ const MyProfile = () => {
           <Info />
           <Box />
         </div>
-      <Footer />
+        <Footer />
       </div>
-
     </>
-
-
   );
 };
 

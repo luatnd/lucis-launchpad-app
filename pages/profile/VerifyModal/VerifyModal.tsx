@@ -1,5 +1,5 @@
 import { Modal } from "antd";
-import s from "../index.module.sass";
+import s from "./modal.module.sass";
 import InputCode from "./InputCode";
 
 type Props = {
@@ -10,6 +10,8 @@ type Props = {
 
 const VerifyModal = (props: Props) => {
   const { handleOk, handleCancel, visible } = props;
+  const verifyCodeLength = 5;
+
   return (
     <Modal
       visible={visible}
@@ -19,7 +21,11 @@ const VerifyModal = (props: Props) => {
       footer={""}
       closable={false}
     >
-      <InputCode length={5} />
+      <p>Mã OTP đã được gửi vào Email của ban!</p>
+      <p>
+        <strong>Nhập mã OTP</strong>
+      </p>
+      <InputCode length={verifyCodeLength} />
     </Modal>
   );
 };

@@ -1,0 +1,87 @@
+[debug] [2022-02-23T12:42:23.908Z] ----------------------------------------------------------------------
+[debug] [2022-02-23T12:42:23.911Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\MyComputer\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2022-02-23T12:42:23.912Z] CLI Version:   9.23.0
+[debug] [2022-02-23T12:42:23.912Z] Platform:      win32
+[debug] [2022-02-23T12:42:23.912Z] Node Version:  v16.13.1
+[debug] [2022-02-23T12:42:23.932Z] Time:          Wed Feb 23 2022 20:42:23 GMT+0800 (China Standard Time)
+[debug] [2022-02-23T12:42:23.932Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-02-23T12:42:23.935Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2022-02-23T12:42:24.032Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-02-23T12:42:24.032Z] > authorizing via signed-in user (1414377hcmut@gmail.com)
+[debug] [2022-02-23T12:42:24.032Z] [iam] checking project lucis-launchpad-dev for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2022-02-23T12:42:24.034Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2022-02-23T12:42:24.034Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-02-23T12:42:24.328Z] <<< HTTP RESPONSE 200 {"pragma":"no-cache","cache-control":"no-cache, no-store, max-age=0, must-revalidate","expires":"Mon, 01 Jan 1990 00:00:00 GMT","date":"Wed, 23 Feb 2022 12:42:24 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-23T12:42:24.369Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/lucis-launchpad-dev:testIamPermissions  
+ {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2022-02-23T12:42:24.750Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2022-02-23T12:42:24.751Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2022-02-23T12:42:25.507Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Wed, 23 Feb 2022 12:42:25 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=908","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-23T12:42:25.508Z] [iam] error while checking permissions, command may fail: FirebaseError: Authorization failed. This account is missing the following required permissions on project lucis-launchpad-dev:
+
+  firebase.projects.get
+  firebasehosting.sites.update
+[debug] [2022-02-23T12:42:25.508Z] > refreshing access token with scopes: []
+[debug] [2022-02-23T12:42:25.509Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-02-23T12:42:25.712Z] <<< HTTP RESPONSE 200 {"cache-control":"no-cache, no-store, max-age=0, must-revalidate","expires":"Mon, 01 Jan 1990 00:00:00 GMT","pragma":"no-cache","date":"Wed, 23 Feb 2022 12:42:25 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-23T12:42:25.752Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/lucis-launchpad-dev [none]
+[debug] [2022-02-23T12:42:26.267Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/lucis-launchpad-dev 403
+[debug] [2022-02-23T12:42:26.268Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/lucis-launchpad-dev {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2022-02-23T12:42:26.269Z] HTTP Error: 403, The caller does not have permission
+[debug] [2022-02-23T12:42:26.490Z] FirebaseError: HTTP Error: 403, The caller does not have permission
+    at module.exports (C:\Users\MyComputer\AppData\Roaming\npm\node_modules\firebase-tools\lib\responseToError.js:38:12)
+    at Client.doRequest (C:\Users\MyComputer\AppData\Roaming\npm\node_modules\firebase-tools\lib\apiv2.js:241:23)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async Client.request (C:\Users\MyComputer\AppData\Roaming\npm\node_modules\firebase-tools\lib\apiv2.js:96:20)
+    at async Object.getFirebaseProject (C:\Users\MyComputer\AppData\Roaming\npm\node_modules\firebase-tools\lib\management\projects.js:290:21)
+    at async Object.getDefaultHostingSite (C:\Users\MyComputer\AppData\Roaming\npm\node_modules\firebase-tools\lib\getDefaultHostingSite.js:8:21)
+    at async requireHostingSite (C:\Users\MyComputer\AppData\Roaming\npm\node_modules\firebase-tools\lib\requireHostingSite.js:9:18)
+    at async Object.fn (C:\Users\MyComputer\AppData\Roaming\npm\node_modules\firebase-tools\lib\commands\deploy.js:73:9)
+    at async C:\Users\MyComputer\AppData\Roaming\npm\node_modules\firebase-tools\lib\command.js:188:17
+[error] 
+[error] Error: Failed to get Firebase project lucis-launchpad-dev. Please make sure the project exists and your account has permission to access it.
+[debug] [2022-02-23T12:43:11.870Z] ----------------------------------------------------------------------
+[debug] [2022-02-23T12:43:11.873Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\MyComputer\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2022-02-23T12:43:11.874Z] CLI Version:   9.23.0
+[debug] [2022-02-23T12:43:11.874Z] Platform:      win32
+[debug] [2022-02-23T12:43:11.874Z] Node Version:  v16.13.1
+[debug] [2022-02-23T12:43:11.901Z] Time:          Wed Feb 23 2022 20:43:11 GMT+0800 (China Standard Time)
+[debug] [2022-02-23T12:43:11.902Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-02-23T12:43:11.980Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-02-23T12:43:11.981Z] > authorizing via signed-in user (1414377hcmut@gmail.com)
+[debug] [2022-02-23T12:43:11.981Z] [iam] checking project lucis-launchpad-dev for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2022-02-23T12:43:11.986Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2022-02-23T12:43:11.987Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-02-23T12:43:12.302Z] <<< HTTP RESPONSE 200 {"cache-control":"no-cache, no-store, max-age=0, must-revalidate","date":"Wed, 23 Feb 2022 12:43:12 GMT","expires":"Mon, 01 Jan 1990 00:00:00 GMT","pragma":"no-cache","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-23T12:43:12.340Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/lucis-launchpad-dev:testIamPermissions  
+ {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2022-02-23T12:43:13.406Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Wed, 23 Feb 2022 12:43:13 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=905","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-23T12:43:13.407Z] [iam] error while checking permissions, command may fail: FirebaseError: Authorization failed. This account is missing the following required permissions on project lucis-launchpad-dev:
+
+  firebase.projects.get
+  firebasehosting.sites.update
+[debug] [2022-02-23T12:43:13.408Z] > refreshing access token with scopes: []
+[debug] [2022-02-23T12:43:13.408Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-02-23T12:43:13.617Z] <<< HTTP RESPONSE 200 {"cache-control":"no-cache, no-store, max-age=0, must-revalidate","pragma":"no-cache","expires":"Mon, 01 Jan 1990 00:00:00 GMT","date":"Wed, 23 Feb 2022 12:43:13 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-23T12:43:13.651Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/lucis-launchpad-dev [none]
+[debug] [2022-02-23T12:43:14.078Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/lucis-launchpad-dev 403
+[debug] [2022-02-23T12:43:14.078Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/lucis-launchpad-dev {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2022-02-23T12:43:14.079Z] HTTP Error: 403, The caller does not have permission
+[debug] [2022-02-23T12:43:14.271Z] FirebaseError: HTTP Error: 403, The caller does not have permission
+    at module.exports (C:\Users\MyComputer\AppData\Roaming\npm\node_modules\firebase-tools\lib\responseToError.js:38:12)
+    at Client.doRequest (C:\Users\MyComputer\AppData\Roaming\npm\node_modules\firebase-tools\lib\apiv2.js:241:23)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async Client.request (C:\Users\MyComputer\AppData\Roaming\npm\node_modules\firebase-tools\lib\apiv2.js:96:20)
+    at async Object.getFirebaseProject (C:\Users\MyComputer\AppData\Roaming\npm\node_modules\firebase-tools\lib\management\projects.js:290:21)
+    at async Object.getDefaultHostingSite (C:\Users\MyComputer\AppData\Roaming\npm\node_modules\firebase-tools\lib\getDefaultHostingSite.js:8:21)
+    at async requireHostingSite (C:\Users\MyComputer\AppData\Roaming\npm\node_modules\firebase-tools\lib\requireHostingSite.js:9:18)
+    at async Object.fn (C:\Users\MyComputer\AppData\Roaming\npm\node_modules\firebase-tools\lib\commands\deploy.js:73:9)
+    at async C:\Users\MyComputer\AppData\Roaming\npm\node_modules\firebase-tools\lib\command.js:188:17
+[error] 
+[error] Error: Failed to get Firebase project lucis-launchpad-dev. Please make sure the project exists and your account has permission to access it.

@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, OperationVariables, TypedDocumentNode, useQuery } from "@apollo/client";
 
 export function useHome() {
   const { loading, error, data, refetch } = useQuery(SPLOTLIGHT_BOX_CAMPAIGN);

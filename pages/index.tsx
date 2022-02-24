@@ -9,6 +9,7 @@ import UpComing from "./UpComingPage/UpcomingCampaign";
 import Opening from "./OpeningCampaign/OpeningCampaign";
 import ClosedCampaign from "./ClosedCampaign/ClosedCampaign";
 import Footer from "components/Footer";
+import Banner from "./Banner/BannerPage";
 import DocHead from "../components/DocHead";
 import { useHome } from "hooks/home/useHome";
 
@@ -38,6 +39,7 @@ const Home: NextPage = () => {
     <div className={styles.pageContainer}>
       <DocHead/>
 
+      <Banner />
       <UpComing />
       <Opening />
       <ClosedCampaign />

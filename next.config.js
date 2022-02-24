@@ -1,5 +1,5 @@
-const withAntdLess = require('next-plugin-antd-less');
-const path = require('path')
+const withAntdLess = require("next-plugin-antd-less");
+const path = require("path");
 
 /** @type {import('next').NextConfig} */
 module.exports = withAntdLess({
@@ -9,9 +9,9 @@ module.exports = withAntdLess({
   //   return config;
   // },
 
-  images: { loader: 'custom' },
+  images: { loader: "custom" },
 
   // sassOptions: {
   //   includePaths: [path.join(__dirname, 'styles')],
   // },
-})
+});

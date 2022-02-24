@@ -10,6 +10,7 @@ import Opening from "./OpeningCampaign/OpeningCampaign";
 import ClosedCampaign from "./ClosedCampaign/ClosedCampaign";
 import Footer from "components/Footer";
 import { useHome } from "hooks/home/useHome";
+import Banner from "./Banner/BannerPage";
 
 const Home: NextPage = () => {
   const title = "Lucis Gaming Guild - Redefine Play to Earn ecosystem";
@@ -71,6 +72,7 @@ const Home: NextPage = () => {
       {/*<AnimWhenVisible>*/}
       {/*  <Backer />*/}
       {/*</AnimWhenVisible>*/}
+      <Banner />
       <UpComing />
       <Opening />
       <ClosedCampaign />

@@ -8,6 +8,7 @@ import { Navigation } from "./Navigation";
 import Image from '../Image';
 import Logo from '../../assets/icon/Logo.svg';
 import {AppEmitter} from "../../services/emitter";
+import AuthBox from "../Auth/AuthBox";
 
 const sidebar = {
   open: (height = 1000) => ({
@@ -77,15 +78,21 @@ export const MenuMobile = (props: any) => {
         className={`${s.mobileMenu} fixed top-0 left-0 right-0 z-[101] bg-nav backdrop-blur-sm`}
       >
         <div className={`${s.container} flex justify-between items-center`}>
-          <div style={{width: 80, height: 42, padding: "3px 0"}}>
+          <div style={{width: 80, height: 42, padding: 0}}>
             <Image src={Logo} width={80} height={42} alt="logo" layout="responsive"></Image>
           </div>
-          <motion.div
-            initial={false}
-            animate={"closed"}
-          >
-            <MenuToggle toggle={() => toggleOpen()} />
-          </motion.div>
+          <div className="flex justify-end items-center">
+            <div className={s.mobileAuthBox}>
+              <AuthBox small={true} />
+            </div>
+
+            <motion.div
+              initial={false}
+              animate={"closed"}
+            >
+              <MenuToggle toggle={() => toggleOpen()} />
+            </motion.div>
+          </div>
         </div>
       </div>
 

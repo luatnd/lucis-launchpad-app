@@ -10,6 +10,7 @@ import { scrollToSection } from "../utils/DOM";
 
 // import { Modal, Button } from 'antd';
 import { AppEmitter } from "../services/emitter";
+import AuthBox from "./Auth/AuthBox";
 type Props = {
   handleMenuOpen: Function;
 };
@@ -83,15 +84,9 @@ export default function Header(props: Props) {
               </li>
               {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Roadmap</a></li>*/}
               <li>
-                {" "}
-                <GradientButton
-                  onClick={showModal}
-                  type={1}
-                  className="text-white text-24px leading-28px px-40px py-15px ml-15px"
-                  style={{ whiteSpace: "nowrap", fontWeight: "600" }}
-                >
-                  Connect wallet
-                </GradientButton>{" "}
+
+                <AuthBox />
+
               </li>
             </ul>
           </nav>

@@ -1,6 +1,8 @@
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import { useProfile } from "hooks/profile/useProfile";
-import { useEffect, useRef, useState } from "react";
+import { CloseOutlined, EditOutlined } from "@ant-design/icons";
+import { Col, Row } from "antd";
+import Input from "components/Input/Input";
+import { useMutationProfile } from "hooks/profile/useMutationProfile";
+import { ChangeEvent, useRef, useState } from "react";
 import s from "./index.module.sass";
 
 const userProfile = {
@@ -17,11 +19,19 @@ const userProfile = {
   verify: false,
 };
 
-const Info = () => {
+type Props = {
+  isEdit: boolean;
+  setIsEdit: (value: boolean) => void;
+  profile: any;
+};
+
+const Info = ({ isEdit, setIsEdit, profile }: Props) => {
+  console.log(profile.me.profile);
+
+  const [tempName, setTempName] = useState(profile.me.profile.full_name);
   const affilateIdRef = useRef<any>(null);
   const nameRef = useRef<any>(null);
-  const [isEdit, setIsEdit] = useState(false);
-  const { updateFullName } = useProfile();
+  const { updateProfile, loading, error, data } = useMutationProfile();
 
   const handleCopyAffilateId = () => {
     if (affilateIdRef) {
@@ -29,72 +39,71 @@ const Info = () => {
     }
   };
 
-  const handleEditName = () => {
-    setIsEdit(true);
+  const toggleEdit = () => {
+    setIsEdit(!isEdit);
   };
 
-  const handleSubmitFullName = () => {
-    setIsEdit(false);
-    updateFullName({ variables: { full_name: nameRef.current.innerText } });
+  const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
+    setTempName(e.target.value);
   };
 
-  const handleCancelSubmitFullName = () => {
-    setIsEdit(false);
-    nameRef.current.innerText = userProfile.fullName;
+  const handleBlur = () => {
+    updateProfile({
+      variables: {
+        data: {
+          full_name: {
+            set: tempName,
+          },
+        },
+      },
+    });
   };
 
-  useEffect(() => {
-    if (nameRef) {
-      nameRef.current.focus();
-      //@ts-ignore
-      document.execCommand("selectAll", false, null);
-      //@ts-ignore
-      document.getSelection().collapseToEnd();
-    }
-  }, [isEdit]);
+  const props = {
+    value: tempName,
+    onChange: handleChangeName,
+    onBlur: handleBlur,
+    className: s.name,
+  };
 
   return (
-    <div className={s.info}>
-      <div className={s.avatar}>
-        <img src="/assets/MyProfile/defaultAvatar.png" alt="" />
-      </div>
-
-      <div>
-        <div className={s.fullName}>
-          <div className={s.name}>
-            <h1 ref={nameRef} contentEditable={isEdit} suppressContentEditableWarning={true}>
-              {userProfile.fullName}
-            </h1>
-            {isEdit ? (
-              <>
-                <button onClick={handleSubmitFullName}>
-                  <CheckOutlined />
-                </button>
-                <button onClick={handleCancelSubmitFullName}>
-                  <CloseOutlined />
-                </button>
-              </>
-            ) : (
-              <button onClick={handleEditName}>
-                <img src="/assets/MyProfile/edit.svg" alt="" />
-              </button>
-            )}
+    <div className="my-6">
+      <Row gutter={[10, 10]} align="middle">
+        <Col span={8}>
+          <div className={s.avatar}>
+            <img src="/assets/MyProfile/defaultAvatar.png" alt="" />
+          </div>
+        </Col>
+        <Col span={16}>
+          <div className={s.info}>
+            <div>
+              {isEdit ? (
+                <Input {...props} />
+              ) : (
+                // <input className={s.name} onChange={handleChangeName} value={tempName} />
+                <p className={s.name}>{tempName}</p>
+              )}
+              <p className={s.id}>{userProfile.id}</p>
+            </div>
+            <button onClick={toggleEdit}>{isEdit ? <CloseOutlined /> : <EditOutlined />}</button>
           </div>
 
-          <p>{userProfile.id}</p>
-        </div>
-        <p className={s.balance}>Balance: {userProfile.balance} BNB</p>
-        <div className={s.affilate}>
-          <p>
-            Affilate ID: <span ref={affilateIdRef}>{userProfile.affilateId}</span>
-          </p>
-          <button onClick={handleCopyAffilateId}>
-            <img src="/assets/MyProfile/copy.svg" alt="" />
-          </button>
-        </div>
-      </div>
+          <div className={s.info}>
+            <p className={s.balance}>Balance: {userProfile.balance} BNB</p>
+          </div>
+
+          <div className={`${s.info} sm:mt-2 lg:mt-5`}>
+            <p className={s.name}>
+              Affilate ID: {userProfile.affilateId}
+              {/* <img src="/assets/MyProfile/copy.svg" alt="" /> */}
+            </p>
+          </div>
+        </Col>
+      </Row>
     </div>
   );
 };
+
+Info.defaulProps = {};
 
 export default Info;

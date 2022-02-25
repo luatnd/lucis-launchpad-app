@@ -1,6 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 
-export function useBook() {
+export function useQueryBoxs() {
   const { loading, error, data, refetch } = useQuery(BOX_CAMPAIGN);
 
   return {

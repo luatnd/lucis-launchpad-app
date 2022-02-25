@@ -5,7 +5,8 @@ import Info from "./ProfileInfo";
 import Box from "./ProfileBox";
 import Modal from "antd/lib/modal/Modal";
 import { useHome } from "hooks/home/useHome";
-import { useBook } from "hooks/home/useUpcomingBox";
+import { useQueryBoxs } from "hooks/home/useQueryBoxs";
+import { useMutationProfile } from "hooks/profile/useMutationProfile";
 
 const userProfile = {
   fullName: "Nguyen Thi Kieu Oanh",
@@ -22,8 +23,8 @@ const userProfile = {
 };
 
 const MyProfile = () => {
-  const { data, loading, error } = useBook();
-  console.log(data);
+  // const { data, loading, error } = useQueryBoxs();
+  // const { updateProfile, loading, error, data } = useMutationProfile();
 
   return (
     <>

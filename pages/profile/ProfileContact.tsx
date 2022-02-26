@@ -12,7 +12,10 @@ type Props = {
   profile: any;
 };
 
-function validateEmail(email: string) {
+function validateEmail(email?: string) {
+  if (email == null) {
+    return;
+  }
   var re = /\S+@\S+\.\S+/;
   return re.test(email.toLowerCase());
 }
@@ -23,7 +26,9 @@ const Contact = ({ isEdit, setIsEdit, profile }: Props) => {
     phone: profile?.me.profile.phone,
     email: profile?.me.email,
   });
-  const [validEmail, setValidEmail] = useState(validateEmail(profile?.me.email));
+  const [validEmail, setValidEmail] = useState(
+    validateEmail(profile?.me.email)
+  );
 
   const { updateProfile, loading, error, data } = useMutationProfile();
 

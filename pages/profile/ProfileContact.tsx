@@ -3,26 +3,13 @@ import VerifyModal from "./VerifyModal/VerifyModal";
 import s from "./index.module.sass";
 import { Col, Row } from "antd";
 
-const userProfile = {
-  fullName: "Nguyen Thi Kieu Oanh",
-  id: "0x948d6D28D396Eae2F8c3459b092a85268B1bD96B",
-  balance: 135,
-  affilateId: "01234567989svfdv",
-  phone: "0912345678",
-  email: "anhcbt@lucis.network",
-  facebook: "Lucis network",
-  twitter: "Lucis network",
-  discord: "Lucis channel",
-  tele: "Lucis9999",
-  verify: false,
-};
-
 type Props = {
   isEdit: boolean;
   setIsEdit: (value: boolean) => void;
+  profile: any;
 };
 
-const Contact = ({ isEdit, setIsEdit }: Props) => {
+const Contact = ({ isEdit, setIsEdit, profile }: Props) => {
   const [openVerifyModal, setOpenVerifyModal] = useState(false);
 
   const handleOpenVerifyModal = () => {
@@ -46,23 +33,30 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
           <Col span={8}>
             <div className={s.title}>
               <img src="/assets/MyProfile/phone.svg" alt="" />
-              <span className="sm:pl-3 lg:pl-8">Phone</span>
+              <span className="pl-3">Phone</span>
             </div>
           </Col>
           <Col span={16}>
-            <p>{userProfile.phone}</p>
+            <p>{profile.me ? profile.me.profile.phone : ""}</p>
           </Col>
 
           <Col span={8}>
             <div className={s.title}>
               <img src="/assets/MyProfile/mail.svg" alt="" />
-              <span className="sm:pl-3 lg:pl-8">Email</span>
+              <span className="pl-3 ">Email</span>
             </div>
           </Col>
           <Col span={16}>
             <p>
-              {userProfile.email}{" "}
-              {!userProfile.verify && (
+              {/* {me ? me.profile.email : ""}{" "}
+              <button
+                className={`${s.verifyBtn} bg-gradient-1`}
+                onClick={handleOpenVerifyModal}
+                disabled
+              >
+                Verify
+              </button> */}
+              {/* {!userProfile.verify && (
                 <button
                   className={`${s.verifyBtn} bg-gradient-1`}
                   onClick={handleOpenVerifyModal}
@@ -70,7 +64,7 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
                 >
                   Verify
                 </button>
-              )}
+              )} */}
             </p>
           </Col>
         </Row>

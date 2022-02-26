@@ -28,11 +28,12 @@ type Props = {
 
 const Social = ({ isEdit, setIsEdit, profile }: Props) => {
   const { updateProfile, loading, error, data } = useMutationProfile();
+
   const [tempSocial, setTempSocial] = useState({
-    facebook: profile.me.profile.facebook,
-    discord: profile.me.profile.discord,
-    twitter: profile.me.profile.twitter,
-    telegram: profile.me.profile.telegram,
+    facebook: profile.me?.profile.facebook,
+    discord: profile.me?.profile.discord,
+    twitter: profile.me?.profile.twitter,
+    telegram: profile.me?.profile.telegram,
   });
 
   const handleBlur = (field: string) => {
@@ -57,15 +58,6 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
     });
   };
 
-  //   useEffect(() => {
-  //     setIsEditSocial({
-  //       fb: isEdit,
-  //       tw: isEdit,
-  //       dc: isEdit,
-  //       tele: isEdit,
-  //     });
-  //   }, [isEdit]);
-
   return (
     <>
       <div className={`${s.box} sm:my-3 md:my-7`}>
@@ -73,8 +65,9 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
           <Row>
             <Col span={8}>
               <div className={s.title}>
+                {/* <img src={} alt="" /> */}
                 <img src="/assets/MyProfile/social.svg" alt="" />
-                <span className="sm:pl-3 lg:pl-8">Social</span>
+                <span className="pl-3">Social</span>
               </div>
             </Col>
             <Col span={16}>

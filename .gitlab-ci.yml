@@ -22,7 +22,8 @@ deploy-dev:
   only:
     - dev
   script:
-    - cd ./deploy;./deploy.sh
+    - cd ./deploy;
+    - docker-compose up --build -d
 
 deploy-prod:
   stage: deploy

@@ -37,7 +37,9 @@ const Contact = ({ isEdit, setIsEdit, profile }: Props) => {
             </div>
           </Col>
           <Col span={16}>
-            <p>{profile ? profile.me.profile.phone : ""}</p>
+            <p>
+              {profile && profile.me.profile.phone ? profile.me.profile.phone : "your phone number"}
+            </p>
           </Col>
 
           <Col span={8}>
@@ -47,25 +49,20 @@ const Contact = ({ isEdit, setIsEdit, profile }: Props) => {
             </div>
           </Col>
           <Col span={16}>
-            <p>
-              {/* {me ? me.profile.email : ""}{" "}
-              <button
-                className={`${s.verifyBtn} bg-gradient-1`}
-                onClick={handleOpenVerifyModal}
-                disabled
-              >
-                Verify
-              </button> */}
-              {/* {!userProfile.verify && (
+            {profile && profile.me.profile.email ? (
+              <p>
+                {profile.me.profile.emai}{" "}
                 <button
-                  className={`${s.verifyBtn} bg-gradient-1`}
+                  className={`${s.verifyBtn} bg-gradient-1 md:ml-4`}
                   onClick={handleOpenVerifyModal}
                   disabled
                 >
                   Verify
                 </button>
-              )} */}
-            </p>
+              </p>
+            ) : (
+              <p>your.email@example.com</p>
+            )}
           </Col>
         </Row>
         <VerifyModal {...props} />
@@ -75,16 +72,3 @@ const Contact = ({ isEdit, setIsEdit, profile }: Props) => {
 };
 
 export default Contact;
-
-// const handleBlur = () => {
-//   updateProfile({
-//     variables:{
-//       data: {
-//         "full_name": {
-//           "set":
-//         }
-//       }
-//     }
-//   })
-
-// }

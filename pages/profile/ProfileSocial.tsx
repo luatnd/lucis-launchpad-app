@@ -1,10 +1,8 @@
-import s from "./index.module.sass";
-import { useEffect, useRef, useState, ChangeEvent } from "react";
-import { Col, Modal, Row } from "antd";
-import InputCode from "./VerifyModal/InputCode";
-import VerifyModal from "./VerifyModal/VerifyModal";
+import { Col, Row } from "antd";
 import Input from "components/Input/Input";
 import { useMutationProfile } from "hooks/profile/useMutationProfile";
+import { ChangeEvent, useState } from "react";
+import s from "./index.module.sass";
 
 type Props = {
   isEdit: boolean;
@@ -51,7 +49,7 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
           <Row>
             <Col span={8}>
               <div className={s.title}>
-                <img src={} alt="" />
+                {/* <img src={} alt="" /> */}
                 <img src="/assets/MyProfile/social.svg" alt="" />
                 <span className="pl-3">Social</span>
               </div>

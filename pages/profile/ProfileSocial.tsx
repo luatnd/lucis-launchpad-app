@@ -1,24 +1,8 @@
-import s from "./index.module.sass";
-import { useEffect, useRef, useState, ChangeEvent } from "react";
-import { Col, Modal, Row } from "antd";
-import InputCode from "./VerifyModal/InputCode";
-import VerifyModal from "./VerifyModal/VerifyModal";
+import { Col, Row } from "antd";
 import Input from "components/Input/Input";
 import { useMutationProfile } from "hooks/profile/useMutationProfile";
-
-const userProfile = {
-  fullName: "Nguyen Thi Kieu Oanh",
-  id: "0x948d6D28D396Eae2F8c3459b092a85268B1bD96B",
-  balance: 135,
-  affilateId: "01234567989svfdv",
-  phone: "0912345678",
-  email: "anhcbt@lucis.network",
-  facebook: "Lucis network",
-  twitter: "Lucis network",
-  discord: "Lucis channel",
-  tele: "Lucis9999",
-  verify: false,
-};
+import { ChangeEvent, useState } from "react";
+import s from "./index.module.sass";
 
 type Props = {
   isEdit: boolean;
@@ -28,6 +12,7 @@ type Props = {
 
 const Social = ({ isEdit, setIsEdit, profile }: Props) => {
   const { updateProfile, loading, error, data } = useMutationProfile();
+
   const [tempSocial, setTempSocial] = useState({
     facebook: profile?.me.profile.facebook,
     discord: profile?.me.profile.discord,
@@ -57,15 +42,6 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
     });
   };
 
-  //   useEffect(() => {
-  //     setIsEditSocial({
-  //       fb: isEdit,
-  //       tw: isEdit,
-  //       dc: isEdit,
-  //       tele: isEdit,
-  //     });
-  //   }, [isEdit]);
-
   return (
     <>
       <div className={`${s.box} sm:my-3 md:my-7`}>
@@ -74,13 +50,13 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
             <Col span={8}>
               <div className={s.title}>
                 <img src="/assets/MyProfile/social.svg" alt="" />
-                <span className="sm:pl-3 lg:pl-8">Social</span>
+                <span className="pl-0 md:pl-3">Social</span>
               </div>
             </Col>
             <Col span={16}>
               <div className={s.social}>
                 <a>
-                  <img src="/assets/MyProfile/fb.svg" alt="" />
+                  <img src="/assets/footer/fb.svg" alt="" />
                   {isEdit ? (
                     <Input
                       value={tempSocial.facebook ? tempSocial.facebook : ""}
@@ -88,16 +64,12 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                       onBlur={() => handleBlur("facebook")}
                     />
                   ) : (
-                    <p>
-                      {tempSocial.facebook
-                        ? tempSocial.facebook
-                        : "Not available"}
-                    </p>
+                    <p>{tempSocial.facebook ? tempSocial.facebook : "Not available"}</p>
                   )}
                 </a>
 
                 <a className="my-5">
-                  <img src="/assets/MyProfile/tw.svg" alt="" />
+                  <img src="/assets/footer/tw.svg" alt="" />
                   {isEdit ? (
                     <Input
                       value={tempSocial.twitter ? tempSocial.twitter : ""}
@@ -105,16 +77,12 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                       onBlur={() => handleBlur("twitter")}
                     />
                   ) : (
-                    <p>
-                      {tempSocial.twitter
-                        ? tempSocial.twitter
-                        : "Not available"}
-                    </p>
+                    <p>{tempSocial.twitter ? tempSocial.twitter : "Not available"}</p>
                   )}
                 </a>
 
                 <a className="my-5">
-                  <img src="/assets/MyProfile/dis.svg" alt="" />
+                  <img src="/assets/footer/dis.svg" alt="" />
                   {isEdit ? (
                     <Input
                       value={tempSocial.discord ? tempSocial.discord : ""}
@@ -122,16 +90,12 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                       onBlur={() => handleBlur("discord")}
                     />
                   ) : (
-                    <p>
-                      {tempSocial.discord
-                        ? tempSocial.discord
-                        : "Not available"}
-                    </p>
+                    <p>{tempSocial.discord ? tempSocial.discord : "Not available"}</p>
                   )}
                 </a>
 
                 <a>
-                  <img src="/assets/MyProfile/tele.svg" alt="" />
+                  <img src="/assets/footer/tele.svg" alt="" />
                   {isEdit ? (
                     <Input
                       value={tempSocial.telegram ? tempSocial.telegram : ""}
@@ -139,11 +103,7 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                       onBlur={() => handleBlur("telegram")}
                     />
                   ) : (
-                    <p>
-                      {tempSocial.telegram
-                        ? tempSocial.telegram
-                        : "Not available"}
-                    </p>
+                    <p>{tempSocial.telegram ? tempSocial.telegram : "Not available"}</p>
                   )}
                 </a>
               </div>

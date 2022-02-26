@@ -1,9 +1,4 @@
-import {
-  ApolloClient,
-  createHttpLink,
-  InMemoryCache,
-  from,
-} from "@apollo/client";
+import { ApolloClient, createHttpLink, InMemoryCache, from } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 //   import { CachePersistor } from 'apollo-cache-persist';
@@ -26,9 +21,7 @@ let countGqlErrNetwork = 0;
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path }) => {
-      console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-      );
+      console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
 
       if (message === "Unauthorized") {
         // when token expired or die, localStorage clear
@@ -55,7 +48,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token,
+      authorization: `Bearer ${token}`,
     },
   };
 });

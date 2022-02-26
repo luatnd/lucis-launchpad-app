@@ -6,40 +6,33 @@ import MailchimpSubscribe from "react-mailchimp-subscribe";
 import s from "./MailChimpSignUp.module.sass";
 
 type AppMailChimpPayload = {
-  EMAIL: string,
-  INVESTOR?: number,
-  SCHOLAR?: number,
-}
+  EMAIL: string;
+  INVESTOR?: number;
+  SCHOLAR?: number;
+};
 
 export enum AppMailChimpFormSize {
-  sm = 'sm',
-  md = 'md',
-  lg = 'lg',
+  sm = "sm",
+  md = "md",
+  lg = "lg",
 }
 
 type Props = DetailedHTMLProps<any, any> & {
-  size?: AppMailChimpFormSize,
-  isInvestor?: boolean,
-  isScholar?: boolean,
-}
+  size?: AppMailChimpFormSize;
+  isInvestor?: boolean;
+  isScholar?: boolean;
+};
 export default function MailChimpSignUp(props: Props) {
-  let {
-    isInvestor,
-    isScholar,
-    size,
-    ...restProps
-  } = props;
+  let { isInvestor, isScholar, size, ...restProps } = props;
 
   const url = process.env.NEXT_PUBLIC_MAILCHIMP_URL;
   if (!size) {
-    size = AppMailChimpFormSize.lg
+    size = AppMailChimpFormSize.lg;
   }
 
   const [msg, setMsg] = useState("");
   const [email, setEmail] = useState("");
   const [hasError, setHasError] = useState(false);
-
-
 
   const onSubmit = useCallback(
     (subscribe) => {
@@ -56,7 +49,7 @@ export default function MailChimpSignUp(props: Props) {
 
       setMsg("Subscribing ...");
 
-      const payload: AppMailChimpPayload = {EMAIL: email}
+      const payload: AppMailChimpPayload = { EMAIL: email };
       if (isInvestor) {
         payload.INVESTOR = 1;
       }
@@ -73,11 +66,7 @@ export default function MailChimpSignUp(props: Props) {
         }, 10000);
       }, 2000);
     },
-    [
-      email, hasError,
-      isInvestor,
-      isScholar,
-    ]
+    [email, hasError, isInvestor, isScholar]
   );
 
   const validateEmail = (email: string): boolean => {
@@ -133,7 +122,7 @@ export default function MailChimpSignUp(props: Props) {
                 hidden: { opacity: 0, x: -20 },
               }}
             > */}
-              <p className={s.title}>SUBSCRIBE TO OUR NEWSLETTER</p>
+            <p className={s.title}>SUBSCRIBE TO OUR NEWSLETTER</p>
             {/* </AnimWhenVisible> */}
             {/* <AnimWhenVisible
               variants={{
@@ -141,24 +130,20 @@ export default function MailChimpSignUp(props: Props) {
                 hidden: { opacity: 0, x: 20 },
               }}
             > */}
-              <div className={s.form}>
-                <div className={s.inputC}>
-                  <input
-                    type="text"
-                    className={s.input}
-                    placeholder="your.email@example.com"
-                    onInput={onInput}
-                    onChange={onInput}
-                  />
-                </div>
-                <button
-                  className={s.btn}
-                  onClick={() => onSubmit(subscribe)}
-                  disabled={hasError}
-                >
-                  Submit
-                </button>
+            <div className={s.form}>
+              <div className={s.inputC}>
+                <input
+                  type="text"
+                  className={s.input}
+                  placeholder="your.email@example.com"
+                  onInput={onInput}
+                  onChange={onInput}
+                />
               </div>
+              <button className={s.btn} onClick={() => onSubmit(subscribe)} disabled={hasError}>
+                Submit
+              </button>
+            </div>
             {/* </AnimWhenVisible> */}
 
             {status === "error" ? (
@@ -169,13 +154,11 @@ export default function MailChimpSignUp(props: Props) {
                 }}
               />
             ) : (
-              <p className={`${s.msg} ${hasError ? s.hasError : ""}`}>
-                {msg}
-              </p>
+              <p className={`${s.msg} ${hasError ? s.hasError : ""}`}>{msg}</p>
             )}
           </>
         )}
       />
     </div>
-  )
+  );
 }

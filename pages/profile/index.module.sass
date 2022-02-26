@@ -33,7 +33,7 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
     color: white
     display: flex
     align-items: flex-start
-    // justify-content: space-between
+    justify-content: space-between
     word-wrap: break-word
     word-break: break-word
     gap: 12px
@@ -44,6 +44,13 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
     .name
         font-size: $font14
         font-weight: 400
+        display: flex
+        gap: 20px
+        align-items: center
+        button
+            position: relative
+            font-size: $font14
+            right: 70px
     .id, .balance  
         font-size: $font9
         font-weight: 300
@@ -54,6 +61,10 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
             font-size: $font24
         .name
             font-size: $font24
+            button
+                font-size: $font24
+                right: 10px
+                top: -20px
         .id, .balance  
             font-size: $font14
         .balance
@@ -62,12 +73,18 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
         // button
         .name
             font-size: $font36
+            button
+                font-size: $font36
+                right: 0
+                top: -20px
         .balance, .id 
             font-weight: 400
     @media screen and ( min-width: 1023px ) 
         font-size: $font36
         button
             font-size: $font36
+            button
+                right: -30px
         .name
             font-size: $font36
         .balance, .id

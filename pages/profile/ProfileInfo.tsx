@@ -1,8 +1,9 @@
-import { CloseOutlined, EditOutlined } from "@ant-design/icons";
+import { CloseOutlined, CopyOutlined, EditOutlined } from "@ant-design/icons";
 import { Col, Row } from "antd";
 import Input from "components/Input/Input";
 import { useMutationProfile } from "hooks/profile/useMutationProfile";
 import { ChangeEvent, useRef, useState } from "react";
+import { isClient } from "utils/DOM";
 import s from "./index.module.sass";
 
 const userProfile = {
@@ -30,12 +31,14 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
 
   const [tempName, setTempName] = useState(profile.me.profile.full_name);
   const affilateIdRef = useRef<any>(null);
-  const nameRef = useRef<any>(null);
   const { updateProfile, loading, error, data } = useMutationProfile();
 
   const handleCopyAffilateId = () => {
     if (affilateIdRef) {
-      console.log(affilateIdRef.current.innerText);
+      // console.log(affilateIdRef.current.innerText);
+      if (isClient) {
+        console.log(`${window.location.origin}/?r=${affilateIdRef.current.innerText}`);
+      }
     }
   };
 
@@ -94,7 +97,10 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
 
           <div className={`${s.info} sm:mt-2 lg:mt-5`}>
             <p className={s.name}>
-              Affilate ID: {userProfile.affilateId}
+              Affilate ID:<span ref={affilateIdRef}>{userProfile.affilateId}</span>
+              <button onClick={handleCopyAffilateId}>
+                <CopyOutlined />
+              </button>
               {/* <img src="/assets/MyProfile/copy.svg" alt="" /> */}
             </p>
           </div>

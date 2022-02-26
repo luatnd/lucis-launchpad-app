@@ -21,7 +21,8 @@ deploy-dev:
   only:
     - dev
   script:
-    - ./deploy/deploy.sh
+    - cd ./deploy
+    - ./deploy.sh
 
 deploy-prod:
   stage: deploy

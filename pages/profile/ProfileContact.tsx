@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import VerifyModal from "./VerifyModal/VerifyModal";
 import s from "./index.module.sass";
 import { Col, Row } from "antd";
+import Input from "components/Input/Input";
+import { useMutationProfile } from "hooks/profile/useMutationProfile";
+import { WarningOutlined } from "@ant-design/icons";
 
 type Props = {
   isEdit: boolean;
@@ -9,8 +12,20 @@ type Props = {
   profile: any;
 };
 
+function validateEmail(email: string) {
+  var re = /\S+@\S+\.\S+/;
+  return re.test(email.toLowerCase());
+}
+
 const Contact = ({ isEdit, setIsEdit, profile }: Props) => {
   const [openVerifyModal, setOpenVerifyModal] = useState(false);
+  const [tempContact, setTempContact] = useState({
+    phone: profile?.me.profile.phone,
+    email: profile?.me.email,
+  });
+  const [validEmail, setValidEmail] = useState(validateEmail(profile?.me.email));
+
+  const { updateProfile, loading, error, data } = useMutationProfile();
 
   const handleOpenVerifyModal = () => {
     setOpenVerifyModal(true);
@@ -18,6 +33,27 @@ const Contact = ({ isEdit, setIsEdit, profile }: Props) => {
 
   const handleCloseVerifyModal = () => {
     setOpenVerifyModal(false);
+  };
+
+  const handleBlur = (field: string) => {
+    updateProfile({
+      variables: {
+        data: {
+          [field]: {
+            //@ts-ignore
+            set: tempContact[field],
+          },
+        },
+      },
+    });
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>, field: string) => {
+    console.log(e.target.value);
+    setTempContact({
+      ...tempContact,
+      [field]: e.target.value,
+    });
   };
 
   const props = {
@@ -37,9 +73,16 @@ const Contact = ({ isEdit, setIsEdit, profile }: Props) => {
             </div>
           </Col>
           <Col span={16}>
-            <p>
-              {profile && profile.me.profile.phone ? profile.me.profile.phone : "your phone number"}
-            </p>
+            {isEdit ? (
+              <Input
+                value={tempContact.phone !== "" ? tempContact.phone : ""}
+                onChange={(e) => handleChange(e, "phone")}
+                onBlur={() => handleBlur("phone")}
+                placeholder={"091xxx0909"}
+              />
+            ) : (
+              <p>{tempContact.phone ? tempContact.phone : "Not available"}</p>
+            )}
           </Col>
 
           <Col span={8}>
@@ -49,9 +92,9 @@ const Contact = ({ isEdit, setIsEdit, profile }: Props) => {
             </div>
           </Col>
           <Col span={16}>
-            {profile && profile.me.profile.email ? (
+            {tempContact.email ? (
               <p>
-                {profile.me.profile.emai}{" "}
+                {tempContact.email}{" "}
                 <button
                   className={`${s.verifyBtn} bg-gradient-1 md:ml-4`}
                   onClick={handleOpenVerifyModal}
@@ -61,7 +104,7 @@ const Contact = ({ isEdit, setIsEdit, profile }: Props) => {
                 </button>
               </p>
             ) : (
-              <p>your.email@example.com</p>
+              <p>Not available</p>
             )}
           </Col>
         </Row>

@@ -14,6 +14,7 @@ const PROFILE = gql`
       role
       code
       email
+      address
       profile {
         full_name
         twitter

@@ -88,6 +88,7 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
                 // <input className={s.name} onChange={handleChangeName} value={tempName} />
                 <p className={s.name}>{tempName}</p>
               )}
+              {/* TODO: change to address */}
               <p className={s.id}>{profile ? profile.me.id : ""}</p>
             </div>
             {/* <p>Exit</p> */}
@@ -100,7 +101,7 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
 
           <div className={`${s.info} sm:mt-2 lg:mt-5`}>
             <p className={s.name}>
-              Affilate ID:
+              Affiliate ID:
               <span ref={affilateIdRef}>{profile?.me.code ? profile.me.code : ""}</span>
               <button onClick={handleCopyAffilateId} disabled={isCopy}>
                 {!isCopy ? <CopyOutlined title="Copy to clipboard" /> : <CheckOutlined />}

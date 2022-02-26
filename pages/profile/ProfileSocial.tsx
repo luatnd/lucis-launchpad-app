@@ -12,7 +12,7 @@ type Props = {
 
 const Social = ({ isEdit, setIsEdit, profile }: Props) => {
   const { updateProfile, loading, error, data } = useMutationProfile();
-  console.log(profile);
+
   const [tempSocial, setTempSocial] = useState({
     facebook: profile?.me.profile.facebook,
     discord: profile?.me.profile.discord,

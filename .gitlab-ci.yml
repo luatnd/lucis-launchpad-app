@@ -1,4 +1,4 @@
-image: docker/compose:alpine-1.29.2
+image: docker/compose:latest
 services:
   - docker:dind
 stages:
@@ -9,6 +9,8 @@ default:
   before_script:
     - ./deploy/env.sh
     - cp ./deploy/docker-compose.yml.example ./deploy/docker-compose.yml
+    - docker info
+    - docker-compose --version
 
 # test:
 #   stage: test

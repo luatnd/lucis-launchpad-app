@@ -49,15 +49,14 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
           <Row>
             <Col span={8}>
               <div className={s.title}>
-                {/* <img src={} alt="" /> */}
                 <img src="/assets/MyProfile/social.svg" alt="" />
-                <span className="pl-3">Social</span>
+                <span className="pl-0 md:pl-3">Social</span>
               </div>
             </Col>
             <Col span={16}>
               <div className={s.social}>
                 <a>
-                  <img src="/assets/MyProfile/fb.svg" alt="" />
+                  <img src="/assets/footer/fb.svg" alt="" />
                   {isEdit ? (
                     <Input
                       value={tempSocial.facebook ? tempSocial.facebook : ""}
@@ -70,7 +69,7 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                 </a>
 
                 <a className="my-5">
-                  <img src="/assets/MyProfile/tw.svg" alt="" />
+                  <img src="/assets/footer/tw.svg" alt="" />
                   {isEdit ? (
                     <Input
                       value={tempSocial.twitter ? tempSocial.twitter : ""}
@@ -83,7 +82,7 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                 </a>
 
                 <a className="my-5">
-                  <img src="/assets/MyProfile/dis.svg" alt="" />
+                  <img src="/assets/footer/dis.svg" alt="" />
                   {isEdit ? (
                     <Input
                       value={tempSocial.discord ? tempSocial.discord : ""}
@@ -96,7 +95,7 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                 </a>
 
                 <a>
-                  <img src="/assets/MyProfile/tele.svg" alt="" />
+                  <img src="/assets/footer/tele.svg" alt="" />
                   {isEdit ? (
                     <Input
                       value={tempSocial.telegram ? tempSocial.telegram : ""}

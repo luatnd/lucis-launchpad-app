@@ -33,7 +33,7 @@ const Contact = ({ isEdit, setIsEdit, profile }: Props) => {
           <Col span={8}>
             <div className={s.title}>
               <img src="/assets/MyProfile/phone.svg" alt="" />
-              <span className="pl-3">Phone</span>
+              <span className="pl-0 md:pl-3">Phone</span>
             </div>
           </Col>
           <Col span={16}>
@@ -45,7 +45,7 @@ const Contact = ({ isEdit, setIsEdit, profile }: Props) => {
           <Col span={8}>
             <div className={s.title}>
               <img src="/assets/MyProfile/mail.svg" alt="" />
-              <span className="pl-3 ">Email</span>
+              <span className="pl-0 md:pl-3 ">Email</span>
             </div>
           </Col>
           <Col span={16}>

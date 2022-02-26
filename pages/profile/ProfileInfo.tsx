@@ -102,13 +102,9 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
             <p className={s.name}>
               Affilate ID:
               <span ref={affilateIdRef}>{profile?.me.code ? profile.me.code : ""}</span>
-              {!isCopy ? (
-                <button onClick={handleCopyAffilateId}>
-                  <CopyOutlined title="Copy to clipboard" />
-                </button>
-              ) : (
-                <CheckOutlined />
-              )}
+              <button onClick={handleCopyAffilateId} disabled={isCopy}>
+                {!isCopy ? <CopyOutlined title="Copy to clipboard" /> : <CheckOutlined />}
+              </button>
             </p>
           </div>
         </Col>

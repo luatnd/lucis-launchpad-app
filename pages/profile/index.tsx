@@ -10,7 +10,6 @@ import Info from "./ProfileInfo";
 const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
   const { data, loading, error } = useQueryProfile();
-  const props = { isEdit, setIsEdit, profile: data };
 
   if (loading) {
     return <>Loading ...</>;
@@ -18,6 +17,8 @@ const MyProfile = () => {
   if (error) {
     return <>Error...</>;
   }
+
+  const props = { isEdit, setIsEdit, profile: data };
 
   return (
     <>

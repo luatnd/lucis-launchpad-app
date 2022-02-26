@@ -27,9 +27,7 @@ type Props = {
 };
 
 const Info = ({ isEdit, setIsEdit, profile }: Props) => {
-  console.log(profile.me.profile);
-
-  const [tempName, setTempName] = useState(profile.me.profile.full_name);
+  const [tempName, setTempName] = useState(profile?.me.profile.full_name);
   const affilateIdRef = useRef<any>(null);
   const { updateProfile, loading, error, data } = useMutationProfile();
 
@@ -37,7 +35,9 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
     if (affilateIdRef) {
       // console.log(affilateIdRef.current.innerText);
       if (isClient) {
-        console.log(`${window.location.origin}/?r=${affilateIdRef.current.innerText}`);
+        console.log(
+          `${window.location.origin}/?r=${affilateIdRef.current.innerText}`
+        );
       }
     }
   };
@@ -88,7 +88,9 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
               )}
               <p className={s.id}>{userProfile.id}</p>
             </div>
-            <button onClick={toggleEdit}>{isEdit ? <CloseOutlined /> : <EditOutlined />}</button>
+            <button onClick={toggleEdit}>
+              {isEdit ? <CloseOutlined /> : <EditOutlined />}
+            </button>
           </div>
 
           <div className={s.info}>
@@ -97,7 +99,8 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
 
           <div className={`${s.info} sm:mt-2 lg:mt-5`}>
             <p className={s.name}>
-              Affilate ID:<span ref={affilateIdRef}>{userProfile.affilateId}</span>
+              Affilate ID:
+              <span ref={affilateIdRef}>{userProfile.affilateId}</span>
               <button onClick={handleCopyAffilateId}>
                 <CopyOutlined />
               </button>

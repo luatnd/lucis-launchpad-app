@@ -29,10 +29,10 @@ type Props = {
 const Social = ({ isEdit, setIsEdit, profile }: Props) => {
   const { updateProfile, loading, error, data } = useMutationProfile();
   const [tempSocial, setTempSocial] = useState({
-    facebook: profile.me.profile.facebook,
-    discord: profile.me.profile.discord,
-    twitter: profile.me.profile.twitter,
-    telegram: profile.me.profile.telegram,
+    facebook: profile?.me.profile.facebook,
+    discord: profile?.me.profile.discord,
+    twitter: profile?.me.profile.twitter,
+    telegram: profile?.me.profile.telegram,
   });
 
   const handleBlur = (field: string) => {
@@ -88,7 +88,11 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                       onBlur={() => handleBlur("facebook")}
                     />
                   ) : (
-                    <p>{tempSocial.facebook ? tempSocial.facebook : "Not available"}</p>
+                    <p>
+                      {tempSocial.facebook
+                        ? tempSocial.facebook
+                        : "Not available"}
+                    </p>
                   )}
                 </a>
 
@@ -101,7 +105,11 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                       onBlur={() => handleBlur("twitter")}
                     />
                   ) : (
-                    <p>{tempSocial.twitter ? tempSocial.twitter : "Not available"}</p>
+                    <p>
+                      {tempSocial.twitter
+                        ? tempSocial.twitter
+                        : "Not available"}
+                    </p>
                   )}
                 </a>
 
@@ -114,7 +122,11 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                       onBlur={() => handleBlur("discord")}
                     />
                   ) : (
-                    <p>{tempSocial.discord ? tempSocial.discord : "Not available"}</p>
+                    <p>
+                      {tempSocial.discord
+                        ? tempSocial.discord
+                        : "Not available"}
+                    </p>
                   )}
                 </a>
 
@@ -127,7 +139,11 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                       onBlur={() => handleBlur("telegram")}
                     />
                   ) : (
-                    <p>{tempSocial.telegram ? tempSocial.telegram : "Not available"}</p>
+                    <p>
+                      {tempSocial.telegram
+                        ? tempSocial.telegram
+                        : "Not available"}
+                    </p>
                   )}
                 </a>
               </div>

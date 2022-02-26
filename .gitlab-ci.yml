@@ -1,0 +1,35 @@
+image: docker:latest
+services:
+  - docker:dind
+
+stages:
+  - test
+  - deploy
+
+default:
+  before_script:
+    - ./deploy/env.sh
+
+test:
+  stage: test
+  only:
+    - dev
+  script:
+    - echo running tests in test
+
+deploy-dev:
+  stage: deploy
+  only:
+    - dev
+  script:
+    - ./deploy/deploy.sh
+    # - sudo docker-compose -f docker-compose.yml up -d
+
+deploy-production:
+  stage: deploy
+  only:
+    - main
+  script:
+    - ./deploy/deploy.sh
+    # - sudo docker-compose -f docker-compose.yml up -d
+  when: manual

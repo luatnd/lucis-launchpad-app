@@ -1,4 +1,5 @@
 import SimpleSlider from "./SliderBanner";
+import s from './Banner.module.sass'
 
 type Props = {
 
@@ -6,7 +7,8 @@ type Props = {
 
 export default function Banner(props: Props) {
   return(
-    <section className="lucis-container">
+    <section className={s.containerBanner}>
+      <div className={s.bgItemSlider}></div>
       <SimpleSlider />
     </section>
   )

@@ -1,7 +1,7 @@
 import Image from "./Image";
 import Link from "next/link";
 import s from "./Header.module.sass";
-import Logo from "../assets/icon/Logo.svg";
+import Logo from "../assets/icon/logo.png";
 import GradientButton from "./Button/GradientButton";
 import { useWindowSize } from "../hooks/useWindowSize";
 import { MenuMobile } from "./Menu/MenuMobile";
@@ -48,7 +48,7 @@ export default function Header(props: Props) {
 
   if (width > 1024) {
     return (
-      <div className={`${s.pcMenu} bg-nav`}>
+      <div className={`${s.pcMenu}`}>
         <div className="container py-20px flex justify-between items-center relative z-10`">
           <div className={s.logo}>
             <Link href="/" passHref>

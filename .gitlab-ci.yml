@@ -1,21 +1,20 @@
-image: docker:latest
+image: docker/compose:alpine-1.29.2
 services:
   - docker:dind
-
 stages:
-  - test
+  # - build
+  # - test
   - deploy
-
 default:
   before_script:
     - ./deploy/env.sh
 
-test:
-  stage: test
-  only:
-    - dev
-  script:
-    - echo running tests in test
+# test:
+#   stage: test
+#   only:
+#     - dev
+#   script:
+#     - echo running tests in test
 
 deploy-dev:
   stage: deploy
@@ -23,13 +22,11 @@ deploy-dev:
     - dev
   script:
     - ./deploy/deploy.sh
-    # - sudo docker-compose -f docker-compose.yml up -d
 
-deploy-production:
+deploy-prod:
   stage: deploy
   only:
     - main
   script:
     - ./deploy/deploy.sh
-    # - sudo docker-compose -f docker-compose.yml up -d
   when: manual

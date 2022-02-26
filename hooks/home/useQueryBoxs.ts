@@ -6,7 +6,7 @@ export function useQueryBoxs() {
   return {
     loading,
     error,
-    data,
+    data: data,
   };
 }
 

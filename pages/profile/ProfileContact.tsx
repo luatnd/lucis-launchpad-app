@@ -37,7 +37,7 @@ const Contact = ({ isEdit, setIsEdit, profile }: Props) => {
             </div>
           </Col>
           <Col span={16}>
-            <p>{profile.me ? profile.me.profile.phone : ""}</p>
+            <p>{profile ? profile.me.profile.phone : ""}</p>
           </Col>
 
           <Col span={8}>

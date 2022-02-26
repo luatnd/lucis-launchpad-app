@@ -18,7 +18,7 @@ const MyProfile = () => {
     return <>Error...</>;
   }
 
-  const props = { isEdit, setIsEdit, profile: data.me || {} };
+  const props = { isEdit, setIsEdit, profile: data };
 
   return (
     <>

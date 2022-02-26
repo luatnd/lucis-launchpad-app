@@ -13,10 +13,7 @@ type Props = {
 };
 
 const Info = ({ isEdit, setIsEdit, profile }: Props) => {
-  console.log(profile);
-
-  const [tempName, setTempName] = useState(profile.me.profile.full_name);
-
+  const [tempName, setTempName] = useState(profile?.me.profile.full_name);
   const affilateIdRef = useRef<any>(null);
 
   const { updateProfile, loading, error, data } = useMutationProfile();
@@ -58,16 +55,15 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
       }
     }
   };
-  document.addEventListener("keydown", (evt) => {
-    if (evt.key === "v" && evt.ctrlKey) {
-      // alert("Ctrl+V was pressed");
-      if (isClient) {
-        //@ts-ignore
-        window.clipboardData.getData("Text");
-      }
-    }
-  });
 
+  // document.addEventListener("keydown", (evt) => {
+  //   if (evt.key === "v" && evt.ctrlKey) {
+  //     if (isClient) {
+  //       //@ts-ignore
+  //       window.clipboardData.getData("Text");
+  //     }
+  //   }
+  // });
   return (
     <div className="my-6">
       <Row gutter={[10, 10]} align="middle">

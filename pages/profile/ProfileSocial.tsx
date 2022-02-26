@@ -6,20 +6,6 @@ import VerifyModal from "./VerifyModal/VerifyModal";
 import Input from "components/Input/Input";
 import { useMutationProfile } from "hooks/profile/useMutationProfile";
 
-const userProfile = {
-  fullName: "Nguyen Thi Kieu Oanh",
-  id: "0x948d6D28D396Eae2F8c3459b092a85268B1bD96B",
-  balance: 135,
-  affilateId: "01234567989svfdv",
-  phone: "0912345678",
-  email: "anhcbt@lucis.network",
-  facebook: "Lucis network",
-  twitter: "Lucis network",
-  discord: "Lucis channel",
-  tele: "Lucis9999",
-  verify: false,
-};
-
 type Props = {
   isEdit: boolean;
   setIsEdit: (value: boolean) => void;
@@ -28,12 +14,12 @@ type Props = {
 
 const Social = ({ isEdit, setIsEdit, profile }: Props) => {
   const { updateProfile, loading, error, data } = useMutationProfile();
-
+  console.log(profile);
   const [tempSocial, setTempSocial] = useState({
-    facebook: profile.me?.profile.facebook,
-    discord: profile.me?.profile.discord,
-    twitter: profile.me?.profile.twitter,
-    telegram: profile.me?.profile.telegram,
+    facebook: profile?.me.profile.facebook,
+    discord: profile?.me.profile.discord,
+    twitter: profile?.me.profile.twitter,
+    telegram: profile?.me.profile.telegram,
   });
 
   const handleBlur = (field: string) => {
@@ -65,7 +51,7 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
           <Row>
             <Col span={8}>
               <div className={s.title}>
-                {/* <img src={} alt="" /> */}
+                <img src={} alt="" />
                 <img src="/assets/MyProfile/social.svg" alt="" />
                 <span className="pl-3">Social</span>
               </div>

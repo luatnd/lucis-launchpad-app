@@ -52,12 +52,14 @@ const SiteMap = () => {
           return (
             <div className="swiper-slide" key={key}>
               <div className={`flex flex-col justify-center select-none`}>
-                <div className='text-white font-bold'>{item.title}</div>
-                <div className='text-white pb-2 mb-5'>{item.time}</div>
+                <div className='h-[150px] flex flex-col justify-end'>
+                  <div className='text-white font-bold'>{item.title}</div>
+                  <div className='text-white pb-2 mb-5'>{item.time}</div>
+                </div>
                 <div className={`${s.SiteMapLine} ${key === ListCard.length - 1 ? s.lastchild : ''}`}>
                   <div className={s.SiteMapLineCircle}></div>
                 </div>
-                <div className='text-white mt-5 mr-6'>{item.description}</div>
+                <div className='text-white mt-6 mr-6'>{item.description}</div>
               </div>
             </div>
           )

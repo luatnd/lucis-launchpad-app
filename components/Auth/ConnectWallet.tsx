@@ -44,7 +44,7 @@ export default function Header(props: Props) {
         <p className={s.title}>1. Choose network</p>
         <div className={s.items}>
           <div className={s.item}>
-            <img src="/assets/crypto/ico-chain-eth.png" alt="" />
+            <img src="/assets/crypto/ico-chain-eth.svg" alt="" />
             <p>Ethereum</p>
           </div>
           <div className={`${s.item} ${s.active}`}>
@@ -55,13 +55,25 @@ export default function Header(props: Props) {
             <img src="/assets/crypto/ico-chain-polygon.png" alt="" />
             <p>Polygon</p>
           </div>
+          <div className={`${s.item} ${s.disable}`}>
+            <img src="/assets/crypto/ico-chain-near.svg" alt="" />
+            <p>NEAR</p>
+          </div>
+          <div className={`${s.item} ${s.disable}`}>
+            <img src="/assets/crypto/ico-chain-flow.png" alt="" />
+            <p>Flow</p>
+          </div>
+          <div className={`${s.item} ${s.disable}`}>
+            <img src="/assets/crypto/ico-chain-avax.svg" alt="" />
+            <p>Avalanche</p>
+          </div>
         </div>
 
 
         <p className={s.title}>2. Choose wallet</p>
         <div className={s.items}>
           <div className={s.item}>
-            <img src="/assets/crypto/ico-chain-eth.png" alt="" />
+            <img src="/assets/crypto/ico-wallet-metamask.png" alt="" />
             <p>Metamask</p>
           </div>
           <div className={`${s.item} ${s.active}`}>
@@ -69,7 +81,7 @@ export default function Header(props: Props) {
             <p>BSC Wallet</p>
           </div>
           <div className={`${s.item} ${s.disable}`}>
-            <img src="/assets/crypto/ico-chain-polygon.png" alt="" />
+            <img src="/assets/crypto/ico-wallet-wc.png" alt="" />
             <p>Wallet Connect</p>
           </div>
         </div>

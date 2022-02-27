@@ -5,7 +5,7 @@ import SiteMap from './components/SiteMap/SiteMap'
 function DetailCampaign() {
     return (
         <>
-            {/* <SiteMap /> */}
+            <SiteMap />
             <CountDown />
         </>
     );

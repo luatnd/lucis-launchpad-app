@@ -35,11 +35,11 @@ const CountDown = () => {
   },[totalTime])
 
   const countTime = () => {
-    if(totalTime > 0 && (timer.days !== 0 || timer.hours !== 0 || timer.minute !== 0 || timer.seconds !==0 )) {
+    if(totalTime > 0 && (timer.days !== 0 || timer.hours !== 0 || timer.minutes !== 0 || timer.seconds !==0 )) {
       setTimer((item) => ({...item, seconds: item.seconds - 1}))
-      if( timer.minute >= 0 && timer.seconds - 1 < 0) {
+      if( timer.minutes >= 0 && timer.seconds - 1 < 0) {
         setTimer((item) => ({...item, seconds: 59}))
-        setTimer((item) => ({...item, minute: item.minutes - 1}));
+        setTimer((item) => ({...item, minutes: item.minutes - 1}));
         if(timer.hours >= 0 && timer.minutes - 1 < 0) {
           setTimer((item) => ({...item, minutes: 59}));
           setTimer((item) => ({...item, hours: item.hours - 1}));

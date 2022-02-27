@@ -1,3 +1,4 @@
+$--bar-color: #2f2fe6
 .timeElement
     position: relative
     color: #FFFFFF
@@ -19,7 +20,7 @@
 
     & .helperLeft 
         position: absolute
-        background: black
+        background: $--bar-color
         width: 20px
         height: 20px
         border-radius: 50%
@@ -30,7 +31,7 @@
         &::after
             content: ''
             position: absolute
-            background: black
+            background: $--bar-color
             top: 0
             left: 100%
             width: 4px
@@ -39,7 +40,7 @@
         &::before
             content: ''
             position: absolute
-            background: black
+            background: $--bar-color
             bottom: 0
             left: 100%
             width: 4px
@@ -48,7 +49,7 @@
 
     & .helperRight 
         position: absolute
-        background: black
+        background: $--bar-color
         background-blend-mode: screen
         width: 20px
         height: 20px
@@ -60,7 +61,7 @@
         &::after
             content: ''
             position: absolute
-            background: black
+            background: $--bar-color
             top: 0
             right: 100%
             width: 4px
@@ -69,7 +70,7 @@
         &::before
             content: ''
             position: absolute
-            background: black
+            background: $--bar-color
             bottom: 0
             right: 100%
             width: 4px
@@ -78,7 +79,7 @@
 
     & .helperBar
         position: absolute
-        background: black
+        background: $--bar-color
         width: 100%
         height: 5px
         left: 0

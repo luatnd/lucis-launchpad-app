@@ -1,17 +1,17 @@
-import {useCallback, useEffect, useState} from "react";
+import {ReactElement, useCallback, useEffect, useState} from "react";
 import { Modal, Button } from 'antd';
 
 import s from './ConnectWallet.module.sass';
 import GradientButton from '../Button/GradientButton';
-import {Chain, Wallet} from "../../utils/Chain";
+import {ChainNetwork, NetworkSupportedWallets, Wallet} from "../../utils/BlockChain";
 
 
 type Props = {
   small?: boolean,
 };
-export default function Header(props: Props) {
+export default function ConnectWallet(props: Props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [chain, setChain] = useState<Chain | null>(null);
+  const [network, setNetwork] = useState<ChainNetwork | null>(null);
   const [wallet, setWallet] = useState<Wallet | null>(null);
 
   const showModal = () => {
@@ -25,6 +25,69 @@ export default function Header(props: Props) {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
+  const changeWallet = useCallback(async (w: Wallet) => {
+    // TODO: Open wallet here
+
+
+    // If connect failed then => set wallet to null
+    // If connect success then => set wallet to connected wallet
+    setWallet(w);
+  }, []);
+
+  const changeNetwork = useCallback(async (n: ChainNetwork) => {
+    // check different before update is not required because react will do it
+    // But if not check: we still get 1 more redundant render
+    if (network !== n) {
+      // change state
+      setNetwork(n);
+
+      // show list of suitable wallet for this network
+      // Let UI do this
+    }
+  }, [network]);
+
+
+  const supported_wallets = network === null ? [] : NetworkSupportedWallets[network];
+
+  // @ts-ignored
+  const predefined_wallets: Record<Wallet, ReactElement | null> = {
+    [Wallet.metamask]: (
+      <div
+        key='metamask'
+        onClick={() => changeWallet(Wallet.metamask)}
+        className={`${s.item} ${wallet === Wallet.metamask ? s.active : ''}`}
+      >
+        <img src="/assets/crypto/ico-wallet-metamask.png" alt="" />
+        <p>Metamask</p>
+      </div>
+    ),
+    [Wallet.wc]: (
+      <div
+        key='wc'
+        onClick={() => changeWallet(Wallet.wc)}
+        className={`${s.item} ${wallet === Wallet.wc ? s.active : ''}`}
+      >
+        <img src="/assets/crypto/ico-wallet-wc.png" alt="" />
+        <p>Wallet Connect</p>
+      </div>
+    ),
+    [Wallet.bsc]: (
+      <div
+        key='bsc'
+        className={`${s.item} ${s.disable} ${wallet === Wallet.bsc ? s.active : ''}`}
+      >
+        <img src="/assets/crypto/ico-chain-bsc.png" alt="" />
+        <p>BSC Wallet</p>
+      </div>
+    ),
+    [Wallet.near]: null,
+
+    // NOTE: Remember to defined the wallet here if it exist in NetworkSupportedWallets
+  }
+
+  // NOTE: Comment this after done
+  console.log('{ConnectWallet} rendered');
 
   return (
     <div className={s.container}>
@@ -46,27 +109,27 @@ export default function Header(props: Props) {
       >
         <p className={s.title}>1. Choose network</p>
         <div className={s.items}>
-          <div onClick={() => setChain(Chain.eth)} className={`${s.item} ${chain === Chain.eth ? s.active : ''}`}>
+          <div onClick={() => changeNetwork(ChainNetwork.eth)} className={`${s.item} ${network === ChainNetwork.eth ? s.active : ''}`}>
             <img src="/assets/crypto/ico-chain-eth.svg" alt="" />
             <p>Ethereum</p>
           </div>
-          <div onClick={() => setChain(Chain.bsc)} className={`${s.item} ${chain === Chain.bsc ? s.active : ''}`}>
+          <div onClick={() => changeNetwork(ChainNetwork.bsc)} className={`${s.item} ${network === ChainNetwork.bsc ? s.active : ''}`}>
             <img src="/assets/crypto/ico-chain-bsc.png" alt="" />
             <p>BSC</p>
           </div>
-          <div onClick={() => setChain(Chain.polygon)} className={`${s.item} ${chain === Chain.polygon ? s.active : ''}`}>
+          <div onClick={() => changeNetwork(ChainNetwork.polygon)} className={`${s.item} ${network === ChainNetwork.polygon ? s.active : ''}`}>
             <img src="/assets/crypto/ico-chain-polygon.png" alt="" />
             <p>Polygon</p>
           </div>
-          <div className={`${s.item} ${s.disable} ${chain === Chain.near ? s.active : ''}`}>
+          <div className={`${s.item} ${s.disable} ${network === ChainNetwork.near ? s.active : ''}`}>
             <img src="/assets/crypto/ico-chain-near.svg" alt="" />
             <p>NEAR</p>
           </div>
-          <div className={`${s.item} ${s.disable} ${chain === Chain.flow ? s.active : ''}`}>
+          <div className={`${s.item} ${s.disable} ${network === ChainNetwork.flow ? s.active : ''}`}>
             <img src="/assets/crypto/ico-chain-flow.png" alt="" />
             <p>Flow</p>
           </div>
-          <div className={`${s.item} ${s.disable} ${chain === Chain.avax ? s.active : ''}`}>
+          <div className={`${s.item} ${s.disable} ${network === ChainNetwork.avax ? s.active : ''}`}>
             <img src="/assets/crypto/ico-chain-avax.svg" alt="" />
             <p>Avalanche</p>
           </div>
@@ -74,19 +137,8 @@ export default function Header(props: Props) {
 
 
         <p className={s.title}>2. Choose wallet</p>
-        <div className={s.items}>
-          <div onClick={() => setWallet(Wallet.metamask)} className={`${s.item} ${wallet === Wallet.metamask ? s.active : ''}`}>
-            <img src="/assets/crypto/ico-wallet-metamask.png" alt="" />
-            <p>Metamask</p>
-          </div>
-          <div onClick={() => setWallet(Wallet.wc)} className={`${s.item} ${wallet === Wallet.wc ? s.active : ''}`}>
-            <img src="/assets/crypto/ico-wallet-wc.png" alt="" />
-            <p>Wallet Connect</p>
-          </div>
-          <div className={`${s.item} ${s.disable} ${wallet === Wallet.bsc ? s.active : ''}`}>
-            <img src="/assets/crypto/ico-chain-bsc.png" alt="" />
-            <p>BSC Wallet</p>
-          </div>
+        <div className={s.items} style={{justifyContent: "space-evenly"}}>
+          {supported_wallets.map(i => predefined_wallets[i])}
         </div>
       </Modal>
     </div>

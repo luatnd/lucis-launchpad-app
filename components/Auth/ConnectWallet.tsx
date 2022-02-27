@@ -1,9 +1,11 @@
 import {ReactElement, useCallback, useEffect, useState} from "react";
 import { Modal, Button } from 'antd';
 
+import {ChainNetwork, NetworkSupportedWallets, Wallet} from "../../utils/BlockChain";
+import {AppWalletConnect} from "./ConnectWallet";
+
 import s from './ConnectWallet.module.sass';
 import GradientButton from '../Button/GradientButton';
-import {ChainNetwork, NetworkSupportedWallets, Wallet} from "../../utils/BlockChain";
 
 
 type Props = {
@@ -27,13 +29,24 @@ export default function ConnectWallet(props: Props) {
   };
 
   const changeWallet = useCallback(async (w: Wallet) => {
-    // TODO: Open wallet here
-
+    /**
+     * This will try to popup the wallet, then make a connection to your wallet
+     * If success, it will set auth info to AuthStore
+     */
+    const r = await AppWalletConnect.initFor(w, network);
 
     // If connect failed then => set wallet to null
     // If connect success then => set wallet to connected wallet
-    setWallet(w);
-  }, []);
+    const success = true; // TODO
+    if (success) {
+      setWallet(w);
+    }
+
+    // finally close the modal if success connect
+    if (success) {
+      setIsModalVisible(false);
+    }
+  }, [network]);
 
   const changeNetwork = useCallback(async (n: ChainNetwork) => {
     // check different before update is not required because react will do it

@@ -82,19 +82,40 @@ class WalletConnectService {
 
   /**
    * Try to init the sdk to make user connect to his wallet
-   *
-   * @param chain
    */
-  initFor(wallet: Wallet) {
+  initFor(wallet: Wallet, network: ChainNetwork): Promise<any> {
     switch (wallet) {
-
+      case Wallet.metamask:
+        return this.connectMetamask(network);
+      case Wallet.wc:
+        return this.connectWalletConnect(network);
+      case Wallet.bsc:
+        return this.connectBinanceWallet(network);
+      default:
+        return new Promise<any>((resolve, reject) => {
+          reject("initFor: Unhandled wallet: " + wallet)
+        })
     }
+  }
+
+  /**
+   * connect* funtion must fire this event on success
+   */
+  onConnectSuccess() {
+    // Set AuthStore
+  }
+
+  /**
+   * connect* funtion must fire this event on failed
+   */
+  onConnectFailed() {
+
   }
 
   /**
    * Support ETH mainnet, rinkedby, BSC, BSC testnet, Polygon
    */
-  initWeb3() {
+  private initWeb3() {
     const providerOptions = getProviderOptions();
 
     this.web3Modal = isClient
@@ -106,8 +127,26 @@ class WalletConnectService {
       : null
   }
 
-  initNear() {
+  private initNear() {
 
+  }
+
+  private connectMetamask(network: ChainNetwork) {
+    return new Promise<any>((resolve, reject) => {
+      reject("TODO: trigger metamask via web3 modal")
+    })
+  }
+
+  private connectWalletConnect(network: ChainNetwork) {
+    return new Promise<any>((resolve, reject) => {
+      reject("TODO: trigger wc via web3 modal")
+    })
+  }
+
+  private connectBinanceWallet(network: ChainNetwork) {
+    return new Promise<any>((resolve, reject) => {
+      reject("TODO")
+    })
   }
 }
 

@@ -19,6 +19,7 @@
     "@github/mini-throttle": "2.1.0",
     "@react-three/drei": "7.26.1",
     "@react-three/fiber": "7.0.21",
+    "@types/swiper": "^6.0.0",
     "@walletconnect/web3-provider": "^1.7.1",
     "antd": "^4.17.3",
     "enquire-js": "^0.2.1",

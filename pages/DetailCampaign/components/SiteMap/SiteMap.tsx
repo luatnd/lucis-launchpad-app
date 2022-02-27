@@ -1,5 +1,6 @@
-import React from 'react'
-
+import React, { createRef, useEffect, useRef } from 'react'
+import Swiper from 'swiper';
+import s from './SiteMap.module.sass';
 const ListCard = [
   {
     title: 'Upcoming',
@@ -29,10 +30,39 @@ const ListCard = [
 ];
 
 const SiteMap = () => {
+  const SwiperRef = useRef<Swiper>()
+  useEffect(()=> {
+    SwiperRef.current = new Swiper('.swiper-container', {
+      slidesPerView: 4,
+      navigation: {
+        'prevEl': 'prev-slide',
+        'nextEl': 'next-slide'
+      }      
+    })
+    console.log(SwiperRef.current.activeIndex)
+  },[])
+
   return (
     <div className='lucis-container'>
-      <div className="flex">
-        
+      {/* <button className="prev-slide">Prev</button> */}
+      {/* <button className="next-slide">Next</button> */}
+      <div className="swiper-container overflow-hidden">
+      <div className="swiper-wrapper">
+        {ListCard.map((item, key) => {
+          return (
+            <div className="swiper-slide" key={key}>
+              <div className={`flex flex-col justify-center select-none`}>
+                <div className='text-white font-bold'>{item.title}</div>
+                <div className='text-white pb-2 mb-5'>{item.time}</div>
+                <div className={`${s.SiteMapLine} ${key === ListCard.length - 1 ? s.lastchild : ''}`}>
+                  <div className={s.SiteMapLineCircle}></div>
+                </div>
+                <div className='text-white mt-5 mr-6'>{item.description}</div>
+              </div>
+            </div>
+          )
+        } )}
+      </div>
       </div>
     </div>
   )

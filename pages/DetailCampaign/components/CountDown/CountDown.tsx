@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import gsap from 'gsap'
 import s from './CountDown.module.sass'
 
 const CountDown = () => {
   const [totalTime, setTotalTime] = useState(20000)
   const [timer, setTimer] = useState<{[name: string]: number}> ({ days: 0, hours: 0, minutes: 0, seconds: 0 })
-
-  const setTimeLeft = () => {
+  
+  useEffect(() => {
     setTimer((item) => ({
       ...item,
       days: Math.floor(totalTime / (60 * 60 * 24)),
@@ -14,16 +13,10 @@ const CountDown = () => {
       minutes: Math.floor((totalTime / (60)) % 60),
       seconds: Math.floor((totalTime % 60))
     }))
-  }
-  
-  useEffect(() => {
-    setTimeLeft()
   }, [])
 
   useEffect(()=> {
     let interval: NodeJS.Timer;
-    console.log(totalTime);
-    
     interval = setInterval(()=> {
       if(totalTime < 0) {
         clearInterval(interval)

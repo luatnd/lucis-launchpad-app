@@ -2,7 +2,7 @@ import {ReactElement, useCallback, useEffect, useState} from "react";
 import { Modal, Button } from 'antd';
 
 import {ChainNetwork, NetworkSupportedWallets, Wallet} from "../../utils/BlockChain";
-import {AppWalletConnect} from "./ConnectWallet";
+import {ConnectWalletError, connectWalletHelper} from "./ConnectWalletHelper";
 
 import s from './ConnectWallet.module.sass';
 import GradientButton from '../Button/GradientButton';
@@ -34,23 +34,37 @@ export default function ConnectWallet(props: Props) {
      * If success, it will set auth info to AuthStore
      */
     if (!network) {
-      console.error("changeWallet: ERROR: network is null")
+      console.error("{changeWallet} ERROR: network is null")
       return
     }
 
-    const r = await AppWalletConnect.initFor(w, network!);
+    connectWalletHelper.initFor(w, network!)
+      .then(r => {
+        console.log('{changeWallet} AppWalletConnect.initFor r: ', r);
 
-    // If connect failed then => set wallet to null
-    // If connect success then => set wallet to connected wallet
-    const success = true; // TODO
-    if (success) {
-      setWallet(w);
-    }
+        // If connect failed then => set wallet to null
+        // If connect success then => set wallet to connected wallet
+        const success = true; // TODO
+        if (success) {
+          setWallet(w);
+        }
 
-    // finally close the modal if success connect
-    if (success) {
-      setIsModalVisible(false);
-    }
+        // finally close the modal if success connect
+        if (success) {
+          setIsModalVisible(false);
+        }
+      })
+      .catch(e => {
+        console.error('{changeWallet} e: ', e.code, e.message, e);
+        switch (e.message) {
+          case ConnectWalletError.MetamaskNotInstalled:
+            alert("TODO: Handle Metamask is not installed")
+            break;
+          case ConnectWalletError.UserRejected:
+            alert("TODO: Handle UserRejected")
+            break;
+        }
+      });
   }, [network]);
 
   const changeNetwork = useCallback(async (n: ChainNetwork) => {

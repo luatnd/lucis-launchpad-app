@@ -33,7 +33,12 @@ export default function ConnectWallet(props: Props) {
      * This will try to popup the wallet, then make a connection to your wallet
      * If success, it will set auth info to AuthStore
      */
-    const r = await AppWalletConnect.initFor(w, network);
+    if (!network) {
+      console.error("changeWallet: ERROR: network is null")
+      return
+    }
+
+    const r = await AppWalletConnect.initFor(w, network!);
 
     // If connect failed then => set wallet to null
     // If connect success then => set wallet to connected wallet

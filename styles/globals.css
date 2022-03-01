@@ -347,66 +347,63 @@ body .ant-menu {
 .lucis-container.community-container {
   margin-top: 130px;
 }
-@media (min-width: 1280px) and (max-width: 1439px) {
-  .lucis-container {
-    max-width: 1280px;
-    padding: 0 5rem;
-  }
-}
-@media (min-width: 1024px) and (max-width: 1279px) {
-  .lucis-container {
-    max-width: 1024px;
-    padding: 0 4rem;
-  }
-}
-
-@media (min-width: 992px) and (max-width: 1023px) {
-  .lucis-container {
-    max-width: 992px;
-    padding: 0 3rem;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  .lucis-container {
-    max-width: 768px;
-    padding: 0px 2rem;
-  }
-}
-@media (min-width: 640px) and (max-width: 767px) {
-  .lucis-container {
-    max-width: 640px;
-    padding: 0px 2rem;
-  }
-}
-
-@media (min-width: 540px) and (max-width: 639px) {
-  .lucis-container {
-    max-width: 540px;
-    padding: 0px 20px;
-  }
-}
-@media (min-width: 414px) and (max-width: 539px) {
-  .lucis-container {
-    max-width: 414px;
-    padding: 0px 1rem;
-  }
-}
-
-@media (min-width: 0px) and (max-width: 413px) {
+@media(min-width: 0px) {
   .lucis-container {
     max-width: 360px;
     padding: 0 12px;
   }
 }
+@media (min-width: 414px){
+  .lucis-container {
+    max-width: 414px;
+    padding: 0px 1rem;
+  }
+}
+@media (min-width: 540px) {
+  .lucis-container {
+    max-width: 540px;
+    padding: 0px 20px;
+  }
+}
+@media (min-width: 640px) {
+  .lucis-container {
+    max-width: 640px;
+    padding: 0px 2rem;
+  }
+}
+@media (min-width: 768px) {
+  .lucis-container {
+    max-width: 768px;
+    padding: 0px 2rem;
+  }
+}
+@media (min-width: 992px) {
+  .lucis-container {
+    max-width: 992px;
+    padding: 0 3rem;
+  }
+}
+@media (min-width: 1024px) {
+  .lucis-container {
+    max-width: 1024px;
+    padding: 0 4rem;
+  }
+}
+@media (min-width: 1280px) {
+  .lucis-container {
+    max-width: 1280px;
+    padding: 0 5rem;
+  }
+}
+@media (min-width: 1440px) {
+  .lucis-container {
+    max-width: 1440px;
+    padding: 0 5rem;
+  }
+}
+
 
 /*// tmp fix tailwind bug */
 body .backdrop-blur-sm {
   backdrop-filter: blur(4px);
-}
-
-@media (max-width: 1024px) {
-  .lucis-container:nth-child(1) {
-    padding-top: 80px;
-  }
 }

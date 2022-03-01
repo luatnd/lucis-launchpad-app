@@ -78,10 +78,16 @@ function _chainId2Network(chainId: number): string {
   switch (chainId) {
     case 1:
       return 'mainnet'
+    case 3:
+      return 'ropsten'
+    case 4:
+      return 'rinkeby'
     case 56:
       return 'binance'
     case 97:
       return 'binance_testnet'
+    case 137:
+      return 'polygon' // TODO: Test this
     default:
       throw new Error(
         'Web3Modal.js__chainId2network: Not supported chain id: ' + chainId

@@ -1,4 +1,4 @@
-import {ChainNetwork, Wallet} from "../../utils/BlockChain";
+import {ChainNetwork, Wallet} from "../../utils/blockchain/BlockChain";
 import {initWeb3} from "./Web3Modal";
 
 
@@ -44,10 +44,11 @@ class ConnectWalletHelper {
    * Try to init the sdk to make user connect to his wallet
    *
    * Test cases PC:
-   * - [ ] browser dont have metamask
-   * - [ ] browser dont have metamask
-   * - [ ] Click open metamask
+   * - [x] browser dont have metamask
+   * - [x] Click open metamask
    * - [ ] Click connect while we have a metamask pending request already
+   * - [x] user rejected to connect on metamask
+   * - [ ] user rejected to connect on wc
    * - [ ] Dont have profile => prompt to add profile
    * - [ ] wrong chain => prompt to switch chain
    * - [ ] connect & disconnect while metamask is connected
@@ -137,7 +138,7 @@ class ConnectWalletHelper {
     })
   }
 
-  private getConfiguredChainId(network: ChainNetwork) {
+  private getConfiguredChainId(network: ChainNetwork): number {
     let requiredChainId: number;
     switch (network) {
       case ChainNetwork.eth:
@@ -148,10 +149,15 @@ class ConnectWalletHelper {
         break;
       case ChainNetwork.bsc:
         requiredChainId = parseInt('' + process.env.NEXT_PUBLIC_CHAIN_ID__BSC);
+        console.log('{ConnectWalletHelper.getConfiguredChainId} process.env.NEXT_PUBLIC_CHAIN_ID__BSC: ', process.env.NEXT_PUBLIC_CHAIN_ID__BSC, requiredChainId);
         break;
       default:
         // @ts-ignore
-        throw new Error(`requiredChainId was not configured for network ${network}, please check .env`)
+        throw new Error(`requiredChainId was not handled for network ${network}, please add new case`)
+    }
+
+    if (!requiredChainId) {
+      throw new Error(`requiredChainId was not configured for network ${network}, please check .env`)
     }
 
     return requiredChainId;

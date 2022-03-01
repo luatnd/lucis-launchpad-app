@@ -473,3 +473,19 @@ body .backdrop-blur-sm {
   font-size: 18px;
 }
 
+
+/* Override antd message */
+.ant-message-notice .ant-message-notice-content {
+  background: rgba(0,0,0, 0.5);
+  border: 1px solid #444444;
+  box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(6px);
+  border-radius: 10px;
+  color: white;
+}
+.ant-message-notice .ant-message-notice-content .ant-message-error {
+  color: #ffbabb;
+}
+.ant-message-notice .ant-message-notice-content a {
+  color: #00ffd7;
+}

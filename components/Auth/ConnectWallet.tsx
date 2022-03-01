@@ -1,11 +1,12 @@
 import {ReactElement, useCallback, useEffect, useState} from "react";
-import { Modal, Button } from 'antd';
+import { Modal, Button, message } from 'antd';
 
-import {ChainNetwork, NetworkSupportedWallets, Wallet} from "../../utils/BlockChain";
+import {ChainNetwork, NetworkSupportedWallets, Wallet} from "../../utils/blockchain/BlockChain";
 import {ConnectWalletError, connectWalletHelper} from "./ConnectWalletHelper";
 
 import s from './ConnectWallet.module.sass';
 import GradientButton from '../Button/GradientButton';
+import { isClient } from "../../utils/DOM";
 
 
 type Props = {
@@ -38,6 +39,7 @@ export default function ConnectWallet(props: Props) {
       return
     }
 
+    // TODO: Handle mobile
     connectWalletHelper.initFor(w, network!)
       .then(r => {
         console.log('{changeWallet} AppWalletConnect.initFor r: ', r);
@@ -58,10 +60,19 @@ export default function ConnectWallet(props: Props) {
         console.error('{changeWallet} e: ', e.code, e.message, e);
         switch (e.message) {
           case ConnectWalletError.MetamaskNotInstalled:
-            alert("TODO: Handle Metamask is not installed")
+            message.error(
+              <span>
+                [PC] Metamask extension is not installed. <br/>
+                Please install it from <a href="https://metamask.io/download/">metamask.io</a>
+              </span>,
+              8,
+            );
             break;
           case ConnectWalletError.UserRejected:
-            alert("TODO: Handle UserRejected")
+            message.error("You've rejected to do this action", 3);
+            break;
+          default:
+            console.error("{changeWallet.initFor} Above error was not handled")
             break;
         }
       });

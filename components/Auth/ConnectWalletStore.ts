@@ -33,4 +33,11 @@ if (isClient) {
   window.tmp__ConnectWalletStore = s;
 }
 export const reactive = s;
-export const nonReactive = {}
+
+export const nonReactive: {
+  provider?: any,
+  web3Provider?: ethers.providers.Web3Provider,
+} = {
+  provider: undefined,
+  web3Provider: undefined,
+}

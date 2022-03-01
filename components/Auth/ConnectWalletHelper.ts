@@ -1,10 +1,16 @@
+import { ethers, providers } from 'ethers'
+
+import { ensureTargetChain, initWeb3 } from "./Web3Modal";
+import { nonReactive as ConnectWalletStore_NonReactiveData } from "./ConnectWalletStore";
 import {ChainNetwork, Wallet} from "../../utils/blockchain/BlockChain";
-import {initWeb3} from "./Web3Modal";
+import { makeError } from "utils/Error";
 
 
 export enum ConnectWalletError {
   MetamaskNotInstalled = 'MetamaskNotInstalled',
   UserRejected = 'UserRejected',
+  AddNetworkProfileNotSupported = 'AddNetworkProfileNotSupported',
+  SwitchChainNotSupported = 'SwitchChainNotSupported',
 }
 
 /**
@@ -49,8 +55,8 @@ class ConnectWalletHelper {
    * - [x] Click connect while we have a metamask pending request already
    * - [x] user rejected to connect on metamask
    * - [ ] user rejected to connect on wc
-   * - [ ] Dont have profile => prompt to add profile
-   * - [ ] wrong chain => prompt to switch chain
+   * - [x] Dont have profile => prompt to add profile
+   * - [x] wrong chain => prompt to switch chain
    * - [ ] connect & disconnect while metamask is connected
    * - [ ] connect & disconnect while metamask is not connected
    * - [ ] user click disconnect on metamask while connected on the site
@@ -69,6 +75,19 @@ class ConnectWalletHelper {
       default:
         return new Promise<any>((resolve, reject) => {
           reject("initFor: Unhandled wallet: " + wallet)
+        })
+    }
+  }
+
+  public web3_ensureActiveTargetChain(wallet: Wallet, network: ChainNetwork) {
+    switch (wallet) {
+      case Wallet.metamask:
+        const chainId = this.getConfiguredChainId(network);
+        return ensureTargetChain(chainId);
+
+      default:
+        return new Promise<any>((resolve, reject) => {
+          reject(this.makeError(ConnectWalletError.SwitchChainNotSupported, ConnectWalletError.SwitchChainNotSupported))
         })
     }
   }
@@ -93,11 +112,7 @@ class ConnectWalletHelper {
   // }
 
   private makeError(code: string | number, msg: string): Error {
-    const e = new Error(msg);
-    // @ts-ignore
-    e.code = code;
-
-    return e
+    return makeError(code, msg)
   }
 
   private connectMetamask(network: ChainNetwork) {
@@ -111,8 +126,12 @@ class ConnectWalletHelper {
       const web3Modal = initWeb3(requiredChainId)! // this was ensured to run only on client
 
       web3Modal.connectTo("injected")
-        .then(r => {
-          resolve(r)
+        .then(provider => {
+          const web3Provider = new providers.Web3Provider(provider, 'any')
+          ConnectWalletStore_NonReactiveData.provider = provider;
+          ConnectWalletStore_NonReactiveData.web3Provider = web3Provider;
+
+          resolve(provider)
         })
         .catch(e => {
           // console.log('{ConnectWalletHelper.connectTo} e: ', e);

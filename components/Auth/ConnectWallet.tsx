@@ -41,8 +41,12 @@ export default function ConnectWallet(props: Props) {
 
     // TODO: Handle mobile
     connectWalletHelper.initFor(w, network!)
-      .then(r => {
-        console.log('{changeWallet} AppWalletConnect.initFor r: ', r);
+      .then(async provider => {
+        console.log('{changeWallet} AppWalletConnect.initFor provider: ', provider);
+
+        // add profile and switch the network
+        const ensureActiveNetworkResult = await connectWalletHelper.web3_ensureActiveTargetChain(w, network)
+        console.log('ensureActiveNetworkResult: ', ensureActiveNetworkResult);
 
         // If connect failed then => set wallet to null
         // If connect success then => set wallet to connected wallet
@@ -72,7 +76,7 @@ export default function ConnectWallet(props: Props) {
             message.error(
               <span>
                 You've rejected to do this action.<br/>
-                Or there's already a sane pending request, please confirm on your wallet.
+                Or there's already a same pending request on your wallet.
               </span>,
               5,
             );

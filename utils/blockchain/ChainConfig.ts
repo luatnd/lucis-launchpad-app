@@ -174,9 +174,39 @@ const chainProfiles: IChainData[] = [
   },
 ]
 
+export default chainProfiles
+
 export const chainProfilesIndexed: Record<number, IChainData> = toDict(
   chainProfiles,
   'chain_id'
 )
 
-export default chainProfiles
+interface AddEthereumChainParameter {
+  chainId: string // A 0x-prefixed hexadecimal string
+  chainName: string
+  nativeCurrency: {
+    name: string
+    symbol: string // 2-6 characters long
+    decimals: number
+  }
+  rpcUrls: string[]
+  blockExplorerUrls?: string[]
+  iconUrls?: string[] // Currently ignored.
+}
+
+export function convertIChainData2ChainParameter(
+  c: IChainData
+): AddEthereumChainParameter {
+  return {
+    chainId: '0x' + c.chain_id.toString(16), // A 0x-prefixed hexadecimal string
+    chainName: c.name,
+    nativeCurrency: {
+      name: c.native_currency.name,
+      symbol: c.native_currency.symbol, // 2-6 characters long
+      decimals: parseInt(c.native_currency.decimals),
+    },
+    rpcUrls: [c.rpc_url],
+    blockExplorerUrls: c.blockExplorerUrls,
+    iconUrls: c.iconUrls, // Currently ignored.
+  }
+}

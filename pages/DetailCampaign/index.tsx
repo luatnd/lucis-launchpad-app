@@ -7,6 +7,7 @@ function DetailCampaign() {
         <>
             <SiteMap />
             <CountDown />
+            <div></div>
         </>
     );
 }

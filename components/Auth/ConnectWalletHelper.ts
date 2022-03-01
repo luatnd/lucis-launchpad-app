@@ -46,7 +46,7 @@ class ConnectWalletHelper {
    * Test cases PC:
    * - [x] browser dont have metamask
    * - [x] Click open metamask
-   * - [ ] Click connect while we have a metamask pending request already
+   * - [x] Click connect while we have a metamask pending request already
    * - [x] user rejected to connect on metamask
    * - [ ] user rejected to connect on wc
    * - [ ] Dont have profile => prompt to add profile
@@ -115,6 +115,11 @@ class ConnectWalletHelper {
           resolve(r)
         })
         .catch(e => {
+          // console.log('{ConnectWalletHelper.connectTo} e: ', e);
+          /**
+           * NOTE: Web3Modal does not retain the error.code from metamask
+           * It's all consider "User Rejected" error
+           */
           if (e.message === "User Rejected") {
             reject(this.makeError(Web3ProviderErrorCodes.provider.userRejectedRequest, ConnectWalletError.UserRejected))
           }

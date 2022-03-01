@@ -69,7 +69,13 @@ export default function ConnectWallet(props: Props) {
             );
             break;
           case ConnectWalletError.UserRejected:
-            message.error("You've rejected to do this action", 3);
+            message.error(
+              <span>
+                You've rejected to do this action.<br/>
+                Or there's already a sane pending request, please confirm on your wallet.
+              </span>,
+              5,
+            );
             break;
           default:
             console.error("{changeWallet.initFor} Above error was not handled")

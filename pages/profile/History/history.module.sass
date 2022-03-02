@@ -1,6 +1,7 @@
 $font48: 48px
 $font36: 36px
 $font24: 24px
+$font20: 20px
 $font14: 14px
 $font9: 9px
 $height: 76px
@@ -18,26 +19,42 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
         color: white
         font-weight: 700
         font-size: $font14
+    // :global 
+    //     .ant-table 
+    //         background: none
     :global
         .ant-table-wrapper
             border: 1px solid white
-            border-radius: 5px
+            border-radius: 25px
             overflow: hidden
+            p
+                margin: 0
         .ant-table-thead 
             font-size: 24px
             tr
                 th
                     font-weight: 700
+                    // padding: 32px 55px 18px
         .ant-table-cell
-            background: $backgroundColor
+            // background: $backgroundColor
             color: white
             vertical-align: top
+            padding: 35px 40px 18px 40px
+            .descText
+                font-size: $font14
+                font-weight: 700
             img
                 width: 40px
         .ant-table-cell-row-hover 
-            background: $backgroundColor !important
+            // background: $backgroundColor !important
+            background: none !important
         @media screen and ( min-width: 767px )
             .ant-table-cell
+                .descText
+                    font-size: $font24
+                .descSubText
+                    font-size: $font20
+                    font-weight: 400
                 img
                     width: 70px
         @media screen and ( min-width: 767px )

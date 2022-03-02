@@ -1,5 +1,5 @@
 import { Table } from "antd";
-import moment from "antd/node_modules/moment";
+import moment from "moment";
 import { useQueryBoxs, useQueryBoxHistories } from "hooks/home/useQueryBoxs";
 import s from "./history.module.sass";
 
@@ -14,7 +14,7 @@ const HistoryTable = () => {
 
     return <>Error ...</>;
   }
-  console.log(data.boxCampaignBuyHistories);
+  // console.log(data.boxCampaignBuyHistories);
 
   const columns = [
     {
@@ -30,7 +30,7 @@ const HistoryTable = () => {
       dataIndex: "box",
       key: "box",
       render: (item: any) => {
-        return <>1</>;
+        return <p className="descText">1</p>;
       },
     },
     {
@@ -40,10 +40,8 @@ const HistoryTable = () => {
       render: (_, item: any) => {
         return (
           <>
-            <p>
-              <strong>{item.quantity}</strong>
-            </p>
-            <p>{moment(item.created_at).format("YYYY MM DD hh:mm:ss")}</p>
+            <p className="descText">{item.quantity}</p>
+            <p className="descSubText">{moment(item.created_at).format("YYYY MM DD hh:mm:ss")}</p>
           </>
         );
       },
@@ -53,7 +51,7 @@ const HistoryTable = () => {
       dataIndex: "box",
       key: "box",
       render: (item: any) => {
-        return <>1</>;
+        return <p className="descText">1</p>;
       },
     },
     {
@@ -75,7 +73,25 @@ const HistoryTable = () => {
     },
   ];
 
-  return <Table columns={columns} dataSource={data.boxCampaignBuyHistories} pagination={false} />;
+  return (
+    <div style={{ position: "relative" }}>
+      <div
+        // className={s.layoutContainer}
+        style={{
+          borderRadius: "25px",
+          position: "absolute",
+          inset: 0,
+          background: `linear-gradient(126.08deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%) `,
+        }}
+      ></div>
+      <Table
+        columns={columns}
+        dataSource={data.boxCampaignBuyHistories}
+        pagination={false}
+        // className={s.tableContainer}
+      />
+    </div>
+  );
 };
 
 export default HistoryTable;

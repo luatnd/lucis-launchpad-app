@@ -30,7 +30,7 @@ const Team = () => {
         },
     ]
     return (
-        <div className='mt-[168px]'>
+        <div className='lucis-container mt-[168px]'>
             <h2 className='flex justify-center text-white text-center text-48px font-bold'>TEAM</h2>
             <Row gutter={[24, 16]} className='mt-10 justify-center'>
                 {listTeam.map((e, index) => (

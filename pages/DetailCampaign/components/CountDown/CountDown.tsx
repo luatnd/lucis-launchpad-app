@@ -49,7 +49,7 @@ const CountDown = () => {
   };
 
   return (
-    <div className={`${s.countDownContainer}`}>
+    <div className={`lucis-container`}>
       <div className='text-white text-center text-36px font-bold'>End to apply for the Whitelist in</div>
       <div className='flex text-white gap-10 justify-center mt-8'>
         {Object.keys(timer).map((item, key) => {

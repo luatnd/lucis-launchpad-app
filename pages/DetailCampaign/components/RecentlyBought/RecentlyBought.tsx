@@ -1,86 +1,101 @@
-import React from 'react';
-import { Table, Tag, Space } from 'antd';
+import React from "react";
+import s from "./RecentlyBought.module.sass";
+import { Table, Tag, Space } from "antd";
 
 const RecentlyBought = () => {
-    const columns = [
-        {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-            render: (text: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined) => <a>{text}</a>,
-        },
-        {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
-        },
-        {
-            title: 'Tags',
-            key: 'tags',
-            dataIndex: 'tags',
-            render: (tags: any[]) => (
-                <>
-                    {tags.map(tag => {
-                        let color = tag.length > 5 ? 'geekblue' : 'green';
-                        if (tag === 'loser') {
-                            color = 'volcano';
-                        }
-                        return (
-                            <Tag color={color} key={tag}>
-                                {tag.toUpperCase()}
-                            </Tag>
-                        );
-                    })}
-                </>
-            ),
-        },
-        {
-            title: 'Action',
-            key: 'action',
-            render: (text: any, record: { name: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }) => (
-                <Space size="middle">
-                    <a>Invite {record.name}</a>
-                    <a>Delete</a>
-                </Space>
-            ),
-        },
-    ];
+  const columns = [
+    {
+      title: "Item",
+      dataIndex: "item",
+      key: "item",
+      render: (src: string) => <img src={src} alt='img' className={s.image} />,
+    },
+    {
+      title: "Box name",
+      dataIndex: "boxname",
+      key: "boxname",
+      render: (name: string) => {
+        return (
+          <div className={s.boxName}>
+            <p>{name}</p>
+            <div className='flex items-center'>
+              <img src='/assets/Recently/image126.png' alt='image' />
+              <span>Oasis Emerald</span>
+            </div>
+          </div>
+        );
+      },
+    },
+    {
+      title: "Amount",
+      dataIndex: "amount",
+      key: "amount",
+      render: (amount: number) => {
+        return (
+          <div className={s.amount}>
+            <p>{amount}</p>
+            <div className='flex items-center'>
+              <span>2022-02-09 18:00:05</span>
+            </div>
+          </div>
+        );
+      },
+    },
+    {
+      title: "Cost",
+      dataIndex: "cost",
+      key: "cost",
+      render: (cost: number) => {
+        return <p>{cost} BUSD</p>;
+      },
+    },
+    {
+      title: "Status",
+      key: "status",
+      dataIndex: "status",
+      render: (status: string) => {
+        return (
+          <div className={s.status}>
+            <p className={s.icon}></p>
+            <span>{status}</span>
+          </div>
+        );
+      },
+    },
+  ];
 
-    const data = [
-        {
-            key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sidney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
-        },
-    ];
-    return (
-        <div className='lucis-container mt-[116px] h-[500px]'>
-            <h2 className='flex justify-center text-white text-center text-48px font-bold'>RECENTLY BOUGHT</h2>
-            {/*<Table className='mt-[37px]' columns={columns} dataSource={data} />*/}
-
-        </div>
-    );
+  const data = [
+    {
+      key: "1",
+      boxname: "Common Box",
+      amount: 1,
+      cost: 999.799,
+      item: "/assets/Box/image107.png",
+      status: "0x7791f0...94af0",
+    },
+    {
+      key: "2",
+      boxname: "Legendary Box",
+      cost: 999.799,
+      amount: 1,
+      status: "0x7791f0...94af0",
+      item: "/assets/Box/image107.png",
+    },
+    {
+      key: "3",
+      boxname: "Common Box",
+      cost: 999.799,
+      amount: 1,
+      item: "/assets/Box/image107.png",
+      status: "0x7791f0...94af0",
+    },
+  ];
+  return (
+    <div className='lucis-container mt-[116px] h-[500px] mb-[200px]'>
+      <h2 className='flex justify-center text-white text-center text-48px font-bold'>RECENTLY BOUGHT</h2>
+      <Table className={`mt-[37px] ${s.table}`} columns={columns} dataSource={data} />
+    </div>
+  );
 };
 
 export default RecentlyBought;

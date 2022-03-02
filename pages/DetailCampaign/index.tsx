@@ -6,7 +6,10 @@ import { Tabs } from "antd";
 import { TabPane } from "rc-tabs";
 import Trailer from "./components/Trailer/Trailer";
 import Banner from "./components/Banner/Banner";
+import Box from "./components/Box/Box";
+
 import s from "./detail.module.sass";
+import RecentlyBought from "./components/RecentlyBought/RecentlyBought";
 
 function DetailCampaign() {
   return (
@@ -17,6 +20,8 @@ function DetailCampaign() {
           <TabPane tab='TIMELINE' key='1'>
             <SiteMap />
             <CountDown />
+            <Box />
+            <RecentlyBought />
           </TabPane>
           <TabPane tab='RULE' key='2'>
             hello rule
@@ -29,6 +34,7 @@ function DetailCampaign() {
       </div>
     </div>
   );
+
 }
 
 export default DetailCampaign;

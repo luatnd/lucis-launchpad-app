@@ -2,7 +2,7 @@ import { observer } from "mobx-react" // Or "mobx-react".
 
 import ConnectWallet from './ConnectWallet';
 import User from './User';
-import AuthStore from "./AuthStore";
+import AuthStore from "../AuthStore";
 
 
 type Props = {

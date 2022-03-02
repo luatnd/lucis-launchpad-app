@@ -9,7 +9,7 @@ type TLoyalty = {
   level: number
   totalVolume: number
 }
-type AuthUser = {
+export type AuthUser = {
   id?: number
   token?: string
   email?: string

@@ -1,21 +1,33 @@
 import {ReactElement, useCallback, useEffect, useState} from "react";
 import { Modal, Button, message } from 'antd';
+import { observer } from 'mobx-react-lite'
 
-import {ChainNetwork, NetworkSupportedWallets, Wallet} from "../../utils/blockchain/BlockChain";
-import {ConnectWalletError, connectWalletHelper} from "./ConnectWalletHelper";
+import {ChainNetwork, NetworkSupportedWallets, Wallet} from "../../../utils/blockchain/BlockChain";
+import {ConnectWalletError, connectWalletHelper} from "../ConnectWalletHelper";
+import ConnectWalletStore, { nonReactive as ConnectWalletStore_NonReactiveData } from "../ConnectWalletStore";
 
 import s from './ConnectWallet.module.sass';
-import GradientButton from '../Button/GradientButton';
-import { isClient } from "../../utils/DOM";
+import GradientButton from '../../Button/GradientButton';
+import { isClient } from "../../../utils/DOM";
+import { trim_middle } from "../../../utils/String";
+import AuthStore from "../AuthStore";
+import AuthService from "../AuthService";
 
 
 type Props = {
   small?: boolean,
 };
-export default function ConnectWallet(props: Props) {
+export default observer(function ConnectWallet(props: Props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [network, setNetwork] = useState<ChainNetwork | null>(null);
   const [wallet, setWallet] = useState<Wallet | null>(null);
+
+  const {
+    address,
+    network: connected_network
+  } = ConnectWalletStore;
+
+  const logged_in_with_lucis = AuthStore.isLoggedIn;
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -42,11 +54,30 @@ export default function ConnectWallet(props: Props) {
     // TODO: Handle mobile
     connectWalletHelper.initFor(w, network!)
       .then(async provider => {
-        console.log('{changeWallet} AppWalletConnect.initFor provider: ', provider);
+        console.log('{changeWallet} Wallet Connected: provider: ', provider);
 
         // add profile and switch the network
         const ensureActiveNetworkResult = await connectWalletHelper.web3_ensureActiveTargetChain(w, network)
         console.log('ensureActiveNetworkResult: ', ensureActiveNetworkResult);
+
+
+        if (!ConnectWalletStore_NonReactiveData.web3Provider) {
+          message.error(
+            <span>Unexpected error happen (code: 6002)</span>,
+            8,
+          );
+          return;
+        }
+
+        const web3Provider = ConnectWalletStore_NonReactiveData.web3Provider;
+        const signer = web3Provider.getSigner()
+        const address = await signer.getAddress()
+        const connected_network = await web3Provider.getNetwork()
+
+        // Save to store
+        ConnectWalletStore.network = connected_network;
+        ConnectWalletStore.address = address;
+
 
         // If connect failed then => set wallet to null
         // If connect success then => set wallet to connected wallet
@@ -56,9 +87,9 @@ export default function ConnectWallet(props: Props) {
         }
 
         // finally close the modal if success connect
-        if (success) {
-          setIsModalVisible(false);
-        }
+        // if (success) {
+        //   setIsModalVisible(false);
+        // }
       })
       .catch(e => {
         console.error('{changeWallet} e: ', e.code, e.message, e);
@@ -99,6 +130,24 @@ export default function ConnectWallet(props: Props) {
       // Let UI do this
     }
   }, [network]);
+
+  const loginWithLucis = useCallback(async () => {
+    /**
+     * Web3 User need to link their wallet with Lucis system
+     */
+    if (!address) {
+      message.error(
+        <span>Wallet not connected properly, please connect wallet again</span>,
+        3,
+      );
+      return;
+    }
+
+    const authService = new AuthService();
+    const r = await authService.login(address!);
+
+    console.log('{loginWithLucis.} r: ', r);
+  }, [address]);
 
 
   const supported_wallets = network === null ? [] : NetworkSupportedWallets[network];
@@ -190,10 +239,25 @@ export default function ConnectWallet(props: Props) {
 
 
         <p className={s.title}>2. Choose wallet</p>
-        <div className={s.items} style={{justifyContent: "space-evenly"}}>
+        <div className={s.items}>
           {supported_wallets.map(i => predefined_wallets[i])}
         </div>
+
+        <p className={s.title}>3. Verify address</p>
+        <div className={s.items} style={{display: "block", paddingLeft: 16}}>
+          <p>Address: {!address ? '' : trim_middle(address, 8, 8)}</p>
+          <p>Network: {!connected_network ? '' : connected_network.name}</p>
+          {!!wallet && <>
+            {(address && logged_in_with_lucis)
+              ? <Button type="primary" size="large" disabled>
+                  <img src="/assets/UpComing/tick-done-2.svg" alt="" style={{padding: '0 6px 4px 0'}} />
+                  Verified
+                </Button>
+              : <Button type="primary" size="large" onClick={loginWithLucis}>Verify</Button>}
+          </>}
+        </div>
+
       </Modal>
     </div>
   );
-}
+})

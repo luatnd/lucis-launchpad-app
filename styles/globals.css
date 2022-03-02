@@ -9,6 +9,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Fix tailwind base fucking behavior */
+img { display: inline }
+
+
 html,
 body {
   padding: 0;

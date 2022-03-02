@@ -104,12 +104,20 @@
             opacity: 0
             transition: 0.3s
             .styleBtn
-                min-width: 160px
+                max-width: 47%
+                width: 100%
                 color: #FFF
                 font-size: 24px
                 font-weight: 600
                 line-height: 28px
                 cursor: pointer
+                @media (min-width: 0px)
+                    padding: 8px 15px
+                @media (min-width: 1025px)
+                    padding: 10px 15px
+                
+
+                
 .CardContainer:hover .btnDetail
     transform: translateY(0)
     opacity: 1
@@ -124,6 +132,8 @@
                 font-size: 24px  !important
             .styleTime::before
                 left: 0 !important
+        .btnDetail
+            height: 52% !important
 @media (min-width: 768px)
     .CardContainer
         width: 328px
@@ -134,6 +144,8 @@
                 font-size: 28px  !important
             .styleTime::before
                 left: 0 !important
+        .btnDetail
+            height: 45% !important
 @media (min-width: 992px)
     .CardContainer
         width: 32%
@@ -178,3 +190,5 @@
             p
                 font-size: 20px !important
                 margin-top: 12px
+        .btnDetail
+            height: 50% !important

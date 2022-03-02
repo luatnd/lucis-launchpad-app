@@ -1,28 +1,24 @@
 import DocHead from "components/DocHead";
-import s from "./index.module.sass";
 import Footer from "components/Footer";
+import { useState } from "react";
+import { useQueryProfile } from "../../hooks/profile/useQueryProfile";
+import s from "./index.module.sass";
+import Box from "./ProfileSocial";
+import Contact from "./ProfileContact";
 import Info from "./ProfileInfo";
-import Box from "./ProfileBox";
-import Modal from "antd/lib/modal/Modal";
-import { useHome } from "hooks/home/useHome";
-
-const userProfile = {
-  fullName: "Nguyen Thi Kieu Oanh",
-  id: "0x948d6D28D396Eae2F8c3459b092a85268B1bD96B",
-  balance: 135,
-  affilateId: "01234567989svfdv",
-  phone: "0912345678",
-  email: "anhcbt@lucis.network",
-  facebook: "Lucis network",
-  twitter: "Lucis network",
-  discord: "Lucis channel",
-  tele: "Lucis9999",
-  verify: false,
-};
 
 const MyProfile = () => {
-  const { data, loading, error } = useHome();
-  console.log(data);
+  const [isEdit, setIsEdit] = useState(false);
+  const { data, loading, error } = useQueryProfile();
+
+  if (loading) {
+    return <>Loading ...</>;
+  }
+  if (error) {
+    return <>Error...</>;
+  }
+
+  const props = { isEdit, setIsEdit, profile: data };
 
   return (
     <>
@@ -31,8 +27,9 @@ const MyProfile = () => {
         <img src="/assets/MyProfile/banner.png" alt="" />
 
         <div className="container">
-          <Info />
-          <Box />
+          <Info {...props} />
+          <Contact {...props} />
+          <Box {...props} />
         </div>
         <Footer />
       </div>

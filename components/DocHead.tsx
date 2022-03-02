@@ -11,7 +11,7 @@ export default function DocHead(props: Props) {
   const thumb = "https://lucis.network/assets/lucis_preview_169.jpg";
 
   return <Head>
-    <link rel="icon" href="/assets/favicon.png" />
+    <link rel="icon" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta charSet="utf-8" />
 

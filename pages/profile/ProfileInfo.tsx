@@ -1,100 +1,119 @@
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import { useProfile } from "hooks/profile/useProfile";
-import { useEffect, useRef, useState } from "react";
+import { CheckOutlined, CloseOutlined, CopyOutlined, EditOutlined } from "@ant-design/icons";
+import { Col, Row } from "antd";
+import Input from "components/Input/Input";
+import { useMutationProfile } from "hooks/profile/useMutationProfile";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { isClient } from "utils/DOM";
 import s from "./index.module.sass";
 
-const userProfile = {
-  fullName: "Nguyen Thi Kieu Oanh",
-  id: "0x948d6D28D396Eae2F8c3459b092a85268B1bD96B",
-  balance: 135,
-  affilateId: "01234567989svfdv",
-  phone: "0912345678",
-  email: "anhcbt@lucis.network",
-  facebook: "Lucis network",
-  twitter: "Lucis network",
-  discord: "Lucis channel",
-  tele: "Lucis9999",
-  verify: false,
+type Props = {
+  isEdit: boolean;
+  setIsEdit: (value: boolean) => void;
+  profile: any;
 };
 
-const Info = () => {
+const Info = ({ isEdit, setIsEdit, profile }: Props) => {
+  const [tempName, setTempName] = useState(profile?.me.profile.full_name);
+  const [isCopy, setIsCopy] = useState(false);
+
   const affilateIdRef = useRef<any>(null);
-  const nameRef = useRef<any>(null);
-  const [isEdit, setIsEdit] = useState(false);
-  const { updateFullName } = useProfile();
+  const { updateProfile, loading, error, data } = useMutationProfile();
 
   const handleCopyAffilateId = () => {
     if (affilateIdRef) {
-      console.log(affilateIdRef.current.innerText);
+      if (isClient) {
+        setIsCopy(true);
+        navigator.clipboard.writeText(
+          `${window.location.origin}/?r=${affilateIdRef.current.innerText}`
+        );
+      }
     }
   };
 
-  const handleEditName = () => {
-    setIsEdit(true);
+  const toggleEdit = () => {
+    setIsEdit(!isEdit);
   };
 
-  const handleSubmitFullName = () => {
-    setIsEdit(false);
-    updateFullName({ variables: { full_name: nameRef.current.innerText } });
+  const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
+    setTempName(e.target.value);
   };
 
-  const handleCancelSubmitFullName = () => {
-    setIsEdit(false);
-    nameRef.current.innerText = userProfile.fullName;
+  const handleBlur = () => {
+    updateProfile({
+      variables: {
+        data: {
+          full_name: {
+            set: tempName,
+          },
+        },
+      },
+    });
   };
+
+  const props = {
+    value: tempName,
+    onChange: handleChangeName,
+    onBlur: handleBlur,
+    className: s.name,
+  };
+
+  if (isClient) {
+    document.addEventListener("keydown", (evt) => {
+      if (evt.key === "v" && evt.ctrlKey) {
+        //@ts-ignore
+        window.clipboardData.getData("Text");
+      }
+    });
+  }
 
   useEffect(() => {
-    if (nameRef) {
-      nameRef.current.focus();
-      //@ts-ignore
-      document.execCommand("selectAll", false, null);
-      //@ts-ignore
-      document.getSelection().collapseToEnd();
-    }
-  }, [isEdit]);
+    let timer = setTimeout(() => setIsCopy(false), 2000);
+    return () => clearTimeout(timer);
+  }, [isCopy]);
 
   return (
-    <div className={s.info}>
-      <div className={s.avatar}>
-        <img src="/assets/MyProfile/defaultAvatar.png" alt="" />
-      </div>
-
-      <div>
-        <div className={s.fullName}>
-          <div className={s.name}>
-            <h1 ref={nameRef} contentEditable={isEdit} suppressContentEditableWarning={true}>
-              {userProfile.fullName}
-            </h1>
-            {isEdit ? (
-              <>
-                <button onClick={handleSubmitFullName}>
-                  <CheckOutlined />
-                </button>
-                <button onClick={handleCancelSubmitFullName}>
-                  <CloseOutlined />
-                </button>
-              </>
-            ) : (
-              <button onClick={handleEditName}>
-                <img src="/assets/MyProfile/edit.svg" alt="" />
-              </button>
-            )}
+    <div className="my-6">
+      <Row gutter={[10, 10]} align="middle">
+        <Col span={8}>
+          <div className={s.avatar}>
+            <img src="/assets/MyProfile/defaultAvatar.png" alt="" />
+          </div>
+        </Col>
+        <Col span={16}>
+          <div className={s.info}>
+            <div>
+              {isEdit ? (
+                <Input {...props} />
+              ) : (
+                // <input className={s.name} onChange={handleChangeName} value={tempName} />
+                <p className={s.name}>{tempName}</p>
+              )}
+              {/* TODO: change to address */}
+              <p className={s.id}>{profile ? profile.me.id : ""}</p>
+            </div>
+            {/* <p>Exit</p> */}
+            <button onClick={toggleEdit}>{isEdit ? <CloseOutlined /> : <EditOutlined />}</button>
           </div>
 
-          <p>{userProfile.id}</p>
-        </div>
-        <p className={s.balance}>Balance: {userProfile.balance} BNB</p>
-        <div className={s.affilate}>
-          <p>
-            Affilate ID: <span ref={affilateIdRef}>{userProfile.affilateId}</span>
-          </p>
-          <button onClick={handleCopyAffilateId}>
-            <img src="/assets/MyProfile/copy.svg" alt="" />
-          </button>
-        </div>
-      </div>
+          <div className={s.info}>
+            <p className={s.balance}>Balance: {profile ? profile.me.balance : "0"} BNB</p>
+          </div>
+
+          <div className={`${s.info} sm:mt-2 lg:mt-5`}>
+            <p className={s.name}>
+              Affiliate ID:
+              <span ref={affilateIdRef}>{profile?.me.code ? profile.me.code : ""}</span>
+              <button onClick={handleCopyAffilateId} disabled={isCopy}>
+                {!isCopy ? <CopyOutlined title="Copy to clipboard" /> : <CheckOutlined />}
+              </button>
+            </p>
+          </div>
+        </Col>
+      </Row>
     </div>
   );
 };
+
+Info.defaulProps = {};
 
 export default Info;

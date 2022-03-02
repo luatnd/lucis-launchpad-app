@@ -1,4 +1,15 @@
 .containerApp
   position: absolute
   top: 0
-  width: 1240px
+  left: 0
+  width: 100%
+  @media (min-width: 992px) and (max-width: 1024px)
+    max-width: 992px
+    padding: 0px 3rem
+  @media (min-width: 0px) and (max-width: 414px)
+    max-width: 360px
+    padding: 0px 1rem
+
+.tabs
+  & :global(.ant-tabs-nav-wrap)
+    justify-content: center

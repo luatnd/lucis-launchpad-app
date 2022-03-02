@@ -35,12 +35,9 @@ export default function Header(props: Props) {
   }, []);
 
   useEffect(() => {
-    const subscription = AppEmitter.addListener(
-      "setJoinUsVisible",
-      (visible: boolean) => {
-        setIsModalVisible(visible);
-      }
-    );
+    const subscription = AppEmitter.addListener("setJoinUsVisible", (visible: boolean) => {
+      setIsModalVisible(visible);
+    });
     return () => {
       subscription.remove();
     };
@@ -49,31 +46,31 @@ export default function Header(props: Props) {
   if (width > 1024) {
     return (
       <div className={`${s.pcMenu} bg-nav`}>
-        <div className="container py-20px flex justify-between items-center relative z-10`">
+        <div className={`container py-20px flex justify-between items-center relative z-10 ${s.menu_container}`}>
           <div className={s.logo}>
-            <Link href="/" passHref>
+            <Link href='/' passHref>
               <a>
-                <Image src={Logo} alt="logo" priority />
+                <Image src={Logo} alt='logo' priority />
               </a>
             </Link>
           </div>
           <nav>
-            <ul className="flex justify-between items-center m-0">
+            <ul className='flex justify-between items-center m-0'>
               {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Home</a></li>*/}
               <li>
                 <a
-                  href="#"
+                  href='#'
                   onClick={() => scrollAndCloseMenu("#EcoSystem")}
-                  className="text-white text-24px leading-28px p-15px"
+                  className='text-white text-24px leading-28px p-15px'
                 >
                   Homepage
                 </a>
               </li>
               <li className={s.groundSubMenu}>
                 <a
-                  href="#"
+                  href='#'
                   onClick={() => scrollAndCloseMenu("#Investors")}
-                  className="text-white text-24px leading-28px p-15px"
+                  className='text-white text-24px leading-28px p-15px'
                 >
                   Guide
                 </a>
@@ -84,9 +81,7 @@ export default function Header(props: Props) {
               </li>
               {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Roadmap</a></li>*/}
               <li>
-
                 <AuthBox />
-
               </li>
             </ul>
           </nav>

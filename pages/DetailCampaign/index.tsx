@@ -13,7 +13,7 @@ function DetailCampaign() {
     <div className='lucis-container'>
       <div className={s.containerApp}>
         <Banner />
-        <Tabs defaultActiveKey='1'>
+        <Tabs defaultActiveKey='1' className={s.tabs}>
           <TabPane tab='TIMELINE' key='1'>
             <SiteMap />
             <CountDown />

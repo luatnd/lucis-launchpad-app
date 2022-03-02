@@ -2,10 +2,10 @@ import React from "react";
 
 const Trailer = () => {
   return (
-    <div>
+    <div className='lucis-container'>
       <h2 className='flex justify-center text-white text-center text-48px font-bold py-6'>TRAILER</h2>
       <div className='w-[80%] m-auto'>
-        <iframe src='https://www.youtube.com/watch?v=Yw9Ra2UiVLw' width='420' height='345'></iframe>
+        <iframe src='https://www.youtube.com/watch?v=Yw9Ra2UiVLw' width='100%' height='556px'></iframe>
         <div className='flex justify-between mt-20'>
           <a href='https://www.tiktok.com/@lucistvv' target='_blank' rel='noopener noreferrer'>
             <img src='/assets/footer/tiktok.svg' alt='' />

@@ -1,6 +1,7 @@
 import React, { createRef, useEffect, useRef } from "react";
 import Swiper from "swiper";
 import s from "./SiteMap.module.sass";
+import {Button, Progress} from "antd";
 const ListCard = [
   {
     title: "Upcoming",
@@ -41,6 +42,20 @@ const SiteMap = () => {
   useEffect(() => {
     SwiperRef.current = new Swiper(".swiper-container", {
       slidesPerView: 5,
+      breakpoints: {
+        680: {
+          slidesPerView: 2,
+        },
+        960: {
+          slidesPerView: 3,
+        },
+        1200: {
+          slidesPerView: 4,
+        },
+        1300: {
+          slidesPerView: 5,
+        }
+      },
       navigation: {
         prevEl: "prev-slide",
         nextEl: "next-slide",
@@ -79,6 +94,15 @@ const SiteMap = () => {
                     </div>
                     <div className={`${s.SiteMapLineCircle} ${item.isActive === true ? s.active : ""}`}></div>
                     <div className={`text-white mt-10 w-full ${s.SiteMapLineCircleContent}`}>{item.description}</div>
+                    {item.title === 'Register whitelist' && (
+                        <div className='max-w-[250.91px]'>
+                          <button className={`${s.buttom} mt-20px mb-41px font-bold text-white text-24px`}>Apply whitelist</button>
+                          <Progress className='mt-[38px!important]' strokeColor='#0BEBD6' percent={60} showInfo={false}/>
+                          <p className='text-right text-white mt-1'>60/100</p>
+                        </div>
+                    )
+
+                    }
                   </div>
                 </div>
               );

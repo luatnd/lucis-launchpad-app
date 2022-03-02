@@ -1,6 +1,109 @@
 .backgroundDetail
-  //position: absolute
-  //top: 0
+  position: relative
   width: 100%
   height: 712px
-  background-image: url("/assets/image113.png")
+  background-image: url("/assets/image103.png")
+  background-size: cover
+  background-repeat: no-repeat
+
+.notification
+  display: flex
+  justify-content: space-around
+  align-items: center
+  position: absolute
+  width: 304px
+  height: 71px
+  left: 99px
+  top: 25%
+  background: rgba(0, 0, 0, 0.3)
+  box-shadow: 0px 4px 35px rgba(234, 211, 12, 0.35)
+  backdrop-filter: blur(40px)
+  border-radius: 10px
+  padding: 1rem
+  img
+    border: 2px solid #FFFFFF
+    box-sizing: border-box
+    border-radius: 50%
+    transform: matrix(-1, 0, 0, 1, 0, 0)
+    width: 35px
+    padding: 6px
+  p
+    margin: 0
+    width: 217px
+    height: 28px
+    font-family: Saira
+    font-style: normal
+    font-weight: bold
+    font-size: 24px
+    line-height: 115%
+    text-align: center
+    color: #FFFFFF
+
+.info
+  position: absolute
+  width: 689px
+  height: 387px
+  left: 100px
+  top: 280px
+  background: linear-gradient(126.08deg, rgba(0, 0, 0, 0.3) 13.84%, rgba(0, 0, 0, 0.1) 74.14%)
+  box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
+  backdrop-filter: blur(40px)
+  border-radius: 10px
+
+.info_contain
+  position: absolute
+  width: 135px
+  height: 74.63px
+  left: 45px
+  top: 40px
+
+.info_logo
+  width: 135px
+  height: 74.63px
+  background: url('/assets/logo.png')
+
+.info_title
+  width: 600px
+  margin: .5rem 0
+  font-family: Saira
+  font-style: normal
+  font-weight: 500
+  font-size: 36px
+  line-height: 115%
+  text-transform: uppercase
+  color: #FFFFFF
+
+.info_content
+  width: 600px
+  font-family: Saira
+  font-style: normal
+  font-weight: 300
+  font-size: 24px
+  line-height: 150%
+  text-align: justify
+  color: #FFFFFF
+  margin-bottom: .5rem
+
+.info_read
+  display: flex
+  justify-content: space-between
+  width: 600px
+  &>span
+    font-family: Saira
+    font-style: normal
+    font-weight: bold
+    font-size: 24px
+    line-height: 115%
+    text-align: justify
+    text-decoration-line: underline
+    color: #08D7F9
+    cursor: pointer
+
+.info_button_group
+  display: inline-flex
+  width: 304px
+  height: 30px
+  justify-content: space-between
+  span
+    cursor: pointer
+    filter: drop-shadow(0px 2px 40px rgba(255, 255, 255, 0.3))

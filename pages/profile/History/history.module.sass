@@ -1,0 +1,65 @@
+$font48: 48px
+$font36: 36px
+$font24: 24px
+$font14: 14px
+$font9: 9px
+$height: 76px
+$height: 56px
+$height: 36px
+$width35: 35px
+$width30: 30px
+$width25: 25px
+$width15: 15px
+$backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(to right, rgba(255, 255, 255, 0.7), rgba(210, 0, 215, 0.6), rgba(251, 76, 222, 0.4), rgba(244, 123, 246, 0.4) ) border-box
+
+.history 
+    color: white
+    h1
+        color: white
+        font-weight: 700
+        font-size: $font14
+    :global
+        .ant-table-wrapper
+            border: 1px solid white
+            border-radius: 5px
+            overflow: hidden
+        .ant-table-thead 
+            font-size: 24px
+            tr
+                th
+                    font-weight: 700
+        .ant-table-cell
+            background: $backgroundColor
+            color: white
+            vertical-align: top
+            img
+                width: 40px
+        .ant-table-cell-row-hover 
+            background: $backgroundColor !important
+        @media screen and ( min-width: 767px )
+            .ant-table-cell
+                img
+                    width: 70px
+        @media screen and ( min-width: 767px )
+            .ant-table-cell
+                img
+                    width: 100px
+
+
+    @media screen and ( min-width: 767px )
+    margin: 50px 0px 200px 0
+    h1 
+        margin-bottom: 35px !important
+        font-size: 24px
+        .ant-table-cell
+            img
+                width: 70px
+
+    @media screen and ( min-width: 1023px )
+    h1 
+        font-size: 36px
+        .ant-table-cell
+            img
+                width: 100px
+    
+

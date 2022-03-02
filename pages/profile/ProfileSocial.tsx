@@ -44,16 +44,16 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
 
   return (
     <>
-      <div className={`${s.box} sm:my-3 md:my-7`}>
+      <div className={`${s.box} sm:mb-3 md:mb-7`}>
         <div className={s.wrapper}>
-          <Row>
-            <Col span={8}>
+          <Row justify="space-between">
+            <Col xs={7} lg={7}>
               <div className={s.title}>
                 <img src="/assets/MyProfile/social.svg" alt="" />
                 <span className="pl-0 md:pl-3">Social</span>
               </div>
             </Col>
-            <Col span={16}>
+            <Col xs={16}>
               <div className={s.social}>
                 <a>
                   <img src="/assets/footer/fb.svg" alt="" />
@@ -62,6 +62,7 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                       value={tempSocial.facebook ? tempSocial.facebook : ""}
                       onChange={(e) => handleChange(e, "facebook")}
                       onBlur={() => handleBlur("facebook")}
+                      placeholder={"Facebook address"}
                     />
                   ) : (
                     <p>{tempSocial.facebook ? tempSocial.facebook : "Not available"}</p>
@@ -75,6 +76,7 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                       value={tempSocial.twitter ? tempSocial.twitter : ""}
                       onChange={(e) => handleChange(e, "twitter")}
                       onBlur={() => handleBlur("twitter")}
+                      placeholder={"Twitter address"}
                     />
                   ) : (
                     <p>{tempSocial.twitter ? tempSocial.twitter : "Not available"}</p>
@@ -88,6 +90,7 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                       value={tempSocial.discord ? tempSocial.discord : ""}
                       onChange={(e) => handleChange(e, "discord")}
                       onBlur={() => handleBlur("discord")}
+                      placeholder={"Discord address"}
                     />
                   ) : (
                     <p>{tempSocial.discord ? tempSocial.discord : "Not available"}</p>
@@ -101,6 +104,7 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                       value={tempSocial.telegram ? tempSocial.telegram : ""}
                       onChange={(e) => handleChange(e, "telegram")}
                       onBlur={() => handleBlur("telegram")}
+                      placeholder={"Telegram address"}
                     />
                   ) : (
                     <p>{tempSocial.telegram ? tempSocial.telegram : "Not available"}</p>

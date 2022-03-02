@@ -1,7 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 
 export function useQueryBoxs() {
-  const { loading, error, data, refetch } = useQuery(BOX_CAMPAIGN);
+  const { loading, error, data: data } = useQuery(BOX_CAMPAIGN);
 
   return {
     loading,
@@ -43,6 +43,32 @@ const BOX_CAMPAIGN = gql`
       cover_img
       start
       end
+    }
+  }
+`;
+
+export function useQueryBoxHistories(includeValue: any) {
+  const { loading, error, data: data } = useQuery(BOX_HISTORIES, { variables: includeValue });
+
+  return {
+    loading,
+    error,
+    data: data,
+  };
+}
+
+const BOX_HISTORIES = gql`
+  query historyBox($include: BoxCampaignInclude) {
+    boxCampaignBuyHistories(include: $include) {
+      id
+      box_campaign_uid
+      quantity
+      created_at
+      status
+      tx_hash
+      box {
+        cover_img
+      }
     }
   }
 `;

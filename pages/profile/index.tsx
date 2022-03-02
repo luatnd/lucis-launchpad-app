@@ -6,10 +6,11 @@ import s from "./index.module.sass";
 import Box from "./ProfileSocial";
 import Contact from "./ProfileContact";
 import Info from "./ProfileInfo";
+import History from "./History/History";
 
 const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
-  const { data, loading, error } = useQueryProfile();
+  const { data, loading, error, refetch } = useQueryProfile();
 
   if (loading) {
     return <>Loading ...</>;
@@ -18,7 +19,7 @@ const MyProfile = () => {
     return <>Error...</>;
   }
 
-  const props = { isEdit, setIsEdit, profile: data };
+  const props = { isEdit, setIsEdit, profile: data, refetch };
 
   return (
     <>
@@ -30,6 +31,7 @@ const MyProfile = () => {
           <Info {...props} />
           <Contact {...props} />
           <Box {...props} />
+          <History />
         </div>
         <Footer />
       </div>

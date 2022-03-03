@@ -4,7 +4,16 @@ import { AuthUser } from "./AuthStore";
 import apoloClient, { setAuthToken as ApoloClient_setAuthToken } from 'utils/apollo_client'
 import { to_hex_str } from "../../utils/String";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "./ConnectWalletStore";
+import { Web3ProviderErrorCodes } from "./ConnectWalletHelper";
 
+
+export enum AuthError {
+  UserDeniedMsgSignature = 'UserDeniedMsgSignature',
+}
+
+type LoginResponse = {
+  error: AuthError | null,
+}
 
 export default class AuthService {
   setAuthInfo(user: AuthUser): void {
@@ -37,9 +46,7 @@ export default class AuthService {
       mutation: gql`mutation ($address: String!) {
           generateNonce(address: $address)
       }`,
-      variables: {
-        input: {...variables}
-      }
+      variables
     })
 
     // .req({
@@ -81,9 +88,7 @@ export default class AuthService {
           generateNonce(address: $address)
       }`,
       variables: {
-        input: {
-          address: address
-        }
+        address: address
       }
     })
     console.log('{AuthService.loginByAddress} nonceRes: ', nonceRes);
@@ -135,10 +140,8 @@ export default class AuthService {
           }
       }`,
       variables: {
-        input: {
-          address,
-          sign: signed_hash
-        }
+        address,
+        sign: signed_hash
       }
     })
     const u = loginRes.data.user;
@@ -159,7 +162,11 @@ export default class AuthService {
     return user
   }
 
-  async login(address: string) {
+  async login(address: string): Promise<LoginResponse> {
+    let res: LoginResponse = {
+      error: null,
+    };
+
     try {
       // NOTE: Change internal state without reactive
       // this.address = address
@@ -182,7 +189,7 @@ export default class AuthService {
         // this.loyalty = user.loyalty
         // this.setToken(token)
 
-        return true
+        return res
       } else {
         // new-login
         const user = await this.loginByAddress(address)
@@ -198,11 +205,19 @@ export default class AuthService {
         // this.loyalty = user.loyalty
         // this.setToken(user?.token)
 
-        return true
+        return res
       }
-    } catch (err) {
-      console.log('{login} err: ', err)
-      return false
+    } catch (e) {
+      console.log('{login} e: ', e)
+
+      // @ts-ignore
+      switch (e.code) {
+        case Web3ProviderErrorCodes.provider.userRejectedRequest:
+          res.error = AuthError.UserDeniedMsgSignature;
+          return res
+      }
+
+      return res
     }
   }
 

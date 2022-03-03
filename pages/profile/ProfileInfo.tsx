@@ -88,7 +88,6 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
                 // <input className={s.name} onChange={handleChangeName} value={tempName} />
                 <p className={s.name}>{tempName}</p>
               )}
-              {/* TODO: change to address */}
               <p className={s.id}>{profile ? profile.me.address : ""}</p>
             </div>
             {/* <p>Exit</p> */}

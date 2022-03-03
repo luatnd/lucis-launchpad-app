@@ -37,6 +37,7 @@ const HistoryTable = () => {
       title: "Amount",
       dataIndex: "quantity",
       key: "quantity",
+      // @ts-ignore
       render: (_, item: any) => {
         return (
           <>

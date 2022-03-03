@@ -62,11 +62,11 @@ const HistoryTable = () => {
       render: (item: any) => {
         if (item) {
           if (item === "pending") {
-            return <div className={s.statusPending}></div>;
+            return <div className={s.statusPending}>{item}</div>;
           } else if (item === "confirming") {
-            return <div className={s.statusConfirming}></div>;
+            return <div className={s.statusConfirming}>{item}</div>;
           } else {
-            return <div className={s.confirmed}></div>;
+            return <div className={s.confirmed}>{item}</div>;
           }
         }
         return <>Waiting</>;

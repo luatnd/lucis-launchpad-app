@@ -67,6 +67,7 @@ const BOX_HISTORIES = gql`
       status
       tx_hash
       box {
+        name
         cover_img
       }
     }

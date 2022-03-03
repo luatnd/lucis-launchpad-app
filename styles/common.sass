@@ -54,9 +54,12 @@
   @include box-glass
 
 @mixin border-grad-1($gradient-style)
-  @include border-grad($gradient-style)
+  @include border-grad($gradient-style, 1px)
 
-@mixin border-grad($gradient-style)
+@mixin border-grad-3($gradient-style)
+  @include border-grad($gradient-style, 3px)
+
+@mixin border-grad($gradient-style, $padding-size)
   position: relative
   &:before
     content: ""
@@ -69,7 +72,7 @@
     z-index: -1
 
     border-radius: inherit
-    padding: 1px
+    padding: $padding-size
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
     -webkit-mask-composite: xor
     mask-composite: exclude

@@ -91,7 +91,7 @@ const Contact = ({ isEdit, setIsEdit, profile, refetch }: Props) => {
 
   return (
     <>
-      <div className={`${s.contactContainer} my-5`}>
+      <div className={`${s.contactContainer}`}>
         <Row gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]} justify="space-between">
           <Col xs={8}>
             <div className={s.title}>
@@ -119,26 +119,27 @@ const Contact = ({ isEdit, setIsEdit, profile, refetch }: Props) => {
             </div>
           </Col>
           <Col span={16}>
-            {isEdit ? (
-              <>
-                <Input
-                  value={tempContact.email !== "" ? tempContact.email : ""}
-                  onChange={(e) => handleChange(e, "email")}
-                  onBlur={handleBlurEmailInput}
-                  placeholder={"your.email@example.com"}
-                />
-                {!validEmail ? <p className={s.invalid}>Invalid email</p> : ""}
-              </>
-            ) : tempContact.email ? (
-              validEmail ? (
-                <p>{tempContact.email}</p>
+            {
+              isEdit ? (
+                <>
+                  <Input
+                    value={tempContact.email !== "" ? tempContact.email : ""}
+                    onChange={(e) => handleChange(e, "email")}
+                    onBlur={handleBlurEmailInput}
+                    placeholder={"your.email@example.com"}
+                  />
+                  {!validEmail ? <p className={s.invalid}>Invalid email</p> : ""}
+                </>
+              ) : tempContact.email ? (
+                validEmail ? (
+                  <p>{tempContact.email}</p>
+                ) : (
+                  <p>{profile.me.email}</p>
+                )
               ) : (
-                <p>{profile.me.email}</p>
+                <p>Invalid email address</p>
               )
-            ) : (
-              <p>Invalid email address</p>
-            )
-            // <p>{tempContact.email ? tempContact.email : "Invalid email address"}</p>
+              // <p>{tempContact.email ? tempContact.email : "Invalid email address"}</p>
             }
             {/* ----- TODO: Verify button */}
             {/* {tempContact.email ? (

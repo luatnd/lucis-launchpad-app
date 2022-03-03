@@ -78,7 +78,7 @@ const HistoryTable = () => {
       <div
         // className={s.layoutContainer}
         style={{
-          borderRadius: "25px",
+          borderRadius: "10px",
           position: "absolute",
           inset: 0,
           background: `linear-gradient(126.08deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%) `,
@@ -88,6 +88,9 @@ const HistoryTable = () => {
         columns={columns}
         dataSource={data.boxCampaignBuyHistories}
         pagination={false}
+        footer={() => <></>}
+        scroll={{ y: 540 }}
+        rowKey="id"
         // className={s.tableContainer}
       />
     </div>

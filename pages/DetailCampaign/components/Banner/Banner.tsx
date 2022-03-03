@@ -5,7 +5,7 @@ import s from "./Banner.module.sass";
 const Banner = () => {
   return (
     <div className={s.backgroundDetail}>
-      <div className={s.backgroundContain}>
+      <div className={`lucis-container ${s.backgroundContain}`}>
         <div className={s.notification}>
           <img src='/assets/Banner/svg/signout.svg' alt='icon' />
           <p>Enable Notification</p>

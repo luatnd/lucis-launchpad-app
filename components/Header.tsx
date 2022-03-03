@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import s from "./Header.module.sass";
 import { useWindowSize } from "../hooks/useWindowSize";
@@ -18,6 +19,8 @@ type Props = {
 };
 export default function Header(props: Props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const router = useRouter();
+
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -64,9 +67,9 @@ export default function Header(props: Props) {
               {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Home</a></li>*/}
               <li>
                 <a
-                  href="#"
-                  onClick={() => scrollAndCloseMenu("#EcoSystem")}
-                  className="text-white text-24px leading-28px p-15px"
+                  href='#'
+                  onClick={() => router.push('/')}
+                  className='text-white text-24px leading-28px p-15px'
                 >
                   Homepage
                 </a>

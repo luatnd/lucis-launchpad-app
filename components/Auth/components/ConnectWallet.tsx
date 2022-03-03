@@ -163,7 +163,7 @@ export default observer(function ConnectWallet(props: Props) {
       case null:
         // Success
         // Already set the auth token to the AuthStore in AuthService
-        message.error(
+        message.success(
           <span>Successfully connect and verify your wallet</span>,
           5,
         );
@@ -175,7 +175,7 @@ export default observer(function ConnectWallet(props: Props) {
       case AuthError.UserDeniedMsgSignature:
         message.error(
           <span>User denied</span>,
-          500,
+          5,
         );
         break;
 

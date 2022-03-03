@@ -11,8 +11,10 @@ type TLoyalty = {
 }
 export type AuthUser = {
   id?: number
+  code?: string
   token?: string
   email?: string
+  name?: string
   loyalty?: TLoyalty
   loading?: boolean
 }
@@ -28,18 +30,16 @@ export type TAuthInfo = AuthUser | AuthWallet;
 
 class AuthStore {
   private _id?: number
+  private _code?: string
   private _token?: string
   private _email?: string
+  private _name?: string
   private _loyalty: TLoyalty = {
     level: 0,
     totalVolume: 0,
   }
   private _loading: boolean = false
 
-  private _address?: string
-  networkId?: number
-  chainId?: number
-  balance?: number
 
   public get isLoggedIn(): boolean {
     return !!this._token
@@ -51,24 +51,23 @@ class AuthStore {
 
   resetStates() {
     this._id = undefined
-    this._id = undefined;
+    this._code = undefined;
     this._token = undefined;
     this._email = undefined;
+    this._name = undefined;
     this._loyalty = {
       level: 0,
       totalVolume: 0,
     };
     this._loading = false;
-    this._address = undefined;
-    this.networkId = undefined;
-    this.chainId = undefined;
-    this.balance = undefined;
   }
 
   setAuthUser(user: AuthUser) {
     this._id = user.id
+    this._code = user.code
     this._token = user.token
     this._email = user.email
+    this._name = user.name
     this._loyalty = user.loyalty!
   }
 
@@ -115,12 +114,20 @@ class AuthStore {
     this._loading = value;
   }
 
-  get address(): string | undefined {
-    return this._address;
+  get code(): string | undefined {
+    return this._code;
   }
 
-  set address(value: string | undefined) {
-    this._address = value;
+  set code(value: string | undefined) {
+    this._code = value;
+  }
+
+  get name(): string | undefined {
+    return this._name;
+  }
+
+  set name(value: string | undefined) {
+    this._name = value;
   }
 }
 

@@ -486,6 +486,15 @@ body .backdrop-blur-sm {
   border-radius: 10px;
   color: white;
 }
+
+.ant-message-notice .ant-message-notice-content .ant-message-success,
+.ant-message-notice .ant-message-notice-content .ant-message-info,
+.ant-message-notice .ant-message-notice-content .ant-message-warn,
+.ant-message-notice .ant-message-notice-content .ant-message-error {
+  display: flex;
+  align-items: flex-start;
+}
+
 .ant-message-notice .ant-message-notice-content .ant-message-error {
   color: #ffbabb;
 }

@@ -1,6 +1,9 @@
 import { ApolloClient, createHttpLink, InMemoryCache, from } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
+import { isClient } from "./DOM";
+import AuthService from "../components/Auth/AuthService";
+import { getLocalAuthInfo } from "../components/Auth/AuthLocal";
 //   import { CachePersistor } from 'apollo-cache-persist';
 
 // Cache implementation
@@ -8,17 +11,29 @@ const cache = new InMemoryCache();
 
 
 const authCache: {
-  token: string, // store tmp auth token to send with graphql requests
+  /**
+   * store tmp auth token to send with graphql requests
+   * If you wanna get JWT token of current user, plz get from AuthStore.token instead
+   */
+  token: string,
 } = {
-  token: ''
+  token: _fetchInitialAuthTokenFromLocal()
 };
 
 export function setAuthToken(token: string) {
   authCache.token = token;
 }
 
+/**
+ * If you wanna get JWT token of current user, plz get from AuthStore.token instead
+ */
 function _getAuthToken(): string {
   return authCache.token;
+}
+
+function _fetchInitialAuthTokenFromLocal(): string {
+  const u = getLocalAuthInfo();
+  return u ? (u.token ?? '') : '';
 }
 
 
@@ -43,10 +58,14 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
       if (message === "Unauthorized") {
         // when token expired or die, localStorage clear
-        localStorage.clear();
+        // localStorage.clear();
 
         // redirect to login page
         // window.location.href = "/auth/login";
+
+        // fire event
+        // AppEmitter.emit('GraphqlError.Unauthorized')
+        console.error('GraphqlError.Unauthorized')
       }
     });
 
@@ -64,6 +83,7 @@ const authLink = setContext((_, { headers }) => {
   //   token = localStorage.getItem("token") ?? "";
   // }
   const token = _getAuthToken();
+  console.log('{apolo.authLink} token: ', token);
 
   // return the headers to the context so httpLink can read them
   return {
@@ -79,5 +99,10 @@ const client = new ApolloClient({
   cache,
   connectToDevTools: true,
 });
+
+if (isClient) {
+  // @ts-ignore
+  window.tmp__Apolo = client;
+}
 
 export default client;

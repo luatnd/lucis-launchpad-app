@@ -1,21 +1,26 @@
-import Image from "./Image";
-import Link from "next/link";
-import s from "./Header.module.sass";
-import Logo from "../assets/icon/Logo.svg";
-import GradientButton from "./Button/GradientButton";
-import { useWindowSize } from "../hooks/useWindowSize";
-import { MenuMobile } from "./Menu/MenuMobile";
 import { useCallback, useEffect, useState } from "react";
-import { scrollToSection } from "../utils/DOM";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-// import { Modal, Button } from 'antd';
+import s from "./Header.module.sass";
+import { useWindowSize } from "../hooks/useWindowSize";
+import { scrollToSection } from "../utils/DOM";
 import { AppEmitter } from "../services/emitter";
-import AuthBox from "./Auth/AuthBox";
+
+import Image from "./Image";
+import { MenuMobile } from "./Menu/MenuMobile";
+import AuthBox from "./Auth/components/AuthBox";
+
+import Logo from "../assets/icon/logo.png";
+
+
 type Props = {
   handleMenuOpen: Function;
 };
 export default function Header(props: Props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const router = useRouter();
+
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -35,12 +40,9 @@ export default function Header(props: Props) {
   }, []);
 
   useEffect(() => {
-    const subscription = AppEmitter.addListener(
-      "setJoinUsVisible",
-      (visible: boolean) => {
-        setIsModalVisible(visible);
-      }
-    );
+    const subscription = AppEmitter.addListener("setJoinUsVisible", (visible: boolean) => {
+      setIsModalVisible(visible);
+    });
     return () => {
       subscription.remove();
     };
@@ -49,31 +51,31 @@ export default function Header(props: Props) {
   if (width > 1024) {
     return (
       <div className={`${s.pcMenu} bg-nav`}>
-        <div className="container py-20px flex justify-between items-center relative z-10`">
+        <div className={`container py-20px flex justify-between items-center relative z-10 ${s.menu_container}`}>
           <div className={s.logo}>
-            <Link href="/" passHref>
+            <Link href='/' passHref>
               <a>
-                <Image src={Logo} alt="logo" priority />
+                <Image src={Logo} alt='logo' priority />
               </a>
             </Link>
           </div>
           <nav>
-            <ul className="flex justify-between items-center m-0">
+            <ul className='flex justify-between items-center m-0'>
               {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Home</a></li>*/}
               <li>
                 <a
-                  href="#"
-                  onClick={() => scrollAndCloseMenu("#EcoSystem")}
-                  className="text-white text-24px leading-28px p-15px"
+                  href='#'
+                  onClick={() => router.push('/')}
+                  className='text-white text-24px leading-28px p-15px'
                 >
                   Homepage
                 </a>
               </li>
               <li className={s.groundSubMenu}>
                 <a
-                  href="#"
+                  href='#'
                   onClick={() => scrollAndCloseMenu("#Investors")}
-                  className="text-white text-24px leading-28px p-15px"
+                  className='text-white text-24px leading-28px p-15px'
                 >
                   Guide
                 </a>
@@ -84,9 +86,7 @@ export default function Header(props: Props) {
               </li>
               {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Roadmap</a></li>*/}
               <li>
-
                 <AuthBox />
-
               </li>
             </ul>
           </nav>

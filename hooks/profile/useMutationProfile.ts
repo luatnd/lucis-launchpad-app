@@ -3,7 +3,7 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 export function useMutationProfile() {
   const [updateProfile, { loading, error, data }] = useMutation(PROFILE);
 
-  return { loading, error, data, updateProfile };
+  return { loading, error, data: data, updateProfile };
 }
 
 const PROFILE = gql`

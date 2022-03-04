@@ -1,35 +1,36 @@
-image: docker:latest
+image: docker/compose:latest
 services:
   - docker:dind
-
 stages:
-  - test
+  # - build
+  # - test
   - deploy
-
 default:
   before_script:
     - ./deploy/env.sh
+    - cp ./deploy/docker-compose.yml.example ./deploy/docker-compose.yml
+    - docker info
+    - docker-compose --version
 
-test:
-  stage: test
-  only:
-    - dev
-  script:
-    - echo running tests in test
+# test:
+#   stage: test
+#   only:
+#     - dev
+#   script:
+#     - echo running tests in test
 
 deploy-dev:
   stage: deploy
   only:
     - dev
   script:
-    - ./deploy/deploy.sh
-    # - sudo docker-compose -f docker-compose.yml up -d
+    - cd ./deploy;
+    - docker-compose up --build -d
 
-deploy-production:
+deploy-prod:
   stage: deploy
   only:
     - main
   script:
     - ./deploy/deploy.sh
-    # - sudo docker-compose -f docker-compose.yml up -d
   when: manual

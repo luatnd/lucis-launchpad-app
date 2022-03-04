@@ -3,6 +3,9 @@ import "slick-carousel/slick/slick-theme.css";
 import "antd/lib/style/themes/default.less";
 import "antd/dist/antd.less";
 import "../styles/globals.css";
+import 'swiper/css/bundle';
+import 'swiper/css';
+import 'swiper/css/navigation';
 // @ts-ignore
 import smoothscroll from "smoothscroll-polyfill";
 

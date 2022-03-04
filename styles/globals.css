@@ -9,6 +9,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Fix tailwind base fucking behavior */
+img { display: inline }
+
+
 html,
 body {
   padding: 0;
@@ -32,7 +36,9 @@ body {
   overflow-y: auto;
   height: auto !important;
 }
-
+body .slick-dots{
+  display: none !important;
+}
 body .ant-Layout {
   background-color: red;
 }
@@ -333,9 +339,11 @@ body .ant-menu {
 .lucis-container {
   max-width: 1440px;
   padding: 0 100px;
-  margin-top: 120px;
   margin-left: auto;
   margin-right: auto;
+}
+.lucis-container:nth-child(2) {
+  margin-top: 80px;
 }
 .lucis-container:first-child {
   margin-top: 0;
@@ -343,68 +351,189 @@ body .ant-menu {
 .lucis-container.community-container {
   margin-top: 130px;
 }
-@media (min-width: 1280px) and (max-width: 1439px) {
+@media(min-width: 0px) {
   .lucis-container {
-    max-width: 1280px;
-    margin-top: 150px;
-    padding: 0 5rem;
+    max-width: 360px;
+    padding: 0 12px;
   }
 }
-@media (min-width: 1024px) and (max-width: 1279px) {
+@media (min-width: 414px){
   .lucis-container {
-    margin-top: 130px;
-    max-width: 1024px;
-    padding: 0 4rem;
-  }
-}
-
-@media (min-width: 992px) and (max-width: 1023px) {
-  .lucis-container {
-    margin-top: 110px;
-    max-width: 992px;
-    padding: 0 3rem;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  .lucis-container {
-    margin-top: 90px;
-    max-width: 768px;
-    padding: 0px 2rem;
-  }
-}
-@media (min-width: 640px) and (max-width: 767px) {
-  .lucis-container {
-    margin-top: 90px;
-    max-width: 640px;
-    padding: 0px 2rem;
-  }
-}
-
-@media (min-width: 540px) and (max-width: 639px) {
-  .lucis-container {
-    margin-top: 60px;
-    max-width: 540px;
-    padding: 0px 20px;
-  }
-}
-@media (min-width: 414px) and (max-width: 539px) {
-  .lucis-container {
-    margin-top: 60px;
     max-width: 414px;
     padding: 0px 1rem;
   }
 }
-
-@media (min-width: 0px) and (max-width: 413px) {
+@media (min-width: 540px) {
   .lucis-container {
-    margin-top: 60px !important;
-    max-width: 360px;
-    padding: 0;
+    max-width: 540px;
+    padding: 0px 20px;
   }
 }
+@media (min-width: 640px) {
+  .lucis-container {
+    max-width: 640px;
+    padding: 0px 2rem;
+  }
+}
+@media (min-width: 768px) {
+  .lucis-container {
+    max-width: 768px;
+    padding: 0px 2rem;
+  }
+}
+@media (min-width: 992px) {
+  .lucis-container {
+    max-width: 992px;
+    padding: 0 3rem;
+  }
+}
+@media (min-width: 1024px) {
+  .lucis-container {
+    max-width: 1024px;
+    padding: 0 4rem;
+  }
+}
+@media (min-width: 1280px) {
+  .lucis-container {
+    max-width: 1280px;
+    padding: 0 5rem;
+  }
+  .simple-slider {
+    margin-top: 60px;
+  }
+}
+@media (min-width: 1440px) {
+  .lucis-container {
+    max-width: 1440px;
+    padding: 0 5rem;
+  }
+}
+
 
 /*// tmp fix tailwind bug */
 body .backdrop-blur-sm {
   backdrop-filter: blur(4px);
+}
+
+/*
+* Override antd style
+*/
+.ant-modal-close {
+
+}
+.ant-modal-close .ant-modal-close-x {
+  background: #E4E0E0;
+  width: 26px;
+  height: 26px;
+  line-height: 20px;
+  margin: 12px 12px 0 0;
+  border-radius: 13px;
+}
+
+.ant-modal-root .ant-modal-content:before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+
+  border-radius: inherit;
+  padding: 1px;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  /*background: linear-gradient(105.27deg, #aa6ee5 0%, #caffff 20.31%, rgba(202, 255, 255, 0) 37.5%, rgba(253, 240, 116, 0) 68.75%, #fdf074 84.9%, #c1d8f8 100%);*/
+  background: linear-gradient(105.27deg, #aa6ee5 0%, #caffff 20.31%, rgba(202, 255, 255, 0) 37.5%, rgba(253, 240, 116, 0) 68.75%, #fdf074 84.9%, #c1d8f8 100%);
+}
+.ant-modal-root .ant-modal-content {
+  background: linear-gradient(126.08deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%);
+  box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(40px);
+  /* Note: backdrop-filter has minimal browser support */
+
+  border-radius: 10px;
+
+  color: white;
+}
+.ant-modal-content .ant-modal-header {
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+
+  border-bottom: 1px solid rgba(147, 147, 147, 0.5);
+
+  color: white;
+  font-size: 24px;
+}
+.ant-modal-content .ant-modal-title {
+  color: white;
+  font-size: 24px;
+}
+.ant-modal-content .ant-modal-body {
+  color: white;
+  font-size: 18px;
+}
+
+
+/* Override antd message */
+.ant-message-notice .ant-message-notice-content {
+  background: rgba(0,0,0, 0.5);
+  border: 1px solid #444444;
+  box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(6px);
+  border-radius: 10px;
+  color: white;
+}
+
+.ant-message-notice .ant-message-notice-content .ant-message-success,
+.ant-message-notice .ant-message-notice-content .ant-message-info,
+.ant-message-notice .ant-message-notice-content .ant-message-warn,
+.ant-message-notice .ant-message-notice-content .ant-message-error {
+  display: flex;
+  align-items: flex-start;
+}
+
+.ant-message-notice .ant-message-notice-content .ant-message-error {
+  color: #ffbabb;
+}
+.ant-message-notice .ant-message-notice-content a {
+  color: #00ffd7;
+}
+
+.ant-popover-content {}
+.ant-popover-content .ant-popover-arrow {}
+.ant-popover-content .ant-popover-arrow .ant-popover-arrow-content {}
+
+/*Same style as modal content */
+.ant-popover-content .ant-popover-inner:before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+
+  border-radius: inherit;
+  padding: 1px;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  /*background: linear-gradient(105.27deg, #aa6ee5 0%, #caffff 20.31%, rgba(202, 255, 255, 0) 37.5%, rgba(253, 240, 116, 0) 68.75%, #fdf074 84.9%, #c1d8f8 100%);*/
+  background: linear-gradient(105.27deg, #aa6ee5 0%, #caffff 20.31%, rgba(202, 255, 255, 0) 37.5%, rgba(253, 240, 116, 0) 68.75%, #fdf074 84.9%, #c1d8f8 100%);
+}
+.ant-popover-content .ant-popover-inner {
+  background: rgba(123,123,123, 0.2);
+  box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(20px);
+  /* Note: backdrop-filter has minimal browser support */
+  border-radius: 10px;
+  color: white;
 }

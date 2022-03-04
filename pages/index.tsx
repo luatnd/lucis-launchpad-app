@@ -5,11 +5,11 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 // import HotGame from "components/Games";
 import useScroll from "hooks/useScroll";
-import UpComing from "./UpComingPage/UpcomingCampaign";
-import Opening from "./OpeningCampaign/OpeningCampaign";
-import ClosedCampaign from "./ClosedCampaign/ClosedCampaign";
+import UpComing from "../components/UpComingPage/UpcomingCampaign";
+import Opening from "../components/OpeningCampaign/OpeningCampaign";
+import ClosedCampaign from "../components/ClosedCampaign/ClosedCampaign";
 import Footer from "components/Footer";
-import Banner from "./Banner/BannerPage";
+import Banner from "../components/Banner/BannerPage";
 import DocHead from "../components/DocHead";
 import { useHome } from "hooks/home/useHome";
 

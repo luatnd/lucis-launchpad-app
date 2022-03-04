@@ -2,7 +2,7 @@ import { Col, Row } from "antd";
 import Input from "components/Input/Input";
 import { useMutationProfile } from "hooks/profile/useMutationProfile";
 import { ChangeEvent, useState } from "react";
-import s from "./index.module.sass";
+import s from "../../pages/profile/index.module.sass";
 
 type Props = {
   isEdit: boolean;

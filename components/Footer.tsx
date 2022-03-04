@@ -58,13 +58,13 @@ export default function Footer(props: Props) {
 
         </div>
       </div>
-      <div className={s.groupLink}>
-        <a href="#">Term of service</a>
-        <a href="#">Privacy</a>
-        <a href="#">Copyright</a>
-        <a href="#">Help center</a>
-        <a href="#">Blog</a>
-      </div>
+        {/* <div className={s.groupLink}>
+          <a href="#">Term of service</a>
+          <a href="#">Privacy</a>
+          <a href="#">Copyright</a>
+          <a href="#">Help center</a>
+          <a href="#">Blog</a>
+        </div> */}
     </section>
   );
 }

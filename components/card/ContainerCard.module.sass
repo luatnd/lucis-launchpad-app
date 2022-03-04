@@ -1,14 +1,17 @@
 .bg_1
     background: linear-gradient(286deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+    &:global(:before)
+        background: linear-gradient(317deg, #7f6bbdb3 0%, rgba(196, 44, 255, 0) 45%, rgba(196, 44, 255, 0) 30%, #44388b 100%)
 .bg_2
     background: linear-gradient(177.34deg, rgba(0, 0, 0, 0.2) 2.22%, rgba(255, 255, 255, 0) 97.78%)
+    &:global(:before)
+        background: linear-gradient(329deg, #7f6bbdb3 0%, rgba(196, 44, 255, 0) 45%, rgba(196, 44, 255, 0) 30%, #44388b 100%)
 .CardContainer
     backdrop-filter: blur(4px)
     border-radius: 16px
     width: 328px
     height: 450px
     position: relative
-    cursor: pointer
     margin-bottom: 140px
     &:global(:before)
         content: ""
@@ -20,7 +23,6 @@
         border-radius: 16px
         padding: 1px
         //background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
-        background: linear-gradient(262deg, #7f6bbdb3 0%, rgba(196, 44, 255, 0) 45%, rgba(196, 44, 255, 0) 30%, #44388b 100%)
         -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
         -webkit-mask-composite: xor
         mask-composite: exclude
@@ -102,15 +104,23 @@
             opacity: 0
             transition: 0.3s
             .styleBtn
-                min-width: 160px
+                max-width: 47%
+                width: 100%
                 color: #FFF
                 font-size: 24px
                 font-weight: 600
                 line-height: 28px
+                cursor: pointer
+                @media (min-width: 0px)
+                    padding: 8px 15px
+                @media (min-width: 1025px)
+                    padding: 10px 15px
+                
+
+                
 .CardContainer:hover .btnDetail
     transform: translateY(0)
     opacity: 1
-
 
 @media (min-width: 640px)
     .CardContainer
@@ -122,6 +132,8 @@
                 font-size: 24px  !important
             .styleTime::before
                 left: 0 !important
+        .btnDetail
+            height: 52% !important
 @media (min-width: 768px)
     .CardContainer
         width: 328px
@@ -132,6 +144,8 @@
                 font-size: 28px  !important
             .styleTime::before
                 left: 0 !important
+        .btnDetail
+            height: 45% !important
 @media (min-width: 992px)
     .CardContainer
         width: 32%
@@ -164,7 +178,7 @@
 @media (min-width: 1439px)
     .CardContainer
         width: 32%
-        height: 550px
+        height: 600px
         .headingCard
             padding: 260px 22px 0px 22px !important
             .styleTime
@@ -176,3 +190,5 @@
             p
                 font-size: 20px !important
                 margin-top: 12px
+        .btnDetail
+            height: 50% !important

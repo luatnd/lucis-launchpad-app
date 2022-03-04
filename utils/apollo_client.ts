@@ -5,6 +5,24 @@ import { onError } from "@apollo/client/link/error";
 
 // Cache implementation
 const cache = new InMemoryCache();
+
+
+const authCache: {
+  token: string, // store tmp auth token to send with graphql requests
+} = {
+  token: ''
+};
+
+export function setAuthToken(token: string) {
+  authCache.token = token;
+}
+
+function _getAuthToken(): string {
+  return authCache.token;
+}
+
+
+
 // const persistor = new CachePersistor({
 //   cache,
 //   storage: window.localStorage,
@@ -26,8 +44,9 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
       if (message === "Unauthorized") {
         // when token expired or die, localStorage clear
         localStorage.clear();
+
         // redirect to login page
-        window.location.href = "/auth/login";
+        // window.location.href = "/auth/login";
       }
     });
 
@@ -39,10 +58,12 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
-  let token = "";
-  if (!!window) {
-    token = localStorage.getItem("token") ?? "";
-  }
+  // TODO: Get token from auth service
+  // let token = "";
+  // if (!!window) {
+  //   token = localStorage.getItem("token") ?? "";
+  // }
+  const token = _getAuthToken();
 
   // return the headers to the context so httpLink can read them
   return {

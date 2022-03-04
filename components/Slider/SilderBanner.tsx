@@ -10,7 +10,7 @@ type Props = {
 
 export default function ItemSliderBanner(props: Props) {
   return(
-    <div className={s.contentItemSilder}>
+    <div className={`${s.contentItemSilder} lucis-container`}>
       <div className={s.contentDetail}>
       <div className={s.bgItemSlider}></div>
         <div className={s.headingItem}>
@@ -34,7 +34,7 @@ export default function ItemSliderBanner(props: Props) {
               <a href="#"><img src="/assets/Banner/svg/win.svg" alt="" /></a>
             </div>
             <a href={props.setSrcMore} className={s.btnMore}>
-              More detail
+              MORE DETAIL
             </a>
           </div>
 

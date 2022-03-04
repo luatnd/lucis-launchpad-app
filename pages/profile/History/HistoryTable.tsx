@@ -3,6 +3,8 @@ import moment from "moment";
 import { useQueryBoxs, useQueryBoxHistories } from "hooks/home/useQueryBoxs";
 import s from "./history.module.sass";
 
+const { Column, ColumnGroup } = Table;
+
 const HistoryTable = () => {
   const { data, loading, error } = useQueryBoxHistories({ boxTypes: true });
   if (loading) {
@@ -30,22 +32,25 @@ const HistoryTable = () => {
       dataIndex: "box",
       key: "box",
       render: (item: any) => {
-        return <p className="descText">1</p>;
+        return <p className="descText">{item.name ? item.name : "Common box"}</p>;
       },
     },
     {
-      title: "Amount",
+      title: <p style={{ textAlign: "left" }}>Amount</p>,
       dataIndex: "quantity",
       key: "quantity",
+      colSpan: 2,
       // @ts-ignore
-      render: (_, item: any) => {
+      render: (_, item, index) => {
+        // console.log(item);
         return (
           <>
             <p className="descText">{item.quantity}</p>
-            <p className="descSubText">{moment(item.created_at).format("YYYY MM DD hh:mm:ss")}</p>
+            <p className="descSubText">{moment(item.created_at).format("YYYY-MM-DD hh:mm:ss")}</p>
           </>
         );
       },
+      onCell: () => ({ colSpan: 2 }),
     },
     {
       title: "Cost",
@@ -62,15 +67,16 @@ const HistoryTable = () => {
       render: (item: any) => {
         if (item) {
           if (item === "pending") {
-            return <div className={s.statusPending}>{item}</div>;
+            return <div className={`${s.pending} ${s.status}`}></div>;
           } else if (item === "confirming") {
-            return <div className={s.statusConfirming}>{item}</div>;
+            return <div className={`${s.confirming} ${s.status}`}></div>;
           } else {
-            return <div className={s.confirmed}>{item}</div>;
+            return <div className={`${s.confirmed} ${s.status}`}></div>;
           }
         }
         return <>Waiting</>;
       },
+      width: "10%",
     },
   ];
 
@@ -90,7 +96,7 @@ const HistoryTable = () => {
         dataSource={data.boxCampaignBuyHistories}
         pagination={false}
         footer={() => <></>}
-        scroll={{ y: 540 }}
+        scroll={{ y: 1000 }}
         rowKey="id"
         // className={s.tableContainer}
       />

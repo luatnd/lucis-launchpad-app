@@ -19,6 +19,19 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
         color: white
         font-weight: 700
         font-size: $font14
+    .status 
+        width: 8px
+        height: 8px
+        border-radius: 50px
+    .confirmed
+        background: #0BEBD6 
+        box-shadow: 0px 0px 6px #08D7F9
+    .confirming
+        background: #FF8A00 
+        box-shadow: 0px 0px 6px #FF8A00
+    .pending
+        background: #CD28E8 
+        box-shadow: 0px 0px 6px #CD28E8
     :global
         .ant-table-wrapper
             border-radius: 10px
@@ -34,7 +47,7 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
             font-size: 12px
             font-weight: 400
             tr
-                & :first-child
+                &:first-child
                     padding-left: 5px
                 th
                     font-weight: 700
@@ -66,7 +79,7 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
                 font-size: 24px
                 font-weight: 700
                 tr
-                    & :first-child
+                    &:first-child
                         padding: 35px 10px 18px 25px
                     th 
                         padding: 35px 10px 18px 10px
@@ -86,7 +99,7 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
                 font-size: 24px
                 font-weight: 700
                 tr
-                    & :first-child
+                    &:first-child
                         padding: 35px 10px 18px 50px
                     th 
                         padding: 35px 10px 18px 20px
@@ -107,22 +120,30 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
                     font-weight: 300
                 img
                     width: 100px
-
-
-    @media screen and ( min-width: 767px )
-    margin: 50px 0px 200px 0
-    h1 
-        margin-bottom: 35px !important
-        font-size: 24px
-        .ant-table-cell
-            img
-                width: 70px
-
-    @media screen and ( min-width: 1023px )
-    h1 
-        font-size: 36px
-        .ant-table-cell
-            img
-                width: 100px
+@media screen and ( min-width: 767px )
+    .history
+        margin: 50px 0px 200px 0
+        h1 
+            margin-bottom: 35px !important
+            font-size: 24px
+        .status 
+            width: 30px
+            height: 30px
+            .ant-table-cell
+                img
+                    width: 70px
+    // .status
+    //     border-radius: 10px
+@media screen and ( min-width: 1023px )
+    .history
+        h1 
+            font-size: 36px
+            .ant-table-cell
+                img
+                    width: 100px
     
-
+// @media screen and ( min-width: 767px )
+//     .history 
+//         h1
+//             font-size: 36px
+//             color: red

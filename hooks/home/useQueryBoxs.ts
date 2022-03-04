@@ -58,7 +58,7 @@ export function useQueryBoxHistories(includeValue: any) {
 }
 
 const BOX_HISTORIES = gql`
-  query historyBox($include: BoxCampaignInclude) {
+  query historyBox($include: GBoxCampaignInclude) {
     boxCampaignBuyHistories(include: $include) {
       id
       box_campaign_uid

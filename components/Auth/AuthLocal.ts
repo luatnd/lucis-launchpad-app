@@ -24,9 +24,10 @@ export function clearLocalAuthInfo(): void {
   localStorage.setItem('user', '')
 }
 
-export function debug__forceToken_LocalAuthInfo(token: string): void {
+export function debug__forceToken_LocalAuthInfo(token: string, user_id?: number): void {
   const u = getLocalAuthInfo()!;
   u.token = token;
+  u.id = user_id;
   setLocalAuthInfo(u)
 }
 if (isClient) {

@@ -394,6 +394,9 @@ body .ant-menu {
     max-width: 1280px;
     padding: 0 5rem;
   }
+  .simple-slider {
+    margin-top: 60px;
+  }
 }
 @media (min-width: 1440px) {
   .lucis-container {

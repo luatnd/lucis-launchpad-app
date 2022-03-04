@@ -37,7 +37,7 @@ const Home: NextPage = () => {
 
   return (
     <div className={styles.pageContainer}>
-      <DocHead/>
+      <DocHead />
 
       <Banner />
       <UpComing />

@@ -1,0 +1,138 @@
+
+$--bar-color: #010f31
+.countDown
+  max-width: 95%
+.countDownContainer
+  padding: 0 100px
+  padding-top: 120px
+  margin-left: auto
+  margin-right: auto
+  //background: linear-gradient(99.92deg, #000037 0%, #03036F 100%)
+.timeElement
+  position: relative
+  color: #FFFFFF
+  background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+  height: 180px
+  width: 205px
+  line-height: 180px
+  border-radius: 7px
+  font-weight: 700
+  font-size: 32px
+  user-select: none
+  text-align: center
+  overflow: hidden
+  backface-visibility: hidden
+  @media (min-width: 0px) and (max-width: 414px)
+    height: 70px
+    width: 80px
+  @media (min-width: 415px) and (max-width: 639px)
+    height: 76px
+    width: 85px
+  @media (min-width: 640px) and (max-width: 991px)
+    height: 120px
+    width: 130px
+  & > .top
+    position: absolute
+    left: 0
+    right: 0
+
+.topBack
+  position: absolute
+  color: #FFFFFF
+  background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+  top: 0
+  left: 0
+  height: 100%
+  width: 100%
+  line-height: 180px
+  border-radius: 7px
+  font-size: 5rem
+  text-align: center
+  overflow: hidden
+  z-index: 0
+  @media (min-width: 0px) and (max-width: 414px)
+    line-height: 70px
+    font-size: 2.8rem
+  @media (min-width: 415px) and (max-width: 639px)
+    line-height: 86px
+    font-size: 3rem
+  @media (min-width: 640px) and (max-width: 991px)
+    line-height: 126px
+    font-size: 4.5rem
+
+.helperLeft
+  position: absolute
+  background: $--bar-color
+  width: 20px
+  height: 20px
+  border-radius: 50%
+  left: 0
+  top: 50%
+  transform: translate(-50%,-50%)
+  z-index: 3
+  @media (min-width: 0px) and (max-width: 639px)
+    width: 15px
+    height: 15px
+  &::after
+    content: ''
+    position: absolute
+    background: $--bar-color
+    top: 0
+    left: 100%
+    width: 4px
+    height: 4px
+    border-radius: 50%
+  &::before
+    content: ''
+    position: absolute
+    background: $--bar-color
+    bottom: 0
+    left: 100%
+    width: 4px
+    height: 4px
+    border-radius: 50%
+
+.helperRight
+  position: absolute
+  background: $--bar-color
+  background-blend-mode: screen
+  width: 20px
+  height: 20px
+  border-radius: 50%
+  top: 50%
+  right: 0
+  transform: translate(50%,-50%)
+  z-index: 3
+  @media (min-width: 0px) and (max-width: 639px)
+    width: 15px
+    height: 15px
+  &::after
+    content: ''
+    position: absolute
+    background: $--bar-color
+    top: 0
+    right: 100%
+    width: 4px
+    height: 4px
+    border-radius: 50%
+  &::before
+    content: ''
+    position: absolute
+    background: $--bar-color
+    bottom: 0
+    right: 100%
+    width: 4px
+    height: 4px
+    border-radius: 50%
+
+.helperBar
+  position: absolute
+  background: $--bar-color
+  width: 100%
+  height: 5px
+  left: 0
+  top: 50%
+  transform: translateY(-50%)
+  z-index: 3
+  @media (min-width: 0px) and (max-width: 639px)
+    height: 3px

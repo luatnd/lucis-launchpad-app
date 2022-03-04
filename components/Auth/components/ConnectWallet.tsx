@@ -1,21 +1,36 @@
-import {ReactElement, useCallback, useEffect, useState} from "react";
-import { Modal, Button, message } from 'antd';
+import { ReactElement, useCallback, useState } from "react";
+import { Button, message, Modal } from 'antd';
+import { observer } from 'mobx-react-lite'
 
-import {ChainNetwork, NetworkSupportedWallets, Wallet} from "../../utils/blockchain/BlockChain";
-import {ConnectWalletError, connectWalletHelper} from "./ConnectWalletHelper";
+import AuthService, { AuthError } from "../AuthService";
+import { ConnectWalletError, connectWalletHelper } from "../ConnectWalletHelper";
+import ConnectWalletStore, { nonReactive as ConnectWalletStore_NonReactiveData } from "../ConnectWalletStore";
+import AuthStore from "../AuthStore";
+import { ChainNetwork, getChainNetworkFromChainId, NetworkSupportedWallets, Wallet } from "utils/blockchain/BlockChain";
+import { trim_middle } from "utils/String";
+import { getAppNetworkFriendlyName } from "utils/blockchain/ChainConfig";
 
 import s from './ConnectWallet.module.sass';
-import GradientButton from '../Button/GradientButton';
-import { isClient } from "../../utils/DOM";
+import GradientButton from '../../Button/GradientButton';
 
 
 type Props = {
   small?: boolean,
 };
-export default function ConnectWallet(props: Props) {
+export default observer(function ConnectWallet(props: Props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [network, setNetwork] = useState<ChainNetwork | null>(null);
   const [wallet, setWallet] = useState<Wallet | null>(null);
+
+  const {
+    address,
+    network: connected_network
+  } = ConnectWalletStore;
+
+  const {
+    isLoggedIn: logged_in_with_lucis,
+    loading: authing,
+  } = AuthStore;
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -42,23 +57,48 @@ export default function ConnectWallet(props: Props) {
     // TODO: Handle mobile
     connectWalletHelper.initFor(w, network!)
       .then(async provider => {
-        console.log('{changeWallet} AppWalletConnect.initFor provider: ', provider);
+        // console.log('{changeWallet} Wallet Connected: provider: ', provider);
 
         // add profile and switch the network
         const ensureActiveNetworkResult = await connectWalletHelper.web3_ensureActiveTargetChain(w, network)
         console.log('ensureActiveNetworkResult: ', ensureActiveNetworkResult);
 
+
+        if (!ConnectWalletStore_NonReactiveData.web3Provider) {
+          message.error(
+            <span>Unexpected error happen (code: 6002)</span>,
+            8,
+          );
+          return;
+        }
+
+        const web3Provider = ConnectWalletStore_NonReactiveData.web3Provider;
+        const signer = web3Provider.getSigner()
+        const address = await signer.getAddress()
+        const connected_network = await web3Provider.getNetwork()
+
+        // Save to store
+        ConnectWalletStore.network = connected_network;
+        ConnectWalletStore.address = address;
+
+        /**
+         * In case of user connected to BSC network before
+         * Then user choose ETH network => Cancel to switch to network => Still on BSC
+         * => Need to alias the UI back to BSC
+         */
+        const n: ChainNetwork | undefined = getChainNetworkFromChainId(connected_network.chainId);
+        if (n) {
+          setNetwork(n)
+        }
+
         // If connect failed then => set wallet to null
         // If connect success then => set wallet to connected wallet
-        const success = true; // TODO
+        const success = !!address;
         if (success) {
           setWallet(w);
         }
 
-        // finally close the modal if success connect
-        if (success) {
-          setIsModalVisible(false);
-        }
+        // finally close the modal if success verified
       })
       .catch(e => {
         console.error('{changeWallet} e: ', e.code, e.message, e);
@@ -94,11 +134,61 @@ export default function ConnectWallet(props: Props) {
     if (network !== n) {
       // change state
       setNetwork(n);
+      setWallet(null); // reset collect wallet
 
       // show list of suitable wallet for this network
       // Let UI do this
     }
   }, [network]);
+
+  const loginWithLucis = useCallback(async () => {
+    /**
+     * Web3 User need to link their wallet with Lucis system
+     */
+    if (!address) {
+      message.error(
+        <span>Wallet not connected properly, please connect wallet again</span>,
+        3,
+      );
+      return;
+    }
+
+    AuthStore.loading = true;
+    const authService = new AuthService();
+    const r = await authService.login(address!);
+    AuthStore.loading = false;
+    console.log('{loginWithLucis.} r: ', r);
+
+    switch (r.error) {
+      case null:
+        // Success
+        // Already set the auth token to the AuthStore in AuthService
+        message.success(
+          <span>Successfully connect and verify your wallet</span>,
+          5,
+        );
+        setTimeout(() => {
+          setIsModalVisible(false);
+        }, 1000)
+        break;
+
+      case AuthError.UserDeniedMsgSignature:
+        message.error(
+          <span>User denied</span>,
+          5,
+        );
+        break;
+
+      default:
+        message.error(
+          <span>
+            Cannot verify your address due to unhandled error.<br />
+            It's might be the improper wallet connection
+          </span>,
+          5,
+        );
+    }
+  }, [address]);
 
 
   const supported_wallets = network === null ? [] : NetworkSupportedWallets[network];
@@ -190,10 +280,28 @@ export default function ConnectWallet(props: Props) {
 
 
         <p className={s.title}>2. Choose wallet</p>
-        <div className={s.items} style={{justifyContent: "space-evenly"}}>
+        <div className={s.items}>
           {supported_wallets.map(i => predefined_wallets[i])}
         </div>
+
+        <p className={s.title}>3. Verify address</p>
+        <div className={s.items} style={{display: "block", paddingLeft: 16}}>
+          {!!wallet && <>
+            <p>Address: {!address ? '' : trim_middle(address, 8, 8)}</p>
+            <p>Network: {getAppNetworkFriendlyName(connected_network)}</p>
+            {(address && logged_in_with_lucis)
+              ? <Button type="primary" size="large" disabled>
+                  <img src="/assets/UpComing/tick-done-2.svg" alt="" style={{padding: '0 6px 4px 0'}} />
+                  Verified
+                </Button>
+              : <Button type="primary" size="large" onClick={loginWithLucis} loading={authing}>
+                  Verify
+                </Button>
+            }
+          </>}
+        </div>
+
       </Modal>
     </div>
   );
-}
+})

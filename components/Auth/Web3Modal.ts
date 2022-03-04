@@ -29,7 +29,7 @@ export function initWeb3(chainIdNumeric: number): Web3Modal | undefined {
   })
 }
 
-export async function ensureTargetChain(chain_id: number): Promise<any> {
+export async function ensureTargetChain(chain_id: number): Promise<boolean> {
   const provider = ConnectWalletStore_NonReactiveData.provider;
   if (!provider) {
     throw makeError(Web3Error.noProvider , "No provider found, please connect wallet first");
@@ -78,7 +78,7 @@ function _getWalletMeta(provider: any): IClientMeta | undefined {
 async function _switchNetwork(
   provider: any,
   chain_id: number,
-) {
+): Promise<boolean> {
   const chainIdHex = '0x' + chain_id.toString(16)
   // const walletMeta = _getWalletMeta(provider)
 
@@ -92,6 +92,7 @@ async function _switchNetwork(
       method: 'wallet_switchEthereumChain',
       params: [{ chainId: chainIdHex }],
     })
+    return true
   } catch (switchError) {
     // @ts-ignore
     if (switchError.code === 4902) {

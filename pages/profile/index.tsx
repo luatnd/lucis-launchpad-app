@@ -3,10 +3,10 @@ import Footer from "components/Footer";
 import { useState } from "react";
 import { useQueryProfile } from "../../hooks/profile/useQueryProfile";
 import s from "./index.module.sass";
-import Box from "./ProfileSocial";
-import Contact from "./ProfileContact";
-import Info from "./ProfileInfo";
-import History from "./History/History";
+import Box from "../../components/profile/ProfileSocial";
+import Contact from "../../components/profile/ProfileContact";
+import Info from "../../components/profile/ProfileInfo";
+import History from "components/profile/History/History";
 
 const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
@@ -20,6 +20,8 @@ const MyProfile = () => {
   }
 
   const props = { isEdit, setIsEdit, profile: data, refetch };
+
+  console.log(data);
 
   return (
     <>

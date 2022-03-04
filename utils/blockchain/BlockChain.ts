@@ -1,3 +1,5 @@
+import { IChainData } from "./ChainConfig";
+
 export enum ChainBranch {
   web3 = 'web3', // eth, bsc, polygon, ...
   near = 'near',
@@ -52,4 +54,18 @@ export const NetworkSupportedWallets: Record<ChainNetwork | string, Wallet[]> = 
   [ChainNetwork.near]: [Wallet.near],
   [ChainNetwork.polkadot]: [Wallet.polkadot_js],
   [ChainNetwork.solana]: [Wallet.solet],
+}
+
+
+export function getChainNetworkFromChainData(c: IChainData): ChainNetwork | undefined {
+  return getChainNetworkFromChainId(c.chain_id)
+}
+
+export function getChainNetworkFromChainId(chain_id: string | number): ChainNetwork | undefined {
+  const map: Record<string | number, ChainNetwork> = {
+    "56": ChainNetwork.bsc,
+    "97": ChainNetwork.bsc,
+  }
+  const a = map[chain_id];
+  return a ?? undefined;
 }

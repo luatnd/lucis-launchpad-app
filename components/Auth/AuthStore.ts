@@ -9,10 +9,12 @@ type TLoyalty = {
   level: number
   totalVolume: number
 }
-type AuthUser = {
+export type AuthUser = {
   id?: number
+  code?: string
   token?: string
   email?: string
+  name?: string
   loyalty?: TLoyalty
   loading?: boolean
 }
@@ -22,34 +24,25 @@ type AuthWallet = {
   chainId?: number
   balance?: number
 }
-type AuthWeb3Connection = {
-  provider?: any
-  web3Provider?: any
-}
 
 
-export type TAuthInfo = AuthUser | AuthWallet | AuthWeb3Connection
+export type TAuthInfo = AuthUser | AuthWallet;
 
 class AuthStore {
-  id?: number
-  token?: string
-  email?: string
-  loyalty: TLoyalty = {
+  private _id?: number
+  private _code?: string
+  private _token?: string
+  private _email?: string
+  private _name?: string
+  private _loyalty: TLoyalty = {
     level: 0,
     totalVolume: 0,
   }
-  loading: boolean = false
+  private _loading: boolean = false
 
-  address?: string
-  networkId?: number
-  chainId?: number
-  balance?: number
-
-  provider?: any
-  web3Provider?: any
 
   public get isLoggedIn(): boolean {
-    return !!this.token
+    return !!this._token
   }
 
   constructor() {
@@ -57,21 +50,84 @@ class AuthStore {
   }
 
   resetStates() {
-    this.id = undefined
-    this.id = undefined;
-    this.token = undefined;
-    this.email = undefined;
-    this.loyalty = {
+    this._id = undefined
+    this._code = undefined;
+    this._token = undefined;
+    this._email = undefined;
+    this._name = undefined;
+    this._loyalty = {
       level: 0,
       totalVolume: 0,
     };
-    this.loading = false;
-    this.address = undefined;
-    this.networkId = undefined;
-    this.chainId = undefined;
-    this.balance = undefined;
-    this.provider = undefined;
-    this.web3Provider = undefined;
+    this._loading = false;
+  }
+
+  setAuthUser(user: AuthUser) {
+    this._id = user.id
+    this._code = user.code
+    this._token = user.token
+    this._email = user.email
+    this._name = user.name
+    this._loyalty = user.loyalty!
+  }
+
+
+  /* ============= Getter & Setter ==============*/
+
+  get id(): number | undefined {
+    return this._id;
+  }
+
+  set id(value: number | undefined) {
+    this._id = value;
+  }
+
+  get token(): string | undefined {
+    return this._token;
+  }
+
+  set token(value: string | undefined) {
+    this._token = value;
+  }
+
+  get email(): string | undefined {
+    return this._email;
+  }
+
+  set email(value: string | undefined) {
+    this._email = value;
+  }
+
+  get loyalty(): TLoyalty {
+    return this._loyalty;
+  }
+
+  set loyalty(value: TLoyalty) {
+    this._loyalty = value;
+  }
+
+  get loading(): boolean {
+    return this._loading;
+  }
+
+  set loading(value: boolean) {
+    this._loading = value;
+  }
+
+  get code(): string | undefined {
+    return this._code;
+  }
+
+  set code(value: string | undefined) {
+    this._code = value;
+  }
+
+  get name(): string | undefined {
+    return this._name;
+  }
+
+  set name(value: string | undefined) {
+    this._name = value;
   }
 }
 

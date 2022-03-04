@@ -79,14 +79,14 @@ class ConnectWalletHelper {
     }
   }
 
-  public web3_ensureActiveTargetChain(wallet: Wallet, network: ChainNetwork) {
+  public web3_ensureActiveTargetChain(wallet: Wallet, network: ChainNetwork): Promise<boolean> {
     switch (wallet) {
       case Wallet.metamask:
         const chainId = this.getConfiguredChainId(network);
         return ensureTargetChain(chainId);
 
       default:
-        return new Promise<any>((resolve, reject) => {
+        return new Promise<boolean>((resolve, reject) => {
           reject(this.makeError(ConnectWalletError.SwitchChainNotSupported, ConnectWalletError.SwitchChainNotSupported))
         })
     }

@@ -11,7 +11,7 @@ export default class AppLayout extends React.Component {
       <div className="app-layout">
         <AppHeader />
         <div id="app-main">{children}</div>
-        {/* <AppFooter /> */}
+         {/*<AppFooter />*/}
       </div>
     );
   }

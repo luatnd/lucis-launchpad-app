@@ -4,7 +4,7 @@ import Input from "components/Input/Input";
 import { useMutationProfile } from "hooks/profile/useMutationProfile";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { isClient } from "utils/DOM";
-import s from "./index.module.sass";
+import s from "../../pages/profile/index.module.sass";
 
 type Props = {
   isEdit: boolean;

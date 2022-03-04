@@ -39,7 +39,7 @@ const HistoryTable = () => {
       title: <p style={{ textAlign: "left" }}>Amount</p>,
       dataIndex: "quantity",
       key: "quantity",
-      colSpan: 2,
+      rowSpan: 2,
       // @ts-ignore
       render: (_, item, index) => {
         // console.log(item);

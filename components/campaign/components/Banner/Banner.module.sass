@@ -1,0 +1,150 @@
+.backgroundDetail
+  width: 100%
+  height: 100vh
+  background-image: url("/assets/image103.png")
+  background-size: cover
+  background-repeat: no-repeat
+  background-position: center
+
+.backgroundContain
+  position: relative
+  width: 1240px
+  margin: 0 auto
+  @media (min-width: 0px) and (max-width: 414px)
+    max-width: 360px
+
+.notification
+  display: flex
+  justify-content: space-around
+  align-items: center
+  position: absolute
+  width: 304px
+  height: 71px
+  left: 0
+  top: 170px
+  background: rgba(0, 0, 0, 0.3)
+  box-shadow: 0px 4px 35px rgba(234, 211, 12, 0.35)
+  backdrop-filter: blur(40px)
+  border-radius: 10px
+  padding: 1rem
+  @media (min-width: 0px) and (max-width: 360px)
+    margin-left: 10px
+  img
+    border: 2px solid #FFFFFF
+    box-sizing: border-box
+    border-radius: 50%
+    transform: matrix(-1, 0, 0, 1, 0, 0)
+    width: 35px
+    padding: 6px
+  p
+    margin: 0
+    width: 217px
+    height: 28px
+    font-family: Saira
+    font-style: normal
+    font-weight: bold
+    font-size: 24px
+    line-height: 115%
+    text-align: center
+    color: #FFFFFF
+
+.info
+  position: absolute
+  max-width: 689px
+  width: 100%
+  height: 387px
+  left: 0
+  top: 280px
+  background: linear-gradient(126.08deg, rgba(0, 0, 0, 0.3) 13.84%, rgba(0, 0, 0, 0.1) 74.14%)
+  box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
+  backdrop-filter: blur(40px)
+  border-radius: 10px
+  @media (min-width: 0px) and (max-width: 360px)
+    max-width: 340px
+    margin-left: 10px
+  @media (min-width: 0px) and (max-width: 639px)
+    height: auto
+    padding: 20px
+
+.info_contain
+  // width: 135px
+  // height: 74.63px
+  // position: absolute
+  // left: 45px
+  // top: 21px
+  padding: 1.3rem 3rem
+
+@media (min-width: 992px) and (max-width: 1024px)
+  .info_contain
+    padding: .8rem 2rem
+@media (min-width: 0px) and (max-width: 414px)
+  .info_contain
+    padding: .3rem
+
+.info_logo
+  width: 135px
+  height: 74.63px
+  background: url('/assets/logo.png')
+  @media (min-width: 0px) and (max-width: 414px)
+    background-size: 100px
+    background-repeat: no-repeat
+
+.info_title
+  // width: 600px
+  margin: .7rem 0
+  font-family: Saira
+  font-style: normal
+  font-weight: 500
+  font-size: 36px
+  line-height: 115%
+  text-transform: uppercase
+  color: #FFFFFF
+  @media (min-width: 0px) and (max-width: 639px)
+    font-size: 24px
+    margin-top: 0
+
+.info_content
+  // width: 600px
+  font-family: Saira
+  font-style: normal
+  font-weight: 300
+  font-size: 24px
+  line-height: 150%
+  text-align: justify
+  color: #FFFFFF
+  margin-bottom: 28px
+  @media (min-width: 0px) and (max-width: 639px)
+    font-size: 16px
+    margin-bottom: 15px
+
+.info_read
+  display: flex
+  justify-content: space-between
+  @media (min-width: 0px) and (max-width: 639px)
+    flex-direction: column-reverse
+  // width: 600px
+  &>span
+    font-family: Saira
+    font-style: normal
+    font-weight: bold
+    font-size: 24px
+    line-height: 115%
+    text-align: justify
+    text-decoration-line: underline
+    color: #08D7F9
+    cursor: pointer
+    @media (min-width: 0px) and (max-width: 639px)
+      font-size: 16px
+      text-align: right
+      margin-bottom: 20px
+      padding-right: 10px
+
+.info_button_group
+  display: inline-flex
+  width: 304px
+  height: 30px
+  justify-content: space-between
+  @media (min-width: 0px) and (max-width: 414px)
+    margin: 0 auto
+  span
+    cursor: pointer

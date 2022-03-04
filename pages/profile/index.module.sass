@@ -13,7 +13,7 @@ $width15: 15px
 
 
 $gradientBox: linear-gradient(126.08deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%)
-$gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123, 246, 0.4), rgba(251, 76, 222, 0.4), rgba(210, 0, 215, 0.6)) border-box
+$gradientBorder: linear-gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123, 246, 0.4), rgba(251, 76, 222, 0.4), rgba(210, 0, 215, 0.6)) border-box
 
 
 .banner 
@@ -123,7 +123,8 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
         &:disabled
             opacity: 0.7
             
-    @media screen and ( min-width:767px )
+
+    @media screen and (min-width: 767px)
         p, span 
             font-size: $font24
         input 
@@ -135,7 +136,8 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
         .title
             img
                 width: $width25
-    @media screen and ( min-width:1023px )
+
+    @media screen and (min-width: 1023px)
         p, span 
             font-size: $font36
         input 
@@ -177,7 +179,7 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
                     // background: #fff
                     border-radius: 50%
                     width: $width15
-        @media screen and ( min-width:767px )
+        @media screen and ( min-width: 767px )
             padding: 30px 10px 30px 20px
             p,span 
                 font-size: $font24
@@ -191,7 +193,7 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
                         font-size: $font24
                     img 
                         width: $width25
-        @media screen and ( min-width:1023px )
+        @media screen and ( min-width: 1023px )
             p,span 
                 font-size: $font36
             .title

@@ -56,7 +56,7 @@ export default  observer(function User(props: Props) {
         <div className={`${s.avatar} ${s.avBig}`}>
           <img src="/assets/MyProfile/defaultAvatar.png" alt="" />
         </div>
-        <p>11212 1213w12 11313 {name}</p>
+        <p>{name}</p>
       </Col>
       <Col span={16} style={{borderLeft: '1px solid #fff', paddingLeft: 20}}>
         <p className={s.addr}>{trim_middle(address ?? '', 10, 8)}</p>

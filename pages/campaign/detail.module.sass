@@ -4,11 +4,11 @@
   left: 0
   width: 100%
   @media (min-width: 992px) and (max-width: 1024px)
-    max-width: 992px
-    padding: 0px 3rem
+    //max-width: 992px
+    //padding: 0px 3rem
   @media (min-width: 0px) and (max-width: 414px)
-    max-width: 360px
-    padding: 0px 1rem
+    //max-width: 360px
+    //padding: 0px 1rem
 
 .tabs
   & :global(.ant-tabs-nav-wrap)
@@ -28,6 +28,12 @@
     line-height: 57px
     text-transform: uppercase
     color: #FFFFFF
+    @media (min-width: 0px) and (max-width: 639px)
+      font-size: 16px
+      padding: 0 0.5rem
+    @media (min-width: 640px) and (max-width: 991px)
+      font-size: 24px
+      padding: 0 1rem
   & :global(.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn)
     color: #00FFE7
   & :global(.ant-tabs-ink-bar.ant-tabs-ink-bar-animated)

@@ -42,7 +42,7 @@ export default class SimpleSlider extends Component {
       slidesToScroll: 1,
     };
     return (
-      <div>
+      <div className='simple-slider'>
         <Slider {...settings}>
           {listBanner.map((e, i) => (
             <ItemSliderBanner

@@ -91,7 +91,7 @@ const RecentlyBought = () => {
     },
   ];
   return (
-    <div className='lucis-container mt-[116px] h-[500px] mb-[200px]'>
+    <div className='lucis-container mt-[116px] mb-[200px]'>
       <h2 className='flex justify-center text-white text-center text-48px font-bold'>RECENTLY BOUGHT</h2>
       <Table className={`mt-[37px] ${s.table}`} columns={columns} dataSource={data} />
     </div>

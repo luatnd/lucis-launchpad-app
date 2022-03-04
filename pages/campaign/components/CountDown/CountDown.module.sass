@@ -1,5 +1,7 @@
 
 $--bar-color: #010f31
+.countDown
+  max-width: 95%
 .countDownContainer
   padding: 0 100px
   padding-top: 120px
@@ -20,6 +22,15 @@ $--bar-color: #010f31
   text-align: center
   overflow: hidden
   backface-visibility: hidden
+  @media (min-width: 0px) and (max-width: 414px)
+    height: 70px
+    width: 80px
+  @media (min-width: 415px) and (max-width: 639px)
+    height: 76px
+    width: 85px
+  @media (min-width: 640px) and (max-width: 991px)
+    height: 120px
+    width: 130px
   & > .top
     position: absolute
     left: 0
@@ -39,6 +50,15 @@ $--bar-color: #010f31
   text-align: center
   overflow: hidden
   z-index: 0
+  @media (min-width: 0px) and (max-width: 414px)
+    line-height: 70px
+    font-size: 2.8rem
+  @media (min-width: 415px) and (max-width: 639px)
+    line-height: 86px
+    font-size: 3rem
+  @media (min-width: 640px) and (max-width: 991px)
+    line-height: 126px
+    font-size: 4.5rem
 
 .helperLeft
   position: absolute
@@ -50,6 +70,9 @@ $--bar-color: #010f31
   top: 50%
   transform: translate(-50%,-50%)
   z-index: 3
+  @media (min-width: 0px) and (max-width: 639px)
+    width: 15px
+    height: 15px
   &::after
     content: ''
     position: absolute
@@ -80,6 +103,9 @@ $--bar-color: #010f31
   right: 0
   transform: translate(50%,-50%)
   z-index: 3
+  @media (min-width: 0px) and (max-width: 639px)
+    width: 15px
+    height: 15px
   &::after
     content: ''
     position: absolute
@@ -108,3 +134,5 @@ $--bar-color: #010f31
   top: 50%
   transform: translateY(-50%)
   z-index: 3
+  @media (min-width: 0px) and (max-width: 639px)
+    height: 3px

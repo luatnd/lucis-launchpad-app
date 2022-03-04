@@ -21,7 +21,7 @@ function DetailCampaign() {
             <SiteMap />
             <CountDown />
             <Box />
-            <RecentlyBought />
+            {/*<RecentlyBought />*/}
           </TabPane>
           <TabPane tab='RULE' key='2'>
             hello rule

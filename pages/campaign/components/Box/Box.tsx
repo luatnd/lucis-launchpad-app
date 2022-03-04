@@ -41,9 +41,9 @@ const Box = () => {
     ]
     return (
         <div className='lucis-container mt-[116px]'>
-            <Row gutter={24} className='justify-center'>
+            <Row gutter={[24, 40]} className='justify-center'>
                 {listBox.map((e, index) => (
-                    <Col xl={8} key={index}>
+                    <Col key={index}>
                         <div className='flex justify-center'>
                             <h3 className='uppercase text-center text-white font-bold text-36px'>{e.name}</h3>
                         </div>

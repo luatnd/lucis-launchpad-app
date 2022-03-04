@@ -8,7 +8,7 @@ import { Navigation } from "./Navigation";
 import Image from '../Image';
 import Logo from "../../assets/icon/logo.png";
 import {AppEmitter} from "../../services/emitter";
-import AuthBox from "../Auth/AuthBox";
+import AuthBox from "../Auth/components/AuthBox";
 
 const sidebar = {
   open: (height = 1000) => ({

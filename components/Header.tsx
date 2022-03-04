@@ -1,17 +1,19 @@
-import Image from "./Image";
-import Link from "next/link";
-import s from "./Header.module.sass";
-import Logo from "../assets/icon/logo.png";
-import GradientButton from "./Button/GradientButton";
-import { useWindowSize } from "../hooks/useWindowSize";
-import { MenuMobile } from "./Menu/MenuMobile";
 import { useCallback, useEffect, useState } from "react";
-import { scrollToSection } from "../utils/DOM";
-
-// import { Modal, Button } from 'antd';
-import { AppEmitter } from "../services/emitter";
-import AuthBox from "./Auth/AuthBox";
+import Link from "next/link";
 import { useRouter } from "next/router";
+
+import s from "./Header.module.sass";
+import { useWindowSize } from "../hooks/useWindowSize";
+import { scrollToSection } from "../utils/DOM";
+import { AppEmitter } from "../services/emitter";
+
+import Image from "./Image";
+import { MenuMobile } from "./Menu/MenuMobile";
+import AuthBox from "./Auth/components/AuthBox";
+
+import Logo from "../assets/icon/logo.png";
+
+
 type Props = {
   handleMenuOpen: Function;
 };

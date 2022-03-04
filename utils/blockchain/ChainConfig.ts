@@ -1,4 +1,5 @@
 import { toDict } from 'utils/Array'
+import { Network } from "@ethersproject/networks";
 
 export interface IAssetData {
   symbol: string
@@ -209,4 +210,25 @@ export function convertIChainData2ChainParameter(
     blockExplorerUrls: c.blockExplorerUrls,
     iconUrls: c.iconUrls, // Currently ignored.
   }
+}
+
+
+export function getChainDataFromNetwork(network: Network): IChainData | undefined {
+  try {
+    return chainProfilesIndexed[network.chainId]
+  } catch (e) {
+    console.error(e)
+    return undefined
+  }
+}
+
+export function getAppNetworkFriendlyName(network?: Network): string {
+  if (network) {
+    const app_network = getChainDataFromNetwork(network);
+    if (app_network) {
+      return app_network.name;
+    }
+  }
+
+  return '';
 }

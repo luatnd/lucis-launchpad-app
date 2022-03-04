@@ -3,6 +3,9 @@
  * NOTE: Currently we use GraphQL instead
  */
 
+
+export {}
+/*
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 
 const isClient = typeof window !== 'undefined'
@@ -67,3 +70,4 @@ export interface AppApiResponse {
   message: string | null
   data: any
 }
+*/

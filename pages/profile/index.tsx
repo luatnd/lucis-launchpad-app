@@ -3,9 +3,9 @@ import Footer from "components/Footer";
 import { useState } from "react";
 import { useQueryProfile } from "../../hooks/profile/useQueryProfile";
 import s from "./index.module.sass";
-import Box from "./ProfileSocial";
-import Contact from "./ProfileContact";
-import Info from "./ProfileInfo";
+import Box from "../../components/profile/ProfileSocial";
+import Contact from "../../components/profile/ProfileContact";
+import Info from "../../components/profile/ProfileInfo";
 
 const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);

@@ -1,15 +1,15 @@
 import React from "react";
-import CountDown from "./components/CountDown/CountDown";
-import SiteMap from "./components/SiteMap/SiteMap";
-import Team from "./components/Team/Team";
+import CountDown from "../../components/campaign/components/CountDown/CountDown";
+import SiteMap from "../../components/campaign/components/SiteMap/SiteMap";
+import Team from "../../components/campaign/components/Team/Team";
 import { Tabs } from "antd";
 import { TabPane } from "rc-tabs";
-import Trailer from "./components/Trailer/Trailer";
-import Banner from "./components/Banner/Banner";
-import Box from "./components/Box/Box";
+import Trailer from "../../components/campaign/components/Trailer/Trailer";
+import Banner from "../../components/campaign/components/Banner/Banner";
+import Box from "../../components/campaign/components/Box/Box";
 
 import s from "./detail.module.sass";
-import RecentlyBought from "./components/RecentlyBought/RecentlyBought";
+import RecentlyBought from "../../components/campaign/components/RecentlyBought/RecentlyBought";
 
 function DetailCampaign() {
   return (

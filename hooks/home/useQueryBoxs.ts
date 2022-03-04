@@ -48,6 +48,7 @@ const BOX_CAMPAIGN = gql`
 `;
 
 export function useQueryBoxHistories(includeValue: any) {
+  // console.log(includeValue);
   const { loading, error, data: data } = useQuery(BOX_HISTORIES, { variables: includeValue });
 
   return {
@@ -67,8 +68,16 @@ const BOX_HISTORIES = gql`
       status
       tx_hash
       box {
-        name
         cover_img
+        name
+        game {
+          name
+        }
+      }
+      box_price {
+        price
+        chain_symbol
+        currency_name
       }
     }
   }

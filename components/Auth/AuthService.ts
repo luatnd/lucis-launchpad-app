@@ -5,6 +5,7 @@ import apoloClient, { setAuthToken as ApoloClient_setAuthToken } from 'utils/apo
 import { to_hex_str, trim_middle } from "../../utils/String";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "./ConnectWalletStore";
 import { Web3ProviderErrorCodes } from "./ConnectWalletHelper";
+import { clearLocalAuthInfo, getLocalAuthInfo, setLocalAuthInfo } from "./AuthLocal";
 
 
 export enum AuthError {
@@ -17,27 +18,6 @@ type LoginResponse = {
 }
 
 export default class AuthService {
-  setAuthInfo(user: AuthUser): void {
-    localStorage.setItem('user', window.btoa(JSON.stringify(user)))
-  }
-
-  getAuthInfo(): AuthUser | null {
-    try {
-      const user_encoded = localStorage.getItem('user')
-      if (typeof user_encoded === "string") {
-        const user_plaintext = window.atob(user_encoded)
-        return JSON.parse(user_plaintext)
-      }
-
-      return null
-    } catch (e) {
-      return null
-    }
-  }
-
-  clearAuthInfo(): void {
-    localStorage.setItem('user', '')
-  }
 
   async fetchUserData(): Promise<AuthUser> {
     const res = await apoloClient.mutate({
@@ -60,12 +40,12 @@ export default class AuthService {
     //   url: '/user/get',
     // })
     const u = res.data.me
-    const name = u.profile ? u.profile.full_name : trim_middle(u.address, 6, 6);
+    const name = u.profile ? u.profile.full_name : '';
     const user: AuthUser = {
       id: u.id,
       code: u.code,
       email: u.email,
-      name,
+      name: !!name ? name : trim_middle(u.address, 6, 6),
     }
 
     return user
@@ -149,13 +129,13 @@ export default class AuthService {
       throw new Error(`Invalid login address(${address}) vs user address(${u.address})`)
     }
 
-    const name = u.profile ? u.profile.full_name : trim_middle(address, 6, 6);
+    const name = u.profile ? u.profile.full_name : '';
     const user: AuthUser = {
       id: u.id,
       code: u.code,
       token: token,
       email: u.email,
-      name,
+      name: !!name ? name : trim_middle(u.address, 6, 6),
     }
 
     return user
@@ -167,7 +147,7 @@ export default class AuthService {
     };
 
     try {
-      const token = this.getAuthInfo()?.token
+      const token = getLocalAuthInfo()?.token
       if (token) {
         ApoloClient_setAuthToken(token)
 
@@ -177,7 +157,7 @@ export default class AuthService {
 
         user.token = token; // fetchUserData does not have token
 
-        this.setAuthInfo(user)
+        setLocalAuthInfo(user)
         AuthStore.setAuthUser(user);
 
         return res
@@ -187,7 +167,7 @@ export default class AuthService {
         console.log('{AuthService.login} new-login user: ', user);
 
         user.token && ApoloClient_setAuthToken(user.token)
-        this.setAuthInfo(user)
+        setLocalAuthInfo(user)
         AuthStore.setAuthUser(user);
 
         return res
@@ -216,9 +196,8 @@ export default class AuthService {
   }
 
   logout() {
-    // TODO:
-    // apiClient.applyAuth(null)
-    // this.clearAuthInfo()
-    // this.resetStates()
+    ApoloClient_setAuthToken('')
+    AuthStore.resetStates()
+    clearLocalAuthInfo()
   }
 }

@@ -55,7 +55,7 @@ export default observer(function ConnectWallet(props: Props) {
     }
 
     // TODO: Handle mobile
-    connectWalletHelper.initFor(w, network!)
+    connectWalletHelper.connectWallet(w, network!)
       .then(async provider => {
         // console.log('{changeWallet} Wallet Connected: provider: ', provider);
 

@@ -64,7 +64,7 @@ class ConnectWalletHelper {
    * Additional for Mobile:
    *
    */
-  initFor(wallet: Wallet, network: ChainNetwork): Promise<any> {
+  async connectWallet(wallet: Wallet, network: ChainNetwork): Promise<any> {
     switch (wallet) {
       case Wallet.metamask:
         return this.connectMetamask(network);
@@ -88,6 +88,21 @@ class ConnectWalletHelper {
       default:
         return new Promise<boolean>((resolve, reject) => {
           reject(this.makeError(ConnectWalletError.SwitchChainNotSupported, ConnectWalletError.SwitchChainNotSupported))
+        })
+    }
+  }
+
+  public disconnectWallet(wallet: Wallet, network: ChainNetwork) {
+    switch (wallet) {
+      case Wallet.metamask:
+        return this.disconnectMetamask(network);
+      case Wallet.wc:
+        return this.disconnectWalletConnect(network);
+      case Wallet.bsc:
+        return this.disconnectBinanceWallet(network);
+      default:
+        return new Promise<any>((resolve, reject) => {
+          reject("disconnectWallet: Unhandled wallet: " + wallet)
         })
     }
   }
@@ -161,6 +176,25 @@ class ConnectWalletHelper {
       reject("TODO")
     })
   }
+
+  private disconnectMetamask(network: ChainNetwork) {
+    return new Promise<any>((resolve, reject) => {
+      reject("TODO")
+    })
+  }
+
+  private disconnectWalletConnect(network: ChainNetwork) {
+    return new Promise<any>((resolve, reject) => {
+      reject("TODO")
+    })
+  }
+
+  private disconnectBinanceWallet(network: ChainNetwork) {
+    return new Promise<any>((resolve, reject) => {
+      reject("TODO")
+    })
+  }
+
 
   private getConfiguredChainId(network: ChainNetwork): number {
     let requiredChainId: number;

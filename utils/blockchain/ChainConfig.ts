@@ -1,5 +1,6 @@
 import { toDict } from 'utils/Array'
 import { Network } from "@ethersproject/networks";
+import { ChainNetwork } from "./BlockChain";
 
 export interface IAssetData {
   symbol: string

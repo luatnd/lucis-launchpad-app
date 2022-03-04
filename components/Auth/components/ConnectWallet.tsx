@@ -1,4 +1,4 @@
-import { ReactElement, useCallback, useState } from "react";
+import { ReactElement, useCallback, useEffect, useState } from "react";
 import { Button, message, Modal } from 'antd';
 import { observer } from 'mobx-react-lite'
 
@@ -30,7 +30,10 @@ export default observer(function ConnectWallet(props: Props) {
   const {
     isLoggedIn: logged_in_with_lucis,
     loading: authing,
+    // address: authedAddress,
   } = AuthStore;
+
+  // const [verified, setVerified] = useState<boolean>(address === authedAddress);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -155,7 +158,7 @@ export default observer(function ConnectWallet(props: Props) {
 
     AuthStore.loading = true;
     const authService = new AuthService();
-    const r = await authService.login(address!);
+    const r = await authService.login(address!, 1000);
     AuthStore.loading = false;
     console.log('{loginWithLucis.} r: ', r);
 
@@ -167,9 +170,10 @@ export default observer(function ConnectWallet(props: Props) {
           <span>Successfully connect and verify your wallet</span>,
           5,
         );
-        setTimeout(() => {
-          setIsModalVisible(false);
-        }, 1000)
+        // setTimeout(() => {
+        //   setIsModalVisible(false);
+        // }, 1000)
+        // Modal will be unmounted if user ConnectWallet is unmount (has auth token)
         break;
 
       case AuthError.UserDeniedMsgSignature:

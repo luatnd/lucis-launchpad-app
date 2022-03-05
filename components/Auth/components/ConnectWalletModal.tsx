@@ -54,76 +54,123 @@ export default observer(function ConnectWalletModal(props: Props) {
     // TODO: Handle mobile
     connectWalletHelper.connectWallet(w, network!)
       .then(async provider => {
-        // console.log('{changeWallet} Wallet Connected: provider: ', provider);
-
         // add profile and switch the network
         const ensureActiveNetworkResult = await connectWalletHelper.web3_ensureActiveTargetChain(w, network)
         console.log('ensureActiveNetworkResult: ', ensureActiveNetworkResult);
 
-
-        if (!ConnectWalletStore_NonReactiveData.web3Provider) {
-          message.error(
-            <span>Unexpected error happen (code: 6002)</span>,
-            8,
-          );
-          return;
-        }
-
-        const web3Provider = ConnectWalletStore_NonReactiveData.web3Provider;
-        const signer = web3Provider.getSigner()
-        const address = await signer.getAddress()
-        const connected_network = await web3Provider.getNetwork()
-
-        // Save to store
-        ConnectWalletStore.network = connected_network;
-        ConnectWalletStore.address = address;
-
-        /**
-         * In case of user connected to BSC network before
-         * Then user choose ETH network => Cancel to switch to network => Still on BSC
-         * => Need to alias the UI back to BSC
-         */
-        const n: ChainNetwork | undefined = getChainNetworkFromChainId(connected_network.chainId);
-        if (n) {
-          setNetwork(n)
-        }
-
-        // If connect failed then => set wallet to null
-        // If connect success then => set wallet to connected wallet
-        const success = !!address;
-        if (success) {
-          setWallet(w);
-        }
-
-        // finally close the modal if success verified
+        return provider;
       })
-      .catch(e => {
-        console.error('{changeWallet} e: ', e.code, e.message, e);
-        switch (e.message) {
-          case ConnectWalletError.MetamaskNotInstalled:
-            message.error(
-              <span>
+      .then(async provider => handleConnectThen(provider, () => {
+        setWallet(w);
+        connectWalletHelper.cacheConnectionSetting(w, network);
+      }))
+      .catch(e => handleConnectCatch(e));
+  }, [network]);
+
+  useEffect(() => {
+    /**
+     * ------- Try to restore
+     */
+
+
+    // const web3Modal = ConnectWalletStore_NonReactiveData.web3Modal;
+    // console.log('{re-store} web3Modal.cachedProvider: ', web3Modal?.cachedProvider);
+
+    // if (web3Modal) {
+    //   if (web3Modal.cachedProvider) {
+        const [w, network] = connectWalletHelper.fetchConnectionSetting();
+        console.log('{Restore} w, network: ', w, network);
+
+        if (!w || !network) {
+          return
+        }
+
+        // connect to cache provider
+        connectWalletHelper.connectWallet(w, network!)
+          .then(async provider => {
+            // add profile and switch the network
+            const ensureActiveNetworkResult = await connectWalletHelper.web3_ensureActiveTargetChain(w, network)
+            console.log('ensureActiveNetworkResult 2: ', ensureActiveNetworkResult);
+
+            return provider;
+          })
+          .then(async provider => handleConnectThen(provider, () => {
+            setWallet(w);
+            connectWalletHelper.cacheConnectionSetting(w, network);
+
+            return loginWithLucis()
+          }))
+          .catch(e => handleConnectCatch(e));
+      // }
+    // }
+  }, [])
+
+  const handleConnectThen = async (provider: any, onSuccess = () => {}) => {
+    // console.log('{changeWallet} Wallet Connected: provider: ', provider);
+
+    if (!ConnectWalletStore_NonReactiveData.web3Provider) {
+      message.error(
+        <span>Unexpected error happen (code: 6002)</span>,
+        8,
+      );
+      return;
+    }
+
+    const web3Provider = ConnectWalletStore_NonReactiveData.web3Provider;
+    const signer = web3Provider.getSigner()
+    const address = await signer.getAddress()
+    const connected_network = await web3Provider.getNetwork()
+
+    // Save to store
+    ConnectWalletStore.network = connected_network;
+    ConnectWalletStore.address = address;
+
+    /**
+     * In case of user connected to BSC network before
+     * Then user choose ETH network => Cancel to switch to network => Still on BSC
+     * => Need to alias the UI back to BSC
+     */
+    const n: ChainNetwork | undefined = getChainNetworkFromChainId(connected_network.chainId);
+    if (n) {
+      setNetwork(n)
+    }
+
+    // If connect failed then => set wallet to null
+    // If connect success then => set wallet to connected wallet
+    const success = !!address;
+    if (success) {
+      onSuccess()
+    }
+
+    // finally close the modal if success verified
+  }
+
+  const handleConnectCatch = async (e: any) => {
+    console.error('{changeWallet} e: ', e.code, e.message, e);
+    switch (e.message) {
+      case ConnectWalletError.MetamaskNotInstalled:
+        message.error(
+          <span>
                 [PC] Metamask extension is not installed. <br/>
                 Please install it from <a href="https://metamask.io/download/">metamask.io</a>
               </span>,
-              8,
-            );
-            break;
-          case ConnectWalletError.UserRejected:
-            message.error(
-              <span>
+          8,
+        );
+        break;
+      case ConnectWalletError.UserRejected:
+        message.error(
+          <span>
                 You've rejected to do this action.<br/>
                 Or there's already a same pending request on your wallet.
               </span>,
-              5,
-            );
-            break;
-          default:
-            console.error("{changeWallet.initFor} Above error was not handled")
-            break;
-        }
-      });
-  }, [network]);
+          5,
+        );
+        break;
+      default:
+        console.error("{changeWallet.initFor} Above error was not handled")
+        break;
+    }
+  }
 
   const changeNetwork = useCallback(async (n: ChainNetwork) => {
     // check different before update is not required because react will do it
@@ -193,6 +240,7 @@ export default observer(function ConnectWalletModal(props: Props) {
     // reset UI
     setNetwork(null)
     setWallet(null)
+    connectWalletHelper.cacheConnectionSetting(undefined, undefined);
 
     const provider = ConnectWalletStore_NonReactiveData.provider
     const web3Modal = ConnectWalletStore_NonReactiveData.web3Modal!

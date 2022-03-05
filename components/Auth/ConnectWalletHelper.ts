@@ -221,6 +221,27 @@ class ConnectWalletHelper {
 
     return requiredChainId;
   }
+
+  cacheConnectionSetting(wallet?: Wallet, network?: ChainNetwork) {
+    localStorage.setItem('wallet_connect', JSON.stringify([wallet, network]))
+  }
+
+  fetchConnectionSetting(): [Wallet?, ChainNetwork?] {
+    const a_str = localStorage.getItem('wallet_connect')
+    if (!a_str) {
+      return [undefined, undefined]
+    }
+
+    try {
+      const a = JSON.parse(a_str)
+      const w: Wallet = a[0] as Wallet;
+      const n: ChainNetwork = a[1] as ChainNetwork;
+
+      return [w, n]
+    } catch (e) {
+      return [undefined, undefined]
+    }
+  }
 }
 
 export const connectWalletHelper = new ConnectWalletHelper();

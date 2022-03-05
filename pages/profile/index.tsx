@@ -1,15 +1,16 @@
 import DocHead from "components/DocHead";
 import Footer from "components/Footer";
 import { useState } from "react";
-import { useQueryProfile } from "../../hooks/profile/useQueryProfile";
+import { useQueryProfile } from "../../components/Profile/Hooks/useQueryProfile";
 import s from "./index.module.sass";
-import Box from "../../components/profile/ProfileSocial";
-import Contact from "../../components/profile/ProfileContact";
-import Info from "../../components/profile/ProfileInfo";
+import Box from "../../components/Profile/ProfileSocial";
+import Contact from "../../components/Profile/ProfileContact";
+import Info from "../../components/Profile/ProfileInfo";
+import History from "components/Profile/History/History";
 
 const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
-  const { data, loading, error } = useQueryProfile();
+  const { data, loading, error, refetch } = useQueryProfile();
 
   if (loading) {
     return <>Loading ...</>;
@@ -18,7 +19,7 @@ const MyProfile = () => {
     return <>Error...</>;
   }
 
-  const props = { isEdit, setIsEdit, profile: data };
+  const props = { isEdit, setIsEdit, profile: data, refetch };
 
   return (
     <>
@@ -30,6 +31,7 @@ const MyProfile = () => {
           <Info {...props} />
           <Contact {...props} />
           <Box {...props} />
+          <History {...props} />
         </div>
         <Footer />
       </div>

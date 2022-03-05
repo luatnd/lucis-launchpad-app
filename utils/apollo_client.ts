@@ -9,15 +9,14 @@ import { getLocalAuthInfo } from "../components/Auth/AuthLocal";
 // Cache implementation
 const cache = new InMemoryCache();
 
-
 const authCache: {
   /**
    * store tmp auth token to send with graphql requests
    * If you wanna get JWT token of current user, plz get from AuthStore.token instead
    */
-  token: string,
+  token: string;
 } = {
-  token: _fetchInitialAuthTokenFromLocal()
+  token: _fetchInitialAuthTokenFromLocal(),
 };
 
 export function setAuthToken(token: string) {
@@ -37,10 +36,8 @@ function _getAuthToken(): string {
 
 function _fetchInitialAuthTokenFromLocal(): string {
   const u = getLocalAuthInfo();
-  return u ? (u.token ?? '') : '';
+  return u ? u.token ?? "" : "";
 }
-
-
 
 // const persistor = new CachePersistor({
 //   cache,
@@ -69,7 +66,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
         // fire event
         // AppEmitter.emit('GraphqlError.Unauthorized')
-        console.error('GraphqlError.Unauthorized')
+        console.error("GraphqlError.Unauthorized");
       }
     });
 
@@ -87,7 +84,7 @@ const authLink = setContext((_, { headers }) => {
   //   token = localStorage.getItem("token") ?? "";
   // }
   const token = _getAuthToken();
-  console.log('{apolo.authLink} token: ', token);
+  console.log("{apolo.authLink} token: ", token);
 
   // return the headers to the context so httpLink can read them
   return {

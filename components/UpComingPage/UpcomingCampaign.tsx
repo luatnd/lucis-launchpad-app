@@ -1,7 +1,6 @@
 import CardItem from "components/card/ContainerCard";
 import TitleSection from "components/TitleNameSection";
 import s from "./UpcomingCampaign.module.sass";
-import { useUpComing } from "./useUpComing";
 
 type Props = {};
 
@@ -63,7 +62,6 @@ const ListCard = [
 ];
 
 export default function UpComing(props: Props) {
-  const { resultUpComing } = useUpComing()
   return (
     <section className="lucis-container">
       <TitleSection text="Upcoming campaign" />

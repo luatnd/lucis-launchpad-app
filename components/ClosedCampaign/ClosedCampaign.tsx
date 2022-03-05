@@ -10,7 +10,7 @@ const ListCard = [
     nameGame: "AXIE INFINITY",
     title:
       "Build up a collection and use them across an ever expanding universe of games",
-    statusTime: "UpComing",
+    statusTime: "Sale",
     styleBg: false,
   },
   {

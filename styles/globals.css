@@ -45,14 +45,6 @@ body .ant-Layout {
 body .ant-layout-header {
   height: 125px;
 }
-body h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0 !important;
-}
 
 /* body gradient */
 body {
@@ -393,9 +385,9 @@ body .ant-menu {
     padding: 0 4rem;
   }
 }
-@media (min-width: 1280px) {
+@media (min-width: 1279px) {
   .lucis-container {
-    max-width: 1280px;
+    max-width: 1279px;
     padding: 0 5rem;
   }
   .simple-slider {

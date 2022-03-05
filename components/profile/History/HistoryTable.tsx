@@ -43,7 +43,10 @@ const HistoryTable = (profile: any) => {
             <p className="descText">
               {item.box_price.boxType?.name ? item.box_price.boxType.name : "Common box"}
             </p>
-            <p className="descSubText">{item.box_price.chain_symbol.toUpperCase()}</p>
+            <p className="descSubText">
+              <img src={item.box_price.chain_icon} />
+              {item.box_price.chain_symbol.toUpperCase()}
+            </p>
             <p className="descSubText" style={{ whiteSpace: "nowrap" }}>
               {item.box.game.name} | {item.box.name ? item.box.name : "Box campaign name"}
             </p>

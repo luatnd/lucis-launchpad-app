@@ -1,5 +1,5 @@
 import { Button, message, Modal } from "antd";
-import { ReactElement, useCallback, useState } from "react";
+import { ReactElement, useCallback, useEffect, useState } from "react";
 import { Network } from "@ethersproject/networks";
 
 import { ChainNetwork, getChainNetworkFromChainId, NetworkSupportedWallets, Wallet } from "utils/blockchain/BlockChain";
@@ -12,6 +12,7 @@ import AuthStore from "../AuthStore";
 import { ConnectWalletError, connectWalletHelper } from "../ConnectWalletHelper";
 import AuthService, { AuthError } from "../AuthService";
 import AuthBoxStore from "./AuthBoxStore";
+import { AppEmitter } from "../../../services/emitter";
 
 
 type Props = {};
@@ -187,6 +188,40 @@ export default observer(function ConnectWalletModal(props: Props) {
     }
   }, [address]);
 
+
+  const disconnectWallet = useCallback(async () => {
+    // reset UI
+    setNetwork(null)
+    setWallet(null)
+
+    const provider = ConnectWalletStore_NonReactiveData.provider
+    const web3Modal = ConnectWalletStore_NonReactiveData.web3Modal!
+
+    console.log('{disconnectWallet} provider: ', provider, provider.isMetaMask)
+    console.log('{disconnectWallet} cachedProvider: ', web3Modal, web3Modal.cachedProvider)
+
+    // remove provider cache in browser
+    await web3Modal.clearCachedProvider()
+
+    // disconnect wallet: TODO: check this
+    if (provider?.disconnect && typeof provider.disconnect === 'function') {
+      await provider.disconnect()
+    } else {
+      console.warn('{disconnectWallet} cannot trigger disconnect: ')
+    }
+
+    setTimeout(() => {
+      ConnectWalletStore.resetStates();
+      ConnectWalletStore_NonReactiveData.resetStates();
+    }, 500);
+  }, [])
+
+  useEffect(() => {
+    const listener = AppEmitter.addListener('onWalletDisconnect', disconnectWallet)
+    return () => {
+      listener.remove()
+    }
+  }, [])
 
 
   const supported_wallets = network === null ? [] : NetworkSupportedWallets[network];

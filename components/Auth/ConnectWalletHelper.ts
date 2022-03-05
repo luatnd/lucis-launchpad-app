@@ -145,6 +145,7 @@ class ConnectWalletHelper {
           const web3Provider = new providers.Web3Provider(provider, 'any')
           ConnectWalletStore_NonReactiveData.provider = provider;
           ConnectWalletStore_NonReactiveData.web3Provider = web3Provider;
+          ConnectWalletStore_NonReactiveData.web3Modal = web3Modal;
 
           resolve(provider)
         })

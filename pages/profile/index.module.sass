@@ -7,28 +7,35 @@ $height: 76px
 $height: 56px
 $height: 36px
 $width35: 35px
+$width30: 30px
 $width25: 25px
 $width15: 15px
-
+@import styles/common
 
 
 $gradientBox: linear-gradient(126.08deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%)
-$gradientBorder: linear-gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123, 246, 0.4), rgba(251, 76, 222, 0.4), rgba(210, 0, 215, 0.6)) border-box
+$gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123, 246, 0.4), rgba(251, 76, 222, 0.4), rgba(210, 0, 215, 0.6)) border-box
 
 
 .banner 
-    position: absolute
-    top: 0
+    position: relative
+    // top: 50px
     width: 100%
     > img
         width: 100%
+    @media screen and ( min-width: 767px ) 
+        top: -50px
+    @media screen and ( min-width: 1024px ) 
+        top: -200px
+    @media screen and ( min-width: 1279px )
+        top: -300px
 .verifyModal
     .ant-modal-content
         color: blue
 // Info component
 .avatar
     img 
-        border-radius: 50%
+        border-radius: 50% 
 .info 
     color: white
     display: flex
@@ -45,13 +52,14 @@ $gradientBorder: linear-gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
         font-size: $font14
         font-weight: 400
         display: flex
-        gap: 20px
+        gap: 10px
         align-items: center
         button
-            position: relative
-            font-size: $font14
-            right: 10px
-            top: -4px
+            span
+                position: relative
+                top: -4px
+            img 
+                width: $width15
     .id, .balance  
         font-size: $font9
         font-weight: 300
@@ -66,35 +74,27 @@ $gradientBorder: linear-gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
                 font-size: $font24
                 right: 10px
                 top: -5px
+                span
+                    top: -4px
+                img 
+                    width: $width25
         .id, .balance  
             font-size: $font14
         .balance
             font-weight: 400
     @media screen and ( min-width: 1023px )
-        // button
+        button  
+            font-size: $font36 
         .name
             font-size: $font36
             button
-                font-size: $font36
-                right: 0
-                top: -10px
-        .balance, .id 
-            font-weight: 400
-    @media screen and ( min-width: 1023px ) 
-        font-size: $font36
-        button
-            font-size: $font36
-            button
-                right: -30px
-        .name
-            font-size: $font36
+                img 
+                    width: $width35
         .balance, .id
             font-size: $font24
             font-weight: 300
         .id
             font-size: $font24
-
-
 // Contact container 
 .contactContainer 
     padding: 10px 10px 10px 20px
@@ -105,13 +105,9 @@ $gradientBorder: linear-gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
     input 
         font-size: $font14
     .invalid 
-        display: flex
-        align-items: center
-        gap: 6px
-        p, span 
-            font-size: 9px
-            color: red
-        
+        color: red
+        font-size: $font14
+        padding-left: 12px
     .title 
         display: flex
         gap: 10px
@@ -122,89 +118,83 @@ $gradientBorder: linear-gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
         border-radius: 8px
         &:disabled
             opacity: 0.7
+            background: #C4C4C4
             
-
-    @media screen and (min-width: 767px)
+    @media screen and ( min-width:767px )
+        padding: 10px 10px 10px 20px
         p, span 
             font-size: $font24
         input 
             font-size: $font24
         .invalid
-            gap: 10px
-            p, span
-                font-size: 18px
+            padding-left: 16px
+            font-size: $font24
         .title
             img
                 width: $width25
-
-    @media screen and (min-width: 1023px)
-        p, span 
-            font-size: $font36
-        input 
-            font-size: $font36
+    @media screen and ( min-width:1023px )
+        padding: 62px 10px 62px 100px
         .title
             img
-                width: $width35
+                width: $width30
 // // Box component
 .box 
-    background: linear-gradient(#000031,#000031) padding-box, linear-gradient(to right, rgba(255, 255, 255, 0.7), rgba(210, 0, 215, 0.6), rgba(251, 76, 222, 0.4), rgba(244, 123, 246, 0.4) ) border-box
+    background: linear-gradient(151deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%)
+
+    @include border-grad-3(linear-gradient(0deg,rgba(255, 255, 255, 0.7),rgba(244, 123, 246, 0.4),rgba(251, 76, 222, 0.4),rgba(210, 0, 215, 0.6)))
+
     color: white
-    border: 1px solid transparent
     border-radius: 25px
-    display: inline-block
     width: 100%
     overflow: hidden
     word-wrap: break-word
     word-break: break-word
     font-size: 14px
+    padding: 20px
     p,span
         margin: 0
         font-size: $font14
-    .wrapper 
-        padding: 10px 10px 10px 20px
-        background: linear-gradient(126.08deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%)
-        .title 
+
+    .title 
+        display: flex
+        align-items: center
+        gap: 10px
+        img 
+            width: $width15
+    .social
+        a
+            color: white
             display: flex
             align-items: center
             gap: 10px
             img 
+                // background: #fff
+                border-radius: 50%
                 width: $width15
+    @media screen and ( min-width:767px )
+        padding: 30px 10px 30px 20px
+        p,span 
+            font-size: $font24
+        .title
+            img
+                width: $width25
         .social
             a
-                color: white
-                display: flex
-                align-items: center
-                gap: 10px
+                gap: 20px
+                input
+                    font-size: $font24
                 img 
-                    // background: #fff
-                    border-radius: 50%
-                    width: $width15
-        @media screen and ( min-width: 767px )
-            padding: 30px 10px 30px 20px
-            p,span 
-                font-size: $font24
-            .title
-                img
                     width: $width25
-            .social
-                a
-                    gap: 20px
-                    input
-                        font-size: $font24
-                    img 
-                        width: $width25
-        @media screen and ( min-width: 1023px )
-            p,span 
-                font-size: $font36
-            .title
-                img
-                    width: $width35
-            .social
-                a
-                    input
-                        font-size: $font36
-                    img 
-                        width: $width35
-
-
-
+    @media screen and ( min-width:1023px )
+        // p,span 
+        //     font-size: $font36
+        padding: 62px 10px 62px 100px
+        .title
+            img
+                width: $width30
+        .social
+            a
+                input
+                    font-size: $font24
+                img 
+                    width: $width30

@@ -5,6 +5,19 @@
   box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
   backdrop-filter: blur(40px)
   border-radius: 25px
+  position: relative
+  &:before
+    content: ""
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    border-radius: 25px
+    padding: 1px
+    background: linear-gradient(rgba(255, 255, 255, 0.7),rgba(244, 123, 246, 0.4),rgba(251, 76, 222, 0.4),rgba(210, 0, 215, 0.6))
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
+    -webkit-mask-composite: xor
 
   .bgImage
     max-width: 398px

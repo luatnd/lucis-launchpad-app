@@ -41,13 +41,13 @@ const Box = () => {
     ]
     return (
         <div className='lucis-container mt-[116px]'>
-            <Row gutter={[24, 40]} className='justify-center'>
+            <Row gutter={[24, 50]} className='justify-center'>
                 {listBox.map((e, index) => (
                     <Col key={index}>
                         <div className='flex justify-center'>
-                            <h3 className='uppercase text-center text-white font-bold text-36px'>{e.name}</h3>
+                            <h3 className='uppercase text-center text-white font-bold text-[24px] md:text-[36px]'>{e.name}</h3>
                         </div>
-                        <div className={`mt-20 h-[798px] ${s.boxDetail} relative`}>
+                        <div className={`mt-5 h-[798px] ${s.boxDetail} relative`}>
                             <div className={`${s.bgImage}`}>
                                 <img src={e.image} width='340px' height='273px' className='mx-auto block pt-[60px]' alt=""/>
                             </div>
@@ -81,7 +81,7 @@ const Box = () => {
 
                                 }
                                 <div className='font-bold text-white text-18px mt-[29px]'>
-                                    <div key={index} className='flex justify-between'>
+                                    <div key={index} className='flex justify-between items-center'>
                                         <span>Price per 1 box:</span>
                                         <div className='flex items-center gap-1'>
                                             <img src="/assets/Box/image125.png" width="40px" height="40px" alt=""/>

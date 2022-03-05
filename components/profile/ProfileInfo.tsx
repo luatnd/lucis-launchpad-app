@@ -1,7 +1,7 @@
 import { CheckOutlined, CloseOutlined, CopyOutlined, EditOutlined } from "@ant-design/icons";
 import { Col, Row } from "antd";
 import Input from "components/Input/Input";
-import { useMutationProfile } from "hooks/profile/useMutationProfile";
+import { useMutationProfile } from "components/Profile/Hooks/useMutationProfile";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { isClient } from "utils/DOM";
 import s from "../../pages/profile/index.module.sass";
@@ -72,14 +72,14 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
   }, [isCopy]);
 
   return (
-    <div className="my-6">
-      <Row gutter={[10, 10]} align="middle">
-        <Col span={8}>
+    <div className="mt-6">
+      <Row align="middle" wrap={false} justify="space-between">
+        <Col xs={7}>
           <div className={s.avatar}>
             <img src="/assets/MyProfile/defaultAvatar.png" alt="" />
           </div>
         </Col>
-        <Col span={16}>
+        <Col xs={16}>
           <div className={s.info}>
             <div>
               {isEdit ? (
@@ -88,15 +88,16 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
                 // <input className={s.name} onChange={handleChangeName} value={tempName} />
                 <p className={s.name}>{tempName}</p>
               )}
-              {/* TODO: change to address */}
-              <p className={s.id}>{profile ? profile.me.id : ""}</p>
+              <p className={s.id}>{profile ? profile.me.address : ""}</p>
             </div>
             {/* <p>Exit</p> */}
             <button onClick={toggleEdit}>{isEdit ? <CloseOutlined /> : <EditOutlined />}</button>
           </div>
 
           <div className={s.info}>
-            <p className={s.balance}>Balance: {profile ? profile.me.balance : "0"} BNB</p>
+            <p className={s.balance}>
+              Balance: {profile?.me.balance ? profile.me.balance : "0"} BNB
+            </p>
           </div>
 
           <div className={`${s.info} sm:mt-2 lg:mt-5`}>
@@ -104,7 +105,7 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
               Affiliate ID:
               <span ref={affilateIdRef}>{profile?.me.code ? profile.me.code : ""}</span>
               <button onClick={handleCopyAffilateId} disabled={isCopy}>
-                {!isCopy ? <CopyOutlined title="Copy to clipboard" /> : <CheckOutlined />}
+                {!isCopy ? <img src={"/assets/MyProfile/copy.svg"} /> : <CheckOutlined />}
               </button>
             </p>
           </div>

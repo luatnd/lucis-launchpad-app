@@ -7,8 +7,8 @@ export function useMutaionVerifyEmail() {
 }
 
 const VERIFY_EMAIL = gql`
-  mutation VerifyEmail($email: String!) {
-    verifyEmail(email: $email) {
+  mutation VerifyEmail($value: String!) {
+    verifyEmail(email: $value) {
       email
     }
   }

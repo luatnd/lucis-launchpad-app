@@ -14,7 +14,7 @@ const Input = ({ value, onChange, onBlur, className, placeholder, valid = true }
   return (
     <div className={`${s.inputC} ${valid ? "" : s.invalid}`}>
       <input
-        value={value}
+        value={value !== "" ? value : undefined}
         className={`${className} ${s.input}`}
         placeholder={placeholder}
         onBlur={onBlur}

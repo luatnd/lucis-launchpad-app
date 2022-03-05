@@ -2,11 +2,13 @@ import { gql, useQuery } from "@apollo/client";
 
 export function useQueryBoxs() {
   const { loading, error, data, refetch } = useQuery(BOX_CAMPAIGN);
+  const { loading: loadingOpening, error: errorOpening, data: dataOpening } = useQuery(OPENING_BOX);
 
   return {
     loading,
     error,
     data: data,
+    dataOpening,
   };
 }
 
@@ -46,3 +48,28 @@ const BOX_CAMPAIGN = gql`
     }
   }
 `;
+
+const OPENING_BOX = gql`
+  query {
+    openingBoxCampaign{
+      name
+      desc
+      cover_img
+      status
+      start
+      game{
+        uid
+        name
+        desc
+        logo
+        desc_team
+        website
+        whitepaper
+        facebook
+        twitter
+        telegram
+        youtube
+      }
+    }
+  }
+`

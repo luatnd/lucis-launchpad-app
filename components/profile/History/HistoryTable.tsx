@@ -8,8 +8,8 @@ const HistoryTable = (profile: any) => {
   const { data, loading, error } = useQueryBoxHistories({
     include: { boxTypes: true, game: true },
   });
-  const address = profile.profile.me.address ?? "";
-  console.log(profile.profile.me);
+  // const address = profile.profile.me.address ?? "";
+  // console.log(profile.profile.me);
 
   if (loading) {
     return <>Loading ...</>;
@@ -37,7 +37,7 @@ const HistoryTable = (profile: any) => {
       key: "box",
       // @ts-ignore
       render: (_, item: any) => {
-        // console.log(item);
+        console.log(item);
         return (
           <>
             <p className="descText">
@@ -45,9 +45,9 @@ const HistoryTable = (profile: any) => {
             </p>
             <p className="descSubText">
               <img src={item.box_price.chain_icon} />
-              {item.box_price.chain_symbol.toUpperCase()}
+              <span>{item.box_price.chain_name}</span>
             </p>
-            <p className="descSubText" style={{ whiteSpace: "nowrap" }}>
+            <p className="descSubText pt-3" style={{ whiteSpace: "nowrap" }}>
               {item.box.game.name} | {item.box.name ? item.box.name : "Box campaign name"}
             </p>
           </>
@@ -78,8 +78,6 @@ const HistoryTable = (profile: any) => {
       key: "box",
       // @ts-ignore
       render: (_, item: any) => {
-        console.log(item);
-
         return (
           <p className="descText">{`${
             item.quantity * item.box_price.price
@@ -93,43 +91,32 @@ const HistoryTable = (profile: any) => {
       dataIndex: "status",
       key: "status",
       width: "10%",
-      render: (item: any) => {
+      // @ts-ignore
+      render: (_, item: any) => {
         console.log(item);
+        const statusClass =
+          item.status === "PENDING"
+            ? s.pending
+            : item.status === "CONFIRMING"
+            ? s.confirming
+            : item.status === "FAILED"
+            ? s.failed
+            : item.status === "PROCESSING"
+            ? s.processing
+            : item.status === "SUCCEED"
+            ? s.succeed
+            : "";
 
         return (
           <>
-            {item === "PENDING" ? (
-              <>
-                <div className={`${s.pending} ${s.status}`}></div>
-                <p className={`${s.pendingText} descSubText`}>{trim_middle(address, 5, 3)}</p>
-              </>
-            ) : item === "CONFIRMING" ? (
-              <>
-                <div className={`${s.confirming} ${s.status}`}></div>
-                <p className={`${s.confirmingText} descSubText`}>{trim_middle(address, 5, 3)}</p>
-              </>
-            ) : item === "SUCCEED" ? (
-              <>
-                <div className={`${s.succeed} ${s.status}`}></div>
-                <p className={`${s.succeedText} descSubText`}>{trim_middle(address, 5, 3)}</p>
-              </>
-            ) : (
-              ""
-            )}
+            <div className={`${statusClass} ${s.status}`}></div>
+            {/* {item.box_price.chain_symbol === "BSC" && (
+              <a href={`https://testnet.bscscan.com/tx/${item.tx_hash}`}>
+                {item.tx_hash && trim_middle(item.tx_hash, 4, 3)}
+              </a>
+            )} */}
           </>
         );
-
-        //   <div
-        //   className={`${
-        //     item === "PENDING"
-        //       ? `${s.pending}`
-        //       : item === "CONFIRMING"
-        //       ? s.confirm
-        //       : item === "SUCCEED"
-        //       ? s.succeed
-        //       : ""
-        //   } ${s.status}`}
-        // ></div>
       },
     },
   ];

@@ -1,12 +1,10 @@
-import { ChangeEvent, useState } from "react";
-import VerifyModal from "./VerifyModal/VerifyModal";
-import s from "../../pages/profile/index.module.sass";
 import { Col, Row } from "antd";
 import Input from "components/Input/Input";
-import { useMutationProfile } from "hooks/profile/useMutationProfile";
-import { WarningOutlined } from "@ant-design/icons";
-import client from "utils/apollo_client";
-import { useMutaionVerifyEmail } from "hooks/profile/useVerifyEmail";
+import { useMutationProfile } from "components/Profile/Hooks/useMutationProfile";
+import { useMutaionVerifyEmail } from "components/Profile/Hooks/useVerifyEmail";
+import { ChangeEvent, useState } from "react";
+import s from "../../pages/profile/index.module.sass";
+import VerifyModal from "./VerifyModal/VerifyModal";
 
 type Props = {
   isEdit: boolean;

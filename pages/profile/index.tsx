@@ -31,7 +31,7 @@ const MyProfile = () => {
           <Info {...props} />
           <Contact {...props} />
           <Box {...props} />
-          <History />
+          <History {...props} />
         </div>
         <Footer />
       </div>

@@ -1,14 +1,16 @@
 import { Table } from "antd";
 import moment from "moment";
-import { useQueryBoxs, useQueryBoxHistories } from "hooks/home/useQueryBoxs";
 import s from "./history.module.sass";
+import { trim_middle } from "utils/String";
+import { useQueryBoxHistories } from "../Hooks/useQueryBoxHistories";
 
-const { Column, ColumnGroup } = Table;
-
-const HistoryTable = () => {
+const HistoryTable = (profile: any) => {
   const { data, loading, error } = useQueryBoxHistories({
     include: { boxTypes: true, game: true },
   });
+  const address = profile.profile.me.address ?? "";
+  console.log(profile.profile.me);
+
   if (loading) {
     return <>Loading ...</>;
   }
@@ -18,7 +20,6 @@ const HistoryTable = () => {
 
     return <>Error ...</>;
   }
-  // console.log(data.boxCampaignBuyHistories);
 
   const columns = [
     {
@@ -34,15 +35,17 @@ const HistoryTable = () => {
       title: "Box name",
       dataIndex: "box",
       key: "box",
+      // @ts-ignore
       render: (_, item: any) => {
-        console.log(item);
-
+        // console.log(item);
         return (
           <>
-            <p className="descText">{item.box.name ? item.box.name : "Common box"}</p>
+            <p className="descText">
+              {item.box_price.boxType?.name ? item.box_price.boxType.name : "Common box"}
+            </p>
             <p className="descSubText">{item.box_price.chain_symbol.toUpperCase()}</p>
             <p className="descSubText" style={{ whiteSpace: "nowrap" }}>
-              {item.box.game.name}
+              {item.box.game.name} | {item.box.name ? item.box.name : "Box campaign name"}
             </p>
           </>
         );
@@ -53,10 +56,8 @@ const HistoryTable = () => {
       title: <p style={{ textAlign: "left" }}>Amount</p>,
       dataIndex: "quantity",
       key: "quantity",
-      // colSpan: 2,
       // @ts-ignore
-      render: (_, item, index) => {
-        console.log(item.box.game.name);
+      render: (_, item) => {
         return (
           <>
             <p className="descText">{item.quantity}</p>
@@ -67,12 +68,12 @@ const HistoryTable = () => {
         );
       },
       width: "20%",
-      // onCell: () => ({ colSpan: 2 }),
     },
     {
       title: "Cost",
       dataIndex: "box",
       key: "box",
+      // @ts-ignore
       render: (_, item: any) => {
         console.log(item);
 
@@ -90,16 +91,42 @@ const HistoryTable = () => {
       key: "status",
       width: "10%",
       render: (item: any) => {
-        if (item) {
-          if (item === "pending") {
-            return <div className={`${s.pending} ${s.status}`}></div>;
-          } else if (item === "confirming") {
-            return <div className={`${s.confirming} ${s.status}`}></div>;
-          } else {
-            return <div className={`${s.confirmed} ${s.status}`}></div>;
-          }
-        }
-        return <>Waiting</>;
+        console.log(item);
+
+        return (
+          <>
+            {item === "PENDING" ? (
+              <>
+                <div className={`${s.pending} ${s.status}`}></div>
+                <p className={`${s.pendingText} descSubText`}>{trim_middle(address, 5, 3)}</p>
+              </>
+            ) : item === "CONFIRMING" ? (
+              <>
+                <div className={`${s.confirming} ${s.status}`}></div>
+                <p className={`${s.confirmingText} descSubText`}>{trim_middle(address, 5, 3)}</p>
+              </>
+            ) : item === "SUCCEED" ? (
+              <>
+                <div className={`${s.succeed} ${s.status}`}></div>
+                <p className={`${s.succeedText} descSubText`}>{trim_middle(address, 5, 3)}</p>
+              </>
+            ) : (
+              ""
+            )}
+          </>
+        );
+
+        //   <div
+        //   className={`${
+        //     item === "PENDING"
+        //       ? `${s.pending}`
+        //       : item === "CONFIRMING"
+        //       ? s.confirm
+        //       : item === "SUCCEED"
+        //       ? s.succeed
+        //       : ""
+        //   } ${s.status}`}
+        // ></div>
       },
     },
   ];
@@ -107,7 +134,6 @@ const HistoryTable = () => {
   return (
     <div style={{ position: "relative" }}>
       <div
-        // className={s.layoutContainer}
         style={{
           borderRadius: "10px",
           position: "absolute",
@@ -122,7 +148,6 @@ const HistoryTable = () => {
         footer={() => <></>}
         scroll={{ y: 1000 }}
         rowKey="id"
-        // className={s.tableContainer}
       />
     </div>
   );

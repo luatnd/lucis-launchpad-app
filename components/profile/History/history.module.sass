@@ -22,16 +22,23 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
     .status 
         width: 8px
         height: 8px
+        margin: 5px 0 15px 0
         border-radius: 50px
-    .confirmed
+    .succeed
         background: #0BEBD6 
         box-shadow: 0px 0px 6px #08D7F9
+    .succeedText
+        color: #0BEBD6
     .confirming
         background: #FF8A00 
         box-shadow: 0px 0px 6px #FF8A00
+    .confirmingText
+        color: #FF8A00
     .pending
         background: #CD28E8 
         box-shadow: 0px 0px 6px #CD28E8
+    .pendingText
+        color: #CD28E8
     :global
         .ant-table-wrapper
             border-radius: 10px
@@ -132,6 +139,7 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
         .status 
             width: 30px
             height: 30px
+            margin-bottom: 25px
             .ant-table-cell
                 img
                     width: 70px

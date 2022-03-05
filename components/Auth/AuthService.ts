@@ -166,9 +166,13 @@ export default class AuthService {
         user.token = token; // fetchUserData does not have token
 
         setLocalAuthInfo(user)
-        setTimeout(() => {
+        if (!delay) {
           AuthStore.setAuthUser(user);
-        }, delay)
+        } else {
+          setTimeout(() => {
+            AuthStore.setAuthUser(user);
+          }, delay)
+        }
 
         return res
       } else {
@@ -178,9 +182,13 @@ export default class AuthService {
 
         user.token && ApoloClient_setAuthToken(user.token)
         setLocalAuthInfo(user)
-        setTimeout(() => {
+        if (!delay) {
           AuthStore.setAuthUser(user);
-        }, delay)
+        } else {
+          setTimeout(() => {
+            AuthStore.setAuthUser(user);
+          }, delay)
+        }
 
         return res
       }

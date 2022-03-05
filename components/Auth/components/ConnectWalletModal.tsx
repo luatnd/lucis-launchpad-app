@@ -151,7 +151,7 @@ export default observer(function ConnectWalletModal(props: Props) {
 
     AuthStore.loading = true;
     const authService = new AuthService();
-    const r = await authService.login(address!, 1000);
+    const r = await authService.login(address!, 0);
     AuthStore.loading = false;
     console.log('{loginWithLucis.} r: ', r);
 
@@ -163,10 +163,10 @@ export default observer(function ConnectWalletModal(props: Props) {
           <span>Successfully connect and verify your wallet</span>,
           5,
         );
-        // setTimeout(() => {
-        //   setIsModalVisible(false);
-        // }, 1000)
-        // Modal will be unmounted if user ConnectWallet is unmount (has auth token)
+        AuthBoxStore.verified = true;
+        setTimeout(() => {
+          setIsModalVisible(false);
+        }, 2000)
         break;
 
       case AuthError.UserDeniedMsgSignature:

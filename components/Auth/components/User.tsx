@@ -9,13 +9,15 @@ import AuthService from "../AuthService";
 import AuthBox from "./AuthBox";
 import AuthBoxStore from "./AuthBoxStore";
 import { getAppNetworkFriendlyName } from "../../../utils/blockchain/ChainConfig";
-import { router } from "next/client";
+import { useRouter } from "next/router";
 import { ChainNetwork, ChainNetworkAvatar, getChainNetworkFromChainId } from "../../../utils/blockchain/BlockChain";
 import { trim_middle } from "../../../utils/String";
 
 
 type Props = {};
 export default  observer(function User(props: Props) {
+  const router = useRouter()
+
   const {
     address,
     network: connected_network
@@ -47,7 +49,7 @@ export default  observer(function User(props: Props) {
       chainNetIcoUrl = ChainNetworkAvatar[n];
     }
   }
-  console.log('{User} chainNetIcoUrl: ', chainNetIcoUrl);
+  // console.log('{User} chainNetIcoUrl: ', chainNetIcoUrl);
 
 
   const profileModal = (

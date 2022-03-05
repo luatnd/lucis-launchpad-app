@@ -12,6 +12,11 @@ const ListCard = [
       "Build up a collection and use them across an ever expanding universe of games",
     statusTime: "UpComing",
     styleBg: true,
+    srcWeb: "#",
+    srcFb: "#",
+    srcTele: "#",
+    srcDiscord: "#",
+    srcTwitter: "#",
   },
   {
     srcGame: "/assets/UpComing/gameAxie.png",
@@ -21,6 +26,11 @@ const ListCard = [
       "Build up a collection and use them across an ever expanding universe of games Build up a collection and use them across an ever expanding universe of games",
     statusTime: "SoldOut",
     styleBg: true,
+    srcWeb: "#",
+    srcFb: "#",
+    srcTele: "#",
+    srcDiscord: "#",
+    srcTwitter: "#",
   },
   {
     srcGame: "/assets/UpComing/gameAxie.png",
@@ -30,6 +40,11 @@ const ListCard = [
       "Build up a collection and use them across an ever expanding universe of games",
     statusTime: "UpComing",
     styleBg: true,
+    srcWeb: "#",
+    srcFb: "#",
+    srcTele: "#",
+    srcDiscord: "#",
+    srcTwitter: "#",
   },
 ];
 
@@ -47,6 +62,11 @@ export default function Opening(props: Props) {
             nameGame={e.nameGame}
             styleBg={e.styleBg}
             title={e.title}
+            srcWeb={e.srcWeb}
+            srcFb={e.srcFb}
+            srcTele={e.srcTele}
+            srcDiscord={e.srcDiscord}
+            srcTwitter={e.srcTwitter}
           />
         ))}
       </div>

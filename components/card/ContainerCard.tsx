@@ -9,6 +9,11 @@ type Props = {
     title: string;
     statusTime: string;
     styleBg: boolean;
+    srcWeb: string;
+    srcFb: string;
+    srcTele: string;
+    srcDiscord: string;
+    srcTwitter: string;
 };
 
 export default function CardItem(props: Props) {
@@ -32,11 +37,11 @@ export default function CardItem(props: Props) {
                 </div>
                 <div className={s.btnDetail}><GradientButton type={1} className={s.styleBtn}>DETAIL</GradientButton></div>
                 <div className={s.groupIcon}>
-                    <a href="#"><img src="/assets/UpComing/win.svg" alt="" /></a>
-                    <a href="#"><img src="/assets/UpComing/fb.png" alt="" /></a>
-                    <a href="#"><img src="/assets/UpComing/dis.svg" alt="" /></a>
-                    <a href="#"><img src="/assets/UpComing/tele.svg" alt="" /></a>
-                    <a href="#"><img src="/assets/UpComing/tw.svg" alt="" /></a>
+                    <a href={props.srcWeb}><img src="/assets/UpComing/win.svg" alt="" /></a>
+                    <a href={props.srcFb}><img src="/assets/UpComing/fb.png" alt="" /></a>
+                    <a href={props.srcDiscord}><img src="/assets/UpComing/dis.svg" alt="" /></a>
+                    <a href={props.srcTele}><img src="/assets/UpComing/tele.svg" alt="" /></a>
+                    <a href={props.srcTwitter}><img src="/assets/UpComing/tw.svg" alt="" /></a>
                 </div>
             </div>
         </div>

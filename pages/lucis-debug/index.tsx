@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import s from "./index.module.sass";
 
-const Career: NextPage = () => {
+const LucisDebugPage: NextPage = () => {
   return (
     <section className="lucis-container">
 
@@ -25,4 +25,4 @@ const Career: NextPage = () => {
   );
 };
 
-export default Career
+export default LucisDebugPage

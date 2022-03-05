@@ -45,14 +45,6 @@ body .ant-Layout {
 body .ant-layout-header {
   height: 125px;
 }
-body h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0 !important;
-}
 
 /* body gradient */
 body {
@@ -393,9 +385,9 @@ body .ant-menu {
     padding: 0 4rem;
   }
 }
-@media (min-width: 1280px) {
+@media (min-width: 1279px) {
   .lucis-container {
-    max-width: 1280px;
+    max-width: 1279px;
     padding: 0 5rem;
   }
   .simple-slider {
@@ -503,4 +495,37 @@ body .backdrop-blur-sm {
 }
 .ant-message-notice .ant-message-notice-content a {
   color: #00ffd7;
+}
+
+.ant-popover-content {}
+.ant-popover-content .ant-popover-arrow {}
+.ant-popover-content .ant-popover-arrow .ant-popover-arrow-content {}
+
+/*Same style as modal content */
+.ant-popover-content .ant-popover-inner:before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+
+  border-radius: inherit;
+  padding: 1px;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  /*background: linear-gradient(105.27deg, #aa6ee5 0%, #caffff 20.31%, rgba(202, 255, 255, 0) 37.5%, rgba(253, 240, 116, 0) 68.75%, #fdf074 84.9%, #c1d8f8 100%);*/
+  background: linear-gradient(105.27deg, #aa6ee5 0%, #caffff 20.31%, rgba(202, 255, 255, 0) 37.5%, rgba(253, 240, 116, 0) 68.75%, #fdf074 84.9%, #c1d8f8 100%);
+}
+.ant-popover-content .ant-popover-inner {
+  background: rgba(123,123,123, 0.2);
+  box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(20px);
+  /* Note: backdrop-filter has minimal browser support */
+  border-radius: 10px;
+  color: white;
 }

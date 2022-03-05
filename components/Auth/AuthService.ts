@@ -44,6 +44,7 @@ export default class AuthService {
     const user: AuthUser = {
       id: u.id,
       code: u.code,
+      address: u.address,
       email: u.email,
       name: !!name ? name : trim_middle(u.address, 6, 6),
     }
@@ -133,6 +134,7 @@ export default class AuthService {
     const user: AuthUser = {
       id: u.id,
       code: u.code,
+      address: u.address,
       token: token,
       email: u.email,
       name: !!name ? name : trim_middle(u.address, 6, 6),
@@ -141,7 +143,13 @@ export default class AuthService {
     return user
   }
 
-  async login(address: string): Promise<LoginResponse> {
+  /**
+   *
+   * @param address
+   * @param delay Delay some duration before make change to the AuthStore,
+   *              useful when you wanna show success for some secs before unmount the components
+   */
+  async login(address: string, delay = 1000): Promise<LoginResponse> {
     let res: LoginResponse = {
       error: null,
     };
@@ -158,7 +166,13 @@ export default class AuthService {
         user.token = token; // fetchUserData does not have token
 
         setLocalAuthInfo(user)
-        AuthStore.setAuthUser(user);
+        if (!delay) {
+          AuthStore.setAuthUser(user);
+        } else {
+          setTimeout(() => {
+            AuthStore.setAuthUser(user);
+          }, delay)
+        }
 
         return res
       } else {
@@ -168,7 +182,13 @@ export default class AuthService {
 
         user.token && ApoloClient_setAuthToken(user.token)
         setLocalAuthInfo(user)
-        AuthStore.setAuthUser(user);
+        if (!delay) {
+          AuthStore.setAuthUser(user);
+        } else {
+          setTimeout(() => {
+            AuthStore.setAuthUser(user);
+          }, delay)
+        }
 
         return res
       }

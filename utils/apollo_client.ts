@@ -23,6 +23,10 @@ const authCache: {
 export function setAuthToken(token: string) {
   authCache.token = token;
 }
+if (isClient) {
+  // @ts-ignore
+  window.tmp__setApoloAuth = setAuthToken;
+}
 
 /**
  * If you wanna get JWT token of current user, plz get from AuthStore.token instead
@@ -99,10 +103,5 @@ const client = new ApolloClient({
   cache,
   connectToDevTools: true,
 });
-
-if (isClient) {
-  // @ts-ignore
-  window.tmp__Apolo = client;
-}
 
 export default client;

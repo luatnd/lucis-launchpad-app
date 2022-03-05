@@ -203,17 +203,18 @@ export default observer(function ConnectWalletModal(props: Props) {
     // remove provider cache in browser
     await web3Modal.clearCachedProvider()
 
-    // disconnect wallet: TODO: check this
+    // disconnect wallet:
+    // this is not for metamask, it's for sth else?
     if (provider?.disconnect && typeof provider.disconnect === 'function') {
       await provider.disconnect()
     } else {
-      console.warn('{disconnectWallet} cannot trigger disconnect: ')
+      console.warn('{disconnectWallet} cannot trigger provider.disconnect()')
     }
 
     setTimeout(() => {
       ConnectWalletStore.resetStates();
       ConnectWalletStore_NonReactiveData.resetStates();
-    }, 500);
+    }, 200);
   }, [])
 
   useEffect(() => {
@@ -306,18 +307,22 @@ export default observer(function ConnectWalletModal(props: Props) {
     </div>
 
     <p className={s.title}>3. Verify address</p>
-    <div className={s.items} style={{display: "block", paddingLeft: 16}}>
+    <div className={`${s.items} ${s.verifyC}`} style={{display: "block", paddingLeft: 16}}>
       {!!wallet && <>
-        <p>Address: {!address ? '' : trim_middle(address, 8, 8)}</p>
+        <p>Address: {!address ? '' : trim_middle(address, 10, 10)}</p>
         <p>Network: {getAppNetworkFriendlyName(connected_network)}</p>
         {(address && logged_in_with_lucis)
           ? <Button type="primary" size="large" disabled>
             <img src="/assets/UpComing/tick-done-2.svg" alt="" style={{padding: '0 6px 4px 0'}} />
             Verified
           </Button>
-          : <Button type="primary" size="large" onClick={loginWithLucis} loading={authing}>
-            Verify
-          </Button>
+          : <>
+            <Button type="primary" size="large" onClick={loginWithLucis} loading={authing}>
+              Verify
+            </Button>
+            {authing && <p className={s.note}>Please do confirm on your wallet</p>}
+          </>
+
         }
       </>}
     </div>

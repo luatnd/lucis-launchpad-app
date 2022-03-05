@@ -44,7 +44,7 @@ const ListCard = [
 const SiteMap = () => {
   return (
     <div className={`flex justify-center relative ${s.SiteMapContainer}`}>
-      <div className={`${s.SiteMapLineTimeLine}`}></div>
+      <div className={`${s.SiteMapLineTimeLine} w-10/12`}></div>
       <div className={`w-10/12`}>
         <Swiper
             breakpoints = {{
@@ -61,16 +61,17 @@ const SiteMap = () => {
                 slidesPerView: 5,
               }
             }}
-            spaceBetween={30}
-            pagination={{
-              clickable: true,
-            }}
-            modules={[Pagination]}
+            freeMode={true}
+            // spaceBetween={30}
+            // pagination={{
+            //   clickable: true,
+            // }}
+            // modules={[Pagination]}
         >
           {ListCard.map((item, key) => (
               <SwiperSlide key={key}>
                 <div className={`flex flex-col justify-center select-none px-2 ${s.SiteMapLineCircleTitleBox}`}>
-                  <div className={`h-[250px] flex flex-col justify-end w-full`}>
+                  <div className={`${s.hSlide} flex flex-col justify-end w-full`}>
                     <div
                         className={`text-white font-bold ${s.SiteMapLineCircleTitle} ${
                             item.isActive === true ? s.active : ""
@@ -90,12 +91,11 @@ const SiteMap = () => {
                   <div className={`text-white mt-10 w-full ${s.SiteMapLineCircleContent}`}>{item.description}</div>
                   {item.title === 'Register whitelist' && (
                       <div className='max-w-[250.91px]'>
-                        <button className={`${s.buttom} font-bold text-white`}>Apply whitelist</button>
+                        <button className={`${s.buttom} font-bold text-white uppercase`}>Apply whitelist</button>
                         <Progress strokeColor='#0BEBD6' percent={60} showInfo={false}/>
                         <p className='text-right text-white mt-1'>60/100</p>
                       </div>
                   )
-
                   }
                 </div>
               </SwiperSlide>

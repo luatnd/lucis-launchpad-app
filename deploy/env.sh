@@ -4,4 +4,4 @@
 # echo NODE_ENV=$NODE_ENV >> .env
 
 # this is for dev only, please use ENV instead in other env
-cp ../.env.dev.cicd ../.env
+cp .env.dev.cicd .env

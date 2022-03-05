@@ -1,7 +1,6 @@
 import CardItem from "components/card/ContainerCard";
 import TitleSection from "components/TitleNameSection";
 import s from "./UpcomingCampaign.module.sass";
-import { useUpComing } from "./useUpComing";
 
 type Props = {};
 
@@ -14,6 +13,12 @@ const ListCard = [
       "Build up a collection and use them across an ever expanding universe of games",
     statusTime: "UpComing",
     styleBg: true,
+    inTime: '',
+    srcWeb: "#",
+    srcFb: "#",
+    srcTele: "#",
+    srcDiscord: "#",
+    srcTwitter: "#",
   },
   {
     srcGame: "/assets/UpComing/gameAxie.png",
@@ -23,6 +28,12 @@ const ListCard = [
       "Build up a collection and use them across an ever expanding universe of games",
     statusTime: "SoldOut",
     styleBg: true,
+    inTime: '',
+    srcWeb: "#",
+    srcFb: "#",
+    srcTele: "#",
+    srcDiscord: "#",
+    srcTwitter: "#",
   },
   {
     srcGame: "/assets/UpComing/gameAxie.png",
@@ -32,6 +43,12 @@ const ListCard = [
       "Build up a collection and use them across an ever expanding universe of games",
     statusTime: "sale",
     styleBg: true,
+    inTime: '',
+    srcWeb: "#",
+    srcFb: "#",
+    srcTele: "#",
+    srcDiscord: "#",
+    srcTwitter: "#",
   },
   {
     srcGame: "/assets/UpComing/gameAxie.png",
@@ -41,6 +58,12 @@ const ListCard = [
       "Build up a collection and use them across an ever expanding universe of games",
     statusTime: "UpComing",
     styleBg: true,
+    inTime: '',
+    srcWeb: "#",
+    srcFb: "#",
+    srcTele: "#",
+    srcDiscord: "#",
+    srcTwitter: "#",
   },
   {
     srcGame: "/assets/UpComing/gameAxie.png",
@@ -50,6 +73,12 @@ const ListCard = [
       "Build up a collection and use them across an ever expanding universe of games",
     statusTime: "UpComing",
     styleBg: true,
+    inTime: '',
+    srcWeb: "#",
+    srcFb: "#",
+    srcTele: "#",
+    srcDiscord: "#",
+    srcTwitter: "#",
   },
   {
     srcGame: "/assets/UpComing/gameAxie.png",
@@ -59,11 +88,16 @@ const ListCard = [
       "Build up a collection and use them across an ever expanding universe of games",
     statusTime: "UpComing",
     styleBg: true,
+    inTime: '',
+    srcWeb: "#",
+    srcFb: "#",
+    srcTele: "#",
+    srcDiscord: "#",
+    srcTwitter: "#",
   },
 ];
 
 export default function UpComing(props: Props) {
-  const { resultUpComing } = useUpComing()
   return (
     <section className="lucis-container">
       <TitleSection text="Upcoming campaign" />
@@ -74,9 +108,15 @@ export default function UpComing(props: Props) {
             srcGame={e.srcGame}
             statusTime={e.statusTime}
             time={e.time}
+            inTime={e.inTime}
             nameGame={e.nameGame}
             styleBg={e.styleBg}
             title={e.title}
+            srcWeb={e.srcWeb}
+            srcFb={e.srcFb}
+            srcTele={e.srcTele}
+            srcDiscord={e.srcDiscord}
+            srcTwitter={e.srcTwitter}
           />
         ))}
       </div>

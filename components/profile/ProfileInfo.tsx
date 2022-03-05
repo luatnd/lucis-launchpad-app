@@ -1,7 +1,7 @@
 import { CheckOutlined, CloseOutlined, CopyOutlined, EditOutlined } from "@ant-design/icons";
 import { Col, Row } from "antd";
 import Input from "components/Input/Input";
-import { useMutationProfile } from "hooks/profile/useMutationProfile";
+import { useMutationProfile } from "components/Profile/Hooks/useMutationProfile";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { isClient } from "utils/DOM";
 import s from "../../pages/profile/index.module.sass";

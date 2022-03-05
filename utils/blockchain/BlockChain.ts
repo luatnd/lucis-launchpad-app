@@ -56,6 +56,15 @@ export const NetworkSupportedWallets: Record<ChainNetwork | string, Wallet[]> = 
   [ChainNetwork.solana]: [Wallet.solet],
 }
 
+export const ChainNetworkAvatar: Record<string, string> = {
+  [ChainNetwork.eth]: "/assets/crypto/ico-chain-eth.svg",
+  [ChainNetwork.bsc]: "/assets/crypto/ico-chain-bsc.png",
+  [ChainNetwork.polygon]: "/assets/crypto/ico-chain-polygon.png",
+  [ChainNetwork.near]: "/assets/crypto/ico-chain-near.svg",
+  [ChainNetwork.flow]: "/assets/crypto/ico-chain-flow.png",
+  [ChainNetwork.avax]: "/assets/crypto/ico-chain-avax.svg",
+}
+
 
 export function getChainNetworkFromChainData(c: IChainData): ChainNetwork | undefined {
   return getChainNetworkFromChainId(c.chain_id)
@@ -63,9 +72,16 @@ export function getChainNetworkFromChainData(c: IChainData): ChainNetwork | unde
 
 export function getChainNetworkFromChainId(chain_id: string | number): ChainNetwork | undefined {
   const map: Record<string | number, ChainNetwork> = {
+    "1": ChainNetwork.eth,
+    "3": ChainNetwork.eth,
+    "4": ChainNetwork.eth,
     "56": ChainNetwork.bsc,
     "97": ChainNetwork.bsc,
+    "137": ChainNetwork.polygon,
   }
   const a = map[chain_id];
+  if (a === undefined) {
+    console.warn(`getChainNetworkFromChainId: Not defined for chain: ${chain_id}`)
+  }
   return a ?? undefined;
 }

@@ -7,7 +7,7 @@ const Banner = () => {
     <div className={s.backgroundDetail}>
       <div className={`lucis-container ${s.backgroundContain}`}>
         <div className={s.notification}>
-          <img src='/assets/Banner/svg/signout.svg' alt='icon' />
+          <img src='/assets/Campaign/Banner/svg/Sign_in_circle.svg' alt='icon' />
           <p>Enable Notification</p>
         </div>
         <div className={s.info}>
@@ -21,19 +21,19 @@ const Banner = () => {
             <div className={s.info_read}>
               <div className={s.info_button_group}>
                 <span>
-                  <img src={"/assets/Banner/svg/fb.svg"} alt='icon' />
+                  <img src={"/assets/Campaign/Banner/svg/fb.svg"} alt='icon' />
                 </span>
                 <span>
-                  <img src={"/assets/Banner/svg/dis.svg"} alt='icon' />
+                  <img src={"/assets/Campaign/Banner/svg/dis.svg"} alt='icon' />
                 </span>
                 <span>
-                  <img src={"/assets/Banner/svg/tele.svg"} alt='icon' />
+                  <img src={"/assets/Campaign/Banner/svg/tele.svg"} alt='icon' />
                 </span>
                 <span>
-                  <img src={"/assets/Banner/svg/tw.svg"} alt='icon' />
+                  <img src={"/assets/Campaign/Banner/svg/tw.svg"} alt='icon' />
                 </span>
                 <span>
-                  <img src={"/assets/Banner/svg/win.svg"} alt='icon' />
+                  <img src={"/assets/Campaign/Banner/svg/win.svg"} alt='icon' />
                 </span>
               </div>
               <span>{"read more >>"}</span>

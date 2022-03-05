@@ -12,6 +12,7 @@ type TLoyalty = {
 export type AuthUser = {
   id?: number
   code?: string
+  address?: string
   token?: string
   email?: string
   name?: string
@@ -31,6 +32,7 @@ export type TAuthInfo = AuthUser | AuthWallet;
 class AuthStore {
   private _id?: number
   private _code?: string
+  private _address?: string
   private _token?: string
   private _email?: string
   private _name?: string
@@ -65,6 +67,7 @@ class AuthStore {
   setAuthUser(user: AuthUser) {
     this._id = user.id
     this._code = user.code
+    this._address = user.address
     this._token = user.token
     this._email = user.email
     this._name = user.name
@@ -80,6 +83,14 @@ class AuthStore {
 
   set id(value: number | undefined) {
     this._id = value;
+  }
+
+  get address(): string | undefined {
+    return this._address;
+  }
+
+  set address(value: string | undefined) {
+    this._address = value;
   }
 
   get token(): string | undefined {

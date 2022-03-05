@@ -72,7 +72,8 @@ export default class AuthService {
     const nonce = nonceRes.data.generateNonce
     // console.log('{AuthService.loginByAddress} nonce: ', nonce);
 
-    const msg = `0x${to_hex_str(`Lucis sign ${nonce}`)}`
+    // TODO: Improve to multiline message with explanation and hello thank you
+    const msg = `0x${to_hex_str(`Lucis verification ${nonce}`)}`
     const params = [msg, address, nonce]
 
     /**

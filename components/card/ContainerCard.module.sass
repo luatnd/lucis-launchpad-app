@@ -42,15 +42,27 @@
         .headingCard
             padding: 200px 22px 0px 22px
             .styleTime
-                text-align: center
+                // text-align: center
                 font-size: 28px
                 font-weight: 700
                 line-height: 32px
                 position: relative
+                padding-left: 10%
+                @media (max-width: 640px)
+                    padding-left: 12%
+                p
+                    color:#0BEBD6
+                    font-size: 18px
+                    font-weight: 700
+                    margin: 0
+                    text-align: left
+                    padding-top: 10px
+                    span
+                        font-weight: 300
             .styleTime::before
                 content: ''
                 position: absolute
-                left: 12px
+                left: 0px
                 top: 10px
                 width: 12px
                 height: 12px
@@ -77,6 +89,9 @@
                 font-weight: 600
                 line-height: 28px
                 padding: 24px 0px 8px 0px
+                margin: 0
+                @media (min-width: 1440px)
+                    padding: 40px 0px 8px 0px
             .text
                 color: #FFF
                 font-size: 16px
@@ -182,7 +197,7 @@
         width: 31.5%
         height: 600px
         .headingCard
-            padding: 280px 22px 0px 22px !important
+            padding: 270px 22px 0px 22px !important
             .styleTime
                 font-size: 36px  !important
             .styleTime::before

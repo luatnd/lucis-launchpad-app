@@ -9,6 +9,7 @@ type Props = {
     title: string;
     statusTime: string;
     styleBg: boolean;
+    inTime: string;
     srcWeb: string;
     srcFb: string;
     srcTele: string;
@@ -24,6 +25,9 @@ export default function CardItem(props: Props) {
     :s.bg_2
 
     const handleText = props.title.length > 140 ? props.title.substring(0, 140) + '...': props.title
+    const SoldOutBox = !props.styleBg? <p>Sold out <span>{props.inTime}</span></p>: ''
+
+
     return (
         <div className={`${s.CardContainer} ${bg_card}`}>
             <div className={s.img_game}>
@@ -31,7 +35,10 @@ export default function CardItem(props: Props) {
             </div>
             <div className={s.content}>
                 <div className={s.headingCard}>
-                    <div className={`${s.styleTime} ${typeTime}`}>{props.time}</div>
+                    <div className={`${s.styleTime} ${typeTime}`}>
+                        {props.time}
+                        {SoldOutBox}
+                    </div>
                     <h5>{props.nameGame}</h5>
                     <div className={s.text}>{handleText}</div>
                 </div>

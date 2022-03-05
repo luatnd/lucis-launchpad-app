@@ -13,6 +13,7 @@ const ListCard = [
       "Build up a collection and use them across an ever expanding universe of games",
     statusTime: "UpComing",
     styleBg: true,
+    inTime: '',
     srcWeb: "#",
     srcFb: "#",
     srcTele: "#",
@@ -27,6 +28,7 @@ const ListCard = [
       "Build up a collection and use them across an ever expanding universe of games",
     statusTime: "SoldOut",
     styleBg: true,
+    inTime: '',
     srcWeb: "#",
     srcFb: "#",
     srcTele: "#",
@@ -41,6 +43,7 @@ const ListCard = [
       "Build up a collection and use them across an ever expanding universe of games",
     statusTime: "sale",
     styleBg: true,
+    inTime: '',
     srcWeb: "#",
     srcFb: "#",
     srcTele: "#",
@@ -55,6 +58,7 @@ const ListCard = [
       "Build up a collection and use them across an ever expanding universe of games",
     statusTime: "UpComing",
     styleBg: true,
+    inTime: '',
     srcWeb: "#",
     srcFb: "#",
     srcTele: "#",
@@ -69,6 +73,7 @@ const ListCard = [
       "Build up a collection and use them across an ever expanding universe of games",
     statusTime: "UpComing",
     styleBg: true,
+    inTime: '',
     srcWeb: "#",
     srcFb: "#",
     srcTele: "#",
@@ -83,6 +88,7 @@ const ListCard = [
       "Build up a collection and use them across an ever expanding universe of games",
     statusTime: "UpComing",
     styleBg: true,
+    inTime: '',
     srcWeb: "#",
     srcFb: "#",
     srcTele: "#",
@@ -102,6 +108,7 @@ export default function UpComing(props: Props) {
             srcGame={e.srcGame}
             statusTime={e.statusTime}
             time={e.time}
+            inTime={e.inTime}
             nameGame={e.nameGame}
             styleBg={e.styleBg}
             title={e.title}

@@ -7,6 +7,7 @@ const ListCard = [
   {
     srcGame: "/assets/UpComing/gameAxie.png",
     time: "1d 05h 30m 25s",
+    inTime: '',
     nameGame: "AXIE INFINITY",
     title:
       "Build up a collection and use them across an ever expanding universe of games",
@@ -21,6 +22,7 @@ const ListCard = [
   {
     srcGame: "/assets/UpComing/gameAxie.png",
     time: "1d 05h 30m 25s",
+    inTime: '',
     nameGame: "AXIE INFINITY",
     title:
       "Build up a collection and use them across an ever expanding universe of games Build up a collection and use them across an ever expanding universe of games",
@@ -35,6 +37,7 @@ const ListCard = [
   {
     srcGame: "/assets/UpComing/gameAxie.png",
     time: "1d 05h 30m 25s",
+    inTime: '',
     nameGame: "AXIE INFINITY",
     title:
       "Build up a collection and use them across an ever expanding universe of games",
@@ -59,6 +62,7 @@ export default function Opening(props: Props) {
             srcGame={e.srcGame}
             statusTime={e.statusTime}
             time={e.time}
+            inTime={e.inTime}
             nameGame={e.nameGame}
             styleBg={e.styleBg}
             title={e.title}

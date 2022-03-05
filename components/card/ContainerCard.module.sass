@@ -1,11 +1,11 @@
 .bg_1
-    background: linear-gradient(286deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+    background: linear-gradient(339deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
     &:global(:before)
-        background: linear-gradient(317deg, #7f6bbdb3 0%, rgba(196, 44, 255, 0) 45%, rgba(196, 44, 255, 0) 30%, #44388b 100%)
+        background: linear-gradient(314deg, #7f6bbdb3 0%, rgba(196, 44, 255, 0) 45%, rgba(196, 44, 255, 0) 30%, #44388b 100%)
 .bg_2
-    background: linear-gradient(177.34deg, rgba(0, 0, 0, 0.2) 2.22%, rgba(255, 255, 255, 0) 97.78%)
+    background: linear-gradient(19deg, rgba(0, 0, 0, 0.4) 2.22%, rgba(255, 255, 255, 0) 97.78%)
     &:global(:before)
-        background: linear-gradient(329deg, #7f6bbdb3 0%, rgba(196, 44, 255, 0) 45%, rgba(196, 44, 255, 0) 30%, #44388b 100%)
+        background: linear-gradient(296deg, #7f6bbdb3 0%, rgba(196, 44, 255, 0) 45%, rgba(196, 44, 255, 0) 30%, #44388b 100%)
 .CardContainer
     backdrop-filter: blur(4px)
     border-radius: 16px
@@ -30,6 +30,10 @@
         position: absolute
         top: -140px
         left: 0
+        @media (min-width: 1280px)
+            top: -160px
+        @media (min-width: 1439px)
+            top: -170px
     .content
         position: relative
         overflow: hidden
@@ -73,7 +77,7 @@
                 font-weight: 600
                 line-height: 28px
                 padding: 24px 0px 8px 0px
-            p
+            .text
                 color: #FFF
                 font-size: 16px
                 font-weight: 300
@@ -100,9 +104,8 @@
             position: absolute
             bottom: 0
             left: 0
-            transform: translateY(100%)
             opacity: 0
-            transition: 0.3s
+            transition: 0.5s
             .styleBtn
                 max-width: 47%
                 width: 100%
@@ -119,7 +122,6 @@
 
                 
 .CardContainer:hover .btnDetail
-    transform: translateY(0)
     opacity: 1
 
 @media (min-width: 640px)
@@ -170,25 +172,25 @@
                 left: 0 !important
             h5
                 font-size: 32px !important
-            p
+            .text
                 font-size: 18px !important
                 margin-top: 12px
         .btnDetail
             height: 47% !important
 @media (min-width: 1439px)
     .CardContainer
-        width: 32%
+        width: 31.5%
         height: 600px
         .headingCard
-            padding: 260px 22px 0px 22px !important
+            padding: 280px 22px 0px 22px !important
             .styleTime
                 font-size: 36px  !important
             .styleTime::before
                 left: 0 !important
             h5
                 font-size: 36px !important
-            p
+            .text
                 font-size: 20px !important
                 margin-top: 12px
         .btnDetail
-            height: 50% !important
+            height: 47% !important

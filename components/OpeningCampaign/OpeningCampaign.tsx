@@ -18,7 +18,7 @@ const ListCard = [
     time: "1d 05h 30m 25s",
     nameGame: "AXIE INFINITY",
     title:
-      "Build up a collection and use them across an ever expanding universe of games",
+      "Build up a collection and use them across an ever expanding universe of games Build up a collection and use them across an ever expanding universe of games",
     statusTime: "SoldOut",
     styleBg: true,
   },

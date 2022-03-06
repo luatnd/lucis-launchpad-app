@@ -9,7 +9,7 @@ import { getAppNetworkFriendlyName } from "utils/blockchain/ChainConfig";
 import { observer } from "mobx-react-lite";
 import ConnectWalletStore, { nonReactive as ConnectWalletStore_NonReactiveData } from "../ConnectWalletStore";
 import AuthStore from "../AuthStore";
-import { ConnectWalletError, connectWalletHelper } from "../ConnectWalletHelper";
+import { ConnectWalletError, connectWalletHelper, ConnectWalletOption } from "../ConnectWalletHelper";
 import AuthService, { AuthError } from "../AuthService";
 import AuthBoxStore from "./AuthBoxStore";
 import { AppEmitter } from "../../../services/emitter";
@@ -41,6 +41,41 @@ export default observer(function ConnectWalletModal(props: Props) {
 
 
 
+  const handleAccountsChanged = (accounts: string[]) => {
+    const currentAccount = accounts[0]
+    console.log('{handleAccountsChanged} account: ', currentAccount)
+
+    /**
+     * If user change the account
+     * Need to re-connect the wallet and verify their new address also
+     */
+  }
+  const handleChainChanged = (_hexChainId: string) => {
+    console.log('{handleChainChanged} _hexChainId: ', _hexChainId);
+    /**
+     * If user change the chain, we don't need to do anything
+     * TODO: Just ensure target chain is active before sending the request => Check if we need to ensure, or metamask will do it?
+     */
+  }
+  const handleDisconnect = (error: { code: number; message: string }) => {
+    console.log('{handleDisconnect} error: ', error.code, error.message)
+    // disconnect()
+
+    /**
+     * Disconnect in case of:
+     * - Metamask switch chain (disconnect current chain & active new chain): 1013 MetaMask: Disconnected from chain
+     * - Metamask disconnected by user
+     *
+     * We might need to:
+     * - log user out
+     * - disconnect the wallet
+     *
+     * But it's impossible because we should not log user out if they switch chain.
+     *
+     * They switch chain on metamask,
+     * but they still keep connection by prev chain on our site, it's ok!!
+     */
+  }
 
 
   const loginWithLucis = useCallback(async (showSuccessMessage = true) => {
@@ -106,7 +141,12 @@ export default observer(function ConnectWalletModal(props: Props) {
     }
 
     // TODO: Handle mobile
-    connectWalletHelper.connectWallet(w, network!)
+    const opt: ConnectWalletOption = {
+      onWalletEvent_AccountsChanged: handleAccountsChanged,
+      onWalletEvent_ChainChanged: handleChainChanged,
+      onWalletEvent_Disconnect: handleDisconnect,
+    }
+    connectWalletHelper.connectWallet(w, network!, opt)
       .then(async provider => {
         // add profile and switch the network
         const ensureActiveNetworkResult = await connectWalletHelper.web3_ensureActiveTargetChain(w, network)
@@ -142,7 +182,12 @@ export default observer(function ConnectWalletModal(props: Props) {
         }
 
         // connect to cache provider
-        connectWalletHelper.connectWallet(w, network!)
+        const opt: ConnectWalletOption = {
+          onWalletEvent_AccountsChanged: handleAccountsChanged,
+          onWalletEvent_ChainChanged: handleChainChanged,
+          onWalletEvent_Disconnect: handleDisconnect,
+        }
+        connectWalletHelper.connectWallet(w, network!, opt)
           .then(async provider => {
             // add profile and switch the network
             const ensureActiveNetworkResult = await connectWalletHelper.web3_ensureActiveTargetChain(w, network)
@@ -216,7 +261,7 @@ export default observer(function ConnectWalletModal(props: Props) {
         message.error(
           <span>
                 [PC] Metamask extension is not installed. <br/>
-                Please install it from <a href="https://metamask.io/download/">metamask.io</a>
+                Please install it from <a href="https://metamask.io/download/" target="_blank" rel="noopener noreferrer">metamask.io</a>
               </span>,
           8,
         );
@@ -281,6 +326,9 @@ export default observer(function ConnectWalletModal(props: Props) {
   }, [])
 
   useEffect(() => {
+    /**
+     * When user click disconnect button on their profile
+     */
     const listener = AppEmitter.addListener('onWalletDisconnect', disconnectWallet)
     return () => {
       listener.remove()

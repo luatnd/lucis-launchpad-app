@@ -353,8 +353,8 @@ export default observer(function ConnectWalletModal(props: Props) {
     [Wallet.wc]: (
       <div
         key='wc'
-        onClick={() => changeWallet(Wallet.wc)}
-        className={`${s.item} ${wallet === Wallet.wc ? s.active : ''}`}
+        // onClick={() => changeWallet(Wallet.wc)}
+        className={`${s.item} ${s.disable} ${wallet === Wallet.wc ? s.active : ''}`}
       >
         <img src="/assets/crypto/ico-wallet-wc.png" alt="" />
         <p>Wallet Connect</p>
@@ -363,6 +363,7 @@ export default observer(function ConnectWalletModal(props: Props) {
     [Wallet.bsc]: (
       <div
         key='bsc'
+        // onClick={() => changeWallet(Wallet.bsc)}
         className={`${s.item} ${s.disable} ${wallet === Wallet.bsc ? s.active : ''}`}
       >
         <img src="/assets/crypto/ico-chain-bsc.png" alt="" />

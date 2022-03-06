@@ -54,12 +54,19 @@ class ConnectWalletHelper {
    * - [x] Click open metamask
    * - [x] Click connect while we have a metamask pending request already
    * - [x] user rejected to connect on metamask
-   * - [ ] user rejected to connect on wc
    * - [x] Dont have profile => prompt to add profile
    * - [x] wrong chain => prompt to switch chain
-   * - [ ] connect & disconnect while metamask is connected
+   * - [x] connect & disconnect while metamask is connected
+   * - [x] auto reconnect
    * - [ ] connect & disconnect while metamask is not connected
    * - [ ] user click disconnect on metamask while connected on the site
+   * - [ ] user change account on metamask
+   * - [ ] metamask install but has not setup yet, no account
+   *
+   * For WC pc & mobile:
+   * - [ ] WC support for Trust & Metamask
+   * - [ ] user rejected to connect on wc
+   * - [ ] auto reconnect
    *
    * Additional for Mobile:
    *

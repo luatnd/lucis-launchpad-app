@@ -1,5 +1,9 @@
+import { useCallback } from "react";
+import Link from "next/link";
+
+import { slugify } from "../../utils/String";
 import s from './ContainerCard.module.sass';
-import GradientButton from '../Button/GradientButton';
+import { GradientLinkButton } from '../Button/GradientButton';
 
 
 type Props = {
@@ -27,6 +31,11 @@ export default function CardItem(props: Props) {
     const handleText = props.title.length > 140 ? props.title.substring(0, 140) + '...': props.title
     const SoldOutBox = !props.styleBg? <p>Sold out <span>{props.inTime}</span></p>: ''
 
+    const getCampaignDetailUrl = () => {
+        const id = "12345678";
+        return `/campaign/${id}/${slugify(props.title)}`;
+    }
+
 
     return (
         <div className={`${s.CardContainer} ${bg_card}`}>
@@ -42,7 +51,13 @@ export default function CardItem(props: Props) {
                     <h5>{props.nameGame}</h5>
                     <div className={s.text}>{handleText}</div>
                 </div>
-                <div className={s.btnDetail}><GradientButton type={1} className={s.styleBtn}>DETAIL</GradientButton></div>
+                <div className={s.btnDetail}>
+                    <Link href={getCampaignDetailUrl()} passHref={true}>
+                        <GradientLinkButton type={1} className={s.styleBtn}>
+                            DETAIL
+                        </GradientLinkButton>
+                    </Link>
+                </div>
                 <div className={s.groupIcon}>
                     <a href={props.srcWeb}><img src="/assets/UpComing/win.svg" alt="" /></a>
                     <a href={props.srcFb}><img src="/assets/UpComing/fb.png" alt="" /></a>

@@ -1,9 +1,11 @@
 import React from "react";
+import { useRouter } from "next/router";
+import { Tabs } from "antd";
+import { TabPane } from "rc-tabs";
+
 import CountDown from "../../components/campaign/components/CountDown/CountDown";
 import SiteMap from "../../components/campaign/components/SiteMap/SiteMap";
 import Team from "../../components/campaign/components/Team/Team";
-import { Tabs } from "antd";
-import { TabPane } from "rc-tabs";
 import Trailer from "../../components/campaign/components/Trailer/Trailer";
 import Banner from "../../components/campaign/components/Banner/Banner";
 import Box from "../../components/campaign/components/Box/Box";
@@ -13,8 +15,15 @@ import RecentlyBought from "../../components/campaign/components/RecentlyBought/
 import DocHead from "../../components/DocHead";
 import Footer from "components/Footer";
 
-
+/**
+ * Match all route: /campaign/....
+ */
 function DetailCampaign() {
+  const router = useRouter()
+  const { slug } = router.query
+  const id = slug?.length ? slug[0] : undefined;
+
+  console.log('{DetailCampaign.render} campaign id: ', id);
 
   return (
       <>
@@ -45,5 +54,26 @@ function DetailCampaign() {
   );
 
 }
+
+/**
+ * For Static site generation
+ * We render no file here
+ */
+// export async function getStaticPaths() {
+//   // const paths = [
+//   //   {params: {slug: ['index']}},
+//   // ]
+//
+//   return {
+//     paths: [],
+//     fallback: true,
+//   }
+// }
+//
+// export async function getStaticProps({params}: any) {
+//   return {
+//     props: {},
+//   }
+// }
 
 export default DetailCampaign;

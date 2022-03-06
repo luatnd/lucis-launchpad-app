@@ -41,6 +41,60 @@ export default observer(function ConnectWalletModal(props: Props) {
 
 
 
+
+
+  const loginWithLucis = useCallback(async (showSuccessMessage = true) => {
+    /**
+     * Web3 User need to link their wallet with Lucis system
+     */
+    if (!address) {
+      message.error(
+        <span>Wallet not connected properly, please connect wallet again</span>,
+        3,
+      );
+      return;
+    }
+
+    AuthStore.loading = true;
+    const authService = new AuthService();
+    const r = await authService.login(address!, 0);
+    AuthStore.loading = false;
+    console.log('{loginWithLucis.} r: ', r);
+
+    switch (r.error) {
+      case null:
+        // Success
+        // Already set the auth token to the AuthStore in AuthService
+        showSuccessMessage && message.success(
+          <span>Successfully connect and verify your wallet</span>,
+          5,
+        );
+        AuthBoxStore.verified = true;
+        setTimeout(() => {
+          setIsModalVisible(false);
+        }, 2000)
+        break;
+
+      case AuthError.UserDeniedMsgSignature:
+        message.error(
+          <span>User denied</span>,
+          5,
+        );
+        break;
+
+      default:
+        message.error(
+          <span>
+            Cannot verify your address due to unhandled error.<br />
+            It's might be the improper wallet connection
+          </span>,
+          5,
+        );
+    }
+  }, [address]);
+
+
+
   const changeWallet = useCallback(async (w: Wallet) => {
     /**
      * This will try to popup the wallet, then make a connection to your wallet
@@ -112,7 +166,7 @@ export default observer(function ConnectWalletModal(props: Props) {
           .catch(e => handleConnectCatch(e));
       // }
     // }
-  }, [address])
+  }, [address, loginWithLucis])
 
   const handleConnectThen = async (provider: any, onSuccess = () => {}) => {
     // console.log('{changeWallet} Wallet Connected: provider: ', provider);
@@ -195,55 +249,6 @@ export default observer(function ConnectWalletModal(props: Props) {
     }
   }, [network]);
 
-  const loginWithLucis = useCallback(async (showSuccessMessage = true) => {
-    /**
-     * Web3 User need to link their wallet with Lucis system
-     */
-    if (!address) {
-      message.error(
-        <span>Wallet not connected properly, please connect wallet again</span>,
-        3,
-      );
-      return;
-    }
-
-    AuthStore.loading = true;
-    const authService = new AuthService();
-    const r = await authService.login(address!, 0);
-    AuthStore.loading = false;
-    console.log('{loginWithLucis.} r: ', r);
-
-    switch (r.error) {
-      case null:
-        // Success
-        // Already set the auth token to the AuthStore in AuthService
-        showSuccessMessage && message.success(
-          <span>Successfully connect and verify your wallet</span>,
-          5,
-        );
-        AuthBoxStore.verified = true;
-        setTimeout(() => {
-          setIsModalVisible(false);
-        }, 2000)
-        break;
-
-      case AuthError.UserDeniedMsgSignature:
-        message.error(
-          <span>User denied</span>,
-          5,
-        );
-        break;
-
-      default:
-        message.error(
-          <span>
-            Cannot verify your address due to unhandled error.<br />
-            It's might be the improper wallet connection
-          </span>,
-          5,
-        );
-    }
-  }, [address]);
 
 
   const disconnectWallet = useCallback(async () => {
@@ -280,7 +285,7 @@ export default observer(function ConnectWalletModal(props: Props) {
     return () => {
       listener.remove()
     }
-  }, [])
+  }, [disconnectWallet])
 
 
   const supported_wallets = network === null ? [] : NetworkSupportedWallets[network];

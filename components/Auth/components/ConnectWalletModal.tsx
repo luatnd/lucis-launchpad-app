@@ -70,7 +70,9 @@ export default observer(function ConnectWalletModal(props: Props) {
   useEffect(() => {
     /**
      * ------- Try to restore
+     * TODO: This effect was run 2 time, plz check, this must be run once
      */
+    console.log('{useEffect} restore wallet connection: ');
 
 
     // const web3Modal = ConnectWalletStore_NonReactiveData.web3Modal;
@@ -98,12 +100,19 @@ export default observer(function ConnectWalletModal(props: Props) {
             setWallet(w);
             connectWalletHelper.cacheConnectionSetting(w, network);
 
-            return loginWithLucis()
+            /**
+             * This is memoization, so if address changed, loginWithLucis is another function
+             */
+            if (!address) {
+              return null;
+            } else {
+              return loginWithLucis(false)
+            }
           }))
           .catch(e => handleConnectCatch(e));
       // }
     // }
-  }, [])
+  }, [address])
 
   const handleConnectThen = async (provider: any, onSuccess = () => {}) => {
     // console.log('{changeWallet} Wallet Connected: provider: ', provider);
@@ -124,6 +133,7 @@ export default observer(function ConnectWalletModal(props: Props) {
     // Save to store
     ConnectWalletStore.network = connected_network;
     ConnectWalletStore.address = address;
+    console.log('{ConnectWalletStore.handleConnectThen} address: ', address);
 
     /**
      * In case of user connected to BSC network before
@@ -185,7 +195,7 @@ export default observer(function ConnectWalletModal(props: Props) {
     }
   }, [network]);
 
-  const loginWithLucis = useCallback(async () => {
+  const loginWithLucis = useCallback(async (showSuccessMessage = true) => {
     /**
      * Web3 User need to link their wallet with Lucis system
      */
@@ -207,7 +217,7 @@ export default observer(function ConnectWalletModal(props: Props) {
       case null:
         // Success
         // Already set the auth token to the AuthStore in AuthService
-        message.success(
+        showSuccessMessage && message.success(
           <span>Successfully connect and verify your wallet</span>,
           5,
         );

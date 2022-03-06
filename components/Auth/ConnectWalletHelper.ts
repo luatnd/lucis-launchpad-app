@@ -54,12 +54,19 @@ class ConnectWalletHelper {
    * - [x] Click open metamask
    * - [x] Click connect while we have a metamask pending request already
    * - [x] user rejected to connect on metamask
-   * - [ ] user rejected to connect on wc
    * - [x] Dont have profile => prompt to add profile
    * - [x] wrong chain => prompt to switch chain
-   * - [ ] connect & disconnect while metamask is connected
+   * - [x] connect & disconnect while metamask is connected
+   * - [x] auto reconnect
    * - [ ] connect & disconnect while metamask is not connected
    * - [ ] user click disconnect on metamask while connected on the site
+   * - [ ] user change account on metamask
+   * - [ ] metamask install but has not setup yet, no account
+   *
+   * For WC pc & mobile:
+   * - [ ] WC support for Trust & Metamask
+   * - [ ] user rejected to connect on wc
+   * - [ ] auto reconnect
    *
    * Additional for Mobile:
    *
@@ -145,6 +152,7 @@ class ConnectWalletHelper {
           const web3Provider = new providers.Web3Provider(provider, 'any')
           ConnectWalletStore_NonReactiveData.provider = provider;
           ConnectWalletStore_NonReactiveData.web3Provider = web3Provider;
+          ConnectWalletStore_NonReactiveData.web3Modal = web3Modal;
 
           resolve(provider)
         })
@@ -219,6 +227,27 @@ class ConnectWalletHelper {
     }
 
     return requiredChainId;
+  }
+
+  cacheConnectionSetting(wallet?: Wallet, network?: ChainNetwork) {
+    localStorage.setItem('wallet_connect', JSON.stringify([wallet, network]))
+  }
+
+  fetchConnectionSetting(): [Wallet?, ChainNetwork?] {
+    const a_str = localStorage.getItem('wallet_connect')
+    if (!a_str) {
+      return [undefined, undefined]
+    }
+
+    try {
+      const a = JSON.parse(a_str)
+      const w: Wallet = a[0] as Wallet;
+      const n: ChainNetwork = a[1] as ChainNetwork;
+
+      return [w, n]
+    } catch (e) {
+      return [undefined, undefined]
+    }
   }
 }
 

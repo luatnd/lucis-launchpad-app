@@ -5,8 +5,9 @@ type Props = {
 };
 
 export default function DocHead(props: Props) {
-  const titleSuffix = props.title ?? "Redefine Play to Earn ecosystem";
-  const title = "Lucis Gaming Guild - " + titleSuffix;
+  const titleSuffix = props.title ?? "Buy NFT boxes easily from INO campaigns or create your INO campaign with us";
+  const title = "Lucis Launchpad - " + titleSuffix;
+  // TODO:
   const desc = "One of the most effective investment platforms for investors. We create a hybrid platform to connect investors and skilled scholars in the world of \"Play to Earn\" gaming and metaverse.";
   const thumb = "https://lucis.network/assets/lucis_preview_169.jpg";
 

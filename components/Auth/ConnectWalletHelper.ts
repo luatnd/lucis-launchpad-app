@@ -39,8 +39,19 @@ export const Web3ProviderErrorCodes = {
   },
 }
 
+
+export type ConnectWalletOption = {
+  onWalletEvent_AccountsChanged: (accounts: string[]) => void
+  onWalletEvent_ChainChanged: (_hexChainId: string) => void
+  onWalletEvent_Disconnect: (error: { code: number; message: string }) => void
+}
+
 class ConnectWalletHelper {
   // The data was store at ConnectWalletStore with reactive
+
+  public onWalletEvent_AccountsChanged = (accounts: string[]) => {}
+  public onWalletEvent_ChainChanged = (_hexChainId: string) => {}
+  public onWalletEvent_Disconnect = (error: { code: number; message: string }) => {}
 
   constructor() {
 
@@ -58,10 +69,12 @@ class ConnectWalletHelper {
    * - [x] wrong chain => prompt to switch chain
    * - [x] connect & disconnect while metamask is connected
    * - [x] auto reconnect
-   * - [ ] connect & disconnect while metamask is not connected
-   * - [ ] user click disconnect on metamask while connected on the site
-   * - [ ] user change account on metamask
-   * - [ ] metamask install but has not setup yet, no account
+   * - [x] connect & disconnect while metamask is not connected => should re-connect metamask again
+   * - [x] user click disconnect on metamask while connected on the site => user need to re-connect metamask + re-verify
+   * - [x] user change account on metamask => should do nothing, because they still have a connection ONLINE on our site
+   * - [x] metamask install but has not setup yet, no account => Metamask will handle this
+   * - [ ] Send tx while choosing a different account on metamask, not the connected one
+   * - [ ] Send tx while metamask account connection was terminate on metamask
    *
    * For WC pc & mobile:
    * - [ ] WC support for Trust & Metamask
@@ -71,14 +84,14 @@ class ConnectWalletHelper {
    * Additional for Mobile:
    *
    */
-  async connectWallet(wallet: Wallet, network: ChainNetwork): Promise<any> {
+  async connectWallet(wallet: Wallet, network: ChainNetwork, option: ConnectWalletOption): Promise<any> {
     switch (wallet) {
       case Wallet.metamask:
-        return this.connectMetamask(network);
+        return this.connectMetamask(network, option);
       case Wallet.wc:
-        return this.connectWalletConnect(network);
+        return this.connectWalletConnect(network, option);
       case Wallet.bsc:
-        return this.connectBinanceWallet(network);
+        return this.connectBinanceWallet(network, option);
       default:
         return new Promise<any>((resolve, reject) => {
           reject("initFor: Unhandled wallet: " + wallet)
@@ -137,7 +150,7 @@ class ConnectWalletHelper {
     return makeError(code, msg)
   }
 
-  private connectMetamask(network: ChainNetwork) {
+  private connectMetamask(network: ChainNetwork, option: ConnectWalletOption) {
     return new Promise<any>((resolve, reject) => {
       const isMetamask = window.ethereum && window.ethereum.isMetaMask;
       if (!isMetamask) {
@@ -150,9 +163,28 @@ class ConnectWalletHelper {
       web3Modal.connectTo("injected")
         .then(provider => {
           const web3Provider = new providers.Web3Provider(provider, 'any')
+
+          // unregister old listener
+          if (provider.removeListener) {
+            provider.removeListener('accountsChanged', this.onWalletEvent_AccountsChanged)
+            provider.removeListener('chainChanged', this.onWalletEvent_ChainChanged)
+            provider.removeListener('disconnect', this.onWalletEvent_Disconnect)
+          }
+
+          // new provider
           ConnectWalletStore_NonReactiveData.provider = provider;
           ConnectWalletStore_NonReactiveData.web3Provider = web3Provider;
           ConnectWalletStore_NonReactiveData.web3Modal = web3Modal;
+
+          // add new listener
+          if (provider?.on) {
+            this.onWalletEvent_AccountsChanged = option.onWalletEvent_AccountsChanged
+            this.onWalletEvent_ChainChanged = option.onWalletEvent_ChainChanged
+            this.onWalletEvent_Disconnect = option.onWalletEvent_Disconnect
+            provider.on('accountsChanged', this.onWalletEvent_AccountsChanged)
+            provider.on('chainChanged', this.onWalletEvent_ChainChanged)
+            provider.on('disconnect', this.onWalletEvent_Disconnect)
+          }
 
           resolve(provider)
         })
@@ -169,17 +201,17 @@ class ConnectWalletHelper {
     })
   }
 
-  private connectC98Wallet(network: ChainNetwork) {
+  private connectC98Wallet(network: ChainNetwork, option: ConnectWalletOption) {
 
   }
 
-  private connectWalletConnect(network: ChainNetwork) {
+  private connectWalletConnect(network: ChainNetwork, option: ConnectWalletOption) {
     return new Promise<any>((resolve, reject) => {
       reject("TODO: trigger wc via web3 modal")
     })
   }
 
-  private connectBinanceWallet(network: ChainNetwork) {
+  private connectBinanceWallet(network: ChainNetwork, option: ConnectWalletOption) {
     return new Promise<any>((resolve, reject) => {
       reject("TODO")
     })

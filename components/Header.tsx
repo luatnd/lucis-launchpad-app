@@ -68,7 +68,7 @@ export default function Header(props: Props) {
                   onClick={() => router.push('/')}
                   className='text-white text-24px leading-28px p-15px'
                 >
-                  Homepage
+                  Home
                 </a>
               </li>
               <li className={s.groundSubMenu}>

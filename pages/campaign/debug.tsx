@@ -19,7 +19,7 @@ const CampaignDebug: NextPage = () => {
     <>
       <DocHead title={"Draft Page for campaign"}/>
       <div className='lucis-container'>
-        <div className={s.containerApp} style={{paddingTop: 100}}>
+        <div className={s.containerApp} style={{paddingTop: 150}}>
           <Row gutter={[24, 50]} className='justify-center'>
             <Col>
               <CampaignBox/>

@@ -28,7 +28,7 @@ export const Navigation = () => {
   const menuItems: MenuItemType[] = [
     {
       color: "#FF008C",
-      text: "Homepage",
+      text: "Home",
       scrollTarget: "#Homepage",
       statusMenu: false,
     },

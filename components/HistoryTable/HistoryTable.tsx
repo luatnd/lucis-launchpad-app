@@ -1,17 +1,16 @@
 import { Table } from "antd";
 import moment from "moment";
-import s from "./history.module.sass";
+import s from "./History.module.sass";
 import { trim_middle } from "utils/String";
 
 type Props = {
   data: any;
-  error: any;
-  loading: any;
   title: string;
 };
 
 const HistoryTable = (props: Props) => {
-  const { data, error, loading, title } = props;
+  const { data, title } = props;
+  console.log(data);
 
   const columns = [
     {
@@ -112,32 +111,34 @@ const HistoryTable = (props: Props) => {
   ];
 
   return (
-    <div className={s.history}>
-      <h1 className="text-center">{title.toUpperCase()}</h1>
+    <>
+      {data.length > 0 ? (
+        <div className={s.history}>
+          <h1 className="text-center">{title.toUpperCase()}</h1>
 
-      {data ? (
-        <div style={{ position: "relative" }}>
-          <div
-            style={{
-              borderRadius: "10px",
-              position: "absolute",
-              inset: 0,
-              background: `linear-gradient(126.08deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%) `,
-            }}
-          ></div>
-          <Table
-            columns={columns}
-            dataSource={data}
-            pagination={false}
-            footer={() => <></>}
-            scroll={{ y: 1000 }}
-            rowKey="id"
-          />
+          <div style={{ position: "relative" }}>
+            <div
+              style={{
+                borderRadius: "10px",
+                position: "absolute",
+                inset: 0,
+                background: `linear-gradient(126.08deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%) `,
+              }}
+            ></div>
+            <Table
+              columns={columns}
+              dataSource={data}
+              pagination={false}
+              footer={() => <></>}
+              scroll={{ y: 1000 }}
+              rowKey="id"
+            />
+          </div>
         </div>
       ) : (
         ""
       )}
-    </div>
+    </>
   );
 };
 

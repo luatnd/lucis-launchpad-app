@@ -1,21 +1,17 @@
-import React from "react";
-import { useRouter } from "next/router";
 import { Tabs } from "antd";
+import Footer from "components/Footer";
+import BuyHistory from "components/HistoryTable/BuyHistory";
+import { useRouter } from "next/router";
 import { TabPane } from "rc-tabs";
-
+import React from "react";
+import Banner from "../../components/campaign/components/Banner/Banner";
+import Box from "../../components/campaign/components/Box/Box";
 import CountDown from "../../components/campaign/components/CountDown/CountDown";
 import SiteMap from "../../components/campaign/components/SiteMap/SiteMap";
 import Team from "../../components/campaign/components/Team/Team";
 import Trailer from "../../components/campaign/components/Trailer/Trailer";
-import Banner from "../../components/campaign/components/Banner/Banner";
-import Box from "../../components/campaign/components/Box/Box";
-
-import s from "./detail.module.sass";
-import RecentlyBought from "../../components/campaign/components/RecentlyBought/RecentlyBought";
 import DocHead from "../../components/DocHead";
-import Footer from "components/Footer";
-import { useQueryBoxHistories } from "components/Profile/Hooks/useQueryBoxHistories";
-import HistoryTable from "components/HistoryTable/HistoryTable";
+import s from "./detail.module.sass";
 
 /**
  * Match all route: /campaign/....
@@ -26,28 +22,6 @@ function DetailCampaign() {
   const id = slug?.length ? slug[0] : undefined;
 
   console.log("{DetailCampaign.render} campaign id: ", id);
-
-  // TODO: Filter history box follow id
-  const {
-    data: dataBoxHistories,
-    loading: loadingBoxHistories,
-    error: errorBoxHistories,
-  } = useQueryBoxHistories({
-    include: { boxTypes: true, game: true },
-  });
-  if (loadingBoxHistories) {
-    return <>Loading ...</>;
-  }
-  if (errorBoxHistories) {
-    return <>Error...</>;
-  }
-
-  const propsTable = {
-    data: dataBoxHistories?.boxCampaignBuyHistories,
-    loading: loadingBoxHistories,
-    error: errorBoxHistories,
-    title: "RECENTLY BOUGHT",
-  };
 
   return (
     <>
@@ -60,9 +34,8 @@ function DetailCampaign() {
               <SiteMap />
               <CountDown />
               <Box />
-              {/*<RecentlyBought />*/}
               <div className="container">
-                <HistoryTable {...propsTable} />
+                <BuyHistory id={id} title="recently bought" />
               </div>
             </TabPane>
             <TabPane tab="RULE" key="2">

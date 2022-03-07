@@ -6,20 +6,35 @@ import s from "./index.module.sass";
 import Box from "../../components/Profile/ProfileSocial";
 import Contact from "../../components/Profile/ProfileContact";
 import Info from "../../components/Profile/ProfileInfo";
-import History from "components/Profile/History/History";
+import { useQueryBoxHistories } from "components/Profile/Hooks/useQueryBoxHistories";
+import HistoryTable from "components/HistoryTable/HistoryTable";
 
 const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
   const { data, loading, error, refetch } = useQueryProfile();
 
-  if (loading) {
+  const {
+    data: dataBoxHistories,
+    loading: loadingBoxHistories,
+    error: errorBoxHistories,
+  } = useQueryBoxHistories({
+    include: { boxTypes: true, game: true },
+  });
+
+  if (loading || loadingBoxHistories) {
     return <>Loading ...</>;
   }
-  if (error) {
+  if (error || errorBoxHistories) {
     return <>Error...</>;
   }
 
   const props = { isEdit, setIsEdit, profile: data, refetch };
+  const propsTable = {
+    data: dataBoxHistories?.boxCampaignBuyHistories,
+    loading: loadingBoxHistories,
+    error: errorBoxHistories,
+    title: "History",
+  };
 
   return (
     <>
@@ -31,7 +46,7 @@ const MyProfile = () => {
           <Info {...props} />
           <Contact {...props} />
           <Box {...props} />
-          <History {...props} />
+          <HistoryTable {...propsTable} />
         </div>
         <Footer />
       </div>

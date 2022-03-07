@@ -1,0 +1,178 @@
+$font48: 48px
+$font36: 36px
+$font24: 24px
+$font20: 20px
+$font14: 14px
+$font9: 9px
+$height: 76px
+$height: 56px
+$height: 36px
+$width35: 35px
+$width30: 30px
+$width25: 25px
+$width15: 15px
+$backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(to right, rgba(255, 255, 255, 0.7), rgba(210, 0, 215, 0.6), rgba(251, 76, 222, 0.4), rgba(244, 123, 246, 0.4) ) border-box
+
+.history 
+    color: white
+    margin: 35px 0
+    h1
+        color: white
+        font-weight: 700
+        font-size: $font14
+        margin: 20px 0
+    .status 
+        width: 8px
+        height: 8px
+        margin: 5px 0 15px 0
+        border-radius: 50px
+    .succeed
+        background: #0BEBD6 
+        box-shadow: 0px 0px 6px #08D7F9
+
+    .confirming
+        background: #FF8A00 
+        box-shadow: 0px 0px 6px #FF8A00
+
+    .pending
+        background: #CD28E8 
+        box-shadow: 0px 0px 6px #CD28E8
+
+    .processing
+        background: #28e868 
+        box-shadow: 0px 0px 6px #28e868
+
+    .failed
+        background: #e82828 
+        box-shadow: 0px 0px 6px #e82828
+
+    :global
+        .ant-table-wrapper
+            border-radius: 10px
+        .ant-table 
+            background: none
+        .ant-table-wrapper
+            border: 1px solid #D7D7D7
+            border-radius: 10px
+            overflow: hidden
+            p
+                margin: 0
+        .ant-table-thead 
+            font-size: 12px
+            font-weight: 400
+            tr
+                & > :first-child
+                    padding-left: 5px
+                // & > :not(:last-child)
+                    // padding: 10px 0
+                & > :last-child
+                    padding-right: 5px
+                th
+                    font-weight: 700
+                    background: none
+                    padding: 10px 0 10px 0px
+                    // padding: 32px 55px 18px
+        .ant-table-cell
+            color: white
+            vertical-align: top
+            padding: 23px 0
+            & ::before
+                content: none
+            .descText
+                font-size: 12px
+                font-weight: 700
+                margin-bottom: 15px
+            .descSubText
+                display: flex
+                font-size: $font9
+                align-items: self-start
+                flex-shrink: 0
+                img
+                    width: 15px
+                    // height: 15px
+                    margin: 3px 4px 0 0 
+            img
+                width: 36px
+                margin-left: 2px
+            a 
+                font-size: 9px
+        .ant-table-tbody 
+            tr
+                td 
+                    padding: 20px 0px
+        .ant-table-cell-row-hover 
+            background: none !important
+        .ant-table-footer
+            margin: 30px 0
+            background: none
+        @media screen and ( min-width: 767px )
+            .ant-table-thead 
+                font-size: 24px
+                font-weight: 700
+                tr
+                    & > :first-child
+                        padding: 25px 10px 18px 25px
+                    th 
+                        font-size: 16px
+                        padding: 25px 10px 18px 5px
+            .ant-table-cell
+                padding: 35px 10px 
+                .descText
+                    font-size: 16px
+                    margin-bottom: 25px
+                .descSubText
+                    font-size: 12px
+                    font-weight: 300
+                    margin-bottom: 25px
+                    align-items: center
+                    img
+                        width: 15px
+                        margin: 0 10px 0 0 
+                img
+                    width: 70px
+                a 
+                    font-size: 16px
+        @media screen and ( min-width: 1023px )
+            .ant-table-thead 
+                font-size: 24px
+                font-weight: 700
+                tr
+                    & > :first-child
+                        padding: 35px 10px 18px 20px
+                    th 
+                        font-size: $font24
+                        padding: 35px 10px 18px 5px
+            .ant-table-body
+                .ant-table-cell
+                    padding: 35px 20px 35px 5px
+                    .descText
+                        font-size: $font24
+                    .descSubText
+                        font-size: $font20
+                        font-weight: 300
+                        img
+                            width: 25px
+                            margin: 0 14px 0 0 
+                    img
+                        width: 100px
+                    a 
+                        font-size: 24px
+@media screen and ( min-width: 767px )
+    .history
+        margin: 50px 0px 200px 0
+        h1 
+            margin-bottom: 35px !important
+            font-size: 24px
+        .status 
+            width: 20px
+            height: 20px
+            margin-bottom: 25px
+@media screen and ( min-width: 1023px )
+    .history
+        
+        h1 
+            font-size: 36px
+        .status 
+            width: 30px
+            height: 30px
+    

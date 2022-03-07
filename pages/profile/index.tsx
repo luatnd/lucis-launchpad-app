@@ -8,33 +8,20 @@ import Contact from "../../components/Profile/ProfileContact";
 import Info from "../../components/Profile/ProfileInfo";
 import { useQueryBoxHistories } from "components/Profile/Hooks/useQueryBoxHistories";
 import HistoryTable from "components/HistoryTable/HistoryTable";
+import BuyHistory from "components/HistoryTable/BuyHistory";
 
 const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
   const { data, loading, error, refetch } = useQueryProfile();
 
-  const {
-    data: dataBoxHistories,
-    loading: loadingBoxHistories,
-    error: errorBoxHistories,
-  } = useQueryBoxHistories({
-    include: { boxTypes: true, game: true },
-  });
-
-  if (loading || loadingBoxHistories) {
+  if (loading) {
     return <>Loading ...</>;
   }
-  if (error || errorBoxHistories) {
+  if (error) {
     return <>Error...</>;
   }
 
   const props = { isEdit, setIsEdit, profile: data, refetch };
-  const propsTable = {
-    data: dataBoxHistories?.boxCampaignBuyHistories,
-    loading: loadingBoxHistories,
-    error: errorBoxHistories,
-    title: "History",
-  };
 
   return (
     <>
@@ -46,7 +33,7 @@ const MyProfile = () => {
           <Info {...props} />
           <Contact {...props} />
           <Box {...props} />
-          <HistoryTable {...propsTable} />
+          <BuyHistory title="History" />
         </div>
         <Footer />
       </div>

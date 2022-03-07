@@ -16,6 +16,8 @@ import DocHead from "../../components/DocHead";
 import Footer from "components/Footer";
 import { useQueryBoxHistories } from "components/Profile/Hooks/useQueryBoxHistories";
 import HistoryTable from "components/HistoryTable/HistoryTable";
+import BuyHistory from "components/HistoryTable/BuyHistory";
+import { m } from "framer-motion";
 
 /**
  * Match all route: /campaign/....
@@ -27,26 +29,9 @@ function DetailCampaign() {
 
   console.log("{DetailCampaign.render} campaign id: ", id);
 
-  // TODO: Filter history box follow id
-  const {
-    data: dataBoxHistories,
-    loading: loadingBoxHistories,
-    error: errorBoxHistories,
-  } = useQueryBoxHistories({
-    include: { boxTypes: true, game: true },
-  });
-  if (loadingBoxHistories) {
-    return <>Loading ...</>;
-  }
-  if (errorBoxHistories) {
-    return <>Error...</>;
-  }
-
-  const propsTable = {
-    data: dataBoxHistories?.boxCampaignBuyHistories,
-    loading: loadingBoxHistories,
-    error: errorBoxHistories,
-    title: "RECENTLY BOUGHT",
+  const tableProps = {
+    title: "recently bought",
+    id: id,
   };
 
   return (
@@ -60,9 +45,8 @@ function DetailCampaign() {
               <SiteMap />
               <CountDown />
               <Box />
-              {/*<RecentlyBought />*/}
               <div className="container">
-                <HistoryTable {...propsTable} />
+                <BuyHistory {...tableProps} />
               </div>
             </TabPane>
             <TabPane tab="RULE" key="2">

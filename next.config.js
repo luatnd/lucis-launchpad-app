@@ -5,6 +5,15 @@ const path = require("path");
 module.exports = withAntdLess({
   reactStrictMode: true,
 
+  /**
+   * From Static structure: /about.html
+   * To Static structure: /about/index.html
+   *
+   * But this also make all client url end with a `/`, so we will turn it off
+   * https://nextjs.org/docs/api-reference/next.config.js/exportPathMap#adding-a-trailing-slash
+   */
+  // trailingSlash: false,
+
   // webpack(config) {
   //   return config;
   // },

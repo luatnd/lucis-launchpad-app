@@ -6,13 +6,13 @@ import s from "./index.module.sass";
 import Box from "../../components/Profile/ProfileSocial";
 import Contact from "../../components/Profile/ProfileContact";
 import Info from "../../components/Profile/ProfileInfo";
-import History from "components/Profile/History/History";
-import TestHistoryTable from "components/TestHistoryTable/TestHistoryTable";
 import { useQueryBoxHistories } from "components/Profile/Hooks/useQueryBoxHistories";
+import HistoryTable from "components/HistoryTable/HistoryTable";
 
 const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
   const { data, loading, error, refetch } = useQueryProfile();
+
   const {
     data: dataBoxHistories,
     loading: loadingBoxHistories,
@@ -46,7 +46,7 @@ const MyProfile = () => {
           <Info {...props} />
           <Contact {...props} />
           <Box {...props} />
-          <TestHistoryTable {...propsTable} />
+          <HistoryTable {...propsTable} />
         </div>
         <Footer />
       </div>

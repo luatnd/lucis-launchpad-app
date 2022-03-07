@@ -2,6 +2,8 @@ import {IClientMeta} from '@walletconnect/types'
 import {ethers} from 'ethers'
 import { Network} from "@ethersproject/networks";
 import {makeAutoObservable} from 'mobx'
+import Web3Modal from "web3modal";
+
 import {to_hex_str} from 'utils/String'
 import {isClient} from "../../utils/DOM";
 
@@ -10,11 +12,6 @@ class ConnectWalletStore {
   // common
   private _address?: string
   private _network?: Network
-
-  // web3
-  web3Modal?: any
-  provider?: any
-  web3Provider?: any
 
   // near
   // ..
@@ -43,8 +40,8 @@ class ConnectWalletStore {
   }
 
   resetStates() {
-    this.provider = undefined;
-    this.web3Provider = undefined;
+    this._address = undefined;
+    this._network = undefined;
   }
 }
 
@@ -60,8 +57,18 @@ export default s;
 export const nonReactive: {
   provider?: any,
   web3Provider?: ethers.providers.Web3Provider,
+  web3Modal?: Web3Modal,
+
+  resetStates: () => void,
 } = {
   provider: undefined,
   web3Provider: undefined,
+  web3Modal: undefined,
   // signer: undefined, // Use when needed: const signer = web3Provider.getSigner()
+
+  resetStates() {
+    this.provider = undefined;
+    this.web3Provider = undefined;
+    this.web3Modal = undefined;
+  }
 }

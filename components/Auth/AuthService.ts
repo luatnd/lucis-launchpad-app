@@ -156,11 +156,16 @@ export default class AuthService {
     };
 
     try {
-      const token = getLocalAuthInfo()?.token
-      if (token) {
+      const cachedUser: AuthUser | null = getLocalAuthInfo();
+      const token = cachedUser?.token
+
+      if (
+        address === cachedUser?.address
+        && token
+      ) {
         ApoloClient_setAuthToken(token)
 
-        // re-login
+        // re-login only if the cache user have token, and correct address
         const user = await this.fetchUserData()
         console.log('{AuthService.login} re-login user: ', user);
 

@@ -1,17 +1,19 @@
+import { useCallback, useState } from "react";
 import { observer } from 'mobx-react-lite'
 import { Button, Col, Modal, Row, Popover } from "antd";
-
-import ConnectWalletStore from "../ConnectWalletStore";
-import AuthStore from "../AuthStore";
-import s from "./User.module.sass";
-import { useCallback, useState } from "react";
-import AuthService from "../AuthService";
-import AuthBox from "./AuthBox";
-import AuthBoxStore from "./AuthBoxStore";
-import { getAppNetworkFriendlyName } from "../../../utils/blockchain/ChainConfig";
 import { useRouter } from "next/router";
-import { ChainNetwork, ChainNetworkAvatar, getChainNetworkFromChainId } from "../../../utils/blockchain/BlockChain";
-import { trim_middle } from "../../../utils/String";
+
+import ConnectWalletStore, { nonReactive as ConnectWalletStore_NonReactiveData } from "../ConnectWalletStore";
+import AuthStore from "../AuthStore";
+import AuthBoxStore from "./AuthBoxStore";
+
+import AuthService from "../AuthService";
+import { getAppNetworkFriendlyName } from "utils/blockchain/ChainConfig";
+import { ChainNetwork, ChainNetworkAvatar, getChainNetworkFromChainId } from "utils/blockchain/BlockChain";
+import { trim_middle } from "utils/String";
+
+import s from "./User.module.sass";
+import { AppEmitter } from "../../../services/emitter";
 
 
 type Props = {};
@@ -36,7 +38,7 @@ export default  observer(function User(props: Props) {
     const authService = new AuthService();
     authService.logout();
 
-    // TODO: Need clean wallet connection
+    AppEmitter.emit('onWalletDisconnect')
   }, [])
 
 

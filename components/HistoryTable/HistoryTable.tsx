@@ -2,24 +2,16 @@ import { Table } from "antd";
 import moment from "moment";
 import s from "./history.module.sass";
 import { trim_middle } from "utils/String";
-import { useQueryBoxHistories } from "../Hooks/useQueryBoxHistories";
 
-const HistoryTable = (profile: any) => {
-  const { data, loading, error } = useQueryBoxHistories({
-    include: { boxTypes: true, game: true },
-  });
-  // const address = profile.profile.me.address ?? "";
-  // console.log(profile.profile.me);
+type Props = {
+  data: any;
+  error: any;
+  loading: any;
+  title: string;
+};
 
-  if (loading) {
-    return <>Loading ...</>;
-  }
-
-  if (error) {
-    console.log(error);
-
-    return <>Error ...</>;
-  }
+const HistoryTable = (props: Props) => {
+  const { data, error, loading, title } = props;
 
   const columns = [
     {
@@ -120,23 +112,31 @@ const HistoryTable = (profile: any) => {
   ];
 
   return (
-    <div style={{ position: "relative" }}>
-      <div
-        style={{
-          borderRadius: "10px",
-          position: "absolute",
-          inset: 0,
-          background: `linear-gradient(126.08deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%) `,
-        }}
-      ></div>
-      <Table
-        columns={columns}
-        dataSource={data.boxCampaignBuyHistories}
-        pagination={false}
-        footer={() => <></>}
-        scroll={{ y: 1000 }}
-        rowKey="id"
-      />
+    <div className={s.history}>
+      <h1 className="text-center">{title}</h1>
+
+      {data ? (
+        <div style={{ position: "relative" }}>
+          <div
+            style={{
+              borderRadius: "10px",
+              position: "absolute",
+              inset: 0,
+              background: `linear-gradient(126.08deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%) `,
+            }}
+          ></div>
+          <Table
+            columns={columns}
+            dataSource={data}
+            pagination={false}
+            footer={() => <></>}
+            scroll={{ y: 1000 }}
+            rowKey="id"
+          />
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

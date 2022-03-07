@@ -1,6 +1,6 @@
 import { Table } from "antd";
 import moment from "moment";
-import s from "./history.module.sass";
+import s from "./History.module.sass";
 import { trim_middle } from "utils/String";
 
 type Props = {

@@ -27,6 +27,7 @@ const Banner = () => {
           <div className={s.info_contain}>
             <div className={s.info_logo} />
             <p className={s.info_title}>THETA ARENA</p>
+            {/* <p className={s.info_event}>AXIE CAMPAIGN 1</p> */}
             <p className={s.info_content}>
               Thetan Arena is an esport game based on blockchain technology. You can gather your
               friends, form a team, battle with others and earn money with just your skills.{" "}

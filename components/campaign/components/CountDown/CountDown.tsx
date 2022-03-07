@@ -58,7 +58,7 @@ const CountDown = () => {
 
   return (
     <div className={`lucis-container ${s.countDown}`}>
-      <div className="text-white text-center text-36px font-bold">
+      <div className="text-white text-center sm:text-12px md:text-24px font-bold">
         End to apply for the Whitelist in
       </div>
       <div className="flex text-white  md:gap-10 justify-between md:justify-center  mt-8">

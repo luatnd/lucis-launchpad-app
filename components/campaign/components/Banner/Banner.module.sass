@@ -1,3 +1,5 @@
+@import styles/common
+
 .backgroundDetail
   width: 100%
   height: 712px
@@ -21,18 +23,21 @@
 .notification
   transform: translateX(10px)
   display: flex
-  justify-content: space-around
+  justify-content: center
+  gap: 10px
   align-items: center
   position: relative
   width: 304px
   height: 71px
   left: 0
   top: 170px
+  @include border-grad-3(linear-gradient(290.92deg,#0bebd6,#cd28e8))
+  @include box-glass
   background: rgba(0, 0, 0, 0.3)
-  box-shadow: 0px 4px 35px rgba(234, 211, 12, 0.35)
+  // box-shadow: 0px 4px 35px rgba(234, 211, 12, 0.35)
   backdrop-filter: blur(40px)
   padding: 1rem
-  border-radius: 10px
+  // border-radius: 10px
   &:before
     content: ""
     position: absolute
@@ -47,7 +52,7 @@
     -webkit-mask-composite: xor
   p
     margin: 0
-    width: 217px
+    // width: 217px
     height: 28px
     font-family: Saira
     font-style: normal
@@ -63,12 +68,15 @@
   width: 95%
   height: 387px
   left: 0
-  top: 280px
+  top: 230px
+  @include border-grad-3(linear-gradient(290.92deg,#0bebd6,#cd28e8))
+  @include box-glass
+  
   background: linear-gradient(126.08deg, rgba(0, 0, 0, 0.3) 13.84%, rgba(0, 0, 0, 0.1) 74.14%)
   box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
   backdrop-filter: blur(40px)
-  border-radius: 10px
-  transform: translateX(10px)
+  // border-radius: 10px
+  // transform: translateX(10px)
   @media (min-width: 0px) and (max-width: 360px)
     max-width: 340px
   @media (min-width: 0px) and (max-width: 639px)
@@ -81,21 +89,21 @@
   // position: absolute
   // left: 45px
   // top: 21px
-  padding: 1.3rem 3rem
-  &:before
-    content: ""
-    position: absolute
-    top: 0
-    left: 0
-    right: 0
-    bottom: 0
-    border-radius: 10px
-    padding: 3px
-    background: linear-gradient(99.92deg,#cd28e8,#0bebd6)
-    -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
-    -webkit-mask-composite: xor
-  @media (min-width: 415px) and (max-width: 639px)
-    padding: 0
+  padding: 1.34rem 3rem
+  // &:before
+  //   // content: ""
+  //   position: absolute
+  //   top: 0
+  //   left: 0
+  //   right: 0
+  //   bottom: 0
+  //   border-radius: 10px
+  //   padding: 3px
+  //   background: linear-gradient(99.92deg,#cd28e8,#0bebd6)
+  //   -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
+  //   -webkit-mask-composite: xor
+  // @media (min-width: 415px) and (max-width: 639px)
+  //   padding: 0
 
 @media (min-width: 992px) and (max-width: 1024px)
   .info_contain
@@ -175,4 +183,12 @@
     cursor: pointer
     @media (min-width: 0px) and (max-width: 639px)
       img
-        width: 70%
+        width: 70
+
+
+.noti 
+  display: flex
+  align-items: center
+  position: absolute
+  top: 100px
+  padding: 10px

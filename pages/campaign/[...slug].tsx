@@ -1,23 +1,17 @@
-import React from "react";
-import { useRouter } from "next/router";
 import { Tabs } from "antd";
+import Footer from "components/Footer";
+import BuyHistory from "components/HistoryTable/BuyHistory";
+import { useRouter } from "next/router";
 import { TabPane } from "rc-tabs";
-
+import React from "react";
+import Banner from "../../components/campaign/components/Banner/Banner";
+import Box from "../../components/campaign/components/Box/Box";
 import CountDown from "../../components/campaign/components/CountDown/CountDown";
 import SiteMap from "../../components/campaign/components/SiteMap/SiteMap";
 import Team from "../../components/campaign/components/Team/Team";
 import Trailer from "../../components/campaign/components/Trailer/Trailer";
-import Banner from "../../components/campaign/components/Banner/Banner";
-import Box from "../../components/campaign/components/Box/Box";
-
-import s from "./detail.module.sass";
-import RecentlyBought from "../../components/campaign/components/RecentlyBought/RecentlyBought";
 import DocHead from "../../components/DocHead";
-import Footer from "components/Footer";
-import { useQueryBoxHistories } from "components/Profile/Hooks/useQueryBoxHistories";
-import HistoryTable from "components/HistoryTable/HistoryTable";
-import BuyHistory from "components/HistoryTable/BuyHistory";
-import { m } from "framer-motion";
+import s from "./detail.module.sass";
 
 /**
  * Match all route: /campaign/....
@@ -28,11 +22,6 @@ function DetailCampaign() {
   const id = slug?.length ? slug[0] : undefined;
 
   console.log("{DetailCampaign.render} campaign id: ", id);
-
-  const tableProps = {
-    title: "recently bought",
-    id: id,
-  };
 
   return (
     <>
@@ -46,7 +35,7 @@ function DetailCampaign() {
               <CountDown />
               <Box />
               <div className="container">
-                <BuyHistory {...tableProps} />
+                <BuyHistory id={id} title="recently bought" />
               </div>
             </TabPane>
             <TabPane tab="RULE" key="2">

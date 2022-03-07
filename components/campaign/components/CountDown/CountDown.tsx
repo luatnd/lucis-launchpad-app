@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import s from "./CountDown.module.sass";
 
-const CountDown = () => {
-  const [totalTime, setTotalTime] = useState(20000);
+interface ICountDown {
+  timeCountDown: number
+}
+
+const CountDown = (props: ICountDown) => {
+  const {timeCountDown} = props
+  const [totalTime, setTotalTime] = useState(0);
   const [timer, setTimer] = useState<{ [name: string]: number }>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
@@ -13,7 +18,7 @@ const CountDown = () => {
       minutes: Math.floor((totalTime / 60) % 60),
       seconds: Math.floor(totalTime % 60),
     }));
-  }, []);
+  }, [totalTime]);
 
   useEffect(() => {
     let interval: NodeJS.Timer;
@@ -26,6 +31,10 @@ const CountDown = () => {
     }, 1000);
     return () => clearInterval(interval);
   }, [totalTime]);
+
+  useEffect(() => {
+    setTotalTime(timeCountDown);
+  }, [timeCountDown]);
 
   const countTime = () => {
     if (totalTime > 0 && (timer.days !== 0 || timer.hours !== 0 || timer.minutes !== 0 || timer.seconds !== 0)) {

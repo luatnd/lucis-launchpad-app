@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useRouter } from "next/router";
 import { Tabs } from "antd";
 import { TabPane } from "rc-tabs";
@@ -14,6 +14,7 @@ import s from "./detail.module.sass";
 import RecentlyBought from "../../components/campaign/components/RecentlyBought/RecentlyBought";
 import DocHead from "../../components/DocHead";
 import Footer from "components/Footer";
+import {useDetailCampaign} from "../../hooks/campaign/useDetailCampaign";
 
 /**
  * Match all route: /campaign/....
@@ -22,8 +23,14 @@ function DetailCampaign() {
   const router = useRouter()
   const { slug } = router.query
   const id = slug?.length ? slug[0] : undefined;
+  const [timeCountDown, setTimeCountDown] = useState(0);
 
   console.log('{DetailCampaign.render} campaign id: ', id);
+
+  const { data, loading, error, dataOpening } = useDetailCampaign();
+
+  console.log('data', data)
+  console.log('data', dataOpening)
 
   return (
       <>
@@ -33,8 +40,14 @@ function DetailCampaign() {
             <Banner />
             <Tabs defaultActiveKey='1' className={s.tabs}>
               <TabPane tab='TIMELINE' key='1'>
-                <SiteMap />
-                <CountDown />
+                <SiteMap
+                    rounds={data?.campaignDetail?.rounds}
+                    start={data?.campaignDetail?.start}
+                    end={data?.campaignDetail?.end}
+                    setTimeCountDown={setTimeCountDown}
+                    isInWhitelist={dataOpening?.isInWhitelist}
+                />
+                <CountDown timeCountDown={timeCountDown}/>
                 <Box />
                 {/*<RecentlyBought />*/}
               </TabPane>

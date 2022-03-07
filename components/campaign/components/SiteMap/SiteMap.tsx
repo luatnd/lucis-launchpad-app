@@ -12,37 +12,37 @@ const ListCard = [
       box_limit_per_user: null,
       box_limit_this_phase: 0,
       description: "Whitelist phase",
-      end: "2022-03-07 12:55:59",
+      end: "2022-03-07 18:29:59",
       id: 1,
       is_whitelist: true,
       name: "Whitelist phase",
       participant_limit: 10,
       require_whitelist: true,
-      start: "2022-03-07 00:00:00",
+      start: "2022-03-07 18:29:00",
   },
   {
       box_limit_per_user: null,
       box_limit_this_phase: 0,
       description: "Buy whitelist phase",
-      end: "2022-03-07 12:56:59",
+      end: "2022-03-07 18:30:59",
       id: 1,
       is_whitelist: false,
       name: "Whitelist phase",
       participant_limit: 10,
       require_whitelist: true,
-      start: "2022-03-07 12:56:00",
+      start: "2022-03-07 18:30:00",
   },
   {
       box_limit_per_user: null,
       box_limit_this_phase: 0,
       description: "Whitelist phase",
-      end: "2022-03-11 03:34:59",
+      end: "2022-03-07 18:31:59",
       id: 1,
       is_whitelist: false,
       name: "Whitelist phase",
       participant_limit: 10,
       require_whitelist: true,
-      start: "2022-03-07 12:57:00",
+      start: "2022-03-07 18:31:00",
   },
 ];
 interface IRound {
@@ -67,11 +67,20 @@ interface IRound {
 const SiteMap = (props:IRound) => {
     const { rounds, start, end, setTimeCountDown, isInWhitelist } = props
     const [listRounds, setListRounds] = useState([] as any);
+    const [isActiveUpComing, setIsActiveUpComing] = useState(false);
 
 
     const getCurrentRound = () => {
         const dateNow = moment().unix()
-
+        const upcomingStart = moment(start).unix()
+        const firstStart = moment(rounds[0]?.start).unix()
+        const time = (firstStart - dateNow)*1000
+        setIsActiveUpComing(false)
+        if (upcomingStart <= dateNow && dateNow <= firstStart) {
+            setIsActiveUpComing(true)
+            setTimeout(() => {getCurrentRound()},time)
+            setTimeCountDown(Math.floor(time/1000))
+        }
         const x = rounds?.map((e) => {
             const endDate = moment(e.end).unix()
             const startDate = moment(e.start).unix()
@@ -115,20 +124,20 @@ const SiteMap = (props:IRound) => {
                     <div className={`${s.hSlide} flex flex-col justify-end w-full`}>
                         <div
                             className={`text-white font-bold ${s.SiteMapLineCircleTitle} ${
-                                false ? s.active : ""
+                                isActiveUpComing ? s.active : ""
                             }`}
                         >
                             Upcoming
                         </div>
                         <div
                             className={`text-white pb-2 mb-10 ${s.SiteMapLineCircleTime} ${
-                                false ? s.active : ""
+                                isActiveUpComing ? s.active : ""
                             }`}
                         >
                             {moment(start).format('HH:mm, MMMM DD')}
                         </div>
                     </div>
-                    <div className={`${s.SiteMapLineCircle} ${false ? s.active : ""}`}></div>
+                    <div className={`${s.SiteMapLineCircle} ${isActiveUpComing ? s.active : ""}`}></div>
                     <div className={`text-white mt-10 w-full ${s.SiteMapLineCircleContent}`}>Stay tuned and prepare to APPLY WHITELIST.</div>
                 </div>
             </SwiperSlide>

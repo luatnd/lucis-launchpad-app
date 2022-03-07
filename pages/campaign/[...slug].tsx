@@ -26,6 +26,7 @@ function DetailCampaign() {
   const id = slug?.length ? slug[0] : undefined;
 
   console.log("{DetailCampaign.render} campaign id: ", id);
+
   // TODO: Filter history box follow id
   const {
     data: dataBoxHistories,
@@ -45,7 +46,7 @@ function DetailCampaign() {
     data: dataBoxHistories?.boxCampaignBuyHistories,
     loading: loadingBoxHistories,
     error: errorBoxHistories,
-    title: "History",
+    title: "RECENTLY BOUGHT",
   };
 
   return (

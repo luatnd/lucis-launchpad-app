@@ -113,7 +113,7 @@ const HistoryTable = (props: Props) => {
 
   return (
     <div className={s.history}>
-      <h1 className="text-center">{title}</h1>
+      <h1 className="text-center">{title.toUpperCase()}</h1>
 
       {data ? (
         <div style={{ position: "relative" }}>

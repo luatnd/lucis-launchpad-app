@@ -1,6 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
+import { truncateStr } from "utils/String";
 import s from "./Banner.module.sass";
+
+const content =
+  "Thetan Arena is an esport game based on blockchain technology. You can gather your friends, form a team, battle with others and earn money with just your skills.";
 
 const Banner = () => {
   const [isEnableNotification, setIsEnableNotification] = useState(false);
@@ -10,9 +14,9 @@ const Banner = () => {
   };
 
   return (
-    <div className={s.backgroundDetail}>
-      <div className={`lucis-container ${s.backgroundContain}`}>
-        <button className={s.notification} onClick={handleSubscription}>
+    <div className={s.backgroundBanner}>
+      <div className="container">
+        <button className={s.noti} onClick={handleSubscription}>
           <img
             src={
               isEnableNotification
@@ -23,17 +27,22 @@ const Banner = () => {
           />
           <p>{isEnableNotification ? "Subscribed" : "Enable Notification"}</p>
         </button>
-        <div className={s.info}>
-          <div className={s.info_contain}>
-            <div className={s.info_logo} />
-            <p className={s.info_title}>THETA ARENA</p>
-            {/* <p className={s.info_event}>AXIE CAMPAIGN 1</p> */}
-            <p className={s.info_content}>
-              Thetan Arena is an esport game based on blockchain technology. You can gather your
-              friends, form a team, battle with others and earn money with just your skills.{" "}
-            </p>
-            <div className={s.info_read}>
-              <div className={s.info_button_group}>
+
+        <div className={s.inf}>
+          <div className={s.infContainer}>
+            <div className={s.infLogo}>
+              <img src="/assets/logo.png" alt="" />
+            </div>
+
+            <div className={s.infTitle}>
+              <p>THETA ARENA</p>
+              <p>AXIE CAMPAIGN 1</p>
+            </div>
+
+            <div className={s.infContent}>{truncateStr(content, 0, 20)}</div>
+
+            <div className={s.infSocial}>
+              <div className={s.infSocialIcons}>
                 <a
                   href="https://www.facebook.com/lucistv.news"
                   target="_blank"
@@ -58,7 +67,10 @@ const Banner = () => {
                   <img src={"/assets/Campaign/Banner/svg/win.svg"} alt="icon" />
                 </a>
               </div>
-              <span>{"read more >>"}</span>
+
+              <div className={s.infSocialRead}>
+                <a href="#">Read more &gt;&gt; </a>
+              </div>
             </div>
           </div>
         </div>

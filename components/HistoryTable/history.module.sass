@@ -15,10 +15,12 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
 
 .history 
     color: white
+    margin: 35px 0
     h1
         color: white
         font-weight: 700
         font-size: $font14
+        margin: 20px 0
     .status 
         width: 8px
         height: 8px
@@ -27,18 +29,23 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
     .succeed
         background: #0BEBD6 
         box-shadow: 0px 0px 6px #08D7F9
-    .succeedText
-        color: #0BEBD6
+
     .confirming
         background: #FF8A00 
         box-shadow: 0px 0px 6px #FF8A00
-    .confirmingText
-        color: #FF8A00
+
     .pending
         background: #CD28E8 
         box-shadow: 0px 0px 6px #CD28E8
-    .pendingText
-        color: #CD28E8
+
+    .processing
+        background: #28e868 
+        box-shadow: 0px 0px 6px #28e868
+
+    .failed
+        background: #e82828 
+        box-shadow: 0px 0px 6px #e82828
+
     :global
         .ant-table-wrapper
             border-radius: 10px
@@ -76,13 +83,20 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
                 font-weight: 700
                 margin-bottom: 15px
             .descSubText
+                display: flex
                 font-size: $font9
+                align-items: self-start
+                flex-shrink: 0
                 img
                     width: 15px
-                    margin: 0 6px 0 0 
+                    // height: 15px
+                    margin: 3px 4px 0 0 
             img
-                width: 40px
-                margin-left: 4px
+                width: 36px
+                margin-left: 2px
+            a 
+                font-size: 9px
+                text-decoration: underline
         .ant-table-tbody 
             tr
                 td 
@@ -111,12 +125,14 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
                     font-size: 12px
                     font-weight: 300
                     margin-bottom: 25px
+                    align-items: center
                     img
                         width: 15px
                         margin: 0 10px 0 0 
-
                 img
                     width: 70px
+                a 
+                    font-size: 16px
         @media screen and ( min-width: 1023px )
             .ant-table-thead 
                 font-size: 24px
@@ -140,6 +156,8 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
                             margin: 0 14px 0 0 
                     img
                         width: 100px
+                    a 
+                        font-size: 20px
 @media screen and ( min-width: 767px )
     .history
         margin: 50px 0px 200px 0
@@ -147,17 +165,15 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
             margin-bottom: 35px !important
             font-size: 24px
         .status 
-            width: 30px
-            height: 30px
+            width: 20px
+            height: 20px
             margin-bottom: 25px
-            // .ant-table-cell
-            //     img
-            //         width: 70px
 @media screen and ( min-width: 1023px )
     .history
+        
         h1 
             font-size: 36px
-            // .ant-table-cell
-            //     img
-            //         width: 100px
+        .status 
+            width: 30px
+            height: 30px
     

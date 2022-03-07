@@ -83,7 +83,7 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
           <div className={s.info}>
             <div>
               {isEdit ? (
-                <Input {...props} />
+                <Input {...props} placeholder={"Your name"} />
               ) : (
                 // <input className={s.name} onChange={handleChangeName} value={tempName} />
                 <p className={s.name}>{tempName}</p>

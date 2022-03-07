@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import CampaignDetail from './[...slug]'
+import CampaignDetail from "./[...slug]";
 
 /**
  * This has no function in project
@@ -8,7 +8,7 @@ import CampaignDetail from './[...slug]'
  * Match route: /campaign
  */
 const CampaignIndex: NextPage = () => {
-  return <CampaignDetail/>;
+  return <CampaignDetail />;
 };
 
-export default CampaignIndex
+export default CampaignIndex;

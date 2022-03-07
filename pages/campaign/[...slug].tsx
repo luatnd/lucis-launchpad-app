@@ -15,57 +15,79 @@ import RecentlyBought from "../../components/campaign/components/RecentlyBought/
 import DocHead from "../../components/DocHead";
 import Footer from "components/Footer";
 import {useDetailCampaign} from "../../hooks/campaign/useDetailCampaign";
+import { useQueryBoxHistories } from "components/Profile/Hooks/useQueryBoxHistories";
+import HistoryTable from "components/HistoryTable/HistoryTable";
 
 /**
  * Match all route: /campaign/....
  */
 function DetailCampaign() {
-  const router = useRouter()
-  const { slug } = router.query
+  const router = useRouter();
+  const { slug } = router.query;
   const id = slug?.length ? slug[0] : undefined;
   const [timeCountDown, setTimeCountDown] = useState(0);
 
-  console.log('{DetailCampaign.render} campaign id: ', id);
-
   const { data, loading, error, dataOpening } = useDetailCampaign();
 
-  console.log('data', data)
-  console.log('data', dataOpening)
+  console.log("{DetailCampaign.render} campaign id: ", id);
+
+  // TODO: Filter history box follow id
+  const {
+    data: dataBoxHistories,
+    loading: loadingBoxHistories,
+    error: errorBoxHistories,
+  } = useQueryBoxHistories({
+    include: { boxTypes: true, game: true },
+  });
+  if (loadingBoxHistories) {
+    return <>Loading ...</>;
+  }
+  if (errorBoxHistories) {
+    return <>Error...</>;
+  }
+
+  const propsTable = {
+    data: dataBoxHistories?.boxCampaignBuyHistories,
+    loading: loadingBoxHistories,
+    error: errorBoxHistories,
+    title: "RECENTLY BOUGHT",
+  };
 
   return (
-      <>
-        <DocHead />
-        <div className='lucis-container'>
-          <div className={s.containerApp}>
-            <Banner />
-            <Tabs defaultActiveKey='1' className={s.tabs}>
-              <TabPane tab='TIMELINE' key='1'>
-                <SiteMap
-                    rounds={data?.campaignDetail?.rounds}
-                    start={data?.campaignDetail?.start}
-                    end={data?.campaignDetail?.end}
-                    setTimeCountDown={setTimeCountDown}
-                    isInWhitelist={dataOpening?.isInWhitelist}
-                />
-                <CountDown timeCountDown={timeCountDown}/>
-                <Box />
-                {/*<RecentlyBought />*/}
-              </TabPane>
-              <TabPane tab='RULE' key='2'>
-                hello rule
-              </TabPane>
-              <TabPane tab='ABOUT PROJECT' key='3'>
-                <Trailer />
-                <Team />
-              </TabPane>
-            </Tabs>
-            <Footer/>
-          </div>
+    <>
+      <DocHead />
+      <div className="lucis-container">
+        <div className={s.containerApp}>
+          <Banner />
+          <Tabs defaultActiveKey="1" className={s.tabs}>
+            <TabPane tab="TIMELINE" key="1">
+              <SiteMap
+                  rounds={data?.campaignDetail?.rounds}
+                  start={data?.campaignDetail?.start}
+                  end={data?.campaignDetail?.end}
+                  setTimeCountDown={setTimeCountDown}
+                  isInWhitelist={dataOpening?.isInWhitelist}
+              />
+              <CountDown timeCountDown={timeCountDown}/>
+              <Box />
+              {/*<RecentlyBought />*/}
+              <div className="container">
+                <HistoryTable {...propsTable} />
+              </div>
+            </TabPane>
+            <TabPane tab="RULE" key="2">
+              hello rule
+            </TabPane>
+            <TabPane tab="ABOUT PROJECT" key="3">
+              <Trailer />
+              <Team />
+            </TabPane>
+          </Tabs>
+          <Footer />
         </div>
-      </>
-
+      </div>
+    </>
   );
-
 }
 
 /**

@@ -32,6 +32,7 @@ const BOX_HISTORIES = gql`
         price
         chain_symbol
         chain_icon
+        chain_name
         currency_name
         boxType {
           name

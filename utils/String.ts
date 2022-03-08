@@ -40,3 +40,8 @@ export function slugify(str: string): string {
   const ascii = vi2en(str);
   return ascii.replace(/\s/g, "-");
 }
+
+export function truncateStr(str: string, start: number, end: number) {
+  str = `${str.split(" ").splice(start, end).join(" ")}...`;
+  return str;
+}

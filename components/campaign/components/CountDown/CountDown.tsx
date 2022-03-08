@@ -37,7 +37,10 @@ const CountDown = (props: ICountDown) => {
   }, [timeCountDown]);
 
   const countTime = () => {
-    if (totalTime > 0 && (timer.days !== 0 || timer.hours !== 0 || timer.minutes !== 0 || timer.seconds !== 0)) {
+    if (
+      totalTime > 0 &&
+      (timer.days !== 0 || timer.hours !== 0 || timer.minutes !== 0 || timer.seconds !== 0)
+    ) {
       setTimer((item) => ({ ...item, seconds: item.seconds - 1 }));
       if (timer.minutes >= 0 && timer.seconds - 1 < 0) {
         setTimer((item) => ({ ...item, seconds: 59 }));
@@ -59,18 +62,22 @@ const CountDown = (props: ICountDown) => {
 
   return (
     <div className={`lucis-container ${s.countDown}`}>
-      <div className='text-white text-center text-36px font-bold'>End to apply for the Whitelist in</div>
-      <div className='flex text-white  md:gap-10 justify-between md:justify-center  mt-8'>
+      <div className="text-white text-center sm:text-12px md:text-24px font-bold">
+        End to apply for the Whitelist in
+      </div>
+      <div className="flex text-white  md:gap-10 justify-between md:justify-center  mt-8">
         {Object.keys(timer).map((item, key) => {
           return (
-            <div className='flex flex-col' key={key}>
+            <div className="flex flex-col" key={key}>
               <div className={s.timeElement}>
                 <div className={s.helperBar}></div>
                 <div className={s.helperLeft}></div>
                 <div className={s.helperRight}></div>
-                <div className={s.topBack}>{timer[item] < 10 ? `0${timer[item]}` : `${timer[item]}`}</div>
+                <div className={s.topBack}>
+                  {timer[item] < 10 ? `0${timer[item]}` : `${timer[item]}`}
+                </div>
               </div>
-              <div className='mt-3 uppercase font-bold text-center'>{item}</div>
+              <div className={`${s.dateText} mt-3 uppercase font-bold text-center`}>{item}</div>
             </div>
           );
         })}

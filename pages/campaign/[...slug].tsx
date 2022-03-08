@@ -1,4 +1,5 @@
 import { Tabs } from "antd";
+import RecentlyBought from "components/campaign/components/RecentlyBought/RecentlyBought";
 import Footer from "components/Footer";
 import BuyHistory from "components/HistoryTable/BuyHistory";
 import { useRouter } from "next/router";
@@ -34,6 +35,7 @@ function DetailCampaign() {
               <SiteMap />
               <CountDown />
               <Box />
+              <RecentlyBought />
               <div className="container">
                 <BuyHistory id={id} title="recently bought" />
               </div>

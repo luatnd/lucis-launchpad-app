@@ -73,7 +73,8 @@ const SiteMap = (props:IRound) => {
     const getCurrentRound = () => {
         const dateNow = moment().unix()
         const upcomingStart = moment(start).unix()
-        const firstStart = moment(rounds[0]?.start).unix()
+        // const firstStart = moment(rounds[0]?.start).unix()
+        const firstStart = 0; // TODO: Fix bug above line
         const time = (firstStart - dateNow)*1000
         setIsActiveUpComing(false)
         if (upcomingStart <= dateNow && dateNow <= firstStart) {

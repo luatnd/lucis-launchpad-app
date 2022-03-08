@@ -15,7 +15,6 @@ import Trailer from "../../components/campaign/components/Trailer/Trailer";
 
 import s from "./detail.module.sass";
 import {useDetailCampaign} from "../../hooks/campaign/useDetailCampaign";
-import { useQueryBoxHistories } from "components/Profile/Hooks/useQueryBoxHistories";
 
 /**
  * Match all route: /campaign/....

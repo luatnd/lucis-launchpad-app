@@ -1,8 +1,10 @@
 import React from 'react';
 import { Button, Form, Input, InputNumber, Progress } from "antd";
+
 import s from '../Box/Box.module.sass'
 import { BoxType } from "src/generated/graphql";
 import { getCurrentCampaignRound } from "../../CampaignHelper";
+import { CurrencyAvatar } from "utils/blockchain/BlockChain";
 
 type Props = {
   box: BoxType,
@@ -19,15 +21,15 @@ const CampaignBox = (props: Props) => {
    */
   const firstBoxPrice = box.prices![0];
 
-  // TODO:
-  const sold_amount = 60;
-  const total_amount = 100;
+  // TODO: from socket
+  const sold_amount = box.sold_amount;
+  const total_amount = box.total_amount;
 
   const userIsWhitelisted = true; // TODO:
   const userCanBuy = (requireWhitelist ? userIsWhitelisted : true)
     && (sold_amount < total_amount)
   ; // whitelist(if needed) && has not sold out
-  const firstBoxPrice_CurrencyIcon = '/assets/Box/image125.png'; // TODO:
+  const firstBoxPrice_CurrencyIcon = CurrencyAvatar[firstBoxPrice.currency.symbol] ?? CurrencyAvatar['undefined'];
 
   return (
     <div>
@@ -43,21 +45,13 @@ const CampaignBox = (props: Props) => {
             <div>
               <div className={s.boxDes}/>
             </div>
-            <p className='text-white text-18px'>TODO: Common box includes 5 upgradable NFT monsters that can be used in all game modes</p>
+            <p className='text-white text-18px'>{box.desc}</p>
           </div>}
 
           {/*
           box.series_content must be html table in the database
           */}
           <div className={s.seriesContent} dangerouslySetInnerHTML={{__html: box.series_content ?? ''}} />
-
-          {/*{e.d1.map((f, index) => (*/}
-          {/*  <div key={index} className='flex justify-between text-white font-bold text-24px mb-2'>*/}
-          {/*    <span>{f.name}</span>*/}
-          {/*    <span>{f.number}</span>*/}
-          {/*  </div>*/}
-          {/*))}*/}
-
 
 
           {userCanBuy && <Form className={s.buyForm}>
@@ -82,7 +76,11 @@ const CampaignBox = (props: Props) => {
                 <span>{firstBoxPrice.price} {firstBoxPrice.currency.symbol}</span>
               </div>
             </div>
-            <Progress showInfo={false} percent={Math.floor(sold_amount / total_amount * 100)} />
+            <Progress
+              percent={Math.floor(sold_amount / total_amount * 100)}
+              showInfo={false}
+              // status="active"
+            />
             <p className='text-right'>{`${sold_amount}/${total_amount}`} boxes</p>
           </div>
         </div>

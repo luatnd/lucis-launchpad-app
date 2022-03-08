@@ -1,5 +1,10 @@
 import { IChainData } from "./ChainConfig";
 
+/**
+ * Those blockchain config must be the same on the server / database
+ */
+
+
 export enum ChainBranch {
   web3 = 'web3', // eth, bsc, polygon, ...
   near = 'near',
@@ -30,6 +35,8 @@ export const NetworkBranch = {
   [ChainNetwork.polkadot]: ChainBranch.polkadot,
   [ChainNetwork.solana]: ChainBranch.solana,
 }
+
+export type GraphqlChainSymbol = ChainNetwork;
 
 export enum Wallet {
   metamask = 'metamask',
@@ -65,6 +72,13 @@ export const ChainNetworkAvatar: Record<string, string> = {
   [ChainNetwork.avax]: "/assets/crypto/ico-chain-avax.svg",
 }
 
+
+export const CurrencyAvatar: Record<string, string> = {
+  // symbol: url
+  undefined: "/assets/crypto/ico-chain-near.svg",
+  NEAR: "/assets/crypto/ico-chain-near.svg",
+  BUSD: '/assets/Box/image125.png',
+}
 
 export function getChainNetworkFromChainData(c: IChainData): ChainNetwork | undefined {
   return getChainNetworkFromChainId(c.chain_id)

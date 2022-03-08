@@ -60,14 +60,16 @@ const CampaignDebug: NextPage = () => {
     // },
     uid: "box1_123456789",
     name: "Test campaign 1",
+    desc: "Common box includes 5 upgradable NFT monsters that can be used in all game modes",
     box_campaign_uid: "cp_12a34f56b89",
     campaign: campaign,
     limit_per_user: 100,
     prices: [
       {
-        chain_symbol: "BSC",
+        price: 16.6899634,
         // @ts-ignore
         currency: {
+          chain_symbol: "BSC",
           symbol: "BUSD",
         },
       }

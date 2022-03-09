@@ -8,7 +8,7 @@ const RecentlyBought = () => {
       title: "Item",
       dataIndex: "item",
       key: "item",
-      render: (src: string) => <img src={src} alt='img' className={s.image} />,
+      render: (src: string) => <img src={src} alt="img" className={s.image} />,
     },
     {
       title: "Box name",
@@ -18,8 +18,8 @@ const RecentlyBought = () => {
         return (
           <div className={s.boxName}>
             <p>{name}</p>
-            <div className='flex items-center'>
-              <img src='/assets/Recently/image126.png' alt='image' />
+            <div className="flex items-center">
+              <img src="/assets/Recently/image126.png" alt="image" />
               <span>Oasis Emerald</span>
             </div>
           </div>
@@ -34,7 +34,7 @@ const RecentlyBought = () => {
         return (
           <div className={s.amount}>
             <p>{amount}</p>
-            <div className='flex items-center'>
+            <div className="flex items-center">
               <span>2022-02-09 18:00:05</span>
             </div>
           </div>
@@ -91,9 +91,16 @@ const RecentlyBought = () => {
     },
   ];
   return (
-    <div className='lucis-container mt-[116px] mb-[200px]'>
-      <h2 className='flex justify-center text-white text-center text-48px font-bold'>RECENTLY BOUGHT</h2>
-      <Table className={`mt-[37px] ${s.table}`} columns={columns} dataSource={data} />
+    <div className="lucis-container mt-[116px] mb-[200px]">
+      <h2 className="flex justify-center text-white text-center text-48px font-bold">
+        RECENTLY BOUGHT
+      </h2>
+      <Table
+        className={`mt-[37px] ${s.table}`}
+        columns={columns}
+        dataSource={data}
+        scroll={{ y: 300 }}
+      />
     </div>
   );
 };

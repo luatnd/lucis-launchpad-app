@@ -9,13 +9,13 @@ import BuyHistory from "components/HistoryTable/BuyHistory";
 import Banner from "../../components/campaign/components/Banner/Banner";
 import Box from "../../components/campaign/components/Box/Box";
 import CountDown from "../../components/campaign/components/CountDown/CountDown";
-import SiteMap from "../../components/campaign/components/SiteMap/SiteMap";
 import Team from "../../components/campaign/components/Team/Team";
 import Trailer from "../../components/campaign/components/Trailer/Trailer";
 
 import s from "./detail.module.sass";
 import { useDetailCampaign } from "../../hooks/campaign/useDetailCampaign";
 import BoxCard from "../../components/campaign/components/Box/Box";
+import SiteMap from "components/campaign/components/SiteMap/SiteMap";
 
 /**
  * Match all route: /campaign/....
@@ -28,6 +28,14 @@ function DetailCampaign() {
 
   const { boxCampaign, loading, error, isInWhitelist } = useDetailCampaign();
   console.log("boxCampaign: ", boxCampaign);
+
+  if (loading) {
+    return <>Loading</>;
+  }
+
+  if (error) {
+    return <>Error</>;
+  }
 
   return (
     <>
@@ -52,7 +60,10 @@ function DetailCampaign() {
                 />
               )}
               <div className="container">
-                <BuyHistory id={id} title="recently bought" />
+                <BuyHistory
+                  id={"cl02lx5or0000doo018d7n2zz"}
+                  title="recently bought"
+                />
               </div>
             </TabPane>
             <TabPane tab="RULE" key="2">

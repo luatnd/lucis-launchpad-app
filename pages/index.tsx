@@ -40,9 +40,9 @@ const Home: NextPage = () => {
       <DocHead />
 
       <Banner />
-      <UpComing />
+      {/* <UpComing /> */}
       <Opening />
-      <ClosedCampaign />
+      {/* <ClosedCampaign /> */}
       <Footer />
       {/*{showButton && (*/}
       {/*  <button onClick={scrollToTop} className="btn-scrollTop">*/}

@@ -25,7 +25,7 @@ export default function Opening(props: Props) {
       <TitleSection text="Opening campaign" />
       <div className={s.blockCard}>
         {resultOpening?.openingBoxCampaign.map((e: any, i: number) => {
-          console.log(e);
+          console.log(e.opening_at);
           const soldAmount = e.boxTypes.map((item: GBoxType) => item.sold_amount);
           const totalAmount = e.boxTypes.map((item: GBoxType) => item.total_amount);
 
@@ -46,7 +46,7 @@ export default function Opening(props: Props) {
               soldOutResult={soldOutResult}
               srcGame={e.cover_img}
               statusTime={"Opening"}
-              time={handleTest()}
+              time={e.opening_at}
               inTime={e.inTime}
               nameGame={e?.game?.name}
               styleBg={true}

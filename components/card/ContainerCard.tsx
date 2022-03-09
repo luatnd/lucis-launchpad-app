@@ -109,7 +109,7 @@ export default function CardItem(props: Props) {
     setTotalTime((totalTime: any) => totalTime - 1);
   };
 
-  // console.log(props.time);
+  // console.log(timer);
 
   return (
     <div className={`${s.CardContainer} ${bg_card}`}>

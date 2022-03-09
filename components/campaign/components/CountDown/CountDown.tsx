@@ -2,13 +2,18 @@ import React, { useEffect, useState } from "react";
 import s from "./CountDown.module.sass";
 
 interface ICountDown {
-  timeCountDown: number
+  timeCountDown: number;
 }
 
 const CountDown = (props: ICountDown) => {
-  const {timeCountDown} = props
+  const { timeCountDown } = props;
   const [totalTime, setTotalTime] = useState(0);
-  const [timer, setTimer] = useState<{ [name: string]: number }>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [timer, setTimer] = useState<{ [name: string]: number }>({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
   useEffect(() => {
     setTimer((item) => ({

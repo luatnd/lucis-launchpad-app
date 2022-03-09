@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { Tabs } from "antd";
 import { TabPane } from "rc-tabs";
@@ -14,7 +14,8 @@ import Team from "../../components/campaign/components/Team/Team";
 import Trailer from "../../components/campaign/components/Trailer/Trailer";
 
 import s from "./detail.module.sass";
-import {useDetailCampaign} from "../../hooks/campaign/useDetailCampaign";
+import { useDetailCampaign } from "../../hooks/campaign/useDetailCampaign";
+import BoxCard from "../../components/campaign/components/Box/Box";
 
 /**
  * Match all route: /campaign/....
@@ -38,14 +39,14 @@ function DetailCampaign() {
           <Tabs defaultActiveKey="1" className={s.tabs}>
             <TabPane tab="TIMELINE" key="1">
               <SiteMap
-                  rounds={data?.campaignDetail?.rounds}
-                  start={data?.campaignDetail?.start}
-                  end={data?.campaignDetail?.end}
-                  setTimeCountDown={setTimeCountDown}
-                  isInWhitelist={dataOpening?.isInWhitelist}
+                rounds={data?.campaignDetail?.rounds}
+                start={data?.campaignDetail?.start}
+                end={data?.campaignDetail?.end}
+                setTimeCountDown={setTimeCountDown}
+                isInWhitelist={dataOpening?.isInWhitelist}
               />
-              <CountDown timeCountDown={timeCountDown}/>
-              <Box />
+              <CountDown timeCountDown={timeCountDown} />
+              <BoxCard boxCampaign={data?.campaignDetail ?? {}} />
               <div className="container">
                 <BuyHistory id={id} title="recently bought" />
               </div>

@@ -6,7 +6,7 @@ import { Col, Row, Tabs } from "antd";
 import { TabPane } from "rc-tabs";
 import Footer from "../../components/Footer";
 import React from "react";
-import CampaignBox from "../../components/campaign/components/CampaignBox";
+import BoxTypeCard from "../../components/campaign/components/box_type";
 import { BoxCampaign, BoxType, Chain, Game } from "../../src/generated/graphql";
 
 /**
@@ -117,13 +117,13 @@ const CampaignDebug: NextPage = () => {
         <div className={s.containerApp} style={{paddingTop: 150}}>
           <Row gutter={[24, 50]} className='justify-center'>
             <Col>
-              <CampaignBox box={box1} />
+              <BoxTypeCard box={box1} />
             </Col>
             <Col>
-              <CampaignBox box={box2} />
+              <BoxTypeCard box={box2} />
             </Col>
             <Col>
-              <CampaignBox box={box3} />
+              <BoxTypeCard box={box3} />
             </Col>
           </Row>
           <Footer/>

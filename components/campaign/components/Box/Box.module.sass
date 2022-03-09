@@ -1,63 +1,122 @@
-.boxDetail
-  max-width: 395px
-  height: 798px
-  background: rgba(255,255,255,0.1)
+@import styles/common
+
+// .boxDetail
+//   max-width: 395px
+//   // height: 798px
+//   background: rgba(255,255,255,0.1)
+//   box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
+//   backdrop-filter: blur(40px)
+//   border-radius: 25px
+//   position: relative
+//   &:before
+//     content: ""
+//     position: absolute
+//     top: 0
+//     left: 0
+//     right: 0
+//     bottom: 0
+//     border-radius: 25px
+//     padding: 1px
+//     background: linear-gradient(rgba(255, 255, 255, 0.7),rgba(244, 123, 246, 0.4),rgba(251, 76, 222, 0.4),rgba(210, 0, 215, 0.6))
+//     -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
+//     -webkit-mask-composite: xor
+
+//   .bgImage
+//     max-width: 398px
+//     height: 545.61px
+//     background-image: url("/assets/Box/image111.png")
+
+//   .boxDes
+//     width: 13.37px
+//     height: 13.37px
+//     margin-top: 7px
+//     background: #0BEBD6
+//     box-shadow: 0px 0px 6px #08D7F9
+//     border-radius: 100px
+
+//   .boxMain
+//     top: 360px
+//     left: 20px
+//     right: 20px
+
+//   .submit
+//     width: 132px
+//     height: 59px
+//     background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+//     border-radius: 8px
+//     font-weight: 500
+//     font-size: 36px
+//     color: white
+
+  // .label
+  //   font-size: 24px !important
+  //   color: white
+  //   font-weight: bold
+
+.boxContainer
+  overflow: hidden
+  @include box-glass
+  @include border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
+  // background-image: url("/assets/Box/image111.png")
+  // background-repeat: no-repeat
+  // background-size: contain
   box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
   backdrop-filter: blur(40px)
-  border-radius: 25px
-  position: relative
-  &:before
-    content: ""
-    position: absolute
-    top: 0
-    left: 0
-    right: 0
-    bottom: 0
-    border-radius: 25px
-    padding: 1px
-    background: linear-gradient(rgba(255, 255, 255, 0.7),rgba(244, 123, 246, 0.4),rgba(251, 76, 222, 0.4),rgba(210, 0, 215, 0.6))
-    -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
-    -webkit-mask-composite: xor
-
-  .bgImage
-    max-width: 398px
-    height: 545.61px
+  padding: 1px 
+  .boxImage
     background-image: url("/assets/Box/image111.png")
-
-  .boxDes
-    width: 13.37px
-    height: 13.37px
-    margin-top: 7px
+    background-repeat: no-repeat
+    background-size: contain
+  .dotBlue
     background: #0BEBD6
     box-shadow: 0px 0px 6px #08D7F9
-    border-radius: 100px
-
-  .boxMain
-    top: 360px
-    left: 20px
-    right: 20px
-
-  .submit
-    width: 132px
-    height: 59px
-    background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+    width: 15px
+    height: 15px
+    border-radius: 50px
+  button 
+    padding: 5px 20px
     border-radius: 8px
-    font-weight: 500
-    font-size: 36px
-    color: white
+  // .label, span
+  //   color: white
+  //   font-size: 14px
+  // @media screen and (min-width: 767px) 
+  //   span, .label 
+  //     font-size: 18px
+  // @media screen and (min-width: 1023px) 
+  //   span, .label
+  //     font-size: 20px
 
-  .label
-    font-size: 24px !important
-    color: white
-    font-weight: bold
+.boxContent 
+  padding: 0 20px
 
-.seriesContent
+.priceContainer
+  img
+    width: 30px
+
+// NEW
+.boxDetail 
+  overflow: hidden
+  @include box-glass
+  @include border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
+  // background-image: url("/assets/Box/image111.png")
+  // background-repeat: no-repeat
+  // background-size: contain
+  box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
+  backdrop-filter: blur(40px)
+  padding: 1px
+  .bgImage
+    background-image: url("/assets/Box/image111.png")
+    background-repeat: no-repeat
+    background-size: contain
+
+.boxMain 
+  padding: 0 20px
+  width: 100%
   table
     width: 100%
-    td
-      color: white
-      font-size: 24px
-      font-weight: 600
-      padding: 0
-    td:nth-child(2)
-      text-align: right
+
+.buyForm
+  margin-top: 30px
+  label
+    color: white
+

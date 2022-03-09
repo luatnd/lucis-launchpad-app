@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { Tabs } from "antd";
 import { TabPane } from "rc-tabs";
@@ -9,12 +9,13 @@ import BuyHistory from "components/HistoryTable/BuyHistory";
 import Banner from "../../components/campaign/components/Banner/Banner";
 import Box from "../../components/campaign/components/Box/Box";
 import CountDown from "../../components/campaign/components/CountDown/CountDown";
-import SiteMap from "../../components/campaign/components/SiteMap/SiteMap";
 import Team from "../../components/campaign/components/Team/Team";
 import Trailer from "../../components/campaign/components/Trailer/Trailer";
 
 import s from "./detail.module.sass";
-import {useDetailCampaign} from "../../hooks/campaign/useDetailCampaign";
+import { useDetailCampaign } from "../../hooks/campaign/useDetailCampaign";
+import BoxCard from "../../components/campaign/components/Box/Box";
+import SiteMap from "components/campaign/components/SiteMap/SiteMap";
 
 /**
  * Match all route: /campaign/....
@@ -25,9 +26,16 @@ function DetailCampaign() {
   const id = slug?.length ? slug[0] : undefined;
   const [timeCountDown, setTimeCountDown] = useState(0);
 
-  const { data, loading, error, dataOpening } = useDetailCampaign();
+  const { boxCampaign, loading, error, isInWhitelist } = useDetailCampaign();
+  console.log("boxCampaign: ", boxCampaign);
 
-  console.log("{DetailCampaign.render} campaign id: ", id);
+  if (loading) {
+    return <>Loading</>;
+  }
+
+  if (error) {
+    return <>Error</>;
+  }
 
   return (
     <>
@@ -37,17 +45,27 @@ function DetailCampaign() {
           <Banner />
           <Tabs defaultActiveKey="1" className={s.tabs}>
             <TabPane tab="TIMELINE" key="1">
-              <SiteMap
-                  rounds={data?.campaignDetail?.rounds}
-                  start={data?.campaignDetail?.start}
-                  end={data?.campaignDetail?.end}
+              {boxCampaign?.rounds != null && (
+                <SiteMap
+                  rounds={boxCampaign?.rounds}
+                  start={boxCampaign?.start}
+                  end={boxCampaign?.end}
                   setTimeCountDown={setTimeCountDown}
-                  isInWhitelist={dataOpening?.isInWhitelist}
-              />
-              <CountDown timeCountDown={timeCountDown}/>
-              <Box />
+                  isInWhitelist={isInWhitelist}
+                />
+              )}
+              <CountDown timeCountDown={timeCountDown} />
+              {!!boxCampaign && (
+                <BoxCard
+                  boxCampaign={boxCampaign}
+                  isInWhitelist={isInWhitelist}
+                />
+              )}
               <div className="container">
-                <BuyHistory id={id} title="recently bought" />
+                <BuyHistory
+                  id={"cl02lx5or0000doo018d7n2zz"}
+                  title="recently bought"
+                />
               </div>
             </TabPane>
             <TabPane tab="RULE" key="2">

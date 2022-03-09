@@ -1,28 +1,23 @@
 import { gql, useQuery } from "@apollo/client";
 
-export function useUpComing() {
-  const { loading, error, data: resultUpComing, refetch } = useQuery(GET_UPCOMING);
+export function useCloseCampaign() {
+  const { loading, error, data: resultCloseCampaign, refetch } = useQuery(GET_UPCOMING);
 
   return {
     loading,
     error,
-    resultUpComing,
+    resultCloseCampaign,
   };
 }
 
 const GET_UPCOMING = gql`
   query {
-    upcomingBoxCampaign{
+    closedBoxCampaign{
       uid
       cover_img
       start
       end
-      opening_at
-      rounds{
-        id
-        start
-        end
-      }
+      name
       game{
         uid
         name

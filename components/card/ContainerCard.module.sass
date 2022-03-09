@@ -30,10 +30,13 @@
         position: absolute
         top: -140px
         left: 0
+        width: 100%
         @media (min-width: 1280px)
             top: -160px
         @media (min-width: 1439px)
             top: -170px
+        img
+            width: 100%
     .content
         position: relative
         overflow: hidden
@@ -73,9 +76,9 @@
                 background: #0BEBD6
                 box-shadow: 0px 0px 6px #0BEBD6
 
-            .Sold
+            .sold
                 color:#FF8A00
-            .Sold::before
+            .sold::before
                 background: #FF8A00
                 box-shadow: 0px 0px 6px #FF8A00
             .sale
@@ -122,6 +125,9 @@
             opacity: 0
             transition: 0.5s
             .styleBtn
+                display: flex
+                align-items: center
+                justify-content: center
                 max-width: 47%
                 width: 100%
                 color: #FFF

@@ -6,8 +6,14 @@ import { Col, Row, Tabs } from "antd";
 import { TabPane } from "rc-tabs";
 import Footer from "../../components/Footer";
 import React from "react";
-import CampaignBox from "../../components/campaign/components/CampaignBox";
-import { BoxCampaign, BoxType, Chain, Game } from "../../src/generated/graphql";
+import BoxTypeCard from "../../components/campaign/components/box_type";
+import {
+  ChainSymbol,
+  GBoxCampaign,
+  GBoxType,
+  GChain,
+  GGame,
+} from "../../src/generated/graphql";
 
 /**
  * This has no function in project
@@ -28,7 +34,7 @@ const CampaignDebug: NextPage = () => {
   //   updated_at: undefined,
   // }
   // @ts-ignore
-  const game: Game = {
+  const game: GGame = {
     uid: "",
     name: "Thetan Arena",
     created_at: undefined,
@@ -36,10 +42,11 @@ const CampaignDebug: NextPage = () => {
     // _count: {
     //   boxCampaigns: 0
     // },
-  }
+  };
 
   // @ts-ignore
-  const campaign: BoxCampaign = {
+  const campaign: GBoxCampaign = {
+    // @ts-ignore
     game: game,
     game_uid: "",
     uid: "cp_12a34f56b89",
@@ -52,9 +59,9 @@ const CampaignDebug: NextPage = () => {
     //   buyHistory: 0,
     //   whitelists: 0,
     // },
-  }
+  };
 
-  const box1: BoxType = {
+  const box1: GBoxType = {
     // _count: {
     //   prices: 0
     // },
@@ -69,10 +76,10 @@ const CampaignDebug: NextPage = () => {
         price: 16.6899634,
         // @ts-ignore
         currency: {
-          chain_symbol: "BSC",
           symbol: "BUSD",
+          chain_symbol: ChainSymbol.Bsc,
         },
-      }
+      },
     ],
     series_content: `
     <table>
@@ -92,45 +99,44 @@ const CampaignDebug: NextPage = () => {
     `,
     sold_amount: 380,
     total_amount: 500,
-    thumb_img: '/assets/Box/image107.png',
+    thumb_img: "/assets/Box/image107.png",
     created_at: undefined,
     updated_at: undefined,
-  }
-  const box2: BoxType = {
+  };
+  const box2: GBoxType = {
     ...box1,
     uid: "box1_123456789_2",
     name: "Test campaign 2",
-    thumb_img: '/assets/Box/image109.png',
-  }
-  const box3: BoxType = {
+    thumb_img: "/assets/Box/image109.png",
+  };
+  const box3: GBoxType = {
     ...box1,
     uid: "box1_123456789_3",
     name: "Test campaign 3",
-    thumb_img: '/assets/Box/image110.png',
-  }
-
+    thumb_img: "/assets/Box/image110.png",
+  };
 
   return (
     <>
-      <DocHead title={"Draft Page for campaign"}/>
-      <div className='lucis-container'>
-        <div className={s.containerApp} style={{paddingTop: 150}}>
-          <Row gutter={[24, 50]} className='justify-center'>
+      <DocHead title={"Draft Page for campaign"} />
+      <div className="lucis-container">
+        <div className={s.containerApp} style={{ paddingTop: 150 }}>
+          <Row gutter={[24, 50]} className="justify-center">
             <Col>
-              <CampaignBox box={box1} />
+              <BoxTypeCard boxType={box1} />
             </Col>
             <Col>
-              <CampaignBox box={box2} />
+              <BoxTypeCard boxType={box2} />
             </Col>
             <Col>
-              <CampaignBox box={box3} />
+              <BoxTypeCard boxType={box3} />
             </Col>
           </Row>
-          <Footer/>
+          <Footer />
         </div>
       </div>
     </>
   );
 };
 
-export default CampaignDebug
+export default CampaignDebug;

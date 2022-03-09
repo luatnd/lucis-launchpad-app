@@ -1,4 +1,8 @@
-import { BoxCampaign, GBoxCampaignRound } from "../../src/generated/graphql";
+import {
+  BoxCampaign,
+  GBoxCampaign,
+  GBoxCampaignRound,
+} from "../../src/generated/graphql";
 
 export const upcommingVirtualRound: GBoxCampaignRound = {
   id: 9998,
@@ -7,7 +11,7 @@ export const upcommingVirtualRound: GBoxCampaignRound = {
   end: "",
   is_whitelist: false,
   require_whitelist: false,
-}
+};
 
 export const closedVirtualRound: GBoxCampaignRound = {
   id: 9999,
@@ -16,9 +20,9 @@ export const closedVirtualRound: GBoxCampaignRound = {
   end: "",
   is_whitelist: false,
   require_whitelist: false,
-}
+};
 
-export function getCurrentCampaignRound(c: BoxCampaign): GBoxCampaignRound {
+export function getCurrentCampaignRound(c: GBoxCampaign): GBoxCampaignRound {
   const rounds = c.rounds;
   const now = new Date();
   if (now < c.opening_at) {
@@ -31,15 +35,28 @@ export function getCurrentCampaignRound(c: BoxCampaign): GBoxCampaignRound {
   const nowDateStr = now.toISOString();
   for (let i = 0, c = rounds.length; i < c; i++) {
     const r: GBoxCampaignRound = rounds[i];
-    if (r.start < nowDateStr) {
-      currentRound = r
+    if (nowDateStr >= r.start && nowDateStr <= r.end) {
+      currentRound = r;
     }
   }
 
-  return currentRound
+  return currentRound;
+}
+
+export function getOriginCurrentCampaignRound(c: GBoxCampaign) {
+  if (c?.rounds == null) {
+    return;
+  }
+  const now = new Date();
+  const nowDateStr = now.toISOString();
+  for (let item of c.rounds) {
+    if (nowDateStr >= item.start && nowDateStr <= item.end) {
+      return item;
+    }
+  }
 }
 
 export function isCampaignOpening(c: BoxCampaign): boolean {
   const now = new Date();
-  return c.opening_at <= now
+  return c.opening_at <= now;
 }

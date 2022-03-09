@@ -1,29 +1,26 @@
 import { gql, useQuery } from "@apollo/client";
 
-export function useUpComing() {
-  const { loading, error, data: resultUpComing, refetch } = useQuery(GET_UPCOMING);
+export function useOpening() {
+  const { loading, error, data: resultOpening, refetch } = useQuery(GET_OPENING);
 
   return {
     loading,
     error,
-    resultUpComing,
+    resultOpening,
   };
 }
 
-const GET_UPCOMING = gql`
+const GET_OPENING = gql`
   query {
-    upcomingBoxCampaign{
+    openingBoxCampaign {
       uid
+      game_uid
+      name
       cover_img
+      opening_at
       start
       end
-      opening_at
-      rounds{
-        id
-        start
-        end
-      }
-      game{
+      game {
         uid
         name
         desc
@@ -34,6 +31,10 @@ const GET_UPCOMING = gql`
         telegram
         youtube
         discord
+      }
+      boxTypes {
+        sold_amount
+        total_amount
       }
     }
   }

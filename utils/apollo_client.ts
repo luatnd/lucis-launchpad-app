@@ -1,9 +1,16 @@
-import { ApolloClient, createHttpLink, InMemoryCache, from } from "@apollo/client";
+import {
+  ApolloClient,
+  createHttpLink,
+  InMemoryCache,
+  from,
+  ApolloError,
+} from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { isClient } from "./DOM";
 import AuthService from "../components/Auth/AuthService";
 import { getLocalAuthInfo } from "../components/Auth/AuthLocal";
+import { notification } from "antd";
 //   import { CachePersistor } from 'apollo-cache-persist';
 
 // Cache implementation
@@ -55,19 +62,9 @@ let countGqlErrNetwork = 0;
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path }) => {
-      console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
-
-      if (message === "Unauthorized") {
-        // when token expired or die, localStorage clear
-        // localStorage.clear();
-
-        // redirect to login page
-        // window.location.href = "/auth/login";
-
-        // fire event
-        // AppEmitter.emit('GraphqlError.Unauthorized')
-        console.error("GraphqlError.Unauthorized");
-      }
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      );
     });
 
   if (networkError) {
@@ -102,3 +99,33 @@ const client = new ApolloClient({
 });
 
 export default client;
+
+export function handleApolloError(error: ApolloError) {
+  const { graphQLErrors, networkError } = error;
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) => {
+      if (message === "Unauthorized") {
+        // when token expired or die, localStorage clear
+        // localStorage.clear();
+
+        // redirect to login page
+        // window.location.href = "/auth/login";
+        notification["error"]({
+          message: "Unauthorized",
+          description: "Please connect wallet before!",
+        });
+      } else {
+        console.log(
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        );
+        notification["error"]({
+          message: "Error!",
+          description: message,
+        });
+      }
+    });
+
+  if (networkError) {
+    console.log(`[Network error]: ${networkError}`);
+  }
+}

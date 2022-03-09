@@ -86,7 +86,7 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
                 <Input {...props} placeholder={"Your name"} />
               ) : (
                 // <input className={s.name} onChange={handleChangeName} value={tempName} />
-                <p className={s.name}>{tempName}</p>
+                <p className={s.fullName}>{tempName}</p>
               )}
               <p className={s.id}>{profile ? profile.me.address : ""}</p>
             </div>

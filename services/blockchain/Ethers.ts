@@ -3,12 +3,29 @@ import AnimTokenErc20Abi from './abi/AnimTokenErc20Abi.json'
 import Erc721Abi from './abi/Erc721Abi.json'
 import { makeError } from "../../utils/Error";
 
-class EtherContract {
+/*
+Usage:
+import EthersService from 'service/blockchain/Ethers'
+import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
+
+if (!ConnectWalletStore_NonReactiveData.web3Provider) {
+  throw makeError("Need to connect your wallet first");
+}
+
+const ethersService = new EthersService(ConnectWalletStore_NonReactiveData.web3Provider);
+const address = await ethersService.getMyAddress();
+
+ */
+export default class EtherContract {
   static ErrorCode = {
     NotInitialized: 'NotInitialized',
   }
 
   private _web3Provider?: ethers.providers.Web3Provider;
+
+  constructor(web3Provider: ethers.providers.Web3Provider) {
+    this.web3Provider = web3Provider;
+  }
 
   get web3Provider(): ethers.providers.Web3Provider | undefined {
     return this._web3Provider;
@@ -26,11 +43,11 @@ class EtherContract {
     return this._web3Provider.getSigner()
   }
 
-  getContractWithSignerErc20(contractAddress: string): ethers.Contract {
+  private getContractWithSignerErc20(contractAddress: string): ethers.Contract {
     return new ethers.Contract(contractAddress, AnimTokenErc20Abi.abi, this.getSigner())
   }
 
-  getContractWithSignerErc721(contractAddress: string): ethers.Contract {
+  private getContractWithSignerErc721(contractAddress: string): ethers.Contract {
     return new ethers.Contract(contractAddress, Erc721Abi, this.getSigner())
   }
 
@@ -112,8 +129,3 @@ class EtherContract {
     }
   }
 }
-
-/**
- * AppEthContractInterface
- */
-export default new EtherContract()

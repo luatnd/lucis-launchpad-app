@@ -16,7 +16,7 @@ export function useBuyBox(
   const boxPrice: GBoxPrice | undefined =
     (boxType.prices?.length ?? 0) > 0
       ? boxType.prices!.find(
-          (item) => item.chain_symbol.toLowerCase() === chainSymbol
+          (item) => item.chain_symbol?.toLowerCase() === chainSymbol
         )
       : undefined;
 

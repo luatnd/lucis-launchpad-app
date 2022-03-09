@@ -77,9 +77,11 @@ class ConnectWalletHelper {
    * - [x] metamask install but has not setup yet, no account => Metamask will handle this
    * - [ ] Send tx while choosing a different account on metamask, not the connected one
    * - [ ] Send tx while metamask account connection was terminate on metamask
+   * - [ ] Disconnect the old provider if new connection was success
    *
    * For WC pc & mobile:
-   * - [ ] WC support for Trust & Metamask
+   * - [x] WC support for Trust
+   * - [ ] WC support for Metamask
    * - [ ] user rejected to connect on wc
    * - [ ] auto reconnect
    *

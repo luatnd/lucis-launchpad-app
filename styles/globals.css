@@ -523,6 +523,10 @@ body .backdrop-blur-sm {
   color: white;
 }
 
+.ant-input-number-input {
+  background-color: none !important;
+}
+
 ::-webkit-scrollbar {
   display: none;
 }

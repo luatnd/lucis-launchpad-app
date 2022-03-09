@@ -44,8 +44,8 @@ function DetailCampaign() {
                 end={data?.campaignDetail?.end}
                 setTimeCountDown={setTimeCountDown}
                 isInWhitelist={dataOpening?.isInWhitelist}
-              /> */}
-              <CountDown timeCountDown={timeCountDown} />
+              />
+              <CountDown timeCountDown={timeCountDown} /> */}
               <Box />
               <div className="container">
                 <BuyHistory id={id} title="recently bought" />

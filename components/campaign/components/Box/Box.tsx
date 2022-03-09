@@ -49,7 +49,83 @@ const Box = () => {
             <div className="flex justify-center">
               <h3 className="uppercase text-center text-white font-bold text-[24px]">{e.name}</h3>
             </div>
-            <div className={`mt-5 h-[798px] ${s.boxDetail} relative`}>
+
+            <div className={s.boxContainer}>
+              {/* <div className={s.imageBox}>
+                <img
+                  src={e.image}
+                  // width="340px"
+                  // height="273px"
+                  className="mx-auto block pt-[60px]"
+                  alt=""
+                />
+              </div> */}
+              <div className={s.imageBox}>
+                <img
+                  src={e.image}
+                  // width="340px"
+                  // height="273px"
+                  className="mx-auto block pt-[60px]"
+                  alt=""
+                />
+              </div>
+              {/* <img
+                src={e.image}
+                // width="340px"
+                // height="273px"
+                className="mx-auto block pt-[60px]"
+                alt=""
+              /> */}
+
+              {e.description && (
+                <div className="flex gap-2">
+                  <div>
+                    <div className={s.dotBlue}></div>
+                  </div>
+                  <p className="text-white text-14px">{e.description}</p>
+                </div>
+              )}
+
+              {e.d1.map((f, index) => (
+                <div
+                  key={index}
+                  className="flex justify-between text-white font-bold text-18px md:text-[24px] mb-2"
+                >
+                  <span>{f.name}</span>
+                  <span>{f.number}</span>
+                </div>
+              ))}
+
+              {!e.description && (
+                <Form>
+                  <div className="flex justify-between text-white font-bold text-24px mb-2">
+                    <Form.Item>
+                      <label className={s.label}>Amount: </label>
+                      <InputNumber min={0} />
+                    </Form.Item>
+                    <span>Max:100</span>
+                  </div>
+                  <div className="flex justify-between text-white items-center font-bold text-24px mb-2">
+                    <button className={`${s.buyBtn} bg-gradient-1`}>BUY</button>
+                    <span>Whitelist only</span>
+                  </div>
+                </Form>
+              )}
+
+              <div className="font-bold text-white text-18px mt-[29px]">
+                <div key={index} className="flex justify-between items-center">
+                  <span>Price per 1 box:</span>
+                  <div className="flex items-center gap-1">
+                    <img src="/assets/Box/image125.png" width="40px" height="40px" alt="" />
+                    <span>16.79 BUSD</span>
+                  </div>
+                </div>
+                <Progress showInfo={false} />
+                <p className="text-right">0/100boxes</p>
+              </div>
+            </div>
+
+            {/* <div className={`mt-5 h-[798px] ${s.boxDetail} relative`}>
               <div className={`${s.bgImage}`}>
                 <img
                   src={e.image}
@@ -104,7 +180,7 @@ const Box = () => {
                   <p className="text-right">0/100boxes</p>
                 </div>
               </div>
-            </div>
+            </div> */}
           </Col>
         ))}
       </Row>

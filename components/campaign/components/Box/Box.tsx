@@ -2,8 +2,11 @@ import React from "react";
 import { Button, Col, Form, Input, InputNumber, Row } from "antd";
 import s from "./Box.module.sass";
 import { Progress } from "antd";
+import { GBoxCampaign } from "src/generated/graphql";
+import BoxTypeCard from "../box_type";
+import { getOriginCurrentCampaignRound } from "components/campaign/CampaignHelper";
 
-const Box = () => {
+export const Box = () => {
   const listBox = [
     {
       name: "COMMON BOX",
@@ -47,7 +50,9 @@ const Box = () => {
         {listBox.map((e, index) => (
           <Col key={index} xs={24} md={12} lg={8}>
             <div className="flex justify-center">
-              <h3 className="uppercase text-center text-white font-bold text-[24px]">{e.name}</h3>
+              <h3 className="uppercase text-center text-white font-bold text-[24px]">
+                {e.name}
+              </h3>
             </div>
 
             <div className={s.boxContainer}>
@@ -88,24 +93,39 @@ const Box = () => {
                               alignItems: "flex-end",
                             }}
                           >
-                            <InputNumber min={0} style={{ background: "none", color: "white" }} />
+                            <InputNumber
+                              min={0}
+                              style={{ background: "none", color: "white" }}
+                            />
                             <label>Max 100</label>
                           </div>
                           {/* <span>Max:100</span> */}
                         </div>
                       </Form.Item>
                       <div className="flex justify-between text-white items-center font-bold text-24px mb-2">
-                        <button className={`${s.buyBtn} bg-gradient-1`}>BUY</button>
+                        <button className={`${s.buyBtn} bg-gradient-1`}>
+                          BUY
+                        </button>
                         <span>Whitelist only</span>
                       </div>
                     </Form>
                   )}
 
                   <div className="font-bold text-white mt-[29px]">
-                    <div key={index} className="flex justify-between items-center">
+                    <div
+                      key={index}
+                      className="flex justify-between items-center"
+                    >
                       <span className="text-16px">Price per 1 box:</span>
-                      <div className={`${s.priceContainer} flex items-center gap-1`}>
-                        <img src="/assets/Box/image125.png" width="40px" height="40px" alt="" />
+                      <div
+                        className={`${s.priceContainer} flex items-center gap-1`}
+                      >
+                        <img
+                          src="/assets/Box/image125.png"
+                          width="40px"
+                          height="40px"
+                          alt=""
+                        />
                         <span>16.79 BUSD</span>
                       </div>
                     </div>
@@ -122,4 +142,28 @@ const Box = () => {
   );
 };
 
-export default Box;
+type BoxCardProps = {
+  boxCampaign: GBoxCampaign;
+  isInWhitelist?: boolean;
+};
+
+export default function BoxCard(props: BoxCardProps) {
+  const boxTypes = props.boxCampaign.boxTypes ?? [];
+  const currentRound = getOriginCurrentCampaignRound(props.boxCampaign);
+
+  return (
+    <div className="lucis-container mt-[116px]">
+      <Row gutter={[24, 50]} className="justify-center">
+        {boxTypes.map((e, index) => (
+          <Col key={index}>
+            <BoxTypeCard
+              boxType={e}
+              round={currentRound}
+              isInWhitelist={props.isInWhitelist}
+            />
+          </Col>
+        ))}
+      </Row>
+    </div>
+  );
+}

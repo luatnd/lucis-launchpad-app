@@ -14,6 +14,7 @@ import Trailer from "../../components/campaign/components/Trailer/Trailer";
 
 import s from "./detail.module.sass";
 import { useDetailCampaign } from "../../hooks/campaign/useDetailCampaign";
+import BoxCard from "../../components/campaign/components/Box/Box";
 import SiteMap from "components/campaign/components/SiteMap/SiteMap";
 
 /**
@@ -25,9 +26,8 @@ function DetailCampaign() {
   const id = slug?.length ? slug[0] : undefined;
   const [timeCountDown, setTimeCountDown] = useState(0);
 
-  const { data, loading, error, dataOpening } = useDetailCampaign();
-
-  console.log("{DetailCampaign.render} campaign id: ", id);
+  const { boxCampaign, loading, error, isInWhitelist } = useDetailCampaign();
+  console.log("boxCampaign: ", boxCampaign);
 
   if (loading) {
     return <>Loading</>;
@@ -46,16 +46,24 @@ function DetailCampaign() {
           <Tabs defaultActiveKey="1" className={s.tabs}>
             <TabPane tab="TIMELINE" key="1">
               <SiteMap
-                rounds={data?.campaignDetail?.rounds}
-                start={data?.campaignDetail?.start}
-                end={data?.campaignDetail?.end}
+                rounds={boxCampaign?.rounds}
+                start={boxCampaign?.start}
+                end={boxCampaign?.end}
                 setTimeCountDown={setTimeCountDown}
-                isInWhitelist={dataOpening?.isInWhitelist}
+                isInWhitelist={isInWhitelist}
               />
               <CountDown timeCountDown={timeCountDown} />
-              <Box />
+              {!!boxCampaign && (
+                <BoxCard
+                  boxCampaign={boxCampaign}
+                  isInWhitelist={isInWhitelist}
+                />
+              )}
               <div className="container">
-                <BuyHistory id={"cl02lx5or0000doo018d7n2zz"} title="recently bought" />
+                <BuyHistory
+                  id={"cl02lx5or0000doo018d7n2zz"}
+                  title="recently bought"
+                />
               </div>
             </TabPane>
             <TabPane tab="RULE" key="2">

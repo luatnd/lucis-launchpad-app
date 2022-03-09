@@ -10,31 +10,30 @@ type Props = {};
 
 export default function UpComing(props: Props) {
   const { resultUpComing, loading, error } = useUpComing();
-  
 
   return (
     <section className="lucis-container">
       <TitleSection text="Upcoming campaign" />
       <div className={s.blockCard}>
         {resultUpComing?.upcomingBoxCampaign.map((e: any, i: any) => {
-
           return (
-          <CardItem
-            key={i}
-            srcGame={e.cover_img}
-            statusTime={"UpComing"}
-            time={e.opening_at}
-            inTime={e.inTime}
-            nameGame={e?.game.name}
-            styleBg={true}
-            title={e?.game.desc}
-            srcWeb={e?.game.website}
-            srcFb={e?.game.facebook}
-            srcTele={e?.game.telegram}
-            srcDiscord={e?.game.discord}
-            srcTwitter={e?.game.twitter}
-          />
-        )})}
+            <CardItem
+              key={i}
+              srcGame={e.cover_img}
+              statusTime={"UpComing"}
+              time={e.opening_at}
+              inTime={e.inTime}
+              nameGame={e?.game.name}
+              styleBg={true}
+              title={e?.game.desc}
+              srcWeb={e?.game.website}
+              srcFb={e?.game.facebook}
+              srcTele={e?.game.telegram}
+              srcDiscord={e?.game.discord}
+              srcTwitter={e?.game.twitter}
+            />
+          );
+        })}
       </div>
     </section>
   );

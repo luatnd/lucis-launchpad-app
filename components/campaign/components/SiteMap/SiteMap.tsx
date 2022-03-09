@@ -1,11 +1,53 @@
-import { Progress } from "antd";
+import { Progress, Modal } from "antd";
 import moment from "moment";
+import timeMoment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import "swiper/css";
-// import Swiper from "swiper";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import s from "./SiteMap.module.sass";
+import {useMutationRegisterWhiteList} from "../../../../hooks/campaign/useRegisterWhiteList";
+
+
+const ListCard = [
+  {
+    box_limit_per_user: null,
+    box_limit_this_phase: 0,
+    description: "Whitelist phase",
+    end: "2022-03-10 05:40:59",
+    id: 1,
+    is_whitelist: true,
+    name: "Whitelist phase",
+    participant_limit: 10,
+    require_whitelist: true,
+    start: "2022-03-10 03:40:00",
+  },
+  {
+    box_limit_per_user: null,
+    box_limit_this_phase: 0,
+    description: "Buy whitelist phase",
+    end: "2022-03-10 03:41:59",
+    id: 2,
+    is_whitelist: false,
+    name: "Buy whitelist phase",
+    participant_limit: 10,
+    require_whitelist: true,
+    start: "2022-03-10 03:41:00",
+  },
+  {
+    box_limit_per_user: null,
+    box_limit_this_phase: 0,
+    description: "Whitelist phase",
+    end: "2022-03-10 03:42:59",
+    id: 3,
+    is_whitelist: false,
+    name: "Whitelist phase 3",
+    participant_limit: 10,
+    require_whitelist: true,
+    start: "2022-03-10 03:42:00",
+  },
+];
+
 
 interface IRound {
   rounds: [
@@ -26,36 +68,74 @@ interface IRound {
   end: any;
   setTimeCountDown: (value: number) => void;
   isInWhitelist: boolean;
+  setTextNow: (value: string) => void;
+  boxCampaignUid: string;
+  tzid: string;
 }
 
+
+
 const SiteMap = (props: IRound) => {
-  const { rounds, start, end, setTimeCountDown, isInWhitelist } = props;
+  const { confirm } = Modal;
+  const { rounds, start, end, setTimeCountDown, isInWhitelist, setTextNow, boxCampaignUid, tzid } = props;
   const [listRounds, setListRounds] = useState([] as any);
   const [isActiveUpComing, setIsActiveUpComing] = useState(false);
+  const {registerWhitelist, error, loading, data} = useMutationRegisterWhiteList()
+
+  console.log(timeMoment("2022-03-09 23:46:00 +0000").tz("America/New_York").format("HH:mm, MMMM DD"))
+  const showConfirm = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    confirm({
+      title: 'Are you sure to apply whitelist?',
+      onOk() {
+        handleApplyWhiteList()
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
 
   const getCurrentRound = () => {
     const dateNow = moment().unix();
     const upcomingStart = moment(start).unix();
-    // const firstStart = moment(rounds[0]?.start).unix()
-    const firstStart = 0; // TODO: Fix bug above line
+    const closeEnd = moment(end).unix();
+    const firstStart = moment(rounds[0]?.start).unix()
+    // const firstStart = 0; // TODO: Fix bug above line
     const time = (firstStart - dateNow) * 1000;
     setIsActiveUpComing(false);
     if (upcomingStart <= dateNow && dateNow <= firstStart) {
+      setTextNow(`${rounds[0]?.name} will start in`)
       setIsActiveUpComing(true);
       setTimeout(() => {
         getCurrentRound();
       }, time);
       setTimeCountDown(Math.floor(time / 1000));
     }
+    const lastStart = moment(rounds[rounds?.length-1]?.start).unix()
+    const timeLast = (closeEnd - dateNow)*1000
+    if (lastStart <= dateNow && dateNow <= closeEnd) {
+      setTextNow('The campaign will end in')
+      setTimeout(() => {
+        getCurrentRound();
+      }, timeLast);
+      setTimeCountDown(Math.floor(timeLast / 1000));
+    }
+    if (dateNow > closeEnd) {
+      setTextNow('')
+    }
     const x = rounds?.map((e) => {
       const endDate = moment(e.end).unix();
       const startDate = moment(e.start).unix();
       const timeEnd = (endDate - dateNow) * 1000;
       if (startDate <= dateNow && dateNow <= endDate) {
-        setTimeout(() => {
-          getCurrentRound();
-        }, timeEnd);
-        setTimeCountDown(Math.floor(timeEnd / 1000));
+        if (rounds[rounds.length-1]?.id !== e?.id) {
+          setTextNow(`${e?.name} will end in`)
+          setTimeout(() => {
+            getCurrentRound();
+          }, timeEnd);
+          setTimeCountDown(Math.floor(timeEnd / 1000));
+        }
         return { ...e, isActive: true };
       } else {
         return { ...e, isActive: false };
@@ -63,6 +143,15 @@ const SiteMap = (props: IRound) => {
     });
     setListRounds(x);
   };
+  
+  const handleApplyWhiteList = async () => {
+    await registerWhitelist({
+      variables: {
+        box_campaign_uid: boxCampaignUid
+      },
+    })
+
+  }
 
   useEffect(() => {
     getCurrentRound();
@@ -116,7 +205,7 @@ const SiteMap = (props: IRound) => {
               </div>
 
               <div className={`text-white mt-10 w-full ${s.SiteMapLineCircleContent}`}>
-                Stay tuned and prepare to APPLY WHITELIST.
+                Stay tuned and prepare.
               </div>
             </div>
           </SwiperSlide>
@@ -157,7 +246,8 @@ const SiteMap = (props: IRound) => {
                   <div className="max-w-[250.91px]">
                     <button
                       disabled={isInWhitelist}
-                      className={`${s.buttom} font-bold text-white uppercase`}
+                      onClick={showConfirm}
+                      className={`${s.button} font-bold text-white uppercase`}
                     >
                       {isInWhitelist ? "Applied" : "Apply whitelist"}
                     </button>
@@ -197,7 +287,7 @@ const SiteMap = (props: IRound) => {
                 }`}
               ></div>
               <div className={`text-white mt-10 w-full ${s.SiteMapLineCircleContent}`}>
-                Thank you.
+                Thank you for watching.
               </div>
             </div>
           </SwiperSlide>

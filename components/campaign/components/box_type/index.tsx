@@ -1,54 +1,47 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { Button, Form, InputNumber, Progress } from "antd";
 import s from "../Box/Box.module.sass";
-import { GChain, GBoxType, GCurrency, GBoxPrice } from "src/generated/graphql";
+import {
+  GChain,
+  GBoxType,
+  GCurrency,
+  GBoxPrice,
+  GBoxCampaignRound,
+} from "src/generated/graphql";
+import { useInput } from "hooks/common/use_input";
+import { useBuyBox } from "hooks/campaign/use_buy_box";
+import { handleApolloError } from "utils/apollo_client";
 
 type Props = {
-  box: GBoxType;
-  canBuyBox: boolean;
-  requireWhiteList: boolean;
+  boxType: GBoxType;
+  round?: GBoxCampaignRound;
+  isInWhitelist?: boolean;
+  onBuyBox?: () => void;
 };
-// canBuyBox = in buy round + exist box to buy (keep in parent)
 
 const BoxTypeCard = (props: Props) => {
-  const { box } = props;
-  const chainSymbol = "bsc";
-  const boxPrice: GBoxPrice | undefined =
-    (box.prices?.length ?? 0) > 0
-      ? box.prices!.find(
-          (item) => item.chain_symbol.toLowerCase() === chainSymbol
-        )
-      : undefined;
-  // const currentRound = getCurrentCampaignRound(box.campaign);
-  // const requireWhitelist = currentRound.require_whitelist;
-
-  // /**
-  //  * In the future, we'll support selling box in multi currency (multi-chain) for 1 campaign
-  //  * This is phase 1: We support selling box in 1 currency only in 1 campaign
-  //  */
-  // const firstBoxPrice = box.prices![0];
-
-  // // TODO: from socket
-  // const sold_amount = box.sold_amount;
-  // const total_amount = box.total_amount;
-
-  // const userIsWhitelisted = true; // TODO:
-  // const userCanBuy = (requireWhitelist ? userIsWhitelisted : true)
-  //   && (sold_amount < total_amount)
-  // ; // whitelist(if needed) && has not sold out
-  // const firstBoxPrice_CurrencyIcon = CurrencyAvatar[firstBoxPrice.currency.symbol] ?? CurrencyAvatar['undefined'];
+  const { boxType, round, isInWhitelist } = props;
+  const {
+    loading,
+    txtAmount,
+    canBuyBox,
+    err,
+    onBuyBox,
+    requireWhitelist,
+    boxPrice,
+  } = useBuyBox(boxType, round, isInWhitelist);
 
   return (
     <div>
       <div className="flex justify-center">
         <h3 className="uppercase text-center text-white font-bold text-[24px] md:text-[36px]">
-          {box.name}
+          {boxType.name}
         </h3>
       </div>
       <div className={`mt-5 h-[798px] ${s.boxDetail} relative`}>
         <div className={`${s.bgImage}`}>
           <img
-            src={box.thumb_img ?? ""}
+            src={boxType.thumb_img ?? ""}
             width="340px"
             height="273px"
             className="mx-auto block pt-[60px]"
@@ -61,7 +54,7 @@ const BoxTypeCard = (props: Props) => {
               <div>
                 <div className={s.boxDes} />
               </div>
-              <p className="text-white text-18px">{box.desc}</p>
+              <p className="text-white text-18px">{boxType.desc}</p>
             </div>
           }
 
@@ -70,22 +63,45 @@ const BoxTypeCard = (props: Props) => {
           */}
           <div
             className={s.seriesContent}
-            dangerouslySetInnerHTML={{ __html: box.series_content ?? "" }}
+            dangerouslySetInnerHTML={{ __html: boxType.series_content ?? "" }}
           />
 
-          {props.canBuyBox && (
+          {canBuyBox && (
             <Form className={s.buyForm}>
               <div className="flex justify-between text-white font-bold text-24px mb-2">
                 <Form.Item>
                   <label className={s.label}>Amount: </label>
-                  <InputNumber />
+                  <InputNumber
+                    value={txtAmount.value}
+                    onChange={txtAmount.onChange}
+                  />
                 </Form.Item>
-                <span>Max: {box.limit_per_user}</span>
+
+                {boxType.limit_per_user != null && (
+                  <span>Max: {boxType.limit_per_user}</span>
+                )}
               </div>
+              {!!txtAmount.err && (
+                <span
+                  style={{
+                    color: "red",
+                    fontSize: "13px",
+                    marginBottom: "16px",
+                  }}
+                >
+                  {txtAmount.err}
+                </span>
+              )}
               <div className="flex justify-between text-white items-center font-bold text-24px mb-2">
-                <Button className={s.submit}>BUY</Button>
-                {props.requireWhiteList && <span>Whitelist only</span>}
+                <Button className={s.submit} onClick={onBuyBox}>
+                  BUY
+                </Button>
+                {requireWhitelist && <span>Whitelist only</span>}
               </div>
+
+              {!!err && (
+                <span style={{ color: "red", fontSize: "13px" }}>{err}</span>
+              )}
             </Form>
           )}
 
@@ -105,12 +121,14 @@ const BoxTypeCard = (props: Props) => {
               </div>
             </div>
             <Progress
-              percent={Math.floor((box.sold_amount / box.total_amount) * 100)}
+              percent={Math.floor(
+                (boxType.sold_amount / boxType.total_amount) * 100
+              )}
               showInfo={false}
               // status="active"
             />
             <p className="text-right">
-              {`${box.sold_amount}/${box.total_amount}`} boxes
+              {`${boxType.sold_amount}/${boxType.total_amount}`} boxes
             </p>
           </div>
         </div>

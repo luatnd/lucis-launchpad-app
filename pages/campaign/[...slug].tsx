@@ -26,9 +26,8 @@ function DetailCampaign() {
   const id = slug?.length ? slug[0] : undefined;
   const [timeCountDown, setTimeCountDown] = useState(0);
 
-  const { data, loading, error, dataOpening } = useDetailCampaign();
-
-  console.log("{DetailCampaign.render} campaign id: ", id);
+  const { boxCampaign, loading, error, isInWhitelist } = useDetailCampaign();
+  console.log("boxCampaign: ", boxCampaign);
 
   return (
     <>
@@ -39,14 +38,19 @@ function DetailCampaign() {
           <Tabs defaultActiveKey="1" className={s.tabs}>
             <TabPane tab="TIMELINE" key="1">
               <SiteMap
-                rounds={data?.campaignDetail?.rounds}
-                start={data?.campaignDetail?.start}
-                end={data?.campaignDetail?.end}
+                rounds={boxCampaign?.rounds}
+                start={boxCampaign?.start}
+                end={boxCampaign?.end}
                 setTimeCountDown={setTimeCountDown}
-                isInWhitelist={dataOpening?.isInWhitelist}
+                isInWhitelist={isInWhitelist}
               />
               <CountDown timeCountDown={timeCountDown} />
-              <BoxCard boxCampaign={data?.campaignDetail ?? {}} />
+              {!!boxCampaign && (
+                <BoxCard
+                  boxCampaign={boxCampaign}
+                  isInWhitelist={isInWhitelist}
+                />
+              )}
               <div className="container">
                 <BuyHistory id={id} title="recently bought" />
               </div>

@@ -4,6 +4,10 @@ import s from "./Box.module.sass";
 import { Progress } from "antd";
 import { GBoxCampaign } from "src/generated/graphql";
 import BoxTypeCard from "../box_type";
+import {
+  getCurrentCampaignRound,
+  getOriginCurrentCampaignRound,
+} from "components/campaign/CampaignHelper";
 
 export const Box = () => {
   const listBox = [
@@ -126,16 +130,24 @@ export const Box = () => {
 
 type BoxCardProps = {
   boxCampaign: GBoxCampaign;
+  isInWhitelist?: boolean;
 };
 
 export default function BoxCard(props: BoxCardProps) {
+  console.log("props:", props);
   const boxTypes = props.boxCampaign.boxTypes ?? [];
+  const currentRound = getOriginCurrentCampaignRound(props.boxCampaign);
+  console.log("boxTypes:", boxTypes);
   return (
     <div className="lucis-container mt-[116px]">
       <Row gutter={[24, 50]} className="justify-center">
         {boxTypes.map((e, index) => (
           <Col key={index}>
-            <BoxTypeCard box={e} canBuyBox={false} requireWhiteList={false} />
+            <BoxTypeCard
+              boxType={e}
+              round={currentRound}
+              isInWhitelist={props.isInWhitelist}
+            />
           </Col>
         ))}
       </Row>

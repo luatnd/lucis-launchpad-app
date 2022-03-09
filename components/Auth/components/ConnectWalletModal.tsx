@@ -17,7 +17,7 @@ import { AppEmitter } from "../../../services/emitter";
 
 type Props = {};
 export default observer(function ConnectWalletModal(props: Props) {
-  const DEBUG = false;
+  const DEBUG = true;
   DEBUG && console.log('{ConnectWalletModal} render: ');
 
   const [network, setNetwork] = useState<ChainNetwork | null>(null);
@@ -388,8 +388,8 @@ export default observer(function ConnectWalletModal(props: Props) {
         // onClick={() => changeWallet(Wallet.bsc)}
         className={`${s.item} ${s.disable} ${wallet === Wallet.bsc ? s.active : ''}`}
       >
-        <img src="/assets/crypto/ico-chain-bsc.png" alt="" />
-        <p>BSC Wallet</p>
+        <img src="/assets/crypto/ico-wallet-bsc.webp" alt="" />
+        <p>Binance Wallet</p>
       </div>
     ),
     [Wallet.near]: null,

@@ -55,7 +55,7 @@ function DetailCampaign() {
               <CountDown timeCountDown={timeCountDown} />
               <Box />
               <div className="container">
-                <BuyHistory id={id} title="recently bought" />
+                <BuyHistory id={"cl02lx5or0000doo018d7n2zz"} title="recently bought" />
               </div>
             </TabPane>
             <TabPane tab="RULE" key="2">

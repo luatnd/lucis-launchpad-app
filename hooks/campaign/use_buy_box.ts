@@ -16,7 +16,7 @@ export function useBuyBox(
   const boxPrice: GBoxPrice | undefined =
     (boxType.prices?.length ?? 0) > 0
       ? boxType.prices!.find(
-          (item) => item.chain_symbol.toLowerCase() === chainSymbol
+          (item) => item.chain_symbol?.toLowerCase() === chainSymbol
         )
       : undefined;
 
@@ -24,9 +24,6 @@ export function useBuyBox(
     round?.is_whitelist === false && round?.require_whitelist === true;
   // can buy box: in buy round + enough box to buy + registered whitelist if need
   const canBuyBox = useMemo(() => {
-    console.log("round: ", round);
-    console.log("boxType: ", boxType);
-
     return (
       round?.is_whitelist === false &&
       boxType.total_amount > boxType.sold_amount
@@ -58,7 +55,7 @@ export function useBuyBox(
       txtAmount.setErr("Quantity must be greater than 0");
       return;
     }
-    console.log("round: ", round);
+    // console.log("round: ", round);
     setErr(undefined);
 
     buyBox({

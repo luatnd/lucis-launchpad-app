@@ -92,3 +92,31 @@
 .priceContainer
   img
     width: 30px
+
+// NEW
+.boxDetail 
+  overflow: hidden
+  @include box-glass
+  @include border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
+  // background-image: url("/assets/Box/image111.png")
+  // background-repeat: no-repeat
+  // background-size: contain
+  box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
+  backdrop-filter: blur(40px)
+  padding: 1px
+  .bgImage
+    background-image: url("/assets/Box/image111.png")
+    background-repeat: no-repeat
+    background-size: contain
+
+.boxMain 
+  padding: 0 20px
+  width: 100%
+  table
+    width: 100%
+
+.buyForm
+  margin-top: 30px
+  label
+    color: white
+

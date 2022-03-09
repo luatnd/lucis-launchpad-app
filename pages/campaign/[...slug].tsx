@@ -45,13 +45,15 @@ function DetailCampaign() {
           <Banner />
           <Tabs defaultActiveKey="1" className={s.tabs}>
             <TabPane tab="TIMELINE" key="1">
-              <SiteMap
-                rounds={boxCampaign?.rounds}
-                start={boxCampaign?.start}
-                end={boxCampaign?.end}
-                setTimeCountDown={setTimeCountDown}
-                isInWhitelist={isInWhitelist}
-              />
+              {boxCampaign?.rounds != null && (
+                <SiteMap
+                  rounds={boxCampaign?.rounds}
+                  start={boxCampaign?.start}
+                  end={boxCampaign?.end}
+                  setTimeCountDown={setTimeCountDown}
+                  isInWhitelist={isInWhitelist}
+                />
+              )}
               <CountDown timeCountDown={timeCountDown} />
               {!!boxCampaign && (
                 <BoxCard

@@ -1,50 +1,12 @@
-import React, { createRef, useEffect, useRef, useState } from "react";
+import { Progress } from "antd";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import "swiper/css";
 // import Swiper from "swiper";
 import "swiper/css/pagination";
-import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper";
 import s from "./SiteMap.module.sass";
-import { Button, Progress } from "antd";
-import moment from "moment";
-const ListCard = [
-  {
-    box_limit_per_user: null,
-    box_limit_this_phase: 0,
-    description: "Whitelist phase",
-    end: "2022-03-07 18:29:59",
-    id: 1,
-    is_whitelist: true,
-    name: "Whitelist phase",
-    participant_limit: 10,
-    require_whitelist: true,
-    start: "2022-03-07 18:29:00",
-  },
-  {
-    box_limit_per_user: null,
-    box_limit_this_phase: 0,
-    description: "Buy whitelist phase",
-    end: "2022-03-07 18:30:59",
-    id: 1,
-    is_whitelist: false,
-    name: "Whitelist phase",
-    participant_limit: 10,
-    require_whitelist: true,
-    start: "2022-03-07 18:30:00",
-  },
-  {
-    box_limit_per_user: null,
-    box_limit_this_phase: 0,
-    description: "Whitelist phase",
-    end: "2022-03-07 18:31:59",
-    id: 1,
-    is_whitelist: false,
-    name: "Whitelist phase",
-    participant_limit: 10,
-    require_whitelist: true,
-    start: "2022-03-07 18:31:00",
-  },
-];
+
 interface IRound {
   rounds: [
     {
@@ -74,7 +36,8 @@ const SiteMap = (props: IRound) => {
   const getCurrentRound = () => {
     const dateNow = moment().unix();
     const upcomingStart = moment(start).unix();
-    const firstStart = moment(rounds[0]?.start).unix();
+    // const firstStart = moment(rounds[0]?.start).unix()
+    const firstStart = 0; // TODO: Fix bug above line
     const time = (firstStart - dateNow) * 1000;
     setIsActiveUpComing(false);
     if (upcomingStart <= dateNow && dateNow <= firstStart) {
@@ -107,8 +70,8 @@ const SiteMap = (props: IRound) => {
 
   return (
     <div className={`flex justify-center relative ${s.SiteMapContainer}`}>
-      <div className={`${s.SiteMapLineTimeLine} w-10/12`}></div>
-      <div className={`w-10/12`}>
+      {/* <div className={`${s.SiteMapLineTimeLine} w-10/12`}></div> */}
+      <div className={`w-11/12`}>
         <Swiper
           breakpoints={{
             360: {
@@ -137,6 +100,7 @@ const SiteMap = (props: IRound) => {
                 >
                   Upcoming
                 </div>
+
                 <div
                   className={`text-white pb-2 mb-10 ${s.SiteMapLineCircleTime} ${
                     isActiveUpComing ? s.active : ""
@@ -145,7 +109,12 @@ const SiteMap = (props: IRound) => {
                   {moment(start).format("HH:mm, MMMM DD")}
                 </div>
               </div>
-              <div className={`${s.SiteMapLineCircle} ${isActiveUpComing ? s.active : ""}`}></div>
+
+              <div style={{ width: "100%" }}>
+                <div className={`${s.SiteMapLineCircle} ${isActiveUpComing ? s.active : ""}`}></div>
+                <div className={s.line}></div>
+              </div>
+
               <div className={`text-white mt-10 w-full ${s.SiteMapLineCircleContent}`}>
                 Stay tuned and prepare to APPLY WHITELIST.
               </div>
@@ -172,12 +141,18 @@ const SiteMap = (props: IRound) => {
                     {moment(new Date(item.start)).format("HH:mm, MMMM DD")}
                   </div>
                 </div>
-                <div
-                  className={`${s.SiteMapLineCircle} ${item.isActive === true ? s.active : ""}`}
-                ></div>
+
+                <div style={{ width: "100%" }}>
+                  <div
+                    className={`${s.SiteMapLineCircle} ${item.isActive === true ? s.active : ""}`}
+                  ></div>
+                  <div className={s.line}></div>
+                </div>
+
                 <div className={`text-white mt-10 w-full ${s.SiteMapLineCircleContent}`}>
                   {item.description}
                 </div>
+
                 {item.is_whitelist && item.isActive && (
                   <div className="max-w-[250.91px]">
                     <button
@@ -193,6 +168,7 @@ const SiteMap = (props: IRound) => {
               </div>
             </SwiperSlide>
           ))}
+
           <SwiperSlide>
             <div
               className={`flex flex-col justify-center select-none px-2 ${s.SiteMapLineCircleTitleBox}`}
@@ -205,6 +181,7 @@ const SiteMap = (props: IRound) => {
                 >
                   Close
                 </div>
+
                 <div
                   className={`text-white pb-2 mb-10 ${s.SiteMapLineCircleTime} ${
                     moment().unix() >= moment(end).unix() ? s.active : ""
@@ -213,6 +190,7 @@ const SiteMap = (props: IRound) => {
                   {moment(end).format("HH:mm, MMMM DD")}
                 </div>
               </div>
+
               <div
                 className={`${s.SiteMapLineCircle} ${
                   moment().unix() >= moment(end).unix() ? s.active : ""

@@ -1,8 +1,8 @@
-import { ethers, providers } from 'ethers'
+import { providers } from 'ethers'
 
 import { ensureTargetChain, initWeb3 } from "./Web3Modal";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "./ConnectWalletStore";
-import {ChainNetwork, Wallet} from "../../utils/blockchain/BlockChain";
+import { ChainNetwork, Wallet } from "../../utils/blockchain/BlockChain";
 import { makeError } from "utils/Error";
 
 
@@ -11,6 +11,8 @@ export enum ConnectWalletError {
   UserRejected = 'UserRejected',
   AddNetworkProfileNotSupported = 'AddNetworkProfileNotSupported',
   SwitchChainNotSupported = 'SwitchChainNotSupported',
+  ChainNotSupportedByWallet = 'ChainNotSupportedByWallet',
+  TestNetChainNotSupportedByWallet = 'TestNetChainNotSupportedByWallet',
 }
 
 /**
@@ -95,6 +97,7 @@ class ConnectWalletHelper {
       default:
         return new Promise<any>((resolve, reject) => {
           reject("initFor: Unhandled wallet: " + wallet)
+          return;
         })
     }
   }
@@ -108,6 +111,7 @@ class ConnectWalletHelper {
       default:
         return new Promise<boolean>((resolve, reject) => {
           reject(this.makeError(ConnectWalletError.SwitchChainNotSupported, ConnectWalletError.SwitchChainNotSupported))
+          return;
         })
     }
   }
@@ -123,6 +127,7 @@ class ConnectWalletHelper {
       default:
         return new Promise<any>((resolve, reject) => {
           reject("disconnectWallet: Unhandled wallet: " + wallet)
+          return;
         })
     }
   }
@@ -150,17 +155,23 @@ class ConnectWalletHelper {
     return makeError(code, msg)
   }
 
-  private connectMetamask(network: ChainNetwork, option: ConnectWalletOption) {
+  private connectEthVariant(provider_id: string, network: ChainNetwork, option: ConnectWalletOption) {
     return new Promise<any>((resolve, reject) => {
-      const isMetamask = window.ethereum && window.ethereum.isMetaMask;
-      if (!isMetamask) {
-        reject(this.makeError(ConnectWalletError.MetamaskNotInstalled, ConnectWalletError.MetamaskNotInstalled))
-      }
 
       const requiredChainId = this.getConfiguredChainId(network)
+
+      /**
+       * See the: components/Auth/Web3Modal.ts::_getProviderOptions
+       */
+      // console.log('{} provider_id == "walletconnect" && requiredChainId: ', provider_id, requiredChainId);
+      // if (provider_id == "walletconnect" && requiredChainId == 97) {
+      //   reject(this.makeError(ConnectWalletError.TestNetChainNotSupportedByWallet, ConnectWalletError.TestNetChainNotSupportedByWallet))
+      //   return;
+      // }
+
       const web3Modal = initWeb3(requiredChainId)! // this was ensured to run only on client
 
-      web3Modal.connectTo("injected")
+      web3Modal.connectTo(provider_id)
         .then(provider => {
           const web3Provider = new providers.Web3Provider(provider, 'any')
 
@@ -195,9 +206,22 @@ class ConnectWalletHelper {
            * It's all consider "User Rejected" error
            */
           if (e.message === "User Rejected") {
-            reject(this.makeError(Web3ProviderErrorCodes.provider.userRejectedRequest, ConnectWalletError.UserRejected))
+            reject(this.makeError(ConnectWalletError.UserRejected, `Rejected with error code: ${Web3ProviderErrorCodes.provider.userRejectedRequest}`))
+            return;
           }
         })
+    })
+  }
+
+  private connectMetamask(network: ChainNetwork, option: ConnectWalletOption) {
+    return new Promise<any>((resolve, reject) => {
+      const isMetamask = window.ethereum && window.ethereum.isMetaMask;
+      if (!isMetamask) {
+        reject(this.makeError(ConnectWalletError.MetamaskNotInstalled, ConnectWalletError.MetamaskNotInstalled))
+        return;
+      }
+
+      resolve(this.connectEthVariant("injected", network, option))
     })
   }
 
@@ -206,32 +230,34 @@ class ConnectWalletHelper {
   }
 
   private connectWalletConnect(network: ChainNetwork, option: ConnectWalletOption) {
-    return new Promise<any>((resolve, reject) => {
-      reject("TODO: trigger wc via web3 modal")
-    })
+    return this.connectEthVariant("walletconnect", network, option)
   }
 
   private connectBinanceWallet(network: ChainNetwork, option: ConnectWalletOption) {
     return new Promise<any>((resolve, reject) => {
       reject("TODO")
+      return;
     })
   }
 
   private disconnectMetamask(network: ChainNetwork) {
     return new Promise<any>((resolve, reject) => {
       reject("TODO")
+      return;
     })
   }
 
   private disconnectWalletConnect(network: ChainNetwork) {
     return new Promise<any>((resolve, reject) => {
       reject("TODO")
+      return;
     })
   }
 
   private disconnectBinanceWallet(network: ChainNetwork) {
     return new Promise<any>((resolve, reject) => {
       reject("TODO")
+      return;
     })
   }
 

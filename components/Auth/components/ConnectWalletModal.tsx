@@ -168,6 +168,25 @@ export default observer(function ConnectWalletModal(props: Props) {
       .catch(e => handleConnectCatch(e));
   }, [network]);
 
+
+
+  const reUpdateWalletIfNeeded = (w: Wallet | undefined, n: ChainNetwork | undefined) => {
+    if (w && n && (w != wallet || n != network)) {
+      setWallet(w)
+      setNetwork(n)
+    }
+  }
+
+  useEffect(() => {
+    /**
+     * Restore selected network / wallet if user has selected
+     */
+    if (isModalVisible && address) {
+      reUpdateWalletIfNeeded(...connectWalletHelper.fetchConnectionSetting());
+    }
+  }, [isModalVisible, address])
+
+
   useEffect(() => {
     /**
      * ------- Try to restore
@@ -274,8 +293,8 @@ export default observer(function ConnectWalletModal(props: Props) {
   }
 
   const handleConnectCatch = async (e: any) => {
-    console.error('{changeWallet} e: ', e.code, e.message, e);
-    switch (e.message) {
+    console.error('{handleConnectCatch} e: ', e.code, e.message);
+    switch (e.code) {
       case ConnectWalletError.MetamaskNotInstalled:
         message.error(
           <span>
@@ -294,11 +313,27 @@ export default observer(function ConnectWalletModal(props: Props) {
           5,
         );
         break;
+      case ConnectWalletError.ChainNotSupportedByWallet:
+        message.error(
+          <span>
+            This wallet does not support the selected network
+          </span>,
+          5,
+        );
+        break;
+      case ConnectWalletError.TestNetChainNotSupportedByWallet:
+        message.error(
+          <span>
+            This wallet does not support the testnet of the selected network
+          </span>,
+          5,
+        );
+        break;
       case ConnectWalletError.SwitchChainNotSupported:
-        console.error("{changeWallet.initFor} SwitchChainNotSupported e: ", e)
+        console.error("{handleConnectCatch} SwitchChainNotSupported e: ", e)
         break;
       default:
-        console.error("{changeWallet.initFor} Above error was not handled")
+        console.error("{handleConnectCatch} Above error was not handled")
         break;
     }
   }
@@ -375,8 +410,8 @@ export default observer(function ConnectWalletModal(props: Props) {
     [Wallet.wc]: (
       <div
         key='wc'
-        // onClick={() => changeWallet(Wallet.wc)}
-        className={`${s.item} ${s.disable} ${wallet === Wallet.wc ? s.active : ''}`}
+        onClick={() => changeWallet(Wallet.wc)}
+        className={`${s.item} ${wallet === Wallet.wc ? s.active : ''}`}
       >
         <img src="/assets/crypto/ico-wallet-wc.png" alt="" />
         <p>Wallet Connect</p>

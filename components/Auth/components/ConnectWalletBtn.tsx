@@ -9,14 +9,10 @@ import AuthBoxStore from "./AuthBoxStore";
 type Props = {
   small?: boolean,
 };
-export default function ConnectWallet(props: Props) {
+export default function ConnectWalletBtn(props: Props) {
   const showModal = () => {
     AuthBoxStore.connectModalVisible = true;
   };
-
-  useEffect(() => {
-    // TODO: auto-connect wallet if there was provider cache
-  }, [])
 
   // NOTE: Comment this after done
   console.log('{ConnectWallet} rendered');

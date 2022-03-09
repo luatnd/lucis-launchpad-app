@@ -3,7 +3,7 @@ import s from "./CountDown.module.sass";
 
 const CountDown = () => {
   const [totalTime, setTotalTime] = useState(20000);
-  const [timer, setTimer] = useState<{ [name: string]: number }>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [timer, setTimer] = useState<{ [name: string]: number }>({ days: 0, hours: 0, minutes: 0, seconds: 0 });  
 
   useEffect(() => {
     setTimer((item) => ({

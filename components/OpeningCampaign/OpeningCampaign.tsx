@@ -1,76 +1,43 @@
 import CardItem from "components/card/ContainerCard";
 import TitleSection from "components/TitleNameSection";
 import s from "../UpComingPage/UpcomingCampaign.module.sass";
+import { useOpening } from "./useOpening";
+import { useEffect } from "react";
 type Props = {};
 
-const ListCard = [
-  {
-    srcGame: "/assets/UpComing/gameAxie.png",
-    time: "1d 05h 30m 25s",
-    inTime: '',
-    nameGame: "AXIE INFINITY",
-    title:
-      "Build up a collection and use them across an ever expanding universe of games",
-    statusTime: "UpComing",
-    styleBg: true,
-    srcWeb: "#",
-    srcFb: "#",
-    srcTele: "#",
-    srcDiscord: "#",
-    srcTwitter: "#",
-  },
-  {
-    srcGame: "/assets/UpComing/gameAxie.png",
-    time: "1d 05h 30m 25s",
-    inTime: '',
-    nameGame: "AXIE INFINITY",
-    title:
-      "Build up a collection and use them across an ever expanding universe of games Build up a collection and use them across an ever expanding universe of games",
-    statusTime: "SoldOut",
-    styleBg: true,
-    srcWeb: "#",
-    srcFb: "#",
-    srcTele: "#",
-    srcDiscord: "#",
-    srcTwitter: "#",
-  },
-  {
-    srcGame: "/assets/UpComing/gameAxie.png",
-    time: "1d 05h 30m 25s",
-    inTime: '',
-    nameGame: "AXIE INFINITY",
-    title:
-      "Build up a collection and use them across an ever expanding universe of games",
-    statusTime: "UpComing",
-    styleBg: true,
-    srcWeb: "#",
-    srcFb: "#",
-    srcTele: "#",
-    srcDiscord: "#",
-    srcTwitter: "#",
-  },
-];
-
 export default function Opening(props: Props) {
+  const { resultOpening } = useOpening();
+
+  useEffect(() => {
+    return resultOpening;
+  }, [resultOpening]);
+  resultOpening?.openingBoxCampaign.map((e: any, i: any) => {
+    const soldAmount = e. boxTypes?.sold_amount
+    console.log(soldAmount);
+  });
+
+  const handleTest = () => {
+  };
+
   return (
     <section className="lucis-container">
       <TitleSection text="Opening campaign" />
       <div className={s.blockCard}>
-        {ListCard.map((e, i) => (
+        {resultOpening?.openingBoxCampaign.map((e: any, i: number) => (
           <CardItem
             key={i}
-            srcGame={e.srcGame}
+            srcGame={e.cover_img}
             statusTime={e.statusTime}
-            time={e.time}
+            time={handleTest()}
             inTime={e.inTime}
-            nameGame={e.nameGame}
-            styleBg={e.styleBg}
-            title={e.title}
-            srcWeb={e.srcWeb}
-            srcFb={e.srcFb}
-            srcTele={e.srcTele}
-            srcDiscord={e.srcDiscord}
-            srcTwitter={e.srcTwitter}
+            nameGame={e?.game?.name}
+            styleBg={true}
+            title={e?.game?.desc}
+            srcWeb={e?.game.website}
+            srcFb={e?.game.facebook}
+            srcTele={e?.game.telegram}
+            srcDiscord={e?.game.discord}
+            srcTwitter={e?.game.twitter}
           />
         ))}
       </div>

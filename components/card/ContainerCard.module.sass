@@ -30,10 +30,13 @@
         position: absolute
         top: -140px
         left: 0
+        width: 100%
         @media (min-width: 1280px)
             top: -160px
         @media (min-width: 1439px)
             top: -170px
+        img
+            width: 100%
     .content
         position: relative
         overflow: hidden
@@ -122,6 +125,9 @@
             opacity: 0
             transition: 0.5s
             .styleBtn
+                display: flex
+                align-items: center
+                justify-content: center
                 max-width: 47%
                 width: 100%
                 color: #FFF

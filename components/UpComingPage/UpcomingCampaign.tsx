@@ -1,124 +1,40 @@
+import { message } from "antd";
 import CardItem from "components/card/ContainerCard";
 import TitleSection from "components/TitleNameSection";
+import moment from "moment";
+import { useEffect, useState } from "react";
 import s from "./UpcomingCampaign.module.sass";
+import { useUpComing } from "./useUpComing";
 
 type Props = {};
 
-const ListCard = [
-  {
-    srcGame: "/assets/UpComing/gameAxie.png",
-    time: "1d 05h 30m 25s",
-    nameGame: "AXIE INFINITY",
-    title:
-      "Build up a collection and use them across an ever expanding universe of games",
-    statusTime: "UpComing",
-    styleBg: true,
-    inTime: '',
-    srcWeb: "#",
-    srcFb: "#",
-    srcTele: "#",
-    srcDiscord: "#",
-    srcTwitter: "#",
-  },
-  {
-    srcGame: "/assets/UpComing/gameAxie.png",
-    time: "1d 05h 30m 25s",
-    nameGame: "AXIE INFINITY",
-    title:
-      "Build up a collection and use them across an ever expanding universe of games",
-    statusTime: "SoldOut",
-    styleBg: true,
-    inTime: '',
-    srcWeb: "#",
-    srcFb: "#",
-    srcTele: "#",
-    srcDiscord: "#",
-    srcTwitter: "#",
-  },
-  {
-    srcGame: "/assets/UpComing/gameAxie.png",
-    time: "1d 05h 30m 25s",
-    nameGame: "AXIE INFINITY",
-    title:
-      "Build up a collection and use them across an ever expanding universe of games",
-    statusTime: "sale",
-    styleBg: true,
-    inTime: '',
-    srcWeb: "#",
-    srcFb: "#",
-    srcTele: "#",
-    srcDiscord: "#",
-    srcTwitter: "#",
-  },
-  {
-    srcGame: "/assets/UpComing/gameAxie.png",
-    time: "1d 05h 30m 25s",
-    nameGame: "AXIE INFINITY",
-    title:
-      "Build up a collection and use them across an ever expanding universe of games",
-    statusTime: "UpComing",
-    styleBg: true,
-    inTime: '',
-    srcWeb: "#",
-    srcFb: "#",
-    srcTele: "#",
-    srcDiscord: "#",
-    srcTwitter: "#",
-  },
-  {
-    srcGame: "/assets/UpComing/gameAxie.png",
-    time: "1d 05h 30m 25s",
-    nameGame: "AXIE INFINITY",
-    title:
-      "Build up a collection and use them across an ever expanding universe of games",
-    statusTime: "UpComing",
-    styleBg: true,
-    inTime: '',
-    srcWeb: "#",
-    srcFb: "#",
-    srcTele: "#",
-    srcDiscord: "#",
-    srcTwitter: "#",
-  },
-  {
-    srcGame: "/assets/UpComing/gameAxie.png",
-    time: "1d 05h 30m 25s",
-    nameGame: "AXIE INFINITY",
-    title:
-      "Build up a collection and use them across an ever expanding universe of games",
-    statusTime: "UpComing",
-    styleBg: true,
-    inTime: '',
-    srcWeb: "#",
-    srcFb: "#",
-    srcTele: "#",
-    srcDiscord: "#",
-    srcTwitter: "#",
-  },
-];
-
 export default function UpComing(props: Props) {
+  const { resultUpComing, loading, error } = useUpComing();
+  
+
   return (
     <section className="lucis-container">
       <TitleSection text="Upcoming campaign" />
       <div className={s.blockCard}>
-        {ListCard.map((e, i) => (
+        {resultUpComing?.upcomingBoxCampaign.map((e: any, i: any) => {
+
+          return (
           <CardItem
             key={i}
-            srcGame={e.srcGame}
-            statusTime={e.statusTime}
-            time={e.time}
+            srcGame={e.cover_img}
+            statusTime={"UpComing"}
+            time={e.opening_at}
             inTime={e.inTime}
-            nameGame={e.nameGame}
-            styleBg={e.styleBg}
-            title={e.title}
-            srcWeb={e.srcWeb}
-            srcFb={e.srcFb}
-            srcTele={e.srcTele}
-            srcDiscord={e.srcDiscord}
-            srcTwitter={e.srcTwitter}
+            nameGame={e?.game.name}
+            styleBg={true}
+            title={e?.game.desc}
+            srcWeb={e?.game.website}
+            srcFb={e?.game.facebook}
+            srcTele={e?.game.telegram}
+            srcDiscord={e?.game.discord}
+            srcTwitter={e?.game.twitter}
           />
-        ))}
+        )})}
       </div>
     </section>
   );

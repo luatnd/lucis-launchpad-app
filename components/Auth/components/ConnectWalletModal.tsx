@@ -392,6 +392,18 @@ export default observer(function ConnectWalletModal(props: Props) {
     }
   }, [disconnectWallet])
 
+  useEffect(() => {
+    /**
+     * Sometime we need to show modal in somewhere else
+     */
+    const listener = AppEmitter.addListener('showConnectWalletModal', () => {
+      AuthBoxStore.connectModalVisible = true
+    })
+    return () => {
+      listener.remove()
+    }
+  }, [])
+
 
   const supported_wallets = network === null ? [] : NetworkSupportedWallets[network];
 

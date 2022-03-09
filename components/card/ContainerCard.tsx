@@ -4,6 +4,7 @@ import Link from "next/link";
 import { slugify } from "../../utils/String";
 import s from "./ContainerCard.module.sass";
 import { GradientLinkButton } from "../Button/GradientButton";
+import { TransformStreamDefaultController } from "node:stream/web";
 
 type Props = {
   srcGame: string;
@@ -22,20 +23,21 @@ type Props = {
 };
 
 export default function CardItem(props: Props) {
-  const { soldOutResult, time } = props;
+  const { soldOutResult, time, statusTime } = props;
 
   const typeTime =
-    props.statusTime == "UpComing" ? s.time : props.statusTime == "SoldOut" ? s.Sold : s.sale;
-
-  // console.log(time);
+    statusTime == "UpComing"
+      ? s.time
+      : soldOutResult
+      ? s.sold
+      : statusTime == "SALE"
+      ? s.sale
+      : s.time;
 
   const bg_card = props.styleBg ? s.bg_1 : s.bg_2;
 
-  // console.log(soldOutResult);
-
   const handleText =
     props.title.length > 120 ? props?.title.substring(0, 120) + "..." : props.title;
-  // const SoldOutBox = !props.styleBg? <p>Sold out <span>{props.inTime}</span></p>: ''
 
   const getCampaignDetailUrl = () => {
     const id = "12345678";
@@ -54,7 +56,7 @@ export default function CardItem(props: Props) {
 
   useEffect(() => {
     const newTimeStartCampaign = new Date(time);
-    const days = (newTimeStartCampaign.getDay() - newDate.getDay() - 1) * 86400;
+    const days = (newTimeStartCampaign.getDate() - newDate.getDate() - 1) * 86400;
     const hours = (24 - newDate.getHours() + newTimeStartCampaign.getHours()) * 3600;
     const minutes = (60 - newTimeStartCampaign.getMinutes() - newDate.getMinutes()) * 60;
     const seconds = 60 - newTimeStartCampaign.getSeconds() - newDate.getSeconds();
@@ -109,8 +111,6 @@ export default function CardItem(props: Props) {
     setTotalTime((totalTime: any) => totalTime - 1);
   };
 
-  // console.log(timer);
-
   return (
     <div className={`${s.CardContainer} ${bg_card}`}>
       <div className={s.img_game}>
@@ -120,14 +120,16 @@ export default function CardItem(props: Props) {
         <div className={s.headingCard}>
           <div className={`${s.styleTime} ${typeTime}`}>
             {props.statusTime == "UpComing"
-              ? `${timer.days}d ${timer.hours}h ${timer.minutes}m ${timer.seconds}s`
+              ? `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
+                  timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
+                }s`
               : props.statusTime == "Opening"
               ? soldOutResult
                 ? "SOLD OUT"
-                : `${timer.days}d ${timer.hours}h ${timer.minutes}m ${timer.seconds}s`
+                : `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
+                    timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
+                  }s`
               : props.time}
-            {/* props.time */}
-            {/* {SoldOutBox} */}
           </div>
           <h5>{props.nameGame}</h5>
           <div className={s.text}>{handleText}</div>

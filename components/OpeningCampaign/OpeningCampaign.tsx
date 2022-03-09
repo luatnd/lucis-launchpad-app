@@ -25,20 +25,15 @@ export default function Opening(props: Props) {
       <TitleSection text="Opening campaign" />
       <div className={s.blockCard}>
         {resultOpening?.openingBoxCampaign.map((e: any, i: number) => {
-          console.log(e.opening_at);
-          const soldAmount = e.boxTypes.map((item: GBoxType) => item.sold_amount);
-          const totalAmount = e.boxTypes.map((item: GBoxType) => item.total_amount);
+          const soldAmount = e.boxTypes
+            .map((item: GBoxType) => item.sold_amount)
+            .reduce((prev: number, curr: number) => prev + curr, 0);
+
+          const totalAmount = e.boxTypes
+            .map((item: GBoxType) => item.total_amount)
+            .reduce((prev: number, curr: number) => prev + curr, 0);
 
           const soldOutResult = soldAmount === totalAmount ? true : false;
-          // console.log(
-          //   "Sold Amount: ",
-          //   soldAmount.reduce((prev: number, curr: number) => prev + curr, 0)
-          // );
-
-          // console.log(
-          //   "Total amount: ",
-          //   totalAmount.reduce((prev: number, curr: number) => prev + curr, 0)
-          // );
 
           return (
             <CardItem
@@ -46,7 +41,7 @@ export default function Opening(props: Props) {
               soldOutResult={soldOutResult}
               srcGame={e.cover_img}
               statusTime={"Opening"}
-              time={e.opening_at}
+              time={e.end}
               inTime={e.inTime}
               nameGame={e?.game?.name}
               styleBg={true}

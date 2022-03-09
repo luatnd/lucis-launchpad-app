@@ -10,7 +10,7 @@ export default function ClosedCampaign(props: Props) {
   const newDate = new Date();
 
   useEffect(() => {
-    return resultCloseCampaign
+    return resultCloseCampaign;
   }, [resultCloseCampaign]);
 
   const arrDate: any = [];
@@ -22,7 +22,7 @@ export default function ClosedCampaign(props: Props) {
 
   const handleTest = () => {
     if (newDate > curDate) {
-      return `SALE ENDED`
+      return `SALE ENDED`;
     }
   };
   return (

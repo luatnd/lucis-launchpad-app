@@ -18,6 +18,8 @@ const GET_OPENING = gql`
       name
       cover_img
       opening_at
+      start
+      end
       game {
         uid
         name

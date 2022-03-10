@@ -63,10 +63,10 @@ export default  observer(function User(props: Props) {
         <p>{name}</p>
       </Col>
       <Col span={16} style={{borderLeft: '1px solid #fff', paddingLeft: 20}}>
-        <p className={s.addr}>{trim_middle(address ?? '', 10, 8)}</p>
+        <p className={s.addr}>{trim_middle(address ?? '', 7, 8)}</p>
         <p className={s.chainBtn}>
           <img src={chainNetIcoUrl} alt="" />
-          {getAppNetworkFriendlyName(connected_network)}
+          <i>{getAppNetworkFriendlyName(connected_network)}</i>
         </p>
 
         <div className={s.btns}>

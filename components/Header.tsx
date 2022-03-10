@@ -58,6 +58,7 @@ export default function Header(props: Props) {
                 <Image src={Logo} alt='logo' priority />
               </a>
             </Link>
+            {"IS_TESTNET" && <p>Testnet</p>}
           </div>
           <nav>
             <ul className='flex justify-between items-center m-0'>

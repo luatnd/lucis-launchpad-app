@@ -80,6 +80,12 @@ export const MenuMobile = (props: any) => {
         <div className={`${s.container} flex justify-between items-center`}>
           <div style={{width: 80, height: 42, padding: 0}}>
             <Image src={Logo} width={120} height={42} alt="logo" layout="responsive"></Image>
+            {"IS_TESTNET" && <p style={{
+              fontSize: '10px',
+              color: '#dee0e2',
+              textAlign: 'center',
+              margin: 0,
+            }}>Testnet</p>}
           </div>
           <div className="flex justify-end items-center">
             <div className={s.mobileAuthBox}>

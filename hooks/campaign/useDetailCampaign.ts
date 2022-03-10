@@ -1,4 +1,4 @@
-import { gql, useQuery, useSubscription } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 
 export function useDetailCampaign({ box_campaign_uid }: any) {
   const { loading, error, data } = useQuery(DETAIL_CAMPAIGN);
@@ -13,13 +13,14 @@ export function useDetailCampaign({ box_campaign_uid }: any) {
     loading: loadingWhiteListRegistered,
     error: errorWhiteListRegistered,
     data: dataWhiteListRegistered,
-  } = useSubscription(WHITE_LIST_REGISTERED, { variables: { box_campaign_uid } })
+  } = useQuery(WHITE_LIST_REGISTERED, { variables: { box_campaign_uid } })
 
   return {
     loading,
     error,
     boxCampaign: data?.campaignDetail,
     isInWhitelist: dataIsInWhiteList?.isInWhitelist ?? false,
+    dataWhiteListRegistered
   };
 }
 
@@ -84,8 +85,8 @@ const IS_IN_WHITE_LIST = gql(`
 `);
 
 const WHITE_LIST_REGISTERED = gql(`
-  subscription onWhiteListRegistered($box_campaign_uid: String!){
-    whitelistRegistered(box_campaign_uid: $box_campaign_uid){
+  query getRegisteredWhiteList($box_campaign_uid: String!){
+    registeredWhitelist(box_campaign_uid: $box_campaign_uid){
       registered
       limit
     }

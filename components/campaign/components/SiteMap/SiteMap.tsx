@@ -6,48 +6,10 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import s from "./SiteMap.module.sass";
+import {useDetailCampaign} from "../../../../hooks/campaign/useDetailCampaign";
+import AuthStore from "../../../Auth/AuthStore";
+import ConnectWalletBtn from "../../../Auth/components/ConnectWalletBtn";
 import {useMutationRegisterWhiteList} from "../../../../hooks/campaign/useRegisterWhiteList";
-
-
-const ListCard = [
-  {
-    box_limit_per_user: null,
-    box_limit_this_phase: 0,
-    description: "Whitelist phase",
-    end: "2022-03-10 05:40:59",
-    id: 1,
-    is_whitelist: true,
-    name: "Whitelist phase",
-    participant_limit: 10,
-    require_whitelist: true,
-    start: "2022-03-10 03:40:00",
-  },
-  {
-    box_limit_per_user: null,
-    box_limit_this_phase: 0,
-    description: "Buy whitelist phase",
-    end: "2022-03-10 03:41:59",
-    id: 2,
-    is_whitelist: false,
-    name: "Buy whitelist phase",
-    participant_limit: 10,
-    require_whitelist: true,
-    start: "2022-03-10 03:41:00",
-  },
-  {
-    box_limit_per_user: null,
-    box_limit_this_phase: 0,
-    description: "Whitelist phase",
-    end: "2022-03-10 03:42:59",
-    id: 3,
-    is_whitelist: false,
-    name: "Whitelist phase 3",
-    participant_limit: 10,
-    require_whitelist: true,
-    start: "2022-03-10 03:42:00",
-  },
-];
-
 
 interface IRound {
   rounds: [
@@ -82,7 +44,8 @@ const SiteMap = (props: IRound) => {
   const [isActiveUpComing, setIsActiveUpComing] = useState(false);
   const {registerWhitelist, error, loading, data} = useMutationRegisterWhiteList()
 
-  console.log(timeMoment("2022-03-09 23:46:00 +0000").tz("America/New_York").format("HH:mm, MMMM DD"))
+  const {dataWhiteListRegistered} = useDetailCampaign({ box_campaign_uid: boxCampaignUid })
+
   const showConfirm = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     confirm({
@@ -97,10 +60,10 @@ const SiteMap = (props: IRound) => {
   }
 
   const getCurrentRound = () => {
-    const dateNow = moment().unix();
-    const upcomingStart = moment(start).unix();
-    const closeEnd = moment(end).unix();
-    const firstStart = moment(rounds[0]?.start).unix()
+    const dateNow = timeMoment().tz(tzid).unix();
+    const upcomingStart = timeMoment(start).tz(tzid).unix();
+    const closeEnd = timeMoment(end).tz(tzid).unix();
+    const firstStart = timeMoment(rounds[0]?.start).tz(tzid).unix()
     // const firstStart = 0; // TODO: Fix bug above line
     const time = (firstStart - dateNow) * 1000;
     setIsActiveUpComing(false);
@@ -112,7 +75,7 @@ const SiteMap = (props: IRound) => {
       }, time);
       setTimeCountDown(Math.floor(time / 1000));
     }
-    const lastStart = moment(rounds[rounds?.length-1]?.start).unix()
+    const lastStart = timeMoment(rounds[rounds?.length-1]?.start).tz(tzid).unix()
     const timeLast = (closeEnd - dateNow)*1000
     if (lastStart <= dateNow && dateNow <= closeEnd) {
       setTextNow('The campaign will end in')
@@ -125,8 +88,8 @@ const SiteMap = (props: IRound) => {
       setTextNow('')
     }
     const x = rounds?.map((e) => {
-      const endDate = moment(e.end).unix();
-      const startDate = moment(e.start).unix();
+      const endDate = timeMoment(e.end).tz(tzid).unix();
+      const startDate = timeMoment(e.start).tz(tzid).unix();
       const timeEnd = (endDate - dateNow) * 1000;
       if (startDate <= dateNow && dateNow <= endDate) {
         if (rounds[rounds.length-1]?.id !== e?.id) {
@@ -150,7 +113,6 @@ const SiteMap = (props: IRound) => {
         box_campaign_uid: boxCampaignUid
       },
     })
-
   }
 
   useEffect(() => {
@@ -195,7 +157,7 @@ const SiteMap = (props: IRound) => {
                     isActiveUpComing ? s.active : ""
                   }`}
                 >
-                  {moment(start).format("HH:mm, MMMM DD")}
+                  {timeMoment(start).tz(tzid).format("HH:mm, MMMM DD")}
                 </div>
               </div>
 
@@ -227,7 +189,7 @@ const SiteMap = (props: IRound) => {
                       item.isActive === true ? s.active : ""
                     }`}
                   >
-                    {moment(new Date(item.start)).format("HH:mm, MMMM DD")}
+                    {timeMoment(new Date(item.start)).tz(tzid).format("HH:mm, MMMM DD")}
                   </div>
                 </div>
 
@@ -244,15 +206,25 @@ const SiteMap = (props: IRound) => {
 
                 {item.is_whitelist && item.isActive && (
                   <div className="max-w-[250.91px]">
+                    {/*{ AuthStore.isLoggedIn ?*/}
+                    {/*  (*/}
+                    {/*    <>*/}
                     <button
-                      disabled={isInWhitelist}
+                      disabled={isInWhitelist || data?.registerWhitelist}
                       onClick={showConfirm}
                       className={`${s.button} font-bold text-white uppercase`}
                     >
-                      {isInWhitelist ? "Applied" : "Apply whitelist"}
+                      {isInWhitelist || data?.registerWhitelist ? "Applied" : "Apply whitelist"}
                     </button>
-                    <Progress strokeColor="#0BEBD6" percent={60} showInfo={false} />
-                    <p className="text-right text-white mt-1">60/100</p>
+                    <Progress strokeColor="#0BEBD6" percent={(dataWhiteListRegistered?.registeredWhitelist?.registered/dataWhiteListRegistered?.registeredWhitelist?.limit)*100} showInfo={false} />
+                    <p className="text-right text-white mt-1">{`${dataWhiteListRegistered?.registeredWhitelist?.registered}/${dataWhiteListRegistered?.registeredWhitelist?.limit}`}</p>
+                    {/*    </>*/}
+                    {/*  ):(*/}
+                    {/*      <div className='mt-3'>*/}
+                    {/*        <ConnectWalletBtn small={true} />*/}
+                    {/*      </div>*/}
+                    {/*    )*/}
+                    {/*}*/}
                   </div>
                 )}
               </div>
@@ -266,7 +238,7 @@ const SiteMap = (props: IRound) => {
               <div className={`${s.hSlide} flex flex-col justify-end w-full`}>
                 <div
                   className={`text-white font-bold ${s.SiteMapLineCircleTitle} ${
-                    moment().unix() >= moment(end).unix() ? s.active : ""
+                      timeMoment().tz(tzid).unix() >= timeMoment(end).tz(tzid).unix() ? s.active : ""
                   }`}
                 >
                   Close
@@ -274,17 +246,15 @@ const SiteMap = (props: IRound) => {
 
                 <div
                   className={`text-white pb-2 mb-10 ${s.SiteMapLineCircleTime} ${
-                    moment().unix() >= moment(end).unix() ? s.active : ""
+                      timeMoment().tz(tzid).unix() >= timeMoment(end).tz(tzid).unix() ? s.active : ""
                   }`}
                 >
-                  {moment(end).format("HH:mm, MMMM DD")}
+                  {timeMoment(end).tz(tzid).format("HH:mm, MMMM DD")}
                 </div>
               </div>
-
               <div
                 className={`${s.SiteMapLineCircle} ${
-                  moment().unix() >= moment(end).unix() ? s.active : ""
-                }`}
+                    timeMoment().tz(tzid).unix() >= timeMoment(end).tz(tzid).unix() ? s.active : ""}`}
               ></div>
               <div className={`text-white mt-10 w-full ${s.SiteMapLineCircleContent}`}>
                 Thank you for watching.

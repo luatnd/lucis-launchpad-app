@@ -39,6 +39,7 @@ export type BoxCampaign = {
   game_uid: Scalars['String'];
   highlight?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  opening_at: Scalars['DateTime'];
   rounds?: Maybe<Scalars['JSON']>;
   rules?: Maybe<Scalars['String']>;
   spotlight_position?: Maybe<Scalars['Int']>;
@@ -63,6 +64,7 @@ export type BoxCampaignBuyHistory = {
   box_campaign_uid: Scalars['String'];
   box_price?: Maybe<Scalars['JSON']>;
   box_price_uid: Scalars['String'];
+  box_type_uid: Scalars['String'];
   created_at: Scalars['DateTime'];
   data?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
@@ -108,7 +110,7 @@ export type BoxContract = {
   admin_prv_key?: Maybe<Scalars['String']>;
   box_campaign_uid?: Maybe<Scalars['String']>;
   chain: Chain;
-  chain_symbol: Scalars['String'];
+  chain_symbol: ChainSymbol;
   created_at: Scalars['DateTime'];
   currency_symbol?: Maybe<Scalars['String']>;
   is_transfered: Scalars['Boolean'];
@@ -122,7 +124,7 @@ export type BoxPrice = {
   boxType: BoxType;
   box_type_uid: Scalars['String'];
   chain: Chain;
-  chain_symbol: Scalars['String'];
+  chain_symbol: ChainSymbol;
   created_at: Scalars['DateTime'];
   currency: Currency;
   currency_uid: Scalars['String'];
@@ -131,12 +133,19 @@ export type BoxPrice = {
   updated_at: Scalars['DateTime'];
 };
 
+export type BoxStatus = {
+  __typename?: 'BoxStatus';
+  max_size: Scalars['Float'];
+  number: Scalars['Float'];
+};
+
 export type BoxType = {
   __typename?: 'BoxType';
   _count: BoxTypeCount;
   box_campaign_uid: Scalars['String'];
   campaign: BoxCampaign;
   created_at: Scalars['DateTime'];
+  desc?: Maybe<Scalars['String']>;
   limit_per_user?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   prices?: Maybe<Array<BoxPrice>>;
@@ -171,7 +180,7 @@ export type Chain = {
   nftBox?: Maybe<Array<BoxContract>>;
   rpc_url?: Maybe<Scalars['String']>;
   status?: Maybe<Scalars['Boolean']>;
-  symbol: Scalars['ID'];
+  symbol: ChainSymbol;
   updated_at: Scalars['DateTime'];
 };
 
@@ -182,13 +191,24 @@ export type ChainCount = {
   nftBox: Scalars['Int'];
 };
 
+export enum ChainSymbol {
+  Avax = 'AVAX',
+  Bsc = 'BSC',
+  Eth = 'ETH',
+  Flow = 'FLOW',
+  Near = 'NEAR',
+  Polkadot = 'POLKADOT',
+  Polygon = 'POLYGON',
+  Solana = 'SOLANA'
+}
+
 export type Currency = {
   __typename?: 'Currency';
   _count: CurrencyCount;
   address: Scalars['String'];
   boxPrices?: Maybe<Array<BoxPrice>>;
   chain: Chain;
-  chain_symbol: Scalars['String'];
+  chain_symbol: ChainSymbol;
   created_at: Scalars['DateTime'];
   icon?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -209,10 +229,8 @@ export type DateTimeFieldUpdateOperationsInput = {
 
 export type GBoxCampaign = {
   __typename?: 'GBoxCampaign';
-  _count: BoxCampaignCount;
   banner_img?: Maybe<Scalars['String']>;
-  boxTypes?: Maybe<Array<BoxType>>;
-  buyHistory?: Maybe<Array<BoxCampaignBuyHistory>>;
+  boxTypes?: Maybe<Array<GBoxType>>;
   cover_img?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   desc?: Maybe<Scalars['String']>;
@@ -221,6 +239,7 @@ export type GBoxCampaign = {
   game_uid: Scalars['String'];
   highlight?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  opening_at: Scalars['DateTime'];
   rounds: Array<GBoxCampaignRound>;
   rules?: Maybe<Scalars['String']>;
   spotlight_position?: Maybe<Scalars['Int']>;
@@ -228,21 +247,20 @@ export type GBoxCampaign = {
   status?: Maybe<BoxCampaignsStatus>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
-  whitelists?: Maybe<Array<BoxCampaignWhitelist>>;
 };
 
 export type GBoxCampaignBase = {
   __typename?: 'GBoxCampaignBase';
-  _count: BoxCampaignCount;
   banner_img?: Maybe<Scalars['String']>;
   cover_img?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   desc?: Maybe<Scalars['String']>;
   end: Scalars['DateTime'];
-  game: Game;
+  game: GGame;
   game_uid: Scalars['String'];
   highlight?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  opening_at: Scalars['DateTime'];
   rounds?: Maybe<Scalars['JSON']>;
   rules?: Maybe<Scalars['String']>;
   spotlight_position?: Maybe<Scalars['Int']>;
@@ -258,6 +276,7 @@ export type GBoxCampaignBuyHistory = {
   box_campaign_uid: Scalars['String'];
   box_price?: Maybe<GBoxPriceHistory>;
   box_price_uid: Scalars['String'];
+  box_type_uid: Scalars['String'];
   created_at: Scalars['DateTime'];
   data?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
@@ -270,15 +289,15 @@ export type GBoxCampaignBuyHistory = {
 };
 
 export type GBoxCampaignInclude = {
+  boxPrices?: InputMaybe<Scalars['Boolean']>;
   boxTypes?: InputMaybe<Scalars['Boolean']>;
+  chain?: InputMaybe<Scalars['Boolean']>;
+  currency?: InputMaybe<Scalars['Boolean']>;
   game?: InputMaybe<Scalars['Boolean']>;
-  whitelists?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type GBoxCampaignRound = {
   __typename?: 'GBoxCampaignRound';
-  /** Number of box can buy per user */
-  box_limit_per_user?: Maybe<Scalars['Int']>;
   /** Number of box can buy per phase, current not use */
   box_limit_this_phase?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
@@ -292,13 +311,27 @@ export type GBoxCampaignRound = {
   start: Scalars['String'];
 };
 
+export type GBoxPrice = {
+  __typename?: 'GBoxPrice';
+  boxType: BoxType;
+  box_type_uid: Scalars['String'];
+  chain: GChain;
+  chain_symbol: ChainSymbol;
+  created_at: Scalars['DateTime'];
+  currency: GCurrency;
+  currency_uid: Scalars['String'];
+  price?: Maybe<Scalars['Decimal']>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+};
+
 export type GBoxPriceHistory = {
   __typename?: 'GBoxPriceHistory';
   boxType?: Maybe<GBoxTypeHistory>;
   box_type_uid: Scalars['String'];
   chain_icon?: Maybe<Scalars['String']>;
   chain_name?: Maybe<Scalars['String']>;
-  chain_symbol: Scalars['String'];
+  chain_symbol: ChainSymbol;
   created_at: Scalars['DateTime'];
   currency_icon?: Maybe<Scalars['String']>;
   currency_name?: Maybe<Scalars['String']>;
@@ -309,12 +342,27 @@ export type GBoxPriceHistory = {
   updated_at: Scalars['DateTime'];
 };
 
+export type GBoxType = {
+  __typename?: 'GBoxType';
+  box_campaign_uid: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  desc?: Maybe<Scalars['String']>;
+  limit_per_user?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  prices?: Maybe<Array<GBoxPrice>>;
+  series_content?: Maybe<Scalars['String']>;
+  sold_amount: Scalars['Int'];
+  thumb_img?: Maybe<Scalars['String']>;
+  total_amount: Scalars['Int'];
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+};
+
 export type GBoxTypeHistory = {
   __typename?: 'GBoxTypeHistory';
-  _count: BoxTypeCount;
   box_campaign_uid: Scalars['String'];
-  campaign: BoxCampaign;
   created_at: Scalars['DateTime'];
+  desc?: Maybe<Scalars['String']>;
   limit_per_user?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   series_content?: Maybe<Scalars['String']>;
@@ -323,6 +371,53 @@ export type GBoxTypeHistory = {
   total_amount: Scalars['Int'];
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
+};
+
+export type GChain = {
+  __typename?: 'GChain';
+  chain_id?: Maybe<Scalars['Int']>;
+  created_at: Scalars['DateTime'];
+  icon?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  rpc_url?: Maybe<Scalars['String']>;
+  status?: Maybe<Scalars['Boolean']>;
+  symbol: ChainSymbol;
+  updated_at: Scalars['DateTime'];
+};
+
+export type GCurrency = {
+  __typename?: 'GCurrency';
+  address: Scalars['String'];
+  chain: Chain;
+  chain_symbol: ChainSymbol;
+  created_at: Scalars['DateTime'];
+  icon?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  owner?: Maybe<Scalars['String']>;
+  symbol: Scalars['String'];
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+};
+
+export type GGame = {
+  __typename?: 'GGame';
+  boxCampaigns?: Maybe<Array<BoxCampaign>>;
+  created_at: Scalars['DateTime'];
+  desc?: Maybe<Scalars['String']>;
+  desc_team?: Maybe<Scalars['String']>;
+  discord?: Maybe<Scalars['String']>;
+  facebook?: Maybe<Scalars['String']>;
+  logo?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  pitchdeck?: Maybe<Scalars['String']>;
+  telegram?: Maybe<Scalars['String']>;
+  trailer_video?: Maybe<Scalars['String']>;
+  twitter?: Maybe<Scalars['String']>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  website?: Maybe<Scalars['String']>;
+  whitepaper?: Maybe<Scalars['String']>;
+  youtube?: Maybe<Scalars['String']>;
 };
 
 export type Game = {
@@ -397,18 +492,6 @@ export type MutationVerifyEmailArgs = {
   email: Scalars['String'];
 };
 
-export type Notification = {
-  __typename?: 'Notification';
-  content?: Maybe<Scalars['String']>;
-  created_at: Scalars['DateTime'];
-  link?: Maybe<Scalars['String']>;
-  title?: Maybe<Scalars['String']>;
-  uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-  user: User;
-  user_id: Scalars['Int'];
-};
-
 export type NullableBoolFieldUpdateOperationsInput = {
   set?: InputMaybe<Scalars['Boolean']>;
 };
@@ -437,16 +520,14 @@ export type Query = {
   boxCampaignBuyHistories?: Maybe<Array<GBoxCampaignBuyHistory>>;
   /** Box campaign transaction */
   campaignDetail?: Maybe<GBoxCampaign>;
-  campaigns: Array<GBoxCampaign>;
   closedBoxCampaign?: Maybe<Array<GBoxCampaign>>;
+  getAllowanceAmount: Scalars['Float'];
   /** Check current user joined whitelist */
   isInWhitelist?: Maybe<Scalars['Boolean']>;
   me?: Maybe<UserGraphql>;
-  /** turn on notification */
-  notifications: Array<Notification>;
   openingBoxCampaign?: Maybe<Array<GBoxCampaign>>;
   /** notify emails */
-  sendEmail: User;
+  sendEmail?: Maybe<Scalars['Boolean']>;
   spotlightBoxCampaign?: Maybe<Array<GBoxCampaign>>;
   upcomingBoxCampaign?: Maybe<Array<GBoxCampaign>>;
 };
@@ -463,31 +544,40 @@ export type QueryCampaignDetailArgs = {
 };
 
 
+export type QueryGetAllowanceAmountArgs = {
+  address: Scalars['String'];
+  boxCampaignUid: Scalars['String'];
+  chain: ChainSymbol;
+  currencyUid: Scalars['String'];
+};
+
+
 export type QueryIsInWhitelistArgs = {
   box_campaign_uid: Scalars['String'];
 };
 
 
-export type QueryNotificationsArgs = {
-  UserId: Scalars['Float'];
-};
-
-
 export type QuerySendEmailArgs = {
   content: Scalars['String'];
-  to_userId: Scalars['Float'];
+  from: Scalars['String'];
+  to: UserInput;
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  getBoxStatus: BoxStatus;
+  getNumberWhitelistRegister: WhitelistNumber;
+  updateBoxHistory: GBoxCampaignBuyHistory;
 };
 
 export type User = {
   __typename?: 'User';
-  _count: UserCount;
   address: Scalars['String'];
   code: Scalars['String'];
   created_at: Scalars['DateTime'];
   email?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
-  notification?: Maybe<Array<Notification>>;
   password?: Maybe<Scalars['String']>;
   profile?: Maybe<UserProfile>;
   ref_code?: Maybe<Scalars['String']>;
@@ -496,26 +586,25 @@ export type User = {
   updated_at: Scalars['DateTime'];
 };
 
-export type UserCount = {
-  __typename?: 'UserCount';
-  notification: Scalars['Int'];
-};
-
 export type UserGraphql = {
   __typename?: 'UserGraphql';
-  _count: UserCount;
   address: Scalars['String'];
   code: Scalars['String'];
   created_at: Scalars['DateTime'];
   email?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
-  notification?: Maybe<Array<Notification>>;
   profile?: Maybe<UserProfile>;
   ref_code?: Maybe<Scalars['String']>;
   role: UserRole;
   status: UserStatus;
   updated_at: Scalars['DateTime'];
+};
+
+export type UserInput = {
+  email: Scalars['String'];
+  name: Scalars['String'];
+  userId?: InputMaybe<Scalars['Int']>;
 };
 
 export type UserProfile = {
@@ -544,3 +633,9 @@ export enum UserStatus {
   Active = 'ACTIVE',
   Banned = 'BANNED'
 }
+
+export type WhitelistNumber = {
+  __typename?: 'WhitelistNumber';
+  max_size: Scalars['Float'];
+  number: Scalars['Float'];
+};

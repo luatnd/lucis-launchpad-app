@@ -69,9 +69,27 @@ const HistoryTable = (props: Props) => {
       // @ts-ignore
       render: (_, item: any) => {
         return (
-          <p className="descText">{`${
-            item.quantity * item.box_price.price
-          } ${item.box_price.currency_name.toUpperCase()}`}</p>
+          <>
+            <p className="descText">
+              {`${
+                item.quantity * item.box_price.price
+              } ${item.box_price.currency_name.toUpperCase()}`}
+            </p>
+
+            <a
+              className="hidden md:block"
+              target="_blank"
+              href={
+                item.box_price.chain_symbol === "bsc"
+                  ? `https://testnet.bscscan.com/tx/${item.tx_hash}`
+                  : `https://etherscan.io/tx/${item.tx_hash}`
+              }
+              style={{ whiteSpace: "nowrap" }}
+              rel="noopener noreferrer"
+            >
+              {item?.tx_hash ? trim_middle(item.tx_hash, 6, 6) : ""}
+            </a>
+          </>
         );
       },
       width: "15%",
@@ -100,8 +118,14 @@ const HistoryTable = (props: Props) => {
           <>
             <div className={`${statusClass} ${s.status}`}></div>
             {item.box_price.chain_symbol === "BSC" && (
-              <a href={`https://testnet.bscscan.com/tx/${item.tx_hash}`}>
-                {item?.tx_hash ? trim_middle(item.tx_hash, 4, 3) : ""}
+              <a
+                className="block md:hidden"
+                href={`https://testnet.bscscan.com/tx/${item.tx_hash}`}
+              >
+                <img
+                  style={{ width: "15px", margin: "5px 0 0 0" }}
+                  src={"/assets/MyProfile/link.svg"}
+                />
               </a>
             )}
           </>

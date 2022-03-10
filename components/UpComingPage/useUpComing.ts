@@ -11,23 +11,30 @@ export function useUpComing() {
 }
 
 const GET_UPCOMING = gql`
-    query{
-        upcomingBoxCampaign{
-        uid
-        game_uid
-        status
-        game{
+  query {
+    upcomingBoxCampaign{
+      uid
+      cover_img
+      start
+      end
+      opening_at
+      rounds{
+        id
+        start
+        end
+      }
+      game{
         uid
         name
+        desc
         logo
         website
-        whitepaper
-        pitchdeck
         facebook
         twitter
         telegram
         youtube
-        }
+        discord
+      }
     }
-}
+  }
 `;

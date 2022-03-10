@@ -1,14 +1,12 @@
 import DocHead from "components/DocHead";
 import Footer from "components/Footer";
+import BuyHistory from "components/HistoryTable/BuyHistory";
 import { useState } from "react";
 import { useQueryProfile } from "../../components/Profile/Hooks/useQueryProfile";
-import s from "./index.module.sass";
-import Box from "../../components/Profile/ProfileSocial";
 import Contact from "../../components/Profile/ProfileContact";
 import Info from "../../components/Profile/ProfileInfo";
-import { useQueryBoxHistories } from "components/Profile/Hooks/useQueryBoxHistories";
-import HistoryTable from "components/HistoryTable/HistoryTable";
-import BuyHistory from "components/HistoryTable/BuyHistory";
+import Box from "../../components/Profile/ProfileSocial";
+import s from "./index.module.sass";
 
 const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);

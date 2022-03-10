@@ -65,9 +65,16 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
         font-weight: 300
     .balance 
         font-weight: 400
+    @media (min-width: 425px) and (max-width: 767px)
+        .fullName
+            font-size: 20px
+        .id, .balance 
+            font-size: 12px
     @media screen and ( min-width: 767px ) 
         button 
             font-size: $font24
+        .fullName
+            font-size: $font36
         .name
             font-size: $font24
             button
@@ -85,7 +92,7 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
     @media screen and ( min-width: 1023px )
         button  
             font-size: $font36 
-        .name
+        .name, .fullName
             font-size: $font36
             button
                 img 
@@ -102,6 +109,8 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
         margin: 0
         color: white
         font-size: $font14
+    span 
+        font-weight: 600
     input 
         font-size: $font14
     .invalid 
@@ -121,7 +130,7 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
             background: #C4C4C4
             
     @media screen and ( min-width:767px )
-        padding: 10px 10px 10px 20px
+        padding: 20px 10px 20px 78px
         p, span 
             font-size: $font24
         input 
@@ -154,7 +163,8 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
     p,span
         margin: 0
         font-size: $font14
-
+    span 
+        font-weight: 600
     .title 
         display: flex
         align-items: center
@@ -172,7 +182,7 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
                 border-radius: 50%
                 width: $width15
     @media screen and ( min-width:767px )
-        padding: 30px 10px 30px 20px
+        padding: 30px 10px 30px 78px
         p,span 
             font-size: $font24
         .title

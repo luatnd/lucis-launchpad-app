@@ -5,13 +5,14 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 // import HotGame from "components/Games";
 import useScroll from "hooks/useScroll";
-import UpComing from "../components/UpComingPage/UpcomingCampaign";
-import Opening from "../components/OpeningCampaign/OpeningCampaign";
-import ClosedCampaign from "../components/ClosedCampaign/ClosedCampaign";
+
 import Footer from "components/Footer";
 import Banner from "../components/Banner/BannerPage";
 import DocHead from "../components/DocHead";
 import { useHome } from "hooks/home/useHome";
+import UpComing from "components/Home/UpComingPage/UpcomingCampaign";
+import Opening from "components/Home/OpeningCampaign/OpeningCampaign";
+import ClosedCampaign from "components/Home/ClosedCampaign/ClosedCampaign";
 
 const Home: NextPage = () => {
   const {} = useHome();
@@ -39,7 +40,7 @@ const Home: NextPage = () => {
     <div className={styles.pageContainer}>
       <DocHead />
 
-      <Banner />
+      {/* <Banner /> */}
       <UpComing />
       <Opening />
       <ClosedCampaign />

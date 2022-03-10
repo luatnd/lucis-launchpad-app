@@ -29,7 +29,7 @@ const MainSlider = (props: Props) => {
 
                   <div className={s.descContainer}>
                     <div className={s.logo}>
-                      <img src={item.game.logo} alt="" />
+                      <img src={item.game.logo ?? ''} alt="" />
                     </div>
 
                     <p>{item.desc}</p>
@@ -58,7 +58,7 @@ const MainSlider = (props: Props) => {
                 </div>
 
                 <div className={s.bannerContainer}>
-                  <img src={item.banner_img} alt="" />
+                  <img src={item.banner_img ?? ''} alt="" />
                 </div>
               </div>
             </div>

@@ -8,8 +8,7 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { isClient } from "./DOM";
-import AuthService from "../components/Auth/AuthService";
-import { getLocalAuthInfo } from "../components/Auth/AuthLocal";
+import { clearLocalAuthInfo, getLocalAuthInfo } from "../components/Auth/AuthLocal";
 import { notification } from "antd";
 //   import { CachePersistor } from 'apollo-cache-persist';
 
@@ -60,12 +59,26 @@ const httpLink = createHttpLink({
 
 let countGqlErrNetwork = 0;
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
+  if (graphQLErrors) {
     graphQLErrors.forEach(({ message, locations, path }) => {
       console.log(
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
       );
+      if (message === "Unauthorized") {
+        // Clean auth info in case of auth error
+        // Might be JWT is expired
+        // We do clear info only if there was a logged-in user
+        if (_getAuthToken()) {
+          clearLocalAuthInfo();
+        }
+
+        // notification.error({
+        //   message: "Unauthorized",
+        //   description: "Please connect your wallet again",
+        // });
+      }
     });
+  }
 
   if (networkError) {
     console.log(`[Network error]: ${networkError}`);
@@ -112,7 +125,7 @@ export function handleApolloError(error: ApolloError) {
         // window.location.href = "/auth/login";
         notification["error"]({
           message: "Unauthorized",
-          description: "Please connect wallet before!",
+          description: "Please connect wallet first!",
         });
       } else {
         console.log(

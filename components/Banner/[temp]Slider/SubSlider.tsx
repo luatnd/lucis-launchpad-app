@@ -17,17 +17,21 @@ const SubSlider = (props: Props) => {
         {data &&
           data.map((item, index) => {
             return (
-              <div key={index} className={s.coverImage}>
+              <div
+                key={index}
+                className={`${s.coverImage} ${slideIndex === index ? s.selected : ""}`}
+              >
+                {/* @ts-ignore */}
                 <img src={item.cover_img} />
               </div>
             );
           })}
       </div>
 
-      <div className={s.buttonContainer}>
+      {/* <div className={s.buttonContainer}>
         <button onClick={prevSlide}>PREV</button>
         <button onClick={nextSlide}>NEXT</button>
-      </div>
+      </div> */}
     </div>
   );
 };

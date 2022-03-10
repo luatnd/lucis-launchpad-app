@@ -1,4 +1,4 @@
-import { Progress, Modal } from "antd";
+import { Progress, Modal, Popconfirm } from "antd";
 import moment from "moment";
 import timeMoment from "moment-timezone";
 import React, { useEffect, useState } from "react";
@@ -38,7 +38,6 @@ interface IRound {
 
 
 const SiteMap = (props: IRound) => {
-  const { confirm } = Modal;
   const { rounds, start, end, setTimeCountDown, isInWhitelist, setTextNow, boxCampaignUid, tzid } = props;
   const [listRounds, setListRounds] = useState([] as any);
   const [isActiveUpComing, setIsActiveUpComing] = useState(false);
@@ -46,18 +45,8 @@ const SiteMap = (props: IRound) => {
 
   const {dataWhiteListRegistered} = useDetailCampaign({ box_campaign_uid: boxCampaignUid })
 
-  const showConfirm = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    confirm({
-      title: 'Are you sure to apply whitelist?',
-      onOk() {
-        handleApplyWhiteList()
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
-    });
-  }
+  const isWhitelisted = isInWhitelist || data?.registerWhitelist;
+  // console.log('{isWhitelisted.SiteMap} isWhitelisted: ', isWhitelisted);
 
   const getCurrentRound = () => {
     const dateNow = timeMoment().tz(tzid).unix();
@@ -162,8 +151,8 @@ const SiteMap = (props: IRound) => {
               </div>
 
               <div style={{ width: "100%" }}>
-                <div className={`${s.SiteMapLineCircle} ${isActiveUpComing ? s.active : ""}`}></div>
-                <div className={s.line}></div>
+                <div className={`${s.SiteMapLineCircle} ${isActiveUpComing ? s.active : ""}`}/>
+                <div className={s.line}/>
               </div>
 
               <div className={`text-white mt-10 w-full ${s.SiteMapLineCircleContent}`}>
@@ -196,7 +185,7 @@ const SiteMap = (props: IRound) => {
                 <div style={{ width: "100%" }}>
                   <div
                     className={`${s.SiteMapLineCircle} ${item.isActive === true ? s.active : ""}`}
-                  ></div>
+                  />
                   <div className={s.line}></div>
                 </div>
 
@@ -206,25 +195,23 @@ const SiteMap = (props: IRound) => {
 
                 {item.is_whitelist && item.isActive && (
                   <div className="max-w-[250.91px]">
-                    {/*{ AuthStore.isLoggedIn ?*/}
-                    {/*  (*/}
-                    {/*    <>*/}
-                    <button
-                      disabled={isInWhitelist || data?.registerWhitelist}
-                      onClick={showConfirm}
-                      className={`${s.button} font-bold text-white uppercase`}
+                    <Popconfirm
+                      placement="top"
+                      title={"You're going to be whitelisted"}
+                      onConfirm={handleApplyWhiteList}
+                      okText="Yes"
+                      cancelText="No"
+                      disabled={isWhitelisted}
                     >
-                      {isInWhitelist || data?.registerWhitelist ? "Applied" : "Apply whitelist"}
-                    </button>
+                      <button
+                        disabled={isWhitelisted}
+                        className={`${s.button} ${isWhitelisted ? s.disabledBtn : ''} font-bold text-white text-center uppercase`}
+                      >
+                        {isWhitelisted ? "Whitelisted" : "Apply Whitelist"}
+                      </button>
+                    </Popconfirm>
                     <Progress strokeColor="#0BEBD6" percent={(dataWhiteListRegistered?.registeredWhitelist?.registered/dataWhiteListRegistered?.registeredWhitelist?.limit)*100} showInfo={false} />
                     <p className="text-right text-white mt-1">{`${dataWhiteListRegistered?.registeredWhitelist?.registered}/${dataWhiteListRegistered?.registeredWhitelist?.limit}`}</p>
-                    {/*    </>*/}
-                    {/*  ):(*/}
-                    {/*      <div className='mt-3'>*/}
-                    {/*        <ConnectWalletBtn small={true} />*/}
-                    {/*      </div>*/}
-                    {/*    )*/}
-                    {/*}*/}
                   </div>
                 )}
               </div>
@@ -253,8 +240,7 @@ const SiteMap = (props: IRound) => {
                 </div>
               </div>
               <div
-                className={`${s.SiteMapLineCircle} ${
-                    timeMoment().tz(tzid).unix() >= timeMoment(end).tz(tzid).unix() ? s.active : ""}`}
+                className={`${s.SiteMapLineCircle} ${timeMoment().tz(tzid).unix() >= timeMoment(end).tz(tzid).unix() ? s.active : ""}`}
               ></div>
               <div className={`text-white mt-10 w-full ${s.SiteMapLineCircleContent}`}>
                 Thank you for watching.

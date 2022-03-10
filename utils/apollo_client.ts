@@ -88,13 +88,8 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
-  // TODO: Get token from auth service
-  // let token = "";
-  // if (!!window) {
-  //   token = localStorage.getItem("token") ?? "";
-  // }
   const token = _getAuthToken();
-  console.log("{apolo.authLink} token: ", token);
+  // console.log("{apolo.authLink} token: ", token);
 
   // return the headers to the context so httpLink can read them
   return {

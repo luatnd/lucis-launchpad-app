@@ -133,12 +133,6 @@ export type BoxPrice = {
   updated_at: Scalars['DateTime'];
 };
 
-export type BoxStatus = {
-  __typename?: 'BoxStatus';
-  max_size: Scalars['Float'];
-  number: Scalars['Float'];
-};
-
 export type BoxType = {
   __typename?: 'BoxType';
   _count: BoxTypeCount;
@@ -235,7 +229,7 @@ export type GBoxCampaign = {
   created_at: Scalars['DateTime'];
   desc?: Maybe<Scalars['String']>;
   end: Scalars['DateTime'];
-  game: Game;
+  game: GGame;
   game_uid: Scalars['String'];
   highlight?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
@@ -514,6 +508,13 @@ export type ProfileUpdateInput = {
   updated_at?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
 };
 
+export type PurchasedBoxStatus = {
+  __typename?: 'PurchasedBoxStatus';
+  box_campaign_uid: Scalars['String'];
+  sold_amount: Scalars['Float'];
+  total_amount: Scalars['Float'];
+};
+
 export type Query = {
   __typename?: 'Query';
   /** Box campaign transaction */
@@ -526,6 +527,8 @@ export type Query = {
   isInWhitelist?: Maybe<Scalars['Boolean']>;
   me?: Maybe<UserGraphql>;
   openingBoxCampaign?: Maybe<Array<GBoxCampaign>>;
+  /** Check registered whitelist status */
+  registeredWhitelist?: Maybe<WhitelistStatus>;
   /** notify emails */
   sendEmail?: Maybe<Scalars['Boolean']>;
   spotlightBoxCampaign?: Maybe<Array<GBoxCampaign>>;
@@ -557,6 +560,11 @@ export type QueryIsInWhitelistArgs = {
 };
 
 
+export type QueryRegisteredWhitelistArgs = {
+  box_campaign_uid: Scalars['String'];
+};
+
+
 export type QuerySendEmailArgs = {
   content: Scalars['String'];
   from: Scalars['String'];
@@ -565,9 +573,24 @@ export type QuerySendEmailArgs = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  getBoxStatus: BoxStatus;
-  getNumberWhitelistRegister: WhitelistNumber;
-  updateBoxHistory: GBoxCampaignBuyHistory;
+  purchasedBox: PurchasedBoxStatus;
+  recentlyPurchasedBox: GBoxCampaignBuyHistory;
+  whitelistRegistered: WhitelistStatus;
+};
+
+
+export type SubscriptionPurchasedBoxArgs = {
+  box_campaign_uid: Scalars['String'];
+};
+
+
+export type SubscriptionRecentlyPurchasedBoxArgs = {
+  box_campaign_uid: Scalars['String'];
+};
+
+
+export type SubscriptionWhitelistRegisteredArgs = {
+  box_campaign_uid: Scalars['String'];
 };
 
 export type User = {
@@ -634,8 +657,9 @@ export enum UserStatus {
   Banned = 'BANNED'
 }
 
-export type WhitelistNumber = {
-  __typename?: 'WhitelistNumber';
-  max_size: Scalars['Float'];
-  number: Scalars['Float'];
+export type WhitelistStatus = {
+  __typename?: 'WhitelistStatus';
+  box_campaign_uid: Scalars['String'];
+  limit: Scalars['Int'];
+  registered: Scalars['Int'];
 };

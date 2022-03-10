@@ -23,11 +23,14 @@ import SiteMap from "components/campaign/components/SiteMap/SiteMap";
 function DetailCampaign() {
   const router = useRouter();
   const { slug } = router.query;
-  const id = slug?.length ? slug[0] : undefined;
+  // const id = slug?.length ? slug[0] : undefined;
+  const box_campaign_uid = 'cl02lx5or0000doo018d7n2zz' // TODO: ifx demo id
   const [timeCountDown, setTimeCountDown] = useState(0);
+  const [textNow, setTextNow] = useState('');
+  const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-  const { boxCampaign, loading, error, isInWhitelist } = useDetailCampaign();
-  console.log("boxCampaign: ", boxCampaign);
+
+  const { boxCampaign, loading, error, isInWhitelist } = useDetailCampaign({ box_campaign_uid });
 
   if (loading) {
     return <>Loading</>;
@@ -52,9 +55,15 @@ function DetailCampaign() {
                   end={boxCampaign?.end}
                   setTimeCountDown={setTimeCountDown}
                   isInWhitelist={isInWhitelist}
+                  setTextNow={setTextNow}
+                  boxCampaignUid={box_campaign_uid}
+                  tzid={tzid}
                 />
               )}
-              <CountDown timeCountDown={timeCountDown} />
+              { textNow.length > 0 && <CountDown
+                  timeCountDown={timeCountDown}
+                  textNow={textNow}
+              />}
               {!!boxCampaign && (
                 <BoxCard
                   boxCampaign={boxCampaign}
@@ -69,7 +78,12 @@ function DetailCampaign() {
               </div>
             </TabPane>
             <TabPane tab="RULE" key="2">
-              hello rule
+              <div className='lucis-container mt-[168px]'>
+                <div
+                  dangerouslySetInnerHTML={{__html: boxCampaign?.rules}}
+                  className={`${s.textSize} text-white mt-10 text-justify indent-8`}
+                ></div>
+              </div>
             </TabPane>
             <TabPane tab="ABOUT PROJECT" key="3">
               <Trailer />

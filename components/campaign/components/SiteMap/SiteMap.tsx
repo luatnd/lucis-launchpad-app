@@ -1,11 +1,15 @@
-import { Progress } from "antd";
+import { Progress, Modal } from "antd";
 import moment from "moment";
+import timeMoment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import "swiper/css";
-// import Swiper from "swiper";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import s from "./SiteMap.module.sass";
+import {useDetailCampaign} from "../../../../hooks/campaign/useDetailCampaign";
+import AuthStore from "../../../Auth/AuthStore";
+import ConnectWalletBtn from "../../../Auth/components/ConnectWalletBtn";
+import {useMutationRegisterWhiteList} from "../../../../hooks/campaign/useRegisterWhiteList";
 
 interface IRound {
   rounds: [
@@ -26,36 +30,75 @@ interface IRound {
   end: any;
   setTimeCountDown: (value: number) => void;
   isInWhitelist: boolean;
+  setTextNow: (value: string) => void;
+  boxCampaignUid: string;
+  tzid: string;
 }
 
+
+
 const SiteMap = (props: IRound) => {
-  const { rounds, start, end, setTimeCountDown, isInWhitelist } = props;
+  const { confirm } = Modal;
+  const { rounds, start, end, setTimeCountDown, isInWhitelist, setTextNow, boxCampaignUid, tzid } = props;
   const [listRounds, setListRounds] = useState([] as any);
   const [isActiveUpComing, setIsActiveUpComing] = useState(false);
+  const {registerWhitelist, error, loading, data} = useMutationRegisterWhiteList()
+
+  const {dataWhiteListRegistered} = useDetailCampaign({ box_campaign_uid: boxCampaignUid })
+
+  const showConfirm = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    confirm({
+      title: 'Are you sure to apply whitelist?',
+      onOk() {
+        handleApplyWhiteList()
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
 
   const getCurrentRound = () => {
-    const dateNow = moment().unix();
-    const upcomingStart = moment(start).unix();
-    // const firstStart = moment(rounds[0]?.start).unix()
-    const firstStart = 0; // TODO: Fix bug above line
+    const dateNow = timeMoment().tz(tzid).unix();
+    const upcomingStart = timeMoment(start).tz(tzid).unix();
+    const closeEnd = timeMoment(end).tz(tzid).unix();
+    const firstStart = timeMoment(rounds[0]?.start).tz(tzid).unix()
+    // const firstStart = 0; // TODO: Fix bug above line
     const time = (firstStart - dateNow) * 1000;
     setIsActiveUpComing(false);
     if (upcomingStart <= dateNow && dateNow <= firstStart) {
+      setTextNow(`${rounds[0]?.name} will start in`)
       setIsActiveUpComing(true);
       setTimeout(() => {
         getCurrentRound();
       }, time);
       setTimeCountDown(Math.floor(time / 1000));
     }
+    const lastStart = timeMoment(rounds[rounds?.length-1]?.start).tz(tzid).unix()
+    const timeLast = (closeEnd - dateNow)*1000
+    if (lastStart <= dateNow && dateNow <= closeEnd) {
+      setTextNow('The campaign will end in')
+      setTimeout(() => {
+        getCurrentRound();
+      }, timeLast);
+      setTimeCountDown(Math.floor(timeLast / 1000));
+    }
+    if (dateNow > closeEnd) {
+      setTextNow('')
+    }
     const x = rounds?.map((e) => {
-      const endDate = moment(e.end).unix();
-      const startDate = moment(e.start).unix();
+      const endDate = timeMoment(e.end).tz(tzid).unix();
+      const startDate = timeMoment(e.start).tz(tzid).unix();
       const timeEnd = (endDate - dateNow) * 1000;
       if (startDate <= dateNow && dateNow <= endDate) {
-        setTimeout(() => {
-          getCurrentRound();
-        }, timeEnd);
-        setTimeCountDown(Math.floor(timeEnd / 1000));
+        if (rounds[rounds.length-1]?.id !== e?.id) {
+          setTextNow(`${e?.name} will end in`)
+          setTimeout(() => {
+            getCurrentRound();
+          }, timeEnd);
+          setTimeCountDown(Math.floor(timeEnd / 1000));
+        }
         return { ...e, isActive: true };
       } else {
         return { ...e, isActive: false };
@@ -63,6 +106,14 @@ const SiteMap = (props: IRound) => {
     });
     setListRounds(x);
   };
+  
+  const handleApplyWhiteList = async () => {
+    await registerWhitelist({
+      variables: {
+        box_campaign_uid: boxCampaignUid
+      },
+    })
+  }
 
   useEffect(() => {
     getCurrentRound();
@@ -106,7 +157,7 @@ const SiteMap = (props: IRound) => {
                     isActiveUpComing ? s.active : ""
                   }`}
                 >
-                  {moment(start).format("HH:mm, MMMM DD")}
+                  {timeMoment(start).tz(tzid).format("HH:mm, MMMM DD")}
                 </div>
               </div>
 
@@ -116,7 +167,7 @@ const SiteMap = (props: IRound) => {
               </div>
 
               <div className={`text-white mt-10 w-full ${s.SiteMapLineCircleContent}`}>
-                Stay tuned and prepare to APPLY WHITELIST.
+                Stay tuned and prepare.
               </div>
             </div>
           </SwiperSlide>
@@ -138,7 +189,7 @@ const SiteMap = (props: IRound) => {
                       item.isActive === true ? s.active : ""
                     }`}
                   >
-                    {moment(new Date(item.start)).format("HH:mm, MMMM DD")}
+                    {timeMoment(new Date(item.start)).tz(tzid).format("HH:mm, MMMM DD")}
                   </div>
                 </div>
 
@@ -155,14 +206,25 @@ const SiteMap = (props: IRound) => {
 
                 {item.is_whitelist && item.isActive && (
                   <div className="max-w-[250.91px]">
+                    {/*{ AuthStore.isLoggedIn ?*/}
+                    {/*  (*/}
+                    {/*    <>*/}
                     <button
-                      disabled={isInWhitelist}
-                      className={`${s.buttom} font-bold text-white uppercase`}
+                      disabled={isInWhitelist || data?.registerWhitelist}
+                      onClick={showConfirm}
+                      className={`${s.button} font-bold text-white uppercase`}
                     >
-                      {isInWhitelist ? "Applied" : "Apply whitelist"}
+                      {isInWhitelist || data?.registerWhitelist ? "Applied" : "Apply whitelist"}
                     </button>
-                    <Progress strokeColor="#0BEBD6" percent={60} showInfo={false} />
-                    <p className="text-right text-white mt-1">60/100</p>
+                    <Progress strokeColor="#0BEBD6" percent={(dataWhiteListRegistered?.registeredWhitelist?.registered/dataWhiteListRegistered?.registeredWhitelist?.limit)*100} showInfo={false} />
+                    <p className="text-right text-white mt-1">{`${dataWhiteListRegistered?.registeredWhitelist?.registered}/${dataWhiteListRegistered?.registeredWhitelist?.limit}`}</p>
+                    {/*    </>*/}
+                    {/*  ):(*/}
+                    {/*      <div className='mt-3'>*/}
+                    {/*        <ConnectWalletBtn small={true} />*/}
+                    {/*      </div>*/}
+                    {/*    )*/}
+                    {/*}*/}
                   </div>
                 )}
               </div>
@@ -176,7 +238,7 @@ const SiteMap = (props: IRound) => {
               <div className={`${s.hSlide} flex flex-col justify-end w-full`}>
                 <div
                   className={`text-white font-bold ${s.SiteMapLineCircleTitle} ${
-                    moment().unix() >= moment(end).unix() ? s.active : ""
+                      timeMoment().tz(tzid).unix() >= timeMoment(end).tz(tzid).unix() ? s.active : ""
                   }`}
                 >
                   Close
@@ -184,20 +246,18 @@ const SiteMap = (props: IRound) => {
 
                 <div
                   className={`text-white pb-2 mb-10 ${s.SiteMapLineCircleTime} ${
-                    moment().unix() >= moment(end).unix() ? s.active : ""
+                      timeMoment().tz(tzid).unix() >= timeMoment(end).tz(tzid).unix() ? s.active : ""
                   }`}
                 >
-                  {moment(end).format("HH:mm, MMMM DD")}
+                  {timeMoment(end).tz(tzid).format("HH:mm, MMMM DD")}
                 </div>
               </div>
-
               <div
                 className={`${s.SiteMapLineCircle} ${
-                  moment().unix() >= moment(end).unix() ? s.active : ""
-                }`}
+                    timeMoment().tz(tzid).unix() >= timeMoment(end).tz(tzid).unix() ? s.active : ""}`}
               ></div>
               <div className={`text-white mt-10 w-full ${s.SiteMapLineCircleContent}`}>
-                Thank you.
+                Thank you for watching.
               </div>
             </div>
           </SwiperSlide>

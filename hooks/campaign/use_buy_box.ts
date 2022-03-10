@@ -5,6 +5,9 @@ import { useMemo, useState } from "react";
 import { GBoxCampaignRound, GBoxPrice, GBoxType } from "src/generated/graphql";
 import { handleApolloError } from "utils/apollo_client";
 
+import EthersService from "services/blockchain/Ethers";
+import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
+
 export function useBuyBox(
   boxType: GBoxType,
   round: GBoxCampaignRound | undefined,
@@ -70,6 +73,25 @@ export function useBuyBox(
       // console.log("err: ", err);
       handleApolloError(err);
     });
+  };
+
+  const onApprove = async function () {
+    if (!ConnectWalletStore_NonReactiveData.web3Provider) {
+      notification["warn"]({
+        message: "Please connect wallet!",
+      });
+      return;
+    }
+
+    const ethersService = new EthersService(
+      ConnectWalletStore_NonReactiveData.web3Provider
+    );
+    await ethersService.getMyAddress();
+
+    //Todo: get contract address from box price
+    const contract_addr = "";
+    const currency_addr = ""; // address of token to buy
+    ethersService.requestApproval(contract_addr, currency_addr);
   };
 
   return {

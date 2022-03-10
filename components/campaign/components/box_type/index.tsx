@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Button, Form, InputNumber, Progress } from "antd";
+import { Button, Form, InputNumber, notification, Progress } from "antd";
 import s from "../Box/Box.module.sass";
 import {
   GChain,
@@ -11,18 +11,6 @@ import {
 import { useInput } from "hooks/common/use_input";
 import { useBuyBox } from "hooks/campaign/use_buy_box";
 import { handleApolloError } from "utils/apollo_client";
-
-import EthersContract from "services/blockchain/Ethers";
-import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
-
-if (!ConnectWalletStore_NonReactiveData.web3Provider) {
-  throw makeError("Need to connect your wallet first");
-}
-EthersContract;
-const ethersService = new EthersService(
-  ConnectWalletStore_NonReactiveData.web3Provider
-);
-const address = await ethersService.getMyAddress();
 
 type Props = {
   boxType: GBoxType;

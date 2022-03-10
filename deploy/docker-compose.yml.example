@@ -10,8 +10,8 @@ services:
     restart: always
     # volumes:
     #   - ../logs/:/app/logs/
-    ports:
-      - 3000:3000
+    # ports:
+    #   - 3000:3000
 
 networks:
   default:

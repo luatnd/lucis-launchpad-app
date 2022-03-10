@@ -1,10 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-
+import { useEffect, useState } from "react";
 import { slugify } from "../../utils/String";
-import s from "./ContainerCard.module.sass";
 import { GradientLinkButton } from "../Button/GradientButton";
-import { TransformStreamDefaultController } from "node:stream/web";
+import s from "./ContainerCard.module.sass";
 
 type Props = {
   srcGame: string;
@@ -20,10 +18,13 @@ type Props = {
   srcDiscord: string;
   srcTwitter: string;
   soldOutResult?: boolean;
+  description: string;
+  id: string;
 };
 
 export default function CardItem(props: Props) {
-  const { soldOutResult, time, statusTime } = props;
+  const { soldOutResult, time, statusTime, title, description, id } = props;
+  // console.log(title);
 
   const typeTime =
     statusTime == "UpComing"
@@ -36,11 +37,9 @@ export default function CardItem(props: Props) {
 
   const bg_card = props.styleBg ? s.bg_1 : s.bg_2;
 
-  const handleText =
-    props.title.length > 120 ? props?.title.substring(0, 120) + "..." : props.title;
+  const handleDesc = description.length > 120 ? description.substring(0, 120) + "..." : description;
 
   const getCampaignDetailUrl = () => {
-    const id = "12345678";
     return `/campaign/${id}/${slugify(props.title)}`;
   };
 
@@ -132,8 +131,9 @@ export default function CardItem(props: Props) {
               : props.time}
           </div>
           <h5>{props.nameGame}</h5>
-          <div className={s.text}>{handleText}</div>
+          <div className={s.text}>{handleDesc}</div>
         </div>
+
         <div className={s.btnDetail}>
           <Link href={getCampaignDetailUrl()} passHref={true}>
             <GradientLinkButton type={1} className={s.styleBtn}>
@@ -141,6 +141,7 @@ export default function CardItem(props: Props) {
             </GradientLinkButton>
           </Link>
         </div>
+
         <div className={s.groupIcon}>
           <a href={props.srcWeb}>
             <img src="/assets/UpComing/win.svg" alt="" />

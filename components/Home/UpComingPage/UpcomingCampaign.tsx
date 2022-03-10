@@ -25,12 +25,14 @@ export default function UpComing(props: Props) {
               inTime={e.inTime}
               nameGame={e?.game.name}
               styleBg={true}
-              title={e?.game.desc}
+              title={e?.name}
+              description={e?.game.desc}
               srcWeb={e?.game.website}
               srcFb={e?.game.facebook}
               srcTele={e?.game.telegram}
               srcDiscord={e?.game.discord}
               srcTwitter={e?.game.twitter}
+              id={e?.uid}
             />
           );
         })}

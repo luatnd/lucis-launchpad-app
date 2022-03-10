@@ -29,23 +29,29 @@ export default function ClosedCampaign(props: Props) {
     <section className="lucis-container">
       <TitleSection text="Closed campaign" />
       <div className={s.blockCard}>
-        {resultCloseCampaign?.closedBoxCampaign?.map((e: any, i: any) => (
-          <CardItem
-            key={i}
-            srcGame={e.cover_img}
-            statusTime={"SALE"}
-            time={handleTest()}
-            inTime={""}
-            nameGame={e?.game.name}
-            styleBg={false}
-            title={e?.game.desc}
-            srcWeb={e?.game.website}
-            srcFb={e?.game.facebook}
-            srcTele={e?.game.telegram}
-            srcDiscord={e?.game.discord}
-            srcTwitter={e?.game.twitter}
-          />
-        ))}
+        {resultCloseCampaign?.closedBoxCampaign?.map((e: any, i: any) => {
+          console.log("Opening: ", e.name);
+
+          return (
+            <CardItem
+              key={i}
+              srcGame={e.cover_img}
+              statusTime={"SALE"}
+              time={handleTest()}
+              inTime={""}
+              nameGame={e?.game.name}
+              styleBg={false}
+              title={e?.name}
+              description={e?.game.desc}
+              srcWeb={e?.game.website}
+              srcFb={e?.game.facebook}
+              srcTele={e?.game.telegram}
+              srcDiscord={e?.game.discord}
+              srcTwitter={e?.game.twitter}
+              id={e?.uid}
+            />
+          );
+        })}
       </div>
     </section>
   );

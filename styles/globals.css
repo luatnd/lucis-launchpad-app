@@ -522,10 +522,18 @@ body .backdrop-blur-sm {
   border-radius: 10px;
   color: white;
 }
-
-.ant-input-number-input {
-  background-color: none !important;
+.ant-popover-inner-content a, div {
+  color: white
 }
+
+.ant-popconfirm .ant-popover-content .ant-popover-inner {
+  background: rgb(12, 6, 81);
+  backdrop-filter: none;
+}
+
+/*.ant-input-number-input {*/
+/*  background-color: transparent !important;*/
+/*}*/
 
 ::-webkit-scrollbar {
   display: none;

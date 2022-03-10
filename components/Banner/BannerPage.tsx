@@ -4,6 +4,7 @@ import MainSlider from "./[temp]Slider/MainSlider";
 
 import SubSlider from "./[temp]Slider/SubSlider";
 import { useRef, useState } from "react";
+import Link from "next/link";
 import { useSpotlight } from "./useSpotlight";
 import { devNull } from "os";
 
@@ -50,10 +51,12 @@ export default function Banner(props: Props) {
 
       <div className="container">
         <div className="flex justify-between items-center h-[100px]">
-          <a href="/ino" className={`${s.btnApplyINO}`}>
-            <img src="/assets/Banner/ic_apply.svg" alt="" />
-            <span>Apply for INO</span>
-          </a>
+          <Link href="/ino" passHref>
+            <a className={`${s.btnApplyINO}`}>
+              <img src="/assets/Banner/ic_apply.svg" alt="" />
+              <span>Apply for INO</span>
+            </a>
+          </Link>
           <SubSlider {...sliderProps} />
         </div>
       </div>

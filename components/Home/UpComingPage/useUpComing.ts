@@ -12,18 +12,19 @@ export function useUpComing() {
 
 const GET_UPCOMING = gql`
   query {
-    upcomingBoxCampaign{
+    upcomingBoxCampaign {
       uid
       cover_img
       start
       end
       opening_at
-      rounds{
+      name
+      rounds {
         id
         start
         end
       }
-      game{
+      game {
         uid
         name
         desc

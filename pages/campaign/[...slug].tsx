@@ -54,7 +54,6 @@ function DetailCampaign() {
                   start={boxCampaign?.start}
                   end={boxCampaign?.end}
                   setTimeCountDown={setTimeCountDown}
-                  isInWhitelist={isInWhitelist}
                   setTextNow={setTextNow}
                   boxCampaignUid={box_campaign_uid}
                   tzid={tzid}

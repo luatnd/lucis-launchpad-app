@@ -7,9 +7,12 @@ import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import s from "./SiteMap.module.sass";
 import {useDetailCampaign} from "../../../../hooks/campaign/useDetailCampaign";
-import AuthStore from "../../../Auth/AuthStore";
 import ConnectWalletBtn from "../../../Auth/components/ConnectWalletBtn";
 import {useMutationRegisterWhiteList} from "../../../../hooks/campaign/useRegisterWhiteList";
+import AuthStore from "components/Auth/AuthStore";
+import AuthBox from "../../../Auth/components/AuthBox";
+import {observer} from "mobx-react";
+import {useWindowSize} from "../../../../hooks/useWindowSize";
 
 interface IRound {
   rounds: [
@@ -29,21 +32,21 @@ interface IRound {
   start: any;
   end: any;
   setTimeCountDown: (value: number) => void;
-  isInWhitelist: boolean;
   setTextNow: (value: string) => void;
   boxCampaignUid: string;
   tzid: string;
 }
 
 
-
-const SiteMap = (props: IRound) => {
-  const { rounds, start, end, setTimeCountDown, isInWhitelist, setTextNow, boxCampaignUid, tzid } = props;
+export default observer(function SiteMap(props: IRound) {
+// const SiteMap = (props: IRound) => {
+  const { rounds, start, end, setTimeCountDown, setTextNow, boxCampaignUid, tzid } = props;
   const [listRounds, setListRounds] = useState([] as any);
   const [isActiveUpComing, setIsActiveUpComing] = useState(false);
   const {registerWhitelist, error, loading, data} = useMutationRegisterWhiteList()
+  const [width, height] = useWindowSize();
 
-  const {dataWhiteListRegistered} = useDetailCampaign({ box_campaign_uid: boxCampaignUid })
+  const {dataWhiteListRegistered, isInWhitelist} = useDetailCampaign({ box_campaign_uid: boxCampaignUid })
 
   const isWhitelisted = isInWhitelist || data?.registerWhitelist;
   // console.log('{isWhitelisted.SiteMap} isWhitelisted: ', isWhitelisted);
@@ -193,26 +196,38 @@ const SiteMap = (props: IRound) => {
                   {item.description}
                 </div>
 
-                {item.is_whitelist && item.isActive && (
-                  <div className="max-w-[250.91px]">
-                    <Popconfirm
-                      placement="top"
-                      title={"You're going to be whitelisted"}
-                      onConfirm={handleApplyWhiteList}
-                      okText="Yes"
-                      cancelText="No"
-                      disabled={isWhitelisted}
-                    >
-                      <button
-                        disabled={isWhitelisted}
-                        className={`${s.button} ${isWhitelisted ? s.disabledBtn : ''} font-bold text-white text-center uppercase`}
-                      >
-                        {isWhitelisted ? "Whitelisted" : "Apply Whitelist"}
-                      </button>
-                    </Popconfirm>
-                    <Progress strokeColor="#0BEBD6" percent={(dataWhiteListRegistered?.registeredWhitelist?.registered/dataWhiteListRegistered?.registeredWhitelist?.limit)*100} showInfo={false} />
-                    <p className="text-right text-white mt-1">{`${dataWhiteListRegistered?.registeredWhitelist?.registered}/${dataWhiteListRegistered?.registeredWhitelist?.limit}`}</p>
-                  </div>
+                {item.is_whitelist && item.isActive &&
+                (
+                  <>
+                    {AuthStore.isLoggedIn ? (
+                        <div className="max-w-[250.91px]">
+                          <Popconfirm
+                              placement="top"
+                              title={"You're going to be whitelisted"}
+                              onConfirm={handleApplyWhiteList}
+                              okText="Yes"
+                              cancelText="No"
+                              disabled={isWhitelisted}
+                          >
+                            <button
+                                disabled={isWhitelisted}
+                                className={`${s.button} ${isWhitelisted ? s.disabledBtn : ''} font-bold text-white text-center uppercase`}
+                            >
+                              {isWhitelisted ? "Whitelisted" : "Apply Whitelist"}
+                            </button>
+                          </Popconfirm>
+                          <Progress strokeColor="#0BEBD6" percent={(dataWhiteListRegistered?.registeredWhitelist?.registered/dataWhiteListRegistered?.registeredWhitelist?.limit)*100} showInfo={false} />
+                          <p className="text-right text-white mt-1">{`${dataWhiteListRegistered?.registeredWhitelist?.registered}/${dataWhiteListRegistered?.registeredWhitelist?.limit}`}</p>
+                        </div>
+                      ) : (
+                         <div className={`mt-3 ${s.btnConnect}`}>
+                           <ConnectWalletBtn small={width <= 1024}/>
+                         </div>
+                    )
+                    }
+
+                  </>
+
                 )}
               </div>
             </SwiperSlide>
@@ -251,6 +266,6 @@ const SiteMap = (props: IRound) => {
       </div>
     </div>
   );
-};
+});
 
-export default SiteMap;
+// export default SiteMap;

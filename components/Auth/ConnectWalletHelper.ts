@@ -110,6 +110,11 @@ class ConnectWalletHelper {
         const chainId = this.getConfiguredChainId(network);
         return ensureTargetChain(chainId);
 
+      case Wallet.wc:
+        return new Promise<boolean>((resolve, reject) => {
+          resolve(true)
+        })
+
       default:
         return new Promise<boolean>((resolve, reject) => {
           reject(this.makeError(ConnectWalletError.SwitchChainNotSupported, ConnectWalletError.SwitchChainNotSupported))

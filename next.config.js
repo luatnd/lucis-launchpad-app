@@ -49,7 +49,8 @@ module.exports = withAntdLess({
 
     // Show testnet text on the header
     const git_branch = require('child_process')
-      .execSync('git branch --show-current')
+      .execSync('git symbolic-ref --short HEAD')
+      // .execSync('git branch --show-current')
       .toString().trim();
     rules.push({
       test: /components\/Header\.tsx$/,

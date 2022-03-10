@@ -1,29 +1,36 @@
+import { Maybe } from "graphql/jsutils/Maybe";
+import { useCountDown } from "utils/Time";
 import s from "./SilderBanner.module.sass";
 type Props = {
-  setStatusGame: string;
-  setTimeGame: string;
-  setLogoGame: string;
-  setTextGame: string;
-  setSrcMore: string;
-  setSrcApply: string;
+  status: string;
+  time: string;
+  logo: Maybe<string> | undefined;
+  desc: Maybe<string> | undefined;
+  href: string;
 };
 
 export default function ItemSliderBanner(props: Props) {
+  const { status, time, logo, desc, href } = props;
+  const timer = useCountDown(time);
+
   return (
     <div className={`${s.contentItemSilder} lucis-container`}>
       <div className={s.contentDetail}>
         <div className={s.bgItemSlider}></div>
         <div className={s.headingItem}>
           <div className={s.contentItemTop}>
-            <div className={s.statusGame}>{props.setStatusGame}</div>
-            <div className={s.Time}>{props.setTimeGame}</div>
+            <div className={s.statusGame}>{status}</div>
+            <div className={s.Time}>{`${timer.days}d ${timer.hours}h ${timer.minutes}m ${
+              timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
+            }s`}</div>
           </div>
           {/* status game */}
           <div className={s.logoGame}>
-            <img src={props.setLogoGame} alt="" />
+            {/* @ts-ignore */}
+            <img src={logo} alt="" />
           </div>
           {/* logo game */}
-          <p>{props.setTextGame}</p>
+          <p>{desc}</p>
           {/* text */}
           <div className={s.contentItemBottom}>
             <div className={s.groupLink}>
@@ -43,7 +50,7 @@ export default function ItemSliderBanner(props: Props) {
                 <img src="/assets/Banner/svg/win.svg" alt="" />
               </a>
             </div>
-            <a href={props.setSrcMore} className={s.btnMore}>
+            <a href={href} className={s.btnMore}>
               MORE DETAIL
             </a>
           </div>
@@ -52,11 +59,6 @@ export default function ItemSliderBanner(props: Props) {
           <img src="/assets/Banner/im_Thetan.png" alt="" />
         </div>
       </div>
-
-      <a href={props.setSrcApply} className={s.btnApplyINO}>
-        <img src="/assets/Banner/ic_apply.svg" alt="" />
-        <span>Apply for INO</span>
-      </a>
     </div>
   );
 }

@@ -133,6 +133,7 @@ export default function CardItem(props: Props) {
           <h5>{props.nameGame}</h5>
           <div className={s.text}>{handleDesc}</div>
         </div>
+
         <div className={s.btnDetail}>
           <Link href={getCampaignDetailUrl()} passHref={true}>
             <GradientLinkButton type={1} className={s.styleBtn}>
@@ -140,6 +141,7 @@ export default function CardItem(props: Props) {
             </GradientLinkButton>
           </Link>
         </div>
+
         <div className={s.groupIcon}>
           <a href={props.srcWeb}>
             <img src="/assets/UpComing/win.svg" alt="" />

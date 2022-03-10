@@ -1,3 +1,5 @@
+import { Maybe } from "graphql/jsutils/Maybe";
+
 export const to_hex_str = (str: string): string => {
   let result = "";
   for (let i = 0; i < str.length; i++) {
@@ -32,7 +34,7 @@ export function vi2en(str: string): string {
   return str;
 }
 
-export function slugify(str: string): string {
+export function slugify(str: Maybe<string> | undefined): string {
   if (!str) {
     return "";
   }

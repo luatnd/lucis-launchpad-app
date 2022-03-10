@@ -21,6 +21,9 @@ const GET_ALLBOX = gql`
       start
       status
       end
+      game {
+        logo
+      }
     }
   }
 `;

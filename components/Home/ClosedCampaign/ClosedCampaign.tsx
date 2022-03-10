@@ -48,6 +48,7 @@ export default function ClosedCampaign(props: Props) {
               srcTele={e?.game.telegram}
               srcDiscord={e?.game.discord}
               srcTwitter={e?.game.twitter}
+              id={e?.uid}
             />
           );
         })}

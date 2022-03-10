@@ -25,8 +25,6 @@ export default function Opening(props: Props) {
       <TitleSection text="Opening campaign" />
       <div className={s.blockCard}>
         {resultOpening?.openingBoxCampaign.map((e: any, i: number) => {
-          console.log("Opening: ", e.name);
-
           const soldAmount = e.boxTypes
             .map((item: GBoxType) => item.sold_amount)
             .reduce((prev: number, curr: number) => prev + curr, 0);
@@ -54,6 +52,7 @@ export default function Opening(props: Props) {
               srcTele={e?.game.telegram}
               srcDiscord={e?.game.discord}
               srcTwitter={e?.game.twitter}
+              id={e?.uid}
             />
           );
         })}

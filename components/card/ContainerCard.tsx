@@ -19,10 +19,11 @@ type Props = {
   srcTwitter: string;
   soldOutResult?: boolean;
   description: string;
+  id: string;
 };
 
 export default function CardItem(props: Props) {
-  const { soldOutResult, time, statusTime, title, description } = props;
+  const { soldOutResult, time, statusTime, title, description, id } = props;
   // console.log(title);
 
   const typeTime =
@@ -39,7 +40,6 @@ export default function CardItem(props: Props) {
   const handleDesc = description.length > 120 ? description.substring(0, 120) + "..." : description;
 
   const getCampaignDetailUrl = () => {
-    const id = "12345678";
     return `/campaign/${id}/${slugify(props.title)}`;
   };
 

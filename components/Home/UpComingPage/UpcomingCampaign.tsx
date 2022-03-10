@@ -16,7 +16,6 @@ export default function UpComing(props: Props) {
       <TitleSection text="Upcoming campaign" />
       <div className={s.blockCard}>
         {resultUpComing?.upcomingBoxCampaign.map((e: any, i: any) => {
-          console.log("Upcom: ", e.name);
           return (
             <CardItem
               key={i}
@@ -33,6 +32,7 @@ export default function UpComing(props: Props) {
               srcTele={e?.game.telegram}
               srcDiscord={e?.game.discord}
               srcTwitter={e?.game.twitter}
+              id={e?.uid}
             />
           );
         })}

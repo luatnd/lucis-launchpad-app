@@ -40,7 +40,7 @@ const Home: NextPage = () => {
     <div className={styles.pageContainer}>
       <DocHead />
 
-      <Banner />
+      {/* <Banner /> */}
       <UpComing />
       <Opening />
       <ClosedCampaign />

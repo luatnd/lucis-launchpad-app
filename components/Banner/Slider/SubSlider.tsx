@@ -4,27 +4,29 @@ import s from "../Banner.module.sass";
 type Props = {
   data: GBoxCampaign[];
   slideIndex: number;
+  nextSlide: () => void;
+  prevSlide: () => void;
 };
 
 const SubSlider = (props: Props) => {
-  const { data, slideIndex } = props;
-
-  console.log(data);
+  const { data, slideIndex, nextSlide, prevSlide } = props;
 
   return (
     <div className={s.subSliderContainer}>
-      <h1>SubSlider</h1>
-
-      <div>
+      <div className={s.coverContainer}>
         {data &&
           data.map((item, index) => {
-            return <img src={item.cover_img} key={index} />;
+            return (
+              <div key={index} className={s.coverImage}>
+                <img src={item.cover_img} />
+              </div>
+            );
           })}
       </div>
 
       <div className={s.buttonContainer}>
-        <button>NEXT</button>
-        <button>PREV</button>
+        <button onClick={prevSlide}>PREV</button>
+        <button onClick={nextSlide}>NEXT</button>
       </div>
     </div>
   );

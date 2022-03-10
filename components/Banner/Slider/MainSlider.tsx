@@ -8,7 +8,7 @@ type Props = {
 
 const MainSlider = (props: Props) => {
   const { data, slideIndex } = props;
-  console.log(data);
+  //   console.log(data);
 
   return (
     <>
@@ -16,9 +16,9 @@ const MainSlider = (props: Props) => {
       {data &&
         data.map((item, index) => {
           return (
-            <div key={index}>
+            <div key={index} className={`${slideIndex == index ? s.active : s.hidden}`}>
               <div className={s.contentContainer}></div>
-              <img src={item.cover_img} alt="" />
+              <img src={item.banner_img} alt="" />
             </div>
           );
         })}

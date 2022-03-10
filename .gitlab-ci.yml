@@ -27,7 +27,7 @@ deploy-dev:
     - cd ./deploy;
     - docker-compose up --build -d
 
-deploy-dev:
+deploy-trial:
   stage: deploy
   only:
     - trial

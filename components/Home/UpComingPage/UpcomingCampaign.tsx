@@ -16,6 +16,7 @@ export default function UpComing(props: Props) {
       <TitleSection text="Upcoming campaign" />
       <div className={s.blockCard}>
         {resultUpComing?.upcomingBoxCampaign.map((e: any, i: any) => {
+          console.log("Upcom: ", e.name);
           return (
             <CardItem
               key={i}
@@ -25,7 +26,8 @@ export default function UpComing(props: Props) {
               inTime={e.inTime}
               nameGame={e?.game.name}
               styleBg={true}
-              title={e?.game.desc}
+              title={e?.name}
+              description={e?.game.desc}
               srcWeb={e?.game.website}
               srcFb={e?.game.facebook}
               srcTele={e?.game.telegram}

@@ -3,7 +3,7 @@ import TitleSection from "components/TitleNameSection";
 import s from "../UpComingPage/UpcomingCampaign.module.sass";
 import { useOpening } from "./useOpening";
 import { useEffect } from "react";
-import { GBoxType } from "../../src/generated/graphql";
+import { GBoxType } from "../../../src/generated/graphql";
 type Props = {};
 
 export default function Opening(props: Props) {
@@ -15,7 +15,7 @@ export default function Opening(props: Props) {
 
   resultOpening?.openingBoxCampaign.map((e: any, i: any) => {
     const soldAmount = e.boxTypes?.sold_amount;
-    console.log(soldAmount);
+    // console.log(soldAmount);
   });
 
   const handleTest = () => {};
@@ -25,6 +25,8 @@ export default function Opening(props: Props) {
       <TitleSection text="Opening campaign" />
       <div className={s.blockCard}>
         {resultOpening?.openingBoxCampaign.map((e: any, i: number) => {
+          console.log("Opening: ", e.name);
+
           const soldAmount = e.boxTypes
             .map((item: GBoxType) => item.sold_amount)
             .reduce((prev: number, curr: number) => prev + curr, 0);
@@ -45,7 +47,8 @@ export default function Opening(props: Props) {
               inTime={e.inTime}
               nameGame={e?.game?.name}
               styleBg={true}
-              title={e?.game?.desc}
+              title={e?.name}
+              description={e?.game.desc}
               srcWeb={e?.game.website}
               srcFb={e?.game.facebook}
               srcTele={e?.game.telegram}

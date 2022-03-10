@@ -18,10 +18,12 @@ type Props = {
   srcDiscord: string;
   srcTwitter: string;
   soldOutResult?: boolean;
+  description: string;
 };
 
 export default function CardItem(props: Props) {
-  const { soldOutResult, time, statusTime } = props;
+  const { soldOutResult, time, statusTime, title, description } = props;
+  // console.log(title);
 
   const typeTime =
     statusTime == "UpComing"
@@ -34,8 +36,7 @@ export default function CardItem(props: Props) {
 
   const bg_card = props.styleBg ? s.bg_1 : s.bg_2;
 
-  const handleText =
-    props.title.length > 120 ? props?.title.substring(0, 120) + "..." : props.title;
+  const handleDesc = description.length > 120 ? description.substring(0, 120) + "..." : description;
 
   const getCampaignDetailUrl = () => {
     const id = "12345678";
@@ -130,7 +131,7 @@ export default function CardItem(props: Props) {
               : props.time}
           </div>
           <h5>{props.nameGame}</h5>
-          <div className={s.text}>{handleText}</div>
+          <div className={s.text}>{handleDesc}</div>
         </div>
         <div className={s.btnDetail}>
           <Link href={getCampaignDetailUrl()} passHref={true}>

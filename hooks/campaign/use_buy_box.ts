@@ -2,7 +2,12 @@ import { gql, useMutation } from "@apollo/client";
 import { notification } from "antd";
 import { useInput } from "hooks/common/use_input";
 import { useMemo, useState } from "react";
-import { GBoxCampaignRound, GBoxPrice, GBoxType } from "src/generated/graphql";
+import {
+  ChainSymbol,
+  GBoxCampaignRound,
+  GBoxPrice,
+  GBoxType,
+} from "src/generated/graphql";
 import { handleApolloError } from "utils/apollo_client";
 
 import EthersService from "services/blockchain/Ethers";
@@ -15,11 +20,11 @@ export function useBuyBox(
 ) {
   const [buyBox, { data, loading, error }] = useMutation(BUY_BOX_MUT);
 
-  const chainSymbol = "bsc";
+  const chainSymbol = ChainSymbol.Bsc;
   const boxPrice: GBoxPrice | undefined =
     (boxType.prices?.length ?? 0) > 0
       ? boxType.prices!.find(
-          (item) => item.chain_symbol?.toLowerCase() === chainSymbol
+          (item) => item.currency?.chain_symbol.toLowerCase() === chainSymbol
         )
       : undefined;
 

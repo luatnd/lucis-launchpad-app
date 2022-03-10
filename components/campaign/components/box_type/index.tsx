@@ -2,7 +2,6 @@ import React, { useMemo, useState } from "react";
 import { Button, Form, InputNumber, notification, Progress } from "antd";
 import s from "../Box/Box.module.sass";
 import {
-  GChain,
   GBoxType,
   GCurrency,
   GBoxPrice,

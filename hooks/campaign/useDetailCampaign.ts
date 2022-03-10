@@ -13,14 +13,14 @@ export function useDetailCampaign({ box_campaign_uid }: any) {
     loading: loadingWhiteListRegistered,
     error: errorWhiteListRegistered,
     data: dataWhiteListRegistered,
-  } = useQuery(WHITE_LIST_REGISTERED, { variables: { box_campaign_uid } })
+  } = useQuery(WHITE_LIST_REGISTERED, { variables: { box_campaign_uid } });
 
   return {
     loading,
     error,
     boxCampaign: data?.campaignDetail,
     isInWhitelist: dataIsInWhiteList?.isInWhitelist ?? false,
-    dataWhiteListRegistered
+    dataWhiteListRegistered,
   };
 }
 
@@ -67,10 +67,10 @@ const DETAIL_CAMPAIGN = gql`
         prices {
           uid
           price
-          chain_symbol
           currency {
             symbol
             icon
+            chain_symbol
           }
         }
       }
@@ -91,4 +91,4 @@ const WHITE_LIST_REGISTERED = gql(`
       limit
     }
   }
-`)
+`);

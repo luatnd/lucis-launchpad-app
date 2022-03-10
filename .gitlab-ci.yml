@@ -27,6 +27,14 @@ deploy-dev:
     - cd ./deploy;
     - docker-compose up --build -d
 
+deploy-dev:
+  stage: deploy
+  only:
+    - trial
+  script:
+    - docker build -t lucis_launchpad_trial:$CI_COMMIT_SHORT_SHA -f deploy/Dockerfile .
+    - docker run -p 3001:3000 --restart always --network lucis_network --name lucis_launchpad_trial lucis_launchpad_trial:$CI_COMMIT_SHORT_SHA
+
 deploy-prod:
   stage: deploy
   only:

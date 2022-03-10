@@ -67,12 +67,15 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
       if (message === "Unauthorized") {
         // Clean auth info in case of auth error
         // Might be JWT is expired
-        clearLocalAuthInfo();
+        // We do clear info only if there was a logged-in user
+        if (_getAuthToken()) {
+          clearLocalAuthInfo();
+        }
 
-        notification.error({
-          message: "Unauthorized",
-          description: "Please connect your wallet again",
-        });
+        // notification.error({
+        //   message: "Unauthorized",
+        //   description: "Please connect your wallet again",
+        // });
       }
     });
   }

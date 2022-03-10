@@ -1,6 +1,6 @@
 import { observer } from "mobx-react" // Or "mobx-react".
 
-import ConnectWallet from './ConnectWallet';
+import ConnectWalletBtn from './ConnectWalletBtn';
 import User from './User';
 import AuthStore from "../AuthStore";
 import ConnectWalletModal from "./ConnectWalletModal";
@@ -9,12 +9,12 @@ import ConnectWalletModal from "./ConnectWalletModal";
 type Props = {
   small?: boolean,
 };
-export default observer((props: Props) => {
+export default observer(function AuthBox(props: Props) {
   return (
     <>
       {AuthStore.isLoggedIn
         ? <User />
-        : <ConnectWallet small={props.small} />
+        : <ConnectWalletBtn small={props.small} />
       }
 
       <ConnectWalletModal />

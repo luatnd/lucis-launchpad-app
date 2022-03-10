@@ -17,6 +17,9 @@ import { AppEmitter } from "../../../services/emitter";
 
 type Props = {};
 export default observer(function ConnectWalletModal(props: Props) {
+  const DEBUG = true;
+  DEBUG && console.log('{ConnectWalletModal} render: ');
+
   const [network, setNetwork] = useState<ChainNetwork | null>(null);
   const [wallet, setWallet] = useState<Wallet | null>(null);
 
@@ -78,7 +81,7 @@ export default observer(function ConnectWalletModal(props: Props) {
   }
 
 
-  const loginWithLucis = useCallback(async (showSuccessMessage = true) => {
+  const loginWithLucis = useCallback(async (address, showSuccessMessage = true) => {
     /**
      * Web3 User need to link their wallet with Lucis system
      */
@@ -126,8 +129,11 @@ export default observer(function ConnectWalletModal(props: Props) {
           5,
         );
     }
-  }, [address]);
+  }, []);
 
+  const loginWithLucisCb = useCallback(async (showSuccessMessage = true) => {
+    return loginWithLucis(address, showSuccessMessage);
+  }, [address])
 
 
   const changeWallet = useCallback(async (w: Wallet) => {
@@ -150,23 +156,43 @@ export default observer(function ConnectWalletModal(props: Props) {
       .then(async provider => {
         // add profile and switch the network
         const ensureActiveNetworkResult = await connectWalletHelper.web3_ensureActiveTargetChain(w, network)
-        console.log('ensureActiveNetworkResult: ', ensureActiveNetworkResult);
+        DEBUG && console.log('ensureActiveNetworkResult: ', ensureActiveNetworkResult);
 
         return provider;
       })
       .then(async provider => handleConnectThen(provider, () => {
+        DEBUG && console.log('{handleConnectThen} setWallet:  : ', w);
         setWallet(w);
         connectWalletHelper.cacheConnectionSetting(w, network);
       }))
       .catch(e => handleConnectCatch(e));
   }, [network]);
 
+
+
+  const reUpdateWalletIfNeeded = (w: Wallet | undefined, n: ChainNetwork | undefined) => {
+    if (w && n && (w != wallet || n != network)) {
+      setWallet(w)
+      setNetwork(n)
+    }
+  }
+
+  useEffect(() => {
+    /**
+     * Restore selected network / wallet if user has selected
+     */
+    if (isModalVisible && address) {
+      reUpdateWalletIfNeeded(...connectWalletHelper.fetchConnectionSetting());
+    }
+  }, [isModalVisible, address])
+
+
   useEffect(() => {
     /**
      * ------- Try to restore
      * TODO: This effect was run 2 time, plz check, this must be run once
      */
-    console.log('{useEffect} restore wallet connection: ');
+    DEBUG && console.log('{useEffect} restore wallet connection: ');
 
 
     // const web3Modal = ConnectWalletStore_NonReactiveData.web3Modal;
@@ -175,7 +201,7 @@ export default observer(function ConnectWalletModal(props: Props) {
     // if (web3Modal) {
     //   if (web3Modal.cachedProvider) {
         const [w, network] = connectWalletHelper.fetchConnectionSetting();
-        console.log('{Restore} w, network: ', w, network);
+        DEBUG && console.log('{Restore} w, network: ', w, network);
 
         if (!w || !network) {
           return
@@ -191,27 +217,34 @@ export default observer(function ConnectWalletModal(props: Props) {
           .then(async provider => {
             // add profile and switch the network
             const ensureActiveNetworkResult = await connectWalletHelper.web3_ensureActiveTargetChain(w, network)
-            console.log('ensureActiveNetworkResult 2: ', ensureActiveNetworkResult);
+            // console.log('{Restore} ensureActiveNetworkResult: ', ensureActiveNetworkResult);
 
             return provider;
           })
           .then(async provider => handleConnectThen(provider, () => {
+            DEBUG && console.log('{handleConnectThen} setWallet:  : ', w);
             setWallet(w);
             connectWalletHelper.cacheConnectionSetting(w, network);
 
             /**
-             * This is memoization, so if address changed, loginWithLucis is another function
+             * Use ConnectWalletStore.address instead of address
+             * Because address need to be added to useEffect dependency
+             * Causing useEffect be re-triggered when address changed => Unwanted behavior
              */
-            if (!address) {
+            if (!ConnectWalletStore.address) {
+              DEBUG && console.log('{} Address is null => SKIP login: ');
               return null;
             } else {
-              return loginWithLucis(false)
+              /**
+               * This is memoization, so if address changed, loginWithLucis is another function
+               */
+              return loginWithLucis(ConnectWalletStore.address, false)
             }
           }))
           .catch(e => handleConnectCatch(e));
       // }
     // }
-  }, [address, loginWithLucis])
+  }, [loginWithLucis])
 
   const handleConnectThen = async (provider: any, onSuccess = () => {}) => {
     // console.log('{changeWallet} Wallet Connected: provider: ', provider);
@@ -230,9 +263,13 @@ export default observer(function ConnectWalletModal(props: Props) {
     const connected_network = await web3Provider.getNetwork()
 
     // Save to store
-    ConnectWalletStore.network = connected_network;
-    ConnectWalletStore.address = address;
-    console.log('{ConnectWalletStore.handleConnectThen} address: ', address);
+    // ConnectWalletStore.network = connected_network;
+    // ConnectWalletStore.address = address;
+    ConnectWalletStore.setState({
+      network: connected_network,
+      address: address,
+    });
+    DEBUG && console.log('{ConnectWalletStore.handleConnectThen} address: ', address);
 
     /**
      * In case of user connected to BSC network before
@@ -240,7 +277,8 @@ export default observer(function ConnectWalletModal(props: Props) {
      * => Need to alias the UI back to BSC
      */
     const n: ChainNetwork | undefined = getChainNetworkFromChainId(connected_network.chainId);
-    if (n) {
+    if (n && n !== network) {
+      DEBUG && console.log('{handleConnectThen} setNetwork: ', n);
       setNetwork(n)
     }
 
@@ -255,8 +293,8 @@ export default observer(function ConnectWalletModal(props: Props) {
   }
 
   const handleConnectCatch = async (e: any) => {
-    console.error('{changeWallet} e: ', e.code, e.message, e);
-    switch (e.message) {
+    console.error('{handleConnectCatch} e: ', e.code, e.message);
+    switch (e.code) {
       case ConnectWalletError.MetamaskNotInstalled:
         message.error(
           <span>
@@ -275,8 +313,27 @@ export default observer(function ConnectWalletModal(props: Props) {
           5,
         );
         break;
+      case ConnectWalletError.ChainNotSupportedByWallet:
+        message.error(
+          <span>
+            This wallet does not support the selected network
+          </span>,
+          5,
+        );
+        break;
+      case ConnectWalletError.TestNetChainNotSupportedByWallet:
+        message.error(
+          <span>
+            This wallet does not support the testnet of the selected network
+          </span>,
+          5,
+        );
+        break;
+      case ConnectWalletError.SwitchChainNotSupported:
+        console.error("{handleConnectCatch} SwitchChainNotSupported e: ", e)
+        break;
       default:
-        console.error("{changeWallet.initFor} Above error was not handled")
+        console.error("{handleConnectCatch} Above error was not handled")
         break;
     }
   }
@@ -305,8 +362,8 @@ export default observer(function ConnectWalletModal(props: Props) {
     const provider = ConnectWalletStore_NonReactiveData.provider
     const web3Modal = ConnectWalletStore_NonReactiveData.web3Modal!
 
-    console.log('{disconnectWallet} provider: ', provider, provider.isMetaMask)
-    console.log('{disconnectWallet} cachedProvider: ', web3Modal, web3Modal.cachedProvider)
+    DEBUG && console.log('{disconnectWallet} provider: ', provider, provider.isMetaMask)
+    DEBUG && console.log('{disconnectWallet} cachedProvider: ', web3Modal, web3Modal.cachedProvider)
 
     // remove provider cache in browser
     await web3Modal.clearCachedProvider()
@@ -335,6 +392,18 @@ export default observer(function ConnectWalletModal(props: Props) {
     }
   }, [disconnectWallet])
 
+  useEffect(() => {
+    /**
+     * Sometime we need to show modal in somewhere else
+     */
+    const listener = AppEmitter.addListener('showConnectWalletModal', () => {
+      AuthBoxStore.connectModalVisible = true
+    })
+    return () => {
+      listener.remove()
+    }
+  }, [])
+
 
   const supported_wallets = network === null ? [] : NetworkSupportedWallets[network];
 
@@ -353,8 +422,8 @@ export default observer(function ConnectWalletModal(props: Props) {
     [Wallet.wc]: (
       <div
         key='wc'
-        // onClick={() => changeWallet(Wallet.wc)}
-        className={`${s.item} ${s.disable} ${wallet === Wallet.wc ? s.active : ''}`}
+        onClick={() => changeWallet(Wallet.wc)}
+        className={`${s.item} ${wallet === Wallet.wc ? s.active : ''}`}
       >
         <img src="/assets/crypto/ico-wallet-wc.png" alt="" />
         <p>Wallet Connect</p>
@@ -366,8 +435,8 @@ export default observer(function ConnectWalletModal(props: Props) {
         // onClick={() => changeWallet(Wallet.bsc)}
         className={`${s.item} ${s.disable} ${wallet === Wallet.bsc ? s.active : ''}`}
       >
-        <img src="/assets/crypto/ico-chain-bsc.png" alt="" />
-        <p>BSC Wallet</p>
+        <img src="/assets/crypto/ico-wallet-bsc.webp" alt="" />
+        <p>Binance Wallet</p>
       </div>
     ),
     [Wallet.near]: null,
@@ -429,7 +498,7 @@ export default observer(function ConnectWalletModal(props: Props) {
             Verified
           </Button>
           : <>
-            <Button type="primary" size="large" onClick={loginWithLucis} loading={authing}>
+            <Button type="primary" size="large" onClick={loginWithLucisCb} loading={authing}>
               Verify
             </Button>
             {authing && <p className={s.note}>Please do confirm on your wallet</p>}

@@ -7,8 +7,12 @@ import Web3Modal from "web3modal";
 import {to_hex_str} from 'utils/String'
 import {isClient} from "../../utils/DOM";
 
+interface IConnectWalletStore {
+  address?: string
+  network?: Network
+}
 
-class ConnectWalletStore {
+class ConnectWalletStore implements IConnectWalletStore {
   // common
   private _address?: string
   private _network?: Network
@@ -37,6 +41,14 @@ class ConnectWalletStore {
 
   constructor() {
     makeAutoObservable(this)
+  }
+
+  /**
+   * Use this will trigger component re-render only once with observer()
+   */
+  setState(s: IConnectWalletStore) {
+    s.address && (this._address = s.address)
+    s.network && (this._network = s.network)
   }
 
   resetStates() {

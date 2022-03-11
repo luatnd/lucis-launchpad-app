@@ -38,14 +38,6 @@ export default function Banner(props: Props) {
     setSlideIndex: setSlideIndex,
   };
 
-  if (loading) {
-    return <>Loading</>;
-  }
-
-  if (error) {
-    return <>Error</>;
-  }
-
   return (
     <section className={s.containerBanner}>
       <SimpleSlider {...sliderProps} />

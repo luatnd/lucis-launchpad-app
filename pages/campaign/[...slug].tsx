@@ -24,21 +24,12 @@ function DetailCampaign() {
   const router = useRouter();
   const { slug } = router.query;
   // const id = slug?.length ? slug[0] : undefined;
-  const box_campaign_uid = 'cl02lx5or0000doo018d7n2zz' // TODO: ifx demo id
+  const box_campaign_uid = "cl02lx5or0000doo018d7n2zz"; // TODO: ifx demo id
   const [timeCountDown, setTimeCountDown] = useState(0);
-  const [textNow, setTextNow] = useState('');
+  const [textNow, setTextNow] = useState("");
   const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-
   const { boxCampaign, loading, error, isInWhitelist } = useDetailCampaign({ box_campaign_uid });
-
-  if (loading) {
-    return <>Loading</>;
-  }
-
-  if (error) {
-    return <>Error</>;
-  }
 
   return (
     <>
@@ -60,27 +51,16 @@ function DetailCampaign() {
                   tzid={tzid}
                 />
               )}
-              { textNow.length > 0 && <CountDown
-                  timeCountDown={timeCountDown}
-                  textNow={textNow}
-              />}
-              {!!boxCampaign && (
-                <BoxCard
-                  boxCampaign={boxCampaign}
-                  isInWhitelist={isInWhitelist}
-                />
-              )}
+              {textNow.length > 0 && <CountDown timeCountDown={timeCountDown} textNow={textNow} />}
+              {!!boxCampaign && <BoxCard boxCampaign={boxCampaign} isInWhitelist={isInWhitelist} />}
               <div className="container">
-                <BuyHistory
-                  id={"cl02lx5or0000doo018d7n2zz"}
-                  title="recently bought"
-                />
+                <BuyHistory id={"cl02lx5or0000doo018d7n2zz"} title="recently bought" />
               </div>
             </TabPane>
             <TabPane tab="RULE" key="2">
-              <div className='lucis-container mt-[168px]'>
+              <div className="lucis-container mt-[168px]">
                 <div
-                  dangerouslySetInnerHTML={{__html: boxCampaign?.rules}}
+                  dangerouslySetInnerHTML={{ __html: boxCampaign?.rules }}
                   className={`${s.textSize} text-white mt-10 text-justify indent-8`}
                 ></div>
               </div>

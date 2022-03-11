@@ -60,11 +60,11 @@ function DetailCampaign() {
               </div>
             </TabPane>
             <TabPane tab="RULE" key="2">
-              <div className="lucis-container mt-[168px]">
-                <div
-                  dangerouslySetInnerHTML={{ __html: boxCampaign?.rules }}
-                  className={`${s.textSize} text-white mt-10 text-justify indent-8`}
-                ></div>
+              <div className="lucis-container mt-[40px!important]">
+                {boxCampaign?.rules && boxCampaign?.rules.substring(0, 8) !== "https://" ?
+                    (<iframe srcDoc={boxCampaign?.rules} width='100%'></iframe>) :
+                    (<iframe src={boxCampaign?.rules} width='100%'></iframe>)
+                }
               </div>
             </TabPane>
             <TabPane tab="ABOUT PROJECT" key="3">

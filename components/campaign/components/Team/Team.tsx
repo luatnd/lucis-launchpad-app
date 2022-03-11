@@ -36,10 +36,10 @@ const Team = (props: ITeam) => {
     return (
         <div className='lucis-container mt-[168px]'>
             <h2 className='flex justify-center text-white text-center text-48px font-bold'>TEAM</h2>
-            <div
-                dangerouslySetInnerHTML={{__html: game?.desc_team}}
-                className={`${s.textSize} text-white mt-10 text-justify indent-8`}
-            ></div>
+            {game.desc_team && game?.desc_team.substring(0, 8) !== "https://" ?
+                (<iframe srcDoc={game?.desc_team} width='100%'></iframe>) :
+                (<iframe src={game?.desc_team} width='100%'></iframe>)
+            }
             {/*<Row gutter={[24, 16]} className='mt-10 justify-center'>*/}
             {/*    {listTeam.map((e, index) => (*/}
             {/*        <Col xl={6} lg={8} md={12} key={index}>*/}

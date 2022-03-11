@@ -1,7 +1,7 @@
 import { Progress, Modal, Popconfirm, Button } from "antd";
 import moment from "moment";
 import timeMoment from "moment-timezone";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -35,21 +35,18 @@ interface IRound {
   setTextNow: (value: string) => void;
   boxCampaignUid: string;
   tzid: string;
+  widthScreen: number
 }
 
 
 export default observer(function SiteMap(props: IRound) {
-// const SiteMap = (props: IRound) => {
-  const { rounds, start, end, setTimeCountDown, setTextNow, boxCampaignUid, tzid } = props;
+  const { rounds, start, setTimeCountDown, end, setTextNow, boxCampaignUid, tzid, widthScreen } = props;
   const [listRounds, setListRounds] = useState([] as any);
   const [isActiveUpComing, setIsActiveUpComing] = useState(false);
   const {registerWhitelist, error, loading, data} = useMutationRegisterWhiteList()
-  const [width, height] = useWindowSize();
-
+  const [keyActiveSlide, setKeyActiveSlide] = useState(0);
   const {dataWhiteListRegistered, isInWhitelist} = useDetailCampaign({ box_campaign_uid: boxCampaignUid })
-
   const isWhitelisted = isInWhitelist || data?.registerWhitelist;
-  // console.log('{isWhitelisted.SiteMap} isWhitelisted: ', isWhitelisted);
 
   const getCurrentRound = () => {
     const dateNow = timeMoment().tz(tzid).unix();
@@ -62,6 +59,7 @@ export default observer(function SiteMap(props: IRound) {
     if (upcomingStart <= dateNow && dateNow <= firstStart) {
       setTextNow(`${rounds[0]?.name} will start in`)
       setIsActiveUpComing(true);
+      setKeyActiveSlide(0)
       setTimeout(() => {
         getCurrentRound();
       }, time);
@@ -77,9 +75,10 @@ export default observer(function SiteMap(props: IRound) {
       setTimeCountDown(Math.floor(timeLast / 1000));
     }
     if (dateNow > closeEnd) {
+      setKeyActiveSlide(rounds.length + 1)
       setTextNow('')
     }
-    const x = rounds?.map((e) => {
+    const x = rounds?.map((e, index) => {
       const endDate = timeMoment(e.end).tz(tzid).unix();
       const startDate = timeMoment(e.start).tz(tzid).unix();
       const timeEnd = (endDate - dateNow) * 1000;
@@ -91,6 +90,8 @@ export default observer(function SiteMap(props: IRound) {
           }, timeEnd);
           setTimeCountDown(Math.floor(timeEnd / 1000));
         }
+        if (widthScreen >= 639) setKeyActiveSlide(index)
+        else setKeyActiveSlide(index + 1)
         return { ...e, isActive: true };
       } else {
         return { ...e, isActive: false };
@@ -111,11 +112,22 @@ export default observer(function SiteMap(props: IRound) {
     getCurrentRound();
   }, [start, end, rounds]);
 
+  const swiperRef = useRef(null)
+
+  useEffect(() => {
+    swiperRef.current?.swiper.slideTo(keyActiveSlide)
+    console.log('keyActiveSlide', keyActiveSlide)
+  }, [keyActiveSlide])
+
   return (
     <div className={`flex justify-center relative ${s.SiteMapContainer}`}>
       {/* <div className={`${s.SiteMapLineTimeLine} w-10/12`}></div> */}
       <div className={`w-11/12`}>
         <Swiper
+          ref={swiperRef}
+          hashNavigation={{
+            watchState: true
+          }}
           breakpoints={{
             360: {
               slidesPerView: 2,
@@ -131,7 +143,7 @@ export default observer(function SiteMap(props: IRound) {
             },
           }}
         >
-          <SwiperSlide>
+          <SwiperSlide data-hash="slide-1">
             <div
               className={`flex flex-col justify-center select-none px-2 ${s.SiteMapLineCircleTitleBox}`}
             >
@@ -164,7 +176,7 @@ export default observer(function SiteMap(props: IRound) {
             </div>
           </SwiperSlide>
           {listRounds?.map((item: any, key: number) => (
-            <SwiperSlide key={key}>
+            <SwiperSlide key={key} data-hash={`slide-${key+2}`}>
               <div
                 className={`flex flex-col justify-center select-none px-2 ${s.SiteMapLineCircleTitleBox}`}
               >
@@ -213,7 +225,7 @@ export default observer(function SiteMap(props: IRound) {
                                 disabled={isWhitelisted || dataWhiteListRegistered?.registeredWhitelist?.registered === dataWhiteListRegistered?.registeredWhitelist?.limit}
                                 className={`${s.button} ${isWhitelisted || dataWhiteListRegistered?.registeredWhitelist?.registered === dataWhiteListRegistered?.registeredWhitelist?.limit ? s.disabledBtn : ''} font-bold text-white text-center uppercase`}
                             >
-                              <CheckOutlined className="my-auto"/>
+                              <CheckOutlined/>
                               {isWhitelisted ? "Whitelisted" : "Apply Whitelist"}
                             </button>
                           </Popconfirm>
@@ -222,7 +234,7 @@ export default observer(function SiteMap(props: IRound) {
                         </div>
                       ) : (
                          <div className={`mt-3 ${s.btnConnect}`}>
-                           <ConnectWalletBtn small={width <= 1024}/>
+                           <ConnectWalletBtn small={widthScreen <= 1024}/>
                          </div>
                     )
                     }
@@ -234,7 +246,7 @@ export default observer(function SiteMap(props: IRound) {
             </SwiperSlide>
           ))}
 
-          <SwiperSlide>
+          <SwiperSlide data-hash={`slide-${listRounds.length + 2}`}>
             <div
               className={`flex flex-col justify-center select-none px-2 ${s.SiteMapLineCircleTitleBox}`}
             >

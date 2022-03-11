@@ -1,8 +1,12 @@
 import React from 'react';
 import {Avatar, Col, Row} from "antd";
+import s from "../../../../pages/campaign/detail.module.sass";
+interface ITeam {
+    game: any
+}
 
-const Team = () => {
-
+const Team = (props: ITeam) => {
+    const {game} = props
     const listTeam = [
         {
             name: 'Khanh Nguyen',
@@ -32,21 +36,25 @@ const Team = () => {
     return (
         <div className='lucis-container mt-[168px]'>
             <h2 className='flex justify-center text-white text-center text-48px font-bold'>TEAM</h2>
-            <Row gutter={[24, 16]} className='mt-10 justify-center'>
-                {listTeam.map((e, index) => (
-                    <Col xl={6} lg={8} md={12} key={index}>
-                        <div className='flex justify-center'>
-                            <Avatar size={240} src={e.avatar}/>
-                        </div>
-                        <div className='flex flex-col mt-[37px]'>
-                            <span className='uppercase text-center text-white font-bold text-36px'>{e.name}</span>
-                            <span className='text-center font-bold text-16px text-[#0BEBD6]'>{e.position}</span>
-                            <span className='m-auto w-[70%] text-center text-white text-base text-18px'>{e.description}</span>
-                        </div>
+            <div
+                dangerouslySetInnerHTML={{__html: game?.desc_team}}
+                className={`${s.textSize} text-white mt-10 text-justify indent-8`}
+            ></div>
+            {/*<Row gutter={[24, 16]} className='mt-10 justify-center'>*/}
+            {/*    {listTeam.map((e, index) => (*/}
+            {/*        <Col xl={6} lg={8} md={12} key={index}>*/}
+            {/*            <div className='flex justify-center'>*/}
+            {/*                <Avatar size={240} src={e.avatar}/>*/}
+            {/*            </div>*/}
+            {/*            <div className='flex flex-col mt-[37px]'>*/}
+            {/*                <span className='uppercase text-center text-white font-bold text-36px'>{e.name}</span>*/}
+            {/*                <span className='text-center font-bold text-16px text-[#0BEBD6]'>{e.position}</span>*/}
+            {/*                <span className='m-auto w-[70%] text-center text-white text-base text-18px'>{e.description}</span>*/}
+            {/*            </div>*/}
 
-                    </Col>
-                ))}
-            </Row>
+            {/*        </Col>*/}
+            {/*    ))}*/}
+            {/*</Row>*/}
         </div>
     );
 };

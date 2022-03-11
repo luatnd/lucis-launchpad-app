@@ -16,6 +16,7 @@ import s from "./detail.module.sass";
 import { useDetailCampaign } from "../../hooks/campaign/useDetailCampaign";
 import BoxCard from "../../components/campaign/components/Box/Box";
 import SiteMap from "components/campaign/components/SiteMap/SiteMap";
+import {useWindowSize} from "../../hooks/useWindowSize";
 
 /**
  * Match all route: /campaign/....
@@ -28,6 +29,7 @@ function DetailCampaign() {
   const [timeCountDown, setTimeCountDown] = useState(0);
   const [textNow, setTextNow] = useState('');
   const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const [widthScreen, height] = useWindowSize();
 
 
   const { boxCampaign, loading, error, isInWhitelist } = useDetailCampaign({ box_campaign_uid });
@@ -57,6 +59,7 @@ function DetailCampaign() {
                   setTextNow={setTextNow}
                   boxCampaignUid={box_campaign_uid}
                   tzid={tzid}
+                  widthScreen={widthScreen}
                 />
               )}
               { textNow.length > 0 && <CountDown
@@ -85,8 +88,8 @@ function DetailCampaign() {
               </div>
             </TabPane>
             <TabPane tab="ABOUT PROJECT" key="3">
-              <Trailer />
-              <Team />
+              <Trailer game={boxCampaign?.game} />
+              <Team game={boxCampaign?.game} />
             </TabPane>
           </Tabs>
           <Footer />

@@ -2,7 +2,12 @@ import { gql, useMutation } from "@apollo/client";
 import { notification } from "antd";
 import { useInput } from "hooks/common/use_input";
 import { useMemo, useState } from "react";
-import { GBoxCampaignRound, GBoxPrice, GBoxType } from "src/generated/graphql";
+import {
+  ChainSymbol,
+  GBoxCampaignRound,
+  GBoxPrice,
+  GBoxType,
+} from "src/generated/graphql";
 import { handleApolloError } from "utils/apollo_client";
 
 import EthersService from "services/blockchain/Ethers";

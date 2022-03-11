@@ -8,7 +8,10 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { isClient } from "./DOM";
-import { clearLocalAuthInfo, getLocalAuthInfo } from "../components/Auth/AuthLocal";
+import {
+  clearLocalAuthInfo,
+  getLocalAuthInfo,
+} from "../components/Auth/AuthLocal";
 import { notification } from "antd";
 //   import { CachePersistor } from 'apollo-cache-persist';
 

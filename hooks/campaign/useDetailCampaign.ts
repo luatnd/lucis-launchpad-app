@@ -13,14 +13,14 @@ export function useDetailCampaign({ box_campaign_uid }: any) {
     loading: loadingWhiteListRegistered,
     error: errorWhiteListRegistered,
     data: dataWhiteListRegistered,
-  } = useQuery(WHITE_LIST_REGISTERED, { variables: { box_campaign_uid } })
+  } = useQuery(WHITE_LIST_REGISTERED, { variables: { box_campaign_uid } });
 
   return {
     loading,
     error,
     boxCampaign: data?.campaignDetail,
     isInWhitelist: dataIsInWhiteList?.isInWhitelist ?? false,
-    dataWhiteListRegistered
+    dataWhiteListRegistered,
   };
 }
 
@@ -91,4 +91,4 @@ const WHITE_LIST_REGISTERED = gql(`
       limit
     }
   }
-`)
+`);

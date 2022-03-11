@@ -6,11 +6,15 @@ type Props = {
   slideIndex: number;
   nextSlide: () => void;
   prevSlide: () => void;
+  setSlideIndex: (index: number) => void;
 };
 
 const SubSlider = (props: Props) => {
-  const { data, slideIndex, nextSlide, prevSlide } = props;
+  const { data, slideIndex, nextSlide, prevSlide, setSlideIndex } = props;
 
+  const handleClick = (i: number) => {
+    setSlideIndex(i);
+  };
   return (
     <div className={s.subSliderContainer}>
       <div className={s.coverContainer}>
@@ -20,9 +24,9 @@ const SubSlider = (props: Props) => {
               <div
                 key={index}
                 className={`${s.coverImage} ${slideIndex === index ? s.selected : ""}`}
+                onClick={() => handleClick(index)}
               >
-                {/* @ts-ignore */}
-                <img src={item.cover_img} />
+                <img src={item.cover_img ?? ""} alt="" />
               </div>
             );
           })}

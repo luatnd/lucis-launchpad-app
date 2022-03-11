@@ -5,6 +5,10 @@
 
 
 .chainBtn
+  display: flex
+  flex-flow: row nowrap
+  align-items: center
+  justify-content: flex-start
   background: transparent
   border: 1px solid rgba(255,255,255,0.5)
   color: white
@@ -18,7 +22,15 @@
   img
     width: 30px
     border-radius: 15px
-    margin-right: 10px
+  span, i
+    padding-left: 10px
+    max-width: 140px
+    overflow: hidden
+    font-style: normal
+    white-space: nowrap
+  span
+    @media (max-width: 500px)
+      display: none
 
   &:hover,
   &:focus,
@@ -33,6 +45,9 @@
   border-radius: 30px
   overflow: hidden
   cursor: pointer
+  @media (max-width: 1024px)
+    width: 46px
+    height: 46px
 
 .avatarC
   display: flex
@@ -58,6 +73,8 @@
   width: 400px
   padding: 20px 0
   color: white
+  @media (max-width: 510px)
+    width: auto
 
 .addr
   color: white

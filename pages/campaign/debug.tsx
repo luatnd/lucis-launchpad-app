@@ -11,7 +11,6 @@ import {
   ChainSymbol,
   GBoxCampaign,
   GBoxType,
-  GChain,
   GGame,
 } from "../../src/generated/graphql";
 

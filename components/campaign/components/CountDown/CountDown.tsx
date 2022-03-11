@@ -3,10 +3,11 @@ import s from "./CountDown.module.sass";
 
 interface ICountDown {
   timeCountDown: number;
+  textNow: string;
 }
 
 const CountDown = (props: ICountDown) => {
-  const { timeCountDown } = props;
+  const { timeCountDown, textNow } = props;
   const [totalTime, setTotalTime] = useState(0);
   const [timer, setTimer] = useState<{ [name: string]: number }>({
     days: 0,
@@ -68,7 +69,7 @@ const CountDown = (props: ICountDown) => {
   return (
     <div className={`lucis-container ${s.countDown}`}>
       <div className="text-white text-center sm:text-12px md:text-24px font-bold">
-        End to apply for the Whitelist in
+        {textNow}
       </div>
       <div className="flex text-white  md:gap-10 justify-between md:justify-center  mt-8">
         {Object.keys(timer).map((item, key) => {

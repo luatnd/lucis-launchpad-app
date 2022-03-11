@@ -1,7 +1,12 @@
 import React, { useMemo, useState } from "react";
-import { Button, Form, InputNumber, Progress } from "antd";
+import { Button, Form, InputNumber, notification, Progress } from "antd";
 import s from "../Box/Box.module.sass";
-import { GChain, GBoxType, GCurrency, GBoxPrice, GBoxCampaignRound } from "src/generated/graphql";
+import {
+  GBoxType,
+  GCurrency,
+  GBoxPrice,
+  GBoxCampaignRound,
+} from "src/generated/graphql";
 import { useInput } from "hooks/common/use_input";
 import { useBuyBox } from "hooks/campaign/use_buy_box";
 import { handleApolloError } from "utils/apollo_client";
@@ -15,11 +20,15 @@ type Props = {
 
 const BoxTypeCard = (props: Props) => {
   const { boxType, round, isInWhitelist } = props;
-  const { loading, txtAmount, canBuyBox, err, onBuyBox, requireWhitelist, boxPrice } = useBuyBox(
-    boxType,
-    round,
-    isInWhitelist
-  );
+  const {
+    loading,
+    txtAmount,
+    canBuyBox,
+    err,
+    onBuyBox,
+    requireWhitelist,
+    boxPrice,
+  } = useBuyBox(boxType, round, isInWhitelist);
 
   return (
     <div>
@@ -63,10 +72,15 @@ const BoxTypeCard = (props: Props) => {
               <div className="flex justify-between text-white font-bold text-24px mb-2">
                 <Form.Item>
                   <label className={s.label}>Amount: </label>
-                  <InputNumber value={txtAmount.value} onChange={txtAmount.onChange} />
+                  <InputNumber
+                    value={txtAmount.value}
+                    onChange={txtAmount.onChange}
+                  />
                 </Form.Item>
 
-                {boxType.limit_per_user != null && <span>Max: {boxType.limit_per_user}</span>}
+                {boxType.limit_per_user != null && (
+                  <span>Max: {boxType.limit_per_user}</span>
+                )}
               </div>
               {!!txtAmount.err && (
                 <span
@@ -86,7 +100,9 @@ const BoxTypeCard = (props: Props) => {
                 {requireWhitelist && <span>Whitelist only</span>}
               </div>
 
-              {!!err && <span style={{ color: "red", fontSize: "13px" }}>{err}</span>}
+              {!!err && (
+                <span style={{ color: "red", fontSize: "13px" }}>{err}</span>
+              )}
             </Form>
           )}
 
@@ -94,18 +110,27 @@ const BoxTypeCard = (props: Props) => {
             <div className="flex justify-between items-center">
               <span>Price per 1 box:</span>
               <div className="flex items-center gap-1">
-                <img src={boxPrice?.currency.icon ?? ""} width="40px" height="40px" alt="" />
+                <img
+                  src={boxPrice?.currency.icon ?? ""}
+                  width="40px"
+                  height="40px"
+                  alt=""
+                />
                 <span>
                   {boxPrice?.price} {boxPrice?.currency.symbol}
                 </span>
               </div>
             </div>
             <Progress
-              percent={Math.floor((boxType.sold_amount / boxType.total_amount) * 100)}
+              percent={Math.floor(
+                (boxType.sold_amount / boxType.total_amount) * 100
+              )}
               showInfo={false}
               // status="active"
             />
-            <p className="text-right">{`${boxType.sold_amount}/${boxType.total_amount}`} boxes</p>
+            <p className="text-right">
+              {`${boxType.sold_amount}/${boxType.total_amount}`} boxes
+            </p>
           </div>
         </div>
       </div>

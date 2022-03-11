@@ -17,7 +17,7 @@ import { AppEmitter } from "../../../services/emitter";
 
 type Props = {};
 export default observer(function ConnectWalletModal(props: Props) {
-  const DEBUG = true;
+  const DEBUG = false;
   DEBUG && console.log('{ConnectWalletModal} render: ');
 
   const [network, setNetwork] = useState<ChainNetwork | null>(null);

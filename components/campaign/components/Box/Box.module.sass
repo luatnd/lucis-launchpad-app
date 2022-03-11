@@ -83,7 +83,7 @@
 
 // NEW
 .boxDetail 
-  overflow: hidden
+  // overflow: hidden
   @include box-glass
   @include border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
   // background-image: url("/assets/Box/image111.png")
@@ -96,6 +96,14 @@
     background-image: url("/assets/Box/image111.png")
     background-repeat: no-repeat
     background-size: contain
+    // height: 200px
+    img
+      width: 100%
+  @media screen and (min-width: 767px)
+    // height: 400px
+  @media screen and (min-width: 1023px)
+    // height: 400px
+
 
 .boxMain 
   padding: 0 20px
@@ -108,3 +116,37 @@
   label
     color: white
 
+.boxDes
+  width: 15px
+  height: 15px 
+  background: #0BEBD6
+  box-shadow: 0px 0px 6px #08D7F9
+  border-radius: 100px
+  position: relative
+  top: 5px
+  @media screen and (min-width: 767px)
+  @media screen and (min-width: 1024px)
+    // top: 8px
+
+.seriesContent 
+  padding: 10px 0
+  table
+    tbody
+      tr
+        td
+          font-size: 18px
+          font-weight: 600
+        & > :last-child
+          text-align: end
+  @media screen and (min-width: 767px)
+    table
+      tbody
+        tr
+          td
+            font-size: 18px
+  @media screen and (min-width: 1024px)
+    table
+      tbody
+        tr
+          td
+            font-size: 24px

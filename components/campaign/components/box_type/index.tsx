@@ -2,7 +2,6 @@ import React, { useMemo, useState } from "react";
 import { Button, Form, InputNumber, notification, Progress } from "antd";
 import s from "../Box/Box.module.sass";
 import {
-  GChain,
   GBoxType,
   GCurrency,
   GBoxPrice,
@@ -11,6 +10,8 @@ import {
 import { useInput } from "hooks/common/use_input";
 import { useBuyBox } from "hooks/campaign/use_buy_box";
 import { handleApolloError } from "utils/apollo_client";
+import {observer} from "mobx-react-lite";
+import ConnectWalletStore from "../../../Auth/ConnectWalletStore";
 
 type Props = {
   boxType: GBoxType;
@@ -19,8 +20,9 @@ type Props = {
   onBuyBox?: () => void;
 };
 
-const BoxTypeCard = (props: Props) => {
+const BoxTypeCard = observer((props: Props) => {
   const { boxType, round, isInWhitelist } = props;
+  const { chainNetwork } = ConnectWalletStore;
   const {
     loading,
     txtAmount,
@@ -29,7 +31,7 @@ const BoxTypeCard = (props: Props) => {
     onBuyBox,
     requireWhitelist,
     boxPrice,
-  } = useBuyBox(boxType, round, isInWhitelist);
+  } = useBuyBox(boxType, round, isInWhitelist, chainNetwork);
 
   return (
     <div>
@@ -112,7 +114,7 @@ const BoxTypeCard = (props: Props) => {
               <span>Price per 1 box:</span>
               <div className="flex items-center gap-1">
                 <img
-                  src={boxPrice?.currency.icon ?? ""}
+                  src={boxPrice?.currency.icon ?? "/assets/crypto/ico-question-mark.png"}
                   width="40px"
                   height="40px"
                   alt=""
@@ -137,6 +139,6 @@ const BoxTypeCard = (props: Props) => {
       </div>
     </div>
   );
-};
+});
 
 export default BoxTypeCard;

@@ -7,19 +7,21 @@ import { handleApolloError } from "utils/apollo_client";
 
 import EthersService from "services/blockchain/Ethers";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
+import {ChainNetwork} from "../../utils/blockchain/BlockChain";
 
 export function useBuyBox(
   boxType: GBoxType,
   round: GBoxCampaignRound | undefined,
-  isInWhitelist: boolean | undefined
+  isInWhitelist: boolean | undefined,
+  chainNetwork: ChainNetwork | undefined,
 ) {
   const [buyBox, { data, loading, error }] = useMutation(BUY_BOX_MUT);
 
-  const chainSymbol = "bsc";
+  const chainSymbol = chainNetwork;
   const boxPrice: GBoxPrice | undefined =
     (boxType.prices?.length ?? 0) > 0
       ? boxType.prices!.find(
-          (item) => item.chain_symbol?.toLowerCase() === chainSymbol
+          (item) => item.currency.chain_symbol?.toLowerCase() == chainSymbol
         )
       : undefined;
 

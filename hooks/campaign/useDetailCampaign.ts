@@ -67,10 +67,10 @@ const DETAIL_CAMPAIGN = gql`
         prices {
           uid
           price
-          chain_symbol
           currency {
             symbol
             icon
+            chain_symbol
           }
         }
       }

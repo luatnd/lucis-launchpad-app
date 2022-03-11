@@ -129,8 +129,6 @@ export type BoxPrice = {
   __typename?: 'BoxPrice';
   boxType: BoxType;
   box_type_uid: Scalars['String'];
-  chain: Chain;
-  chain_symbol: ChainSymbol;
   contract?: Maybe<BoxContract>;
   contract_address?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
@@ -173,7 +171,6 @@ export type BuyBoxInput = {
 export type Chain = {
   __typename?: 'Chain';
   _count: ChainCount;
-  boxPrices?: Maybe<Array<BoxPrice>>;
   chain_id?: Maybe<Scalars['Int']>;
   created_at: Scalars['DateTime'];
   currencies?: Maybe<Array<Currency>>;
@@ -188,7 +185,6 @@ export type Chain = {
 
 export type ChainCount = {
   __typename?: 'ChainCount';
-  boxPrices: Scalars['Int'];
   currencies: Scalars['Int'];
   nftBox: Scalars['Int'];
 };
@@ -327,8 +323,6 @@ export type GBoxPrice = {
   __typename?: 'GBoxPrice';
   boxType: BoxType;
   box_type_uid: Scalars['String'];
-  chain: GChain;
-  chain_symbol: ChainSymbol;
   contract?: Maybe<GBoxContract>;
   contract_address?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
@@ -345,7 +339,7 @@ export type GBoxPriceHistory = {
   box_type_uid: Scalars['String'];
   chain_icon?: Maybe<Scalars['String']>;
   chain_name?: Maybe<Scalars['String']>;
-  chain_symbol: ChainSymbol;
+  chain_symbol?: Maybe<ChainSymbol>;
   contract?: Maybe<BoxContract>;
   contract_address?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
@@ -386,18 +380,6 @@ export type GBoxTypeHistory = {
   thumb_img?: Maybe<Scalars['String']>;
   total_amount: Scalars['Int'];
   uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-};
-
-export type GChain = {
-  __typename?: 'GChain';
-  chain_id?: Maybe<Scalars['Int']>;
-  created_at: Scalars['DateTime'];
-  icon?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  rpc_url?: Maybe<Scalars['String']>;
-  status?: Maybe<Scalars['Boolean']>;
-  symbol: ChainSymbol;
   updated_at: Scalars['DateTime'];
 };
 

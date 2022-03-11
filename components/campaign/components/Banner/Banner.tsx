@@ -39,7 +39,7 @@ const Banner = () => {
               <p>AXIE CAMPAIGN 1</p>
             </div>
 
-            <div className={s.infContent}>{truncateStr(content, 0, 20)}</div>
+            <div className={s.infContent}>{content}</div>
 
             <div className={s.infSocial}>
               <div className={s.infSocialIcons}>
@@ -68,9 +68,9 @@ const Banner = () => {
                 </a>
               </div>
 
-              <div className={s.infSocialRead}>
+              {/* <div className={s.infSocialRead}>
                 <a href="#">Read more &gt;&gt; </a>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

@@ -115,15 +115,18 @@ export default observer(function SiteMap(props: IRound) {
   const swiperRef = useRef(null)
 
   useEffect(() => {
+    // @ts-ignore
     swiperRef.current?.swiper.slideTo(keyActiveSlide)
     console.log('keyActiveSlide', keyActiveSlide)
   }, [keyActiveSlide])
+
 
   return (
     <div className={`flex justify-center relative ${s.SiteMapContainer}`}>
       {/* <div className={`${s.SiteMapLineTimeLine} w-10/12`}></div> */}
       <div className={`w-11/12`}>
         <Swiper
+          // @ts-ignore
           ref={swiperRef}
           hashNavigation={{
             watchState: true

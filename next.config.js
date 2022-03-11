@@ -57,7 +57,7 @@ module.exports = withAntdLess({
       loader: 'string-replace-loader',
       options: {
         search: '"IS_TESTNET"',
-        replace: (git_branch === 'trial').toString(),
+        replace: (git_branch === 'ref: refs/heads/trial').toString(),
       },
     })
     rules.push({
@@ -65,7 +65,7 @@ module.exports = withAntdLess({
       loader: 'string-replace-loader',
       options: {
         search: '"IS_TESTNET"',
-        replace: (git_branch === 'trial').toString(),
+        replace: (git_branch === 'ref: refs/heads/trial').toString(),
       },
     })
 

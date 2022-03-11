@@ -106,6 +106,8 @@ const CampaignDebug: NextPage = () => {
     uid: "box1_123456789_2",
     name: "Test campaign 2",
     thumb_img: "/assets/Box/image109.png",
+    sold_amount: 500,
+    total_amount: 500,
   };
   const box3: GBoxType = {
     ...box1,
@@ -121,13 +123,46 @@ const CampaignDebug: NextPage = () => {
         <div className={s.containerApp} style={{ paddingTop: 150 }}>
           <Row gutter={[24, 50]} className="justify-center">
             <Col>
-              <BoxTypeCard boxType={box1} />
+              <BoxTypeCard
+                boxType={box1}
+                round={{
+                  id: 0,
+                  name: "",
+                  start: new Date().toISOString(),
+                  end: new Date().toISOString(),
+                  is_whitelist: false,
+                  require_whitelist: false,
+                }}
+                isInWhitelist={false}
+              />
             </Col>
             <Col>
-              <BoxTypeCard boxType={box2} />
+              <BoxTypeCard
+                boxType={box2}
+                round={{
+                  id: 0,
+                  name: "",
+                  start: new Date().toISOString(),
+                  end: new Date().toISOString(),
+                  is_whitelist: false,
+                  require_whitelist: true,
+                }}
+                isInWhitelist={false}
+              />
             </Col>
             <Col>
-              <BoxTypeCard boxType={box3} />
+              <BoxTypeCard
+                boxType={box3}
+                round={{
+                  id: 0,
+                  name: "",
+                  start: new Date().toISOString(),
+                  end: new Date().toISOString(),
+                  is_whitelist: false,
+                  require_whitelist: true,
+                }}
+                isInWhitelist={true}
+              />
             </Col>
           </Row>
           <Footer />

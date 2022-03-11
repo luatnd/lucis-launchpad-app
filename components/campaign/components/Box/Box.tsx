@@ -139,7 +139,11 @@ export default function BoxCard(props: BoxCardProps) {
       <Row gutter={[24, 50]} className="justify-center">
         {boxTypes.map((e, index) => (
           <Col key={index}>
-            <BoxTypeCard boxType={e} round={currentRound} isInWhitelist={props.isInWhitelist} />
+            <BoxTypeCard
+              boxType={e}
+              round={currentRound}
+              isInWhitelist={props.isInWhitelist}
+            />
           </Col>
         ))}
       </Row>

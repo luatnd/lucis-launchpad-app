@@ -11,6 +11,9 @@ export const upcommingVirtualRound: GBoxCampaignRound = {
   end: "",
   is_whitelist: false,
   require_whitelist: false,
+
+  // @ts-ignore
+  is_abstract_round: true,
 };
 
 export const closedVirtualRound: GBoxCampaignRound = {
@@ -20,6 +23,9 @@ export const closedVirtualRound: GBoxCampaignRound = {
   end: "",
   is_whitelist: false,
   require_whitelist: false,
+
+  // @ts-ignore
+  is_abstract_round: true,
 };
 
 export function getCurrentCampaignRound(c: GBoxCampaign): GBoxCampaignRound {

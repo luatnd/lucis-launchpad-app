@@ -49,7 +49,7 @@ module.exports = withAntdLess({
 
     // Show testnet text on the header
     const git_branch = require('child_process')
-      .execSync('git symbolic-ref --short HEAD')
+      .execSync('cat .git/HEAD')
       // .execSync('git branch --show-current')
       .toString().trim();
     rules.push({
@@ -57,7 +57,7 @@ module.exports = withAntdLess({
       loader: 'string-replace-loader',
       options: {
         search: '"IS_TESTNET"',
-        replace: (git_branch === 'trial').toString(),
+        replace: (git_branch === 'ref: refs/heads/trial').toString(),
       },
     })
     rules.push({
@@ -65,7 +65,7 @@ module.exports = withAntdLess({
       loader: 'string-replace-loader',
       options: {
         search: '"IS_TESTNET"',
-        replace: (git_branch === 'trial').toString(),
+        replace: (git_branch === 'ref: refs/heads/trial').toString(),
       },
     })
 

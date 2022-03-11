@@ -1,4 +1,4 @@
-import { Progress, Modal, Popconfirm } from "antd";
+import { Progress, Modal, Popconfirm, Button } from "antd";
 import moment from "moment";
 import timeMoment from "moment-timezone";
 import React, { useEffect, useState } from "react";
@@ -10,9 +10,9 @@ import {useDetailCampaign} from "../../../../hooks/campaign/useDetailCampaign";
 import ConnectWalletBtn from "../../../Auth/components/ConnectWalletBtn";
 import {useMutationRegisterWhiteList} from "../../../../hooks/campaign/useRegisterWhiteList";
 import AuthStore from "components/Auth/AuthStore";
-import AuthBox from "../../../Auth/components/AuthBox";
 import {observer} from "mobx-react";
 import {useWindowSize} from "../../../../hooks/useWindowSize";
+import { CheckOutlined } from "@ant-design/icons";
 
 interface IRound {
   rounds: [
@@ -207,12 +207,13 @@ export default observer(function SiteMap(props: IRound) {
                               onConfirm={handleApplyWhiteList}
                               okText="Yes"
                               cancelText="No"
-                              disabled={isWhitelisted}
+                              disabled={isWhitelisted || dataWhiteListRegistered?.registeredWhitelist?.registered === dataWhiteListRegistered?.registeredWhitelist?.limit}
                           >
                             <button
-                                disabled={isWhitelisted}
-                                className={`${s.button} ${isWhitelisted ? s.disabledBtn : ''} font-bold text-white text-center uppercase`}
+                                disabled={isWhitelisted || dataWhiteListRegistered?.registeredWhitelist?.registered === dataWhiteListRegistered?.registeredWhitelist?.limit}
+                                className={`${s.button} ${isWhitelisted || dataWhiteListRegistered?.registeredWhitelist?.registered === dataWhiteListRegistered?.registeredWhitelist?.limit ? s.disabledBtn : ''} font-bold text-white text-center uppercase`}
                             >
+                              <CheckOutlined className="my-auto"/>
                               {isWhitelisted ? "Whitelisted" : "Apply Whitelist"}
                             </button>
                           </Popconfirm>

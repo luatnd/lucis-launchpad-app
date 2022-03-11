@@ -35,6 +35,7 @@ export default function Banner(props: Props) {
     slideIndex: slideIndex,
     nextSlide: handleNextSlide,
     prevSlide: handlePrevSlide,
+    setSlideIndex: setSlideIndex,
   };
 
   if (loading) {
@@ -49,8 +50,8 @@ export default function Banner(props: Props) {
     <section className={s.containerBanner}>
       <SimpleSlider {...sliderProps} />
 
-      <div className="container">
-        <div className="flex justify-between items-center h-[100px]">
+      <div className="container py-5">
+        <div className="flex justify-between items-center">
           <Link href="/ino" passHref>
             <a className={`${s.btnApplyINO}`}>
               <img src="/assets/Banner/ic_apply.svg" alt="" />

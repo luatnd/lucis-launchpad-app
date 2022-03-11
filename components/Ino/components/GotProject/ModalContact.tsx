@@ -58,7 +58,7 @@ const ModalContact = (props: Props) => {
           target="_blank"
           rel="noreferrer"
         >
-          Chat with us
+          Chat with us <img src="/assets/UpComing/tele.svg" alt="" />
         </a>
         {/* <img src="/assets/MyProfile/teleChat.svg" alt="" /> */}
       </div>

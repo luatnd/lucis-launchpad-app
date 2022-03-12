@@ -1,3 +1,4 @@
+@import styles/common
 .bg_1
     background: linear-gradient(339deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
     &:global(:before)
@@ -9,8 +10,6 @@
 .CardContainer
     backdrop-filter: blur(4px)
     border-radius: 16px
-    width: 328px
-    height: 450px
     position: relative
     margin-bottom: 140px
     z-index: 19
@@ -23,7 +22,6 @@
         bottom: 0
         border-radius: 16px
         padding: 1px
-        //background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
         -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
         -webkit-mask-composite: xor
         mask-composite: exclude
@@ -44,9 +42,8 @@
         height: 100%
         border-radius: 16px
         .headingCard
-            padding: 200px 22px 0px 22px
+            padding: 200px 22px 80px 22px
             .styleTime
-                // text-align: center
                 font-size: 28px
                 font-weight: 700
                 line-height: 32px
@@ -140,18 +137,14 @@
                     padding: 8px 15px
                 @media (min-width: 1025px)
                     padding: 10px 15px
-                
-
-                
+                  
 .CardContainer:hover .btnDetail
     opacity: 1
 
 @media (min-width: 640px)
     .CardContainer
-        width: 280px
-        height: 400px
         .headingCard
-            padding: 140px 22px 0px 22px !important
+            padding: 140px 22px 800px 22px !important
             .styleTime
                 font-size: 24px  !important
             .styleTime::before
@@ -160,32 +153,24 @@
             height: 52% !important
 @media (min-width: 768px)
     .CardContainer
-        width: 328px
-        height: 440px
         .headingCard
-            padding: 200px 22px 0px 22px !important
+            padding: 200px 22px 80px 22px !important
             .styleTime
                 font-size: 28px  !important
             .styleTime::before
                 left: 0 !important
-        .btnDetail
-            height: 45% !important
+ 
 @media (min-width: 992px)
     .CardContainer
-        width: 32%
-        height: 400px
         .headingCard
-            padding: 150px 22px 0px 22px !important
+            padding: 150px 22px 80px 22px !important
             .styleTime
                 font-size: 28px  !important
             .styleTime::before
                 left: 0 !important
-        .btnDetail
-            height: 52% !important
+
 @media (min-width: 1279px)
     .CardContainer
-        width: 32%
-        height: 500px
         .headingCard
             padding: 220px 22px 0px 22px !important
             .styleTime
@@ -197,14 +182,11 @@
             .text
                 font-size: 18px !important
                 margin-top: 12px
-        .btnDetail
-            height: 47% !important
+
 @media (min-width: 1439px)
     .CardContainer
-        width: 31.5%
-        height: 600px
         .headingCard
-            padding: 270px 22px 0px 22px !important
+            padding: 270px 22px 80px 22px !important
             .styleTime
                 font-size: 36px  !important
             .styleTime::before
@@ -214,5 +196,5 @@
             .text
                 font-size: 20px !important
                 margin-top: 12px
-        .btnDetail
-            height: 47% !important
+
+

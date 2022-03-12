@@ -8,10 +8,12 @@ import { slugify } from "utils/String";
 type Props = {
   data: GBoxCampaign[];
   slideIndex: number;
+  setMainSlider: (i: Slider) => void;
+  subSlider: any;
 };
 
 const SimpleSlider = (props: Props) => {
-  const { data, slideIndex } = props;
+  const { data, slideIndex, setMainSlider, subSlider } = props;
 
   const settings = {
     dots: true,
@@ -23,7 +25,7 @@ const SimpleSlider = (props: Props) => {
 
   return (
     <div className="simple-slider">
-      <Slider {...settings}>
+      <Slider {...settings} asNavFor={subSlider} ref={(slider: Slider) => setMainSlider(slider)}>
         {data &&
           data.map((e, i) => {
             const getCampaignDetailUrl = () => {

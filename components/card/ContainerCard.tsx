@@ -1,3 +1,4 @@
+import { Maybe } from "graphql/jsutils/Maybe";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { slugify } from "../../utils/String";
@@ -5,20 +6,19 @@ import { GradientLinkButton } from "../Button/GradientButton";
 import s from "./ContainerCard.module.sass";
 
 type Props = {
-  srcGame: string;
+  srcGame: Maybe<string> | undefined;
   time: any;
-  nameGame: string;
-  title: string;
+  nameGame: Maybe<string> | undefined;
+  title: Maybe<string> | undefined;
   statusTime: string;
   styleBg: boolean;
-  inTime: string;
-  srcWeb: string;
-  srcFb: string;
-  srcTele: string;
-  srcDiscord: string;
-  srcTwitter: string;
+  srcWeb: Maybe<string> | undefined;
+  srcFb: Maybe<string> | undefined;
+  srcTele: Maybe<string> | undefined;
+  srcDiscord: Maybe<string> | undefined;
+  srcTwitter: Maybe<string> | undefined;
   soldOutResult?: boolean;
-  description: string;
+  description: Maybe<string> | undefined;
   id: string;
 };
 
@@ -38,7 +38,8 @@ export default function CardItem(props: Props) {
 
   const bg_card = props.styleBg ? s.bg_1 : s.bg_2;
 
-  const handleDesc = description.length > 120 ? description.substring(0, 120) + "..." : description;
+  const handleDesc =
+    description && description.length > 120 ? description?.substring(0, 120) + "..." : description;
 
   const getCampaignDetailUrl = () => {
     return `/campaign/${id}/${slugify(props.title)}`;
@@ -114,8 +115,9 @@ export default function CardItem(props: Props) {
   return (
     <div className={`${s.CardContainer} ${bg_card}`}>
       <div className={s.img_game}>
-        <img src={props.srcGame} alt="" />
+        <img src={props.srcGame ?? ""} alt="" />
       </div>
+
       <div className={s.content}>
         <div className={s.headingCard}>
           <div className={`${s.styleTime} ${typeTime}`}>

@@ -8,6 +8,8 @@ import SubSlider from "./[temp]Slider/SubSlider";
 export default function Banner() {
   const { resultSpotlight } = useSpotlight();
   const [slideIndex, setSlideIndex] = useState(0);
+  const [mainSlider, setMainSlider] = useState(null);
+  const [subSlider, setSubSlider] = useState(null);
 
   const handleNextSlide = () => {
     if (slideIndex >= resultSpotlight.spotlightBoxCampaign.length - 1) {
@@ -31,6 +33,11 @@ export default function Banner() {
     nextSlide: handleNextSlide,
     prevSlide: handlePrevSlide,
     setSlideIndex: setSlideIndex,
+
+    setSubSlider: setSubSlider,
+    setMainSlider: setMainSlider,
+    mainSlider: mainSlider,
+    subSlider: subSlider,
   };
 
   return (
@@ -45,7 +52,7 @@ export default function Banner() {
               <span>Apply for INO</span>
             </a>
           </Link>
-          <SubSlider {...sliderProps} />
+          {/* <SubSlider {...sliderProps} /> */}
         </div>
       </div>
     </section>

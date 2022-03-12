@@ -16,6 +16,7 @@ import s from "./detail.module.sass";
 import { useDetailCampaign } from "../../hooks/campaign/useDetailCampaign";
 import BoxCard from "../../components/campaign/components/Box/Box";
 import SiteMap from "components/campaign/components/SiteMap/SiteMap";
+import {useWindowSize} from "../../hooks/useWindowSize";
 
 /**
  * Match all route: /campaign/....
@@ -30,6 +31,7 @@ function DetailCampaign() {
   const [timeCountDown, setTimeCountDown] = useState(0);
   const [textNow, setTextNow] = useState("");
   const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const [widthScreen, height] = useWindowSize();
 
   const { boxCampaign, isInWhitelist } = useDetailCampaign({ id });
 
@@ -47,10 +49,10 @@ function DetailCampaign() {
                   start={boxCampaign?.start}
                   end={boxCampaign?.end}
                   setTimeCountDown={setTimeCountDown}
-                  isInWhitelist={isInWhitelist}
                   setTextNow={setTextNow}
                   boxCampaignUid={id ?? ""}
                   tzid={tzid}
+                  widthScreen={widthScreen}
                 />
               )}
               {textNow.length > 0 && <CountDown timeCountDown={timeCountDown} textNow={textNow} />}
@@ -60,16 +62,16 @@ function DetailCampaign() {
               </div>
             </TabPane>
             <TabPane tab="RULE" key="2">
-              <div className="lucis-container mt-[168px]">
-                <div
-                  dangerouslySetInnerHTML={{ __html: boxCampaign?.rules }}
-                  className={`${s.textSize} text-white mt-10 text-justify indent-8`}
-                ></div>
+              <div className="lucis-container mt-[40px!important]">
+                {boxCampaign?.rules && boxCampaign?.rules.substring(0, 8) !== "https://" ?
+                    (<iframe srcDoc={boxCampaign?.rules} width='100%'></iframe>) :
+                    (<iframe src={boxCampaign?.rules} width='100%'></iframe>)
+                }
               </div>
             </TabPane>
             <TabPane tab="ABOUT PROJECT" key="3">
-              <Trailer />
-              <Team />
+              <Trailer game={boxCampaign?.game} />
+              <Team game={boxCampaign?.game} />
             </TabPane>
           </Tabs>
           <Footer />

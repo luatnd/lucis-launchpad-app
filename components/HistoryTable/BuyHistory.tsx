@@ -7,7 +7,7 @@ type Props = {
 };
 
 const BuyHistory = ({ id, title }: Props) => {
-  const { data } = useQueryBoxHistories({
+  const { data, loading, error } = useQueryBoxHistories({
     include: { boxTypes: true, game: true },
   });
 
@@ -17,6 +17,13 @@ const BuyHistory = ({ id, title }: Props) => {
     data: data?.boxCampaignBuyHistories,
     title: title,
   };
+
+  if (loading) {
+    return <>Loading User Buy History...</>;
+  }
+  if (error) {
+    return null;
+  }
 
   if (id) {
     tableProps = {

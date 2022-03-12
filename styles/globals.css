@@ -421,6 +421,7 @@ body .backdrop-blur-sm {
   );
 }
 .ant-modal-root .ant-modal-content {
+  /*background: rgb(47 33 102);*/
   background: linear-gradient(
     126.08deg,
     rgba(255, 255, 255, 0.3) 13.84%,

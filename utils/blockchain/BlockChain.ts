@@ -1,4 +1,5 @@
 import { IChainData } from "./ChainConfig";
+import {ChainSymbol} from "../../src/generated/graphql";
 
 /**
  * Those blockchain config must be the same on the server / database
@@ -14,6 +15,7 @@ export enum ChainBranch {
   // octopus?
 }
 
+// NOTE: Clone of ChainSymbol on graphql.tsx
 export enum ChainNetwork {
   eth = 'eth',
   bsc = 'bsc',
@@ -23,6 +25,10 @@ export enum ChainNetwork {
   near = 'near',
   polkadot = 'polkadot',
   solana = 'solana',
+}
+
+export function symbol2Network(chainSymbol: ChainSymbol): ChainNetwork {
+  return ChainNetwork[chainSymbol.toLowerCase() as keyof typeof ChainNetwork]
 }
 
 export const NetworkBranch = {
@@ -64,6 +70,7 @@ export const NetworkSupportedWallets: Record<ChainNetwork | string, Wallet[]> = 
 }
 
 export const ChainNetworkAvatar: Record<string, string> = {
+  undefined: "/assets/crypto/ico-question-mark.png",
   [ChainNetwork.eth]: "/assets/crypto/ico-chain-eth.svg",
   [ChainNetwork.bsc]: "/assets/crypto/ico-chain-bsc.png",
   [ChainNetwork.polygon]: "/assets/crypto/ico-chain-polygon.png",

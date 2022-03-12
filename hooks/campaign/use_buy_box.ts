@@ -16,8 +16,9 @@ import {ChainNetwork} from "../../utils/blockchain/BlockChain";
 
 
 export enum BuyDisabledReason {
-  NoBoxLeft,
+  SoldOut,
   WhitelistNotRegistered,
+  NotSaleRound,
 }
 
 export function useBuyBox(
@@ -38,15 +39,28 @@ export function useBuyBox(
 
   const requireWhitelist = round?.is_whitelist === false && round?.require_whitelist === true;
 
-  let buyFormDisabledReason: BuyDisabledReason | undefined = undefined;
 
   // can buy box: in buy round + enough box to buy + registered whitelist if need + box left
   // @ts-ignore
   const isSaleRound = !round?.is_whitelist && !round?.is_abstract_round;
-  const buyFormEnabled = isSaleRound
-    && boxType.total_amount > boxType.sold_amount
-    && (requireWhitelist ? isInWhitelist : true)
-  ;
+
+  let buyBtnDisabledReason: BuyDisabledReason | undefined = undefined;
+  // const buyFormEnabled = isSaleRound
+  //   && boxType.total_amount > boxType.sold_amount
+  //   && (requireWhitelist ? isInWhitelist : true)
+  // ;
+  let buyFormEnabled = true;
+  if (!isSaleRound) {
+    buyFormEnabled = false
+    buyBtnDisabledReason = BuyDisabledReason.NotSaleRound
+  }
+  else if (!(boxType.sold_amount < boxType.total_amount)) {
+    buyFormEnabled = false
+    buyBtnDisabledReason = BuyDisabledReason.SoldOut
+  } else if (!(requireWhitelist ? isInWhitelist : true)) {
+    buyFormEnabled = false
+    buyBtnDisabledReason = BuyDisabledReason.WhitelistNotRegistered
+  }
 
 
   const txtAmount = useInput("");
@@ -73,6 +87,13 @@ export function useBuyBox(
       txtAmount.setErr("Quantity must be greater than 0");
       return;
     }
+
+    const maxPerUser = boxType.limit_per_user ?? 100; // default is 100 per user
+    if (quantity > maxPerUser) {
+      txtAmount.setErr(`A user can buy up to ${maxPerUser} boxes only`);
+      return;
+    }
+
     // console.log("round: ", round);
     setErr(undefined);
 
@@ -112,7 +133,7 @@ export function useBuyBox(
     loading,
     isSaleRound,
     buyFormEnabled,
-    buyFormDisabledReason,
+    buyBtnDisabledReason,
     err,
     txtAmount,
     onBuyBox,

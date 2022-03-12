@@ -67,13 +67,22 @@ if (isClientDevMode) {
       expected: '12,345,678.13',
     },
     {
-      msg: 'Can custom sign and separator',
+      msg: 'Can show sign and separator',
       input: {
         num: 12345678.12999,
         decimal: 3,
         option: {sign: true, separator: '_'},
       },
       expected: '+12_345_678.130',
+    },
+    {
+      msg: 'Can show sign with negative number',
+      input: {
+        num: -12345678.12999,
+        decimal: 3,
+        option: {sign: true, separator: '_'},
+      },
+      expected: '-12_345_678.130',
     },
     {
       msg: 'No round up',
@@ -107,11 +116,19 @@ if (isClientDevMode) {
         console.error(e)
       }
 
-
-      console.assert(actual === test_case.expected, {
-        ...test_case,
-        actual,
-      });
+      if (actual === test_case.expected) {
+        // pass
+        console.info('%cPASS: ', 'color: green', {
+          ...test_case,
+          actual,
+        });
+      } else {
+        // fail
+        console.error('%cFAILED: ', 'color: red', {
+          ...test_case,
+          actual,
+        });
+      }
     }
   }
 }

@@ -114,6 +114,8 @@ const CampaignDebug: NextPage = () => {
     uid: "box1_123456789_3",
     name: "Test box 3",
     thumb_img: "/assets/Box/image110.png",
+    sold_amount: 500,
+    total_amount: 500,
   };
 
   return (
@@ -139,6 +141,20 @@ const CampaignDebug: NextPage = () => {
             <Col xs={24} md={12} lg={8}>
               <BoxTypeCard
                 boxType={box2}
+                round={{
+                  id: 0,
+                  name: "",
+                  start: new Date().toISOString(),
+                  end: new Date().toISOString(),
+                  is_whitelist: false,
+                  require_whitelist: false,
+                }}
+                isInWhitelist={true}
+              />
+            </Col>
+            <Col xs={24} md={12} lg={8}>
+              <BoxTypeCard
+                boxType={box3}
                 round={{
                   id: 0,
                   name: "",

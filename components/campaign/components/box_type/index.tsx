@@ -31,7 +31,7 @@ const BoxTypeCard = observer((props: Props) => {
     txtAmount,
     isSaleRound,
     buyFormEnabled,
-    buyFormDisabledReason,
+    buyBtnDisabledReason,
     err,
     onBuyBox,
     requireWhitelist,
@@ -46,9 +46,10 @@ const BoxTypeCard = observer((props: Props) => {
     symbol: i.currency.chain_symbol,
   })) ?? [];
 
-  const buyFormDisabledMsg = {
-    [BuyDisabledReason.NoBoxLeft]: 'Sold out',
+  const buyFormDisabledMsg: Record<BuyDisabledReason, string> = {
+    [BuyDisabledReason.SoldOut]: 'Sold out',
     [BuyDisabledReason.WhitelistNotRegistered]: 'This box is for whitelisted user only',
+    [BuyDisabledReason.NotSaleRound]: 'Please wait the campaign open',
   }
 
   return (
@@ -126,16 +127,21 @@ const BoxTypeCard = observer((props: Props) => {
                 </span>
               )}
               <div className="flex justify-between text-white items-center font-bold text-24px mb-2 mt-5">
-                <Tooltip placement="top" title={buyFormDisabledReason ? buyFormDisabledMsg[buyFormDisabledReason] : ''}>
-                  <Button
-                    className={s.submit} onClick={onBuyBox}
-                    disabled={!buyFormEnabled}
-                  >
-                    BUY
-                  </Button>
+                <Tooltip placement="top" title={buyBtnDisabledReason !== undefined ? buyFormDisabledMsg[buyBtnDisabledReason] : ''}>
+                  <div>
+                    <Button
+                      className={s.submit} onClick={onBuyBox}
+                      disabled={!buyFormEnabled}
+                    >
+                      BUY
+                    </Button>
+                  </div>
                 </Tooltip>
                 {requireWhitelist && <span style={{paddingLeft: 20, lineHeight: 1.3}}>Whitelist only</span>}
               </div>
+
+              {/*{buyBtnDisabledReason === BuyDisabledReason.SoldOut &&*/}
+              {/*<p style={{paddingLeft: 20, lineHeight: 1.3}}>Sold out</p>}*/}
 
               {!!err && <span style={{ color: "red", fontSize: "13px" }}>{err}</span>}
             </Form>
@@ -159,7 +165,10 @@ const BoxTypeCard = observer((props: Props) => {
               showInfo={false}
               // status="active"
             />
-            <p className="text-right">{`${boxType.sold_amount}/${boxType.total_amount}`} boxes</p>
+            <div className={s.flexRear}>
+              <p>Sold</p>
+              <p className="text-right">{`${boxType.sold_amount}/${boxType.total_amount}`} boxes</p>
+            </div>
           </div>
         </div>
       </div>

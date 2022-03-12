@@ -31,6 +31,10 @@ const BoxTypeCard = observer((props: Props) => {
   const { isLoggedIn } = AuthStore;
 
 
+  // TODO: Fetch refetch whitelist info after logged in status
+  // change from false to true
+  // use Mobx autorun
+
   const {
     loading,
     txtAmount,
@@ -148,13 +152,13 @@ const BoxTypeCard = observer((props: Props) => {
                       </div>
                     </Tooltip>
                     : (
-                      !isLoggedIn
+                      !(isLoggedIn)
                         // if wallet was not connected => popconfirm
                         ? <Popconfirm
-                          title={<span>You need to connect wallet<br/> in order to buy this box</span>}
+                          title={<span>You need to {chainNetwork ? "verify" : "connect"} wallet<br/> in order to buy this box</span>}
                           onConfirm={showConnectWalletModal}
                           // onCancel={cancel}
-                          okText="Connect Wallet"
+                          okText={chainNetwork ? "Verify Wallet" : "Connect Wallet"}
                           cancelText="Close"
                         >
                           <div>

@@ -8,13 +8,15 @@ import {
   GBoxPrice,
   GBoxType,
 } from "src/generated/graphql";
-import {handleApolloError, onApolloError} from "utils/apollo_client";
+import apoloClient, {handleApolloError, onApolloError} from "utils/apollo_client";
 
 import EthersService from "services/blockchain/Ethers";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
 import {ChainNetwork} from "../../utils/blockchain/BlockChain";
 import {GraphQLError} from "graphql";
 import {AppEmitter} from "../../services/emitter";
+import {AuthUser} from "../../components/Auth/AuthStore";
+import {trim_middle} from "../../utils/String";
 
 
 export enum BuyDisabledReason {
@@ -31,16 +33,29 @@ export function useBuyBox(
   connectedChainNetwork: ChainNetwork | undefined,
   isLoggedIn: boolean,
 ) {
-  const [buyBox, { data, loading, error }] = useMutation(BUY_BOX_MUT);
+  // Lib Bug: loading is always true after mutate with error, so plz use promise approach instead
+  // const [buyBox, { data, loading, error }] = useMutation(BUY_BOX_MUT);
+
+  const [loading, setLoading] = useState(false);
 
   const chainSymbol = connectedChainNetwork;
-  const boxPrice: GBoxPrice | undefined =
+
+
+  // get first matched box on connected chain (if connected)
+  let boxPrice: GBoxPrice | undefined =
     (boxType.prices?.length ?? 0) > 0
       ? boxType.prices!.find(
           (item) => item.currency.chain_symbol?.toLowerCase() == chainSymbol
         )
       : undefined;
-  // console.log('{useBuyBox} chainSymbol, boxType, boxPrice: ', chainSymbol, boxType, boxPrice);
+  // else if no chain was connected, select first box
+  if (!boxPrice) {
+    if (boxType.prices?.length) {
+      boxPrice = boxType.prices[0]
+    }
+  }
+
+
 
   const requireWhitelist = round?.is_whitelist === false && round?.require_whitelist === true;
 
@@ -145,26 +160,24 @@ export function useBuyBox(
       quantity: quantity,
     });
 
-    buyBox({
-      variables: {
-        input: {
-          box_price_uid: boxPrice?.uid,
-          round_id: round?.id ?? 0,
-          quantity: quantity,
-        },
-      },
-    }).catch((err) => {
-      // console.log("err: ", err);
-      // handleApolloError(err);
-      onApolloError(
-        err,
-        onBuyBoxError,
-        onAuthError,
-        (e: Error | ServerParseError | ServerError) => {
-          console.error('{onBuyBox.onNetworkError} e: ', e);
-        },
-      )
-    });
+    setLoading(true);
+    buyBox(boxPrice?.uid, round?.id ?? 0, quantity)
+      .then(res => {
+        console.log('{onBuyBox.res} res: ', res);
+      })
+      .catch((err) => {
+        onApolloError(
+          err,
+          onBuyBoxError,
+          onAuthError,
+          (e: Error | ServerParseError | ServerError) => {
+            console.error('{onBuyBox.onNetworkError} e: ', e);
+          },
+        )
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const onApprove = async function () {
@@ -203,3 +216,23 @@ const BUY_BOX_MUT = gql`
     buyBox(input: $input)
   }
 `;
+
+
+async function buyBox(
+  box_price_uid: string,
+  round_id: number,
+  quantity: number,
+): Promise<any> {
+  const res = await apoloClient.mutate({
+    mutation: gql`
+      mutation buyBox($input: BuyBoxInput!) {
+        buyBox(input: $input)
+      }
+    `,
+    variables: {
+      input: {box_price_uid, round_id, quantity}
+    }
+  })
+
+  return res
+}

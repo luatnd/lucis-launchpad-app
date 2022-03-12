@@ -19,10 +19,10 @@ const BuyHistory = ({ id, title }: Props) => {
   };
 
   if (loading) {
-    return <>Loading ...</>;
+    return <>Loading User Buy History...</>;
   }
   if (error) {
-    return <>Error...</>;
+    return null;
   }
 
   if (id) {

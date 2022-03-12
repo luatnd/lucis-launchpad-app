@@ -93,7 +93,7 @@ const BoxTypeCard = observer((props: Props) => {
             <span>Chain</span>
             <div className={s.chainIcoC}>
               {supported_chains_avatars
-                .map(i => <img src={i.url} alt="" title={i.symbol} />)
+                .map((i, idx) => <img key={idx} src={i.url} alt="" title={i.symbol} />)
               }
             </div>
           </div>
@@ -164,6 +164,8 @@ const BoxTypeCard = observer((props: Props) => {
               percent={Math.floor((boxType.sold_amount / boxType.total_amount) * 100)}
               showInfo={false}
               // status="active"
+              strokeColor={"#0BEBD6"}
+              strokeWidth={10}
             />
             <div className={s.flexRear}>
               <p>Sold</p>

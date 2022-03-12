@@ -111,16 +111,14 @@ const client = new ApolloClient({
 
 export default client;
 
+/**
+ * User for external error handling
+ */
 export function handleApolloError(error: ApolloError) {
   const { graphQLErrors, networkError } = error;
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path }) => {
       if (message === "Unauthorized") {
-        // when token expired or die, localStorage clear
-        // localStorage.clear();
-
-        // redirect to login page
-        // window.location.href = "/auth/login";
         notification["error"]({
           message: "Unauthorized",
           description: "Please connect wallet first!",

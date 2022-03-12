@@ -99,8 +99,14 @@ if (isClientDevMode) {
   window.tmp__Number_format_test = function test() {
     for (let i = 0, c = test_cases.length; i < c; i++) {
       const test_case = test_cases[i];
-      // @ts-ignore
-      const actual = format(...Object.values(test_case.input))
+      let actual;
+      try {
+        // @ts-ignore
+        actual = format(...Object.values(test_case.input))
+      } catch (e) {
+        console.error(e)
+      }
+
 
       console.assert(actual === test_case.expected, {
         ...test_case,

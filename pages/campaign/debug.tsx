@@ -9,7 +9,7 @@ import React from "react";
 import BoxTypeCard from "../../components/campaign/components/box_type";
 import {
   ChainSymbol,
-  GBoxCampaign,
+  GBoxCampaign, GBoxPrice,
   GBoxType,
   GGame,
 } from "../../src/generated/graphql";
@@ -57,27 +57,30 @@ const CampaignDebug: NextPage = () => {
     // },
   };
 
+  const boxPrice: GBoxPrice = {
+    uid: "fake_a_id_box_price",
+    price: 16.6899634,
+    // @ts-ignore
+    currency: {
+      symbol: "BUSD",
+      chain_symbol: ChainSymbol.Bsc,
+      icon: "https://s2.coinmarketcap.com/static/img/coins/64x64/4687.png",
+    },
+  };
+
   const box1: GBoxType = {
     // _count: {
     //   prices: 0
     // },
     "uid": "cl02lx5or0000doo018d7n2zz",
-    "game_uid": "cl02lx5os0001doo0f3oiu144",
+    // "game_uid": "cl02lx5os0001doo0f3oiu144",
     "name": "Axie box 1",
     "desc": "Wide variety of game modes: MOBA & Battle Royale, coming with monthly updates and attractive rewards.",
     box_campaign_uid: "cp_12a34f56b89",
-    campaign: campaign,
+    // campaign: campaign,
     limit_per_user: 100,
     prices: [
-      {
-        price: 16.6899634,
-        // @ts-ignore
-        currency: {
-          symbol: "BUSD",
-          chain_symbol: ChainSymbol.Bsc,
-          icon: "https://s2.coinmarketcap.com/static/img/coins/64x64/4687.png",
-        },
-      },
+      boxPrice,
     ],
     series_content: `
     <table>
@@ -114,7 +117,7 @@ const CampaignDebug: NextPage = () => {
     uid: "box1_123456789_3",
     name: "Test box 3",
     thumb_img: "/assets/Box/image110.png",
-    sold_amount: 500,
+    sold_amount: 300,
     total_amount: 500,
   };
 
@@ -128,7 +131,7 @@ const CampaignDebug: NextPage = () => {
               <BoxTypeCard
                 boxType={box1}
                 round={{
-                  id: 0,
+                  id: 1,
                   name: "",
                   start: new Date().toISOString(),
                   end: new Date().toISOString(),
@@ -142,7 +145,7 @@ const CampaignDebug: NextPage = () => {
               <BoxTypeCard
                 boxType={box2}
                 round={{
-                  id: 0,
+                  id: 1,
                   name: "",
                   start: new Date().toISOString(),
                   end: new Date().toISOString(),
@@ -156,7 +159,7 @@ const CampaignDebug: NextPage = () => {
               <BoxTypeCard
                 boxType={box3}
                 round={{
-                  id: 0,
+                  id: 1,
                   name: "",
                   start: new Date().toISOString(),
                   end: new Date().toISOString(),
@@ -170,7 +173,7 @@ const CampaignDebug: NextPage = () => {
               <BoxTypeCard
                 boxType={box3}
                 round={{
-                  id: 0,
+                  id: 1,
                   name: "",
                   start: new Date().toISOString(),
                   end: new Date().toISOString(),

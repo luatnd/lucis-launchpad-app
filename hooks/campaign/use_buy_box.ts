@@ -1,5 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
-import { notification } from "antd";
+import {message, notification} from "antd";
 import { useInput } from "hooks/common/use_input";
 import { useMemo, useState } from "react";
 import {
@@ -16,6 +16,7 @@ import {ChainNetwork} from "../../utils/blockchain/BlockChain";
 
 
 export enum BuyDisabledReason {
+  WalletNotConnected,
   SoldOut,
   WhitelistNotRegistered,
   NotSaleRound,
@@ -25,17 +26,19 @@ export function useBuyBox(
   boxType: GBoxType,
   round: GBoxCampaignRound | undefined,
   isInWhitelist: boolean | undefined,
-  chainNetwork: ChainNetwork | undefined,
+  connectedChainNetwork: ChainNetwork | undefined,
+  isLoggedIn: boolean,
 ) {
   const [buyBox, { data, loading, error }] = useMutation(BUY_BOX_MUT);
 
-  const chainSymbol = chainNetwork;
+  const chainSymbol = connectedChainNetwork;
   const boxPrice: GBoxPrice | undefined =
     (boxType.prices?.length ?? 0) > 0
       ? boxType.prices!.find(
           (item) => item.currency.chain_symbol?.toLowerCase() == chainSymbol
         )
       : undefined;
+  // console.log('{useBuyBox} chainSymbol, boxType, boxPrice: ', chainSymbol, boxType, boxPrice);
 
   const requireWhitelist = round?.is_whitelist === false && round?.require_whitelist === true;
 
@@ -50,6 +53,13 @@ export function useBuyBox(
   //   && (requireWhitelist ? isInWhitelist : true)
   // ;
   let buyFormEnabled = true;
+  // if (!connectedChainNetwork) {
+    /**
+     * If wallet was not connect => Allow click buy but show modal to connect wallet
+     */
+    // buyFormEnabled = false
+    // buyBtnDisabledReason = BuyDisabledReason.WalletNotConnected
+  // } else
   if (!isSaleRound) {
     buyFormEnabled = false
     buyBtnDisabledReason = BuyDisabledReason.NotSaleRound
@@ -67,6 +77,11 @@ export function useBuyBox(
   const [err, setErr] = useState<string | undefined>();
 
   const onBuyBox = function () {
+    if (!isLoggedIn) {
+      setErr("Failed - You've not complete the verification!");
+      return;
+    }
+
     if (!boxPrice) {
       setErr("Box price not found!");
       return;
@@ -76,9 +91,10 @@ export function useBuyBox(
       return;
     }
     if (round.require_whitelist === true && !isInWhitelist) {
-      notification["error"]({
-        message: "This box is for whitelisted user only",
-      });
+      message.error(
+        '<span>This box is for whitelisted user only</span>',
+        3,
+      );
       return;
     }
 
@@ -96,6 +112,12 @@ export function useBuyBox(
 
     // console.log("round: ", round);
     setErr(undefined);
+
+    console.log('{onBuyBox} input: ', {
+      box_price_uid: boxPrice?.uid,
+      round_id: round?.id ?? 0,
+      quantity: quantity,
+    });
 
     buyBox({
       variables: {

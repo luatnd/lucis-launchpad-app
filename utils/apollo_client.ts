@@ -12,7 +12,7 @@ import {
   clearLocalAuthInfo,
   getLocalAuthInfo,
 } from "../components/Auth/AuthLocal";
-import { notification } from "antd";
+import {message as antd_message, notification} from "antd";
 //   import { CachePersistor } from 'apollo-cache-persist';
 
 // Cache implementation
@@ -119,18 +119,26 @@ export function handleApolloError(error: ApolloError) {
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path }) => {
       if (message === "Unauthorized") {
-        notification["error"]({
-          message: "Unauthorized",
-          description: "Please connect wallet first!",
-        });
+        // notification["error"]({
+        //   message: "Unauthorized",
+        //   description: "Please connect wallet first!",
+        // });
+        antd_message.error(
+          'Error: Unauthorized: Please connect wallet first!',
+          3,
+        );
       } else {
         console.log(
           `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
         );
-        notification["error"]({
-          message: "Error!",
-          description: message,
-        });
+        // notification["error"]({
+        //   message: "Error!",
+        //   description: message,
+        // });
+        antd_message.error(
+          message,
+          3,
+        );
       }
     });
 

@@ -87,6 +87,13 @@ export function useBuyBox(
       txtAmount.setErr("Quantity must be greater than 0");
       return;
     }
+
+    const maxPerUser = boxType.limit_per_user ?? 100; // default is 100 per user
+    if (quantity > maxPerUser) {
+      txtAmount.setErr(`A user can buy up to ${maxPerUser} boxes only`);
+      return;
+    }
+
     // console.log("round: ", round);
     setErr(undefined);
 

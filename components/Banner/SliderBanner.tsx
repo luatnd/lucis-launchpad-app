@@ -11,15 +11,6 @@ type Props = {
 
 const SimpleSlider = (props: Props) => {
   const { data, slideIndex } = props;
-  const ref = useRef({});
-
-  // const next = () => {
-  //   ref.current.slickNext();
-  // };
-
-  // const previous = () => {
-  //   ref.current.slickPrev();
-  // };
 
   const settings = {
     dots: true,

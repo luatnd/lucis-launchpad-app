@@ -6,7 +6,7 @@ import { useCloseCampaign } from "./useCloseCampaign";
 type Props = {};
 
 export default function ClosedCampaign(props: Props) {
-  const { loading, error, resultCloseCampaign } = useCloseCampaign();
+  const { resultCloseCampaign } = useCloseCampaign();
   const newDate = new Date();
 
   useEffect(() => {
@@ -30,8 +30,6 @@ export default function ClosedCampaign(props: Props) {
       <TitleSection text="Closed campaign" />
       <div className={s.blockCard}>
         {resultCloseCampaign?.closedBoxCampaign?.map((e: any, i: any) => {
-          console.log("Opening: ", e.name);
-
           return (
             <CardItem
               key={i}

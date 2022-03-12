@@ -16,7 +16,7 @@ export default function ItemSliderBanner(props: Props) {
   return (
     <div className={`${s.contentItemSilder} lucis-container`}>
       <div className={s.contentDetail}>
-        <div className={s.bgItemSlider}></div>
+        {/* <div className={s.bgItemSlider}></div> */}
         <div className={s.headingItem}>
           <div className={s.contentItemTop}>
             <div className={s.statusGame}>{status}</div>

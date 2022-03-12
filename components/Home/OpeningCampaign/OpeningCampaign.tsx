@@ -13,13 +13,6 @@ export default function Opening(props: Props) {
     return resultOpening;
   }, [resultOpening]);
 
-  resultOpening?.openingBoxCampaign.map((e: any, i: any) => {
-    const soldAmount = e.boxTypes?.sold_amount;
-    // console.log(soldAmount);
-  });
-
-  const handleTest = () => {};
-
   return (
     <section className="lucis-container">
       <TitleSection text="Opening campaign" />

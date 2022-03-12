@@ -11,7 +11,7 @@ import { devNull } from "os";
 type Props = {};
 
 export default function Banner(props: Props) {
-  const { resultSpotlight, loading, error } = useSpotlight();
+  const { resultSpotlight } = useSpotlight();
   const [slideIndex, setSlideIndex] = useState(0);
 
   const handleNextSlide = () => {

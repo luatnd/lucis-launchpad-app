@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import {gql, ServerError, ServerParseError, useMutation} from "@apollo/client";
 import {message, notification} from "antd";
 import { useInput } from "hooks/common/use_input";
 import { useMemo, useState } from "react";
@@ -8,11 +8,13 @@ import {
   GBoxPrice,
   GBoxType,
 } from "src/generated/graphql";
-import { handleApolloError } from "utils/apollo_client";
+import {handleApolloError, onApolloError} from "utils/apollo_client";
 
 import EthersService from "services/blockchain/Ethers";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
 import {ChainNetwork} from "../../utils/blockchain/BlockChain";
+import {GraphQLError} from "graphql";
+import {AppEmitter} from "../../services/emitter";
 
 
 export enum BuyDisabledReason {
@@ -72,9 +74,33 @@ export function useBuyBox(
     buyBtnDisabledReason = BuyDisabledReason.WhitelistNotRegistered
   }
 
+  //  TODO: Check allowance and get approval for the contract
+
 
   const txtAmount = useInput("");
   const [err, setErr] = useState<string | undefined>();
+
+
+  const onBuyBoxError = (e: GraphQLError) => {
+    // show message and handle
+    console.log('{onBuyBoxError} e: ', e);
+    const {message: msg} = e;
+    if (msg === "Allowance not enough") {
+      message.error(msg, 6)
+      // TODO: call approval again
+      alert("connect metamask to get approval")
+    } else {
+      message.error(msg, 6)
+      // AppEmitter.emit('showConnectWalletModal')
+    }
+  };
+
+  const onAuthError = (e: GraphQLError) => {
+    // show connect wallet modal and message
+    console.log('{onAuthError} e: ', e);
+    message.error('Error: Unauthorized: Please connect and verify your wallet first!', 6)
+    AppEmitter.emit('showConnectWalletModal')
+  }
 
   const onBuyBox = function () {
     if (!isLoggedIn) {
@@ -113,7 +139,7 @@ export function useBuyBox(
     // console.log("round: ", round);
     setErr(undefined);
 
-    console.log('{onBuyBox} input: ', {
+    console.log('==> {onBuyBox} input: ', {
       box_price_uid: boxPrice?.uid,
       round_id: round?.id ?? 0,
       quantity: quantity,
@@ -129,14 +155,22 @@ export function useBuyBox(
       },
     }).catch((err) => {
       // console.log("err: ", err);
-      handleApolloError(err);
+      // handleApolloError(err);
+      onApolloError(
+        err,
+        onBuyBoxError,
+        onAuthError,
+        (e: Error | ServerParseError | ServerError) => {
+          console.error('{onBuyBox.onNetworkError} e: ', e);
+        },
+      )
     });
   };
 
   const onApprove = async function () {
-    if (!ConnectWalletStore_NonReactiveData.web3Provider) {
+    if (!ConnectWalletStore_NonReactiveData.web3Provider || !isLoggedIn) {
       notification["warn"]({
-        message: "Please connect wallet!",
+        message: "Please connect wallet and verify your address!",
       });
       return;
     }
@@ -148,7 +182,7 @@ export function useBuyBox(
     //Todo: get contract address from box price
     const contract_addr = "";
     const currency_addr = ""; // address of token to buy
-    ethersService.requestApproval(contract_addr, currency_addr);
+    return ethersService.requestApproval(contract_addr, currency_addr);
   };
 
   return {

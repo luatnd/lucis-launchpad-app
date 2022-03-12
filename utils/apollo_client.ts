@@ -3,7 +3,7 @@ import {
   createHttpLink,
   InMemoryCache,
   from,
-  ApolloError,
+  ApolloError, ServerParseError, ServerError,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
@@ -13,6 +13,7 @@ import {
   getLocalAuthInfo,
 } from "../components/Auth/AuthLocal";
 import {message as antd_message, notification} from "antd";
+import {GraphQLError} from "graphql";
 //   import { CachePersistor } from 'apollo-cache-persist';
 
 // Cache implementation
@@ -145,4 +146,28 @@ export function handleApolloError(error: ApolloError) {
   if (networkError) {
     console.log(`[Network error]: ${networkError}`);
   }
+}
+
+export function onApolloError(
+  error: ApolloError,
+  onError: (e: GraphQLError) => void,
+  onAuthError: (e: GraphQLError) => void,
+  onNetworkError: (e: Error | ServerParseError | ServerError) => void,
+) {
+  const {graphQLErrors, networkError} = error;
+
+  if (networkError) {
+    onNetworkError(networkError)
+    return;
+  }
+
+  if (graphQLErrors)
+    graphQLErrors.forEach((e) => {
+      const {message, locations, path} = e;
+      if (message === "Unauthorized") {
+        onAuthError(e)
+      } else {
+        onError(e)
+      }
+    });
 }

@@ -3,7 +3,8 @@ import TitleSection from "components/TitleNameSection";
 import s from "../UpComingPage/UpcomingCampaign.module.sass";
 import { useOpening } from "./useOpening";
 import { useEffect } from "react";
-import { GBoxType } from "../../../src/generated/graphql";
+import { GBoxCampaign, GBoxType } from "../../../src/generated/graphql";
+import { Col, Row } from "antd";
 type Props = {};
 
 export default function Opening(props: Props) {
@@ -13,17 +14,47 @@ export default function Opening(props: Props) {
     return resultOpening;
   }, [resultOpening]);
 
-  resultOpening?.openingBoxCampaign.map((e: any, i: any) => {
-    const soldAmount = e.boxTypes?.sold_amount;
-    // console.log(soldAmount);
-  });
-
-  const handleTest = () => {};
-
   return (
     <section className="lucis-container">
       <TitleSection text="Opening campaign" />
-      <div className={s.blockCard}>
+      <Row gutter={[30, 30]}>
+        {resultOpening?.openingBoxCampaign.map((e: GBoxCampaign, index: number) => {
+          const soldAmount =
+            e.boxTypes &&
+            e.boxTypes
+              .map((item: GBoxType) => item.sold_amount)
+              .reduce((prev: number, curr: number) => prev + curr, 0);
+
+          const totalAmount =
+            e.boxTypes &&
+            e.boxTypes
+              .map((item: GBoxType) => item.total_amount)
+              .reduce((prev: number, curr: number) => prev + curr, 0);
+
+          const soldOutResult = soldAmount === totalAmount ? true : false;
+          return (
+            <Col key={index} xs={24} md={12} lg={8}>
+              <CardItem
+                soldOutResult={soldOutResult}
+                srcGame={e.cover_img}
+                statusTime={"Opening"}
+                time={e.end}
+                nameGame={e?.game?.name}
+                styleBg={true}
+                title={e?.name}
+                description={e?.game.desc}
+                srcWeb={e?.game.website}
+                srcFb={e?.game.facebook}
+                srcTele={e?.game.telegram}
+                srcDiscord={e?.game.discord}
+                srcTwitter={e?.game.twitter}
+                id={e?.uid}
+              />
+            </Col>
+          );
+        })}
+      </Row>
+      {/* <div className={s.blockCard}>
         {resultOpening?.openingBoxCampaign.map((e: any, i: number) => {
           const soldAmount = e.boxTypes
             .map((item: GBoxType) => item.sold_amount)
@@ -42,7 +73,6 @@ export default function Opening(props: Props) {
               srcGame={e.cover_img}
               statusTime={"Opening"}
               time={e.end}
-              inTime={e.inTime}
               nameGame={e?.game?.name}
               styleBg={true}
               title={e?.name}
@@ -56,7 +86,7 @@ export default function Opening(props: Props) {
             />
           );
         })}
-      </div>
+      </div> */}
     </section>
   );
 }

@@ -24,14 +24,16 @@ import {useWindowSize} from "../../hooks/useWindowSize";
 function DetailCampaign() {
   const router = useRouter();
   const { slug } = router.query;
-  // const id = slug?.length ? slug[0] : undefined;
-  const box_campaign_uid = "cl02lx5or0000doo018d7n2zz"; // TODO: ifx demo id
+  const id = slug?.length ? slug[0] : undefined;
+  // console.log(id);
+
+  // const box_campaign_uid = "cl02lx5or0000doo018d7n2zz"; // TODO: ifx demo id
   const [timeCountDown, setTimeCountDown] = useState(0);
   const [textNow, setTextNow] = useState("");
   const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [widthScreen, height] = useWindowSize();
 
-  const { boxCampaign, loading, error, isInWhitelist } = useDetailCampaign({ box_campaign_uid });
+  const { boxCampaign, isInWhitelist } = useDetailCampaign({ id });
 
   return (
     <>
@@ -48,7 +50,7 @@ function DetailCampaign() {
                   end={boxCampaign?.end}
                   setTimeCountDown={setTimeCountDown}
                   setTextNow={setTextNow}
-                  boxCampaignUid={box_campaign_uid}
+                  boxCampaignUid={id ?? ""}
                   tzid={tzid}
                   widthScreen={widthScreen}
                 />

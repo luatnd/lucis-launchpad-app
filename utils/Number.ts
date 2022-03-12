@@ -17,15 +17,31 @@ export function currency(num: number, decimal = 0): string {
 
 export function format(num: number, decimal = 0, option?: NumberFormatOption): string {
   // format with thousand separator
-  const separator = option?.separator ?? ','
   let format = '0,0';
   if (decimal > 0) {
+    // 0,0.00
     format += '.'.padEnd(decimal + 1, '0')
   }
+
+  if (option?.no_round) {
+    throw new Error("option.no_round was not implemented")
+  }
+
   let s = numeral(num).format(format);
 
   if (option) {
+    if (option.zero_trim) {
+      s = s.replace(/0+$/, '')
+    }
+
+    if (option.separator) {
+      s = s.replace(/,/g, option.separator)
+    }
+
     // remove redundant 0 character
+    if (option.sign && num > 0) {
+      s = '+' + s
+    }
   }
 
   return s

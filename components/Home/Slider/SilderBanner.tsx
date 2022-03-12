@@ -1,4 +1,6 @@
+import { calculateCampaignStatus } from "components/campaign/CampaignHelper";
 import { Maybe } from "graphql/jsutils/Maybe";
+import Link from "next/link";
 import { useCountDown } from "utils/Time";
 import s from "./SilderBanner.module.sass";
 type Props = {
@@ -13,13 +15,16 @@ export default function ItemSliderBanner(props: Props) {
   const { status, time, logo, desc, href } = props;
   const timer = useCountDown(time);
 
+  const statusStyle =
+    status === "OPENING" ? s.opening : status === "CLOSED" ? s.closed : s.upcoming;
+
   return (
     <div className={`${s.contentItemSilder} lucis-container`}>
       <div className={s.contentDetail}>
         {/* <div className={s.bgItemSlider}></div> */}
         <div className={s.headingItem}>
           <div className={s.contentItemTop}>
-            <div className={s.statusGame}>{status}</div>
+            <div className={statusStyle}>{status}</div>
             <div className={s.Time}>{`${timer.days}d ${timer.hours}h ${timer.minutes}m ${
               timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
             }s`}</div>
@@ -50,9 +55,10 @@ export default function ItemSliderBanner(props: Props) {
                 <img src="/assets/Banner/svg/win.svg" alt="" />
               </a>
             </div>
-            <a href={href} className={s.btnMore}>
-              MORE DETAIL
-            </a>
+
+            <Link href="/ino" passHref>
+              <a className={s.btnMore}>MORE DETAIL</a>
+            </Link>
           </div>
         </div>
         <div className={s.imGame}>

@@ -6,16 +6,19 @@ import Web3Modal from "web3modal";
 
 import {to_hex_str} from 'utils/String'
 import {isClient} from "../../utils/DOM";
+import {ChainNetwork} from "../../utils/blockchain/BlockChain";
 
 interface IConnectWalletStore {
   address?: string
   network?: Network
+  chainNetwork?: ChainNetwork
 }
 
 class ConnectWalletStore implements IConnectWalletStore {
   // common
   private _address?: string
   private _network?: Network
+  private _chainNetwork?: ChainNetwork
 
   // near
   // ..
@@ -39,6 +42,14 @@ class ConnectWalletStore implements IConnectWalletStore {
     this._network = value;
   }
 
+  get chainNetwork(): ChainNetwork | undefined {
+    return this._chainNetwork;
+  }
+
+  set chainNetwork(value: ChainNetwork | undefined) {
+    this._chainNetwork = value;
+  }
+
   constructor() {
     makeAutoObservable(this)
   }
@@ -49,11 +60,13 @@ class ConnectWalletStore implements IConnectWalletStore {
   setState(s: IConnectWalletStore) {
     s.address && (this._address = s.address)
     s.network && (this._network = s.network)
+    s.chainNetwork && (this._chainNetwork = s.chainNetwork)
   }
 
   resetStates() {
     this._address = undefined;
     this._network = undefined;
+    this._chainNetwork = undefined;
   }
 }
 

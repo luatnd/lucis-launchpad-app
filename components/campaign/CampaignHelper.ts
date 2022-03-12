@@ -1,5 +1,6 @@
 import {
   BoxCampaign,
+  BoxCampaignsStatus,
   GBoxCampaign,
   GBoxCampaignRound,
 } from "../../src/generated/graphql";
@@ -11,6 +12,9 @@ export const upcommingVirtualRound: GBoxCampaignRound = {
   end: "",
   is_whitelist: false,
   require_whitelist: false,
+
+  // @ts-ignore
+  is_abstract_round: true,
 };
 
 export const closedVirtualRound: GBoxCampaignRound = {
@@ -20,6 +24,9 @@ export const closedVirtualRound: GBoxCampaignRound = {
   end: "",
   is_whitelist: false,
   require_whitelist: false,
+
+  // @ts-ignore
+  is_abstract_round: true,
 };
 
 export function getCurrentCampaignRound(c: GBoxCampaign): GBoxCampaignRound {
@@ -41,6 +48,20 @@ export function getCurrentCampaignRound(c: GBoxCampaign): GBoxCampaignRound {
   }
 
   return currentRound;
+}
+
+export function calculateCampaignStatus(c: GBoxCampaign) {
+  const now = new Date();
+
+  if (now < new Date(c.opening_at)) {
+    return BoxCampaignsStatus.Upcoming;
+  } else if (new Date(c.end) < now) {
+    return BoxCampaignsStatus.Closed;
+  } else if (new Date(c.opening_at) <= now) {
+    return BoxCampaignsStatus.Opening;
+  } else {
+    throw new Error("Cannot determine status");
+  }
 }
 
 export function getOriginCurrentCampaignRound(c: GBoxCampaign) {

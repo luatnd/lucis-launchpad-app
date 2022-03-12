@@ -1,10 +1,17 @@
 import React, { useMemo, useState } from "react";
-import { Button, Form, InputNumber, notification, Progress } from "antd";
+import {Button, Form, InputNumber, notification, Progress, Tooltip} from "antd";
 import s from "../Box/Box.module.sass";
-import { GBoxType, GCurrency, GBoxPrice, GBoxCampaignRound } from "src/generated/graphql";
+import {
+  GBoxType,
+  GCurrency,
+  GBoxPrice,
+  GBoxCampaignRound,
+} from "src/generated/graphql";
 import { useInput } from "hooks/common/use_input";
-import { useBuyBox } from "hooks/campaign/use_buy_box";
+import {BuyDisabledReason, useBuyBox} from "hooks/campaign/use_buy_box";
 import { handleApolloError } from "utils/apollo_client";
+import {observer} from "mobx-react-lite";
+import ConnectWalletStore from "../../../Auth/ConnectWalletStore";
 
 type Props = {
   boxType: GBoxType;
@@ -13,13 +20,25 @@ type Props = {
   onBuyBox?: () => void;
 };
 
-const BoxTypeCard = (props: Props) => {
+const BoxTypeCard = observer((props: Props) => {
   const { boxType, round, isInWhitelist } = props;
-  const { loading, txtAmount, canBuyBox, err, onBuyBox, requireWhitelist, boxPrice } = useBuyBox(
-    boxType,
-    round,
-    isInWhitelist
-  );
+  const { chainNetwork } = ConnectWalletStore;
+  const {
+    loading,
+    txtAmount,
+    isSaleRound,
+    buyFormEnabled,
+    buyFormDisabledReason,
+    err,
+    onBuyBox,
+    requireWhitelist,
+    boxPrice,
+  } = useBuyBox(boxType, round, isInWhitelist, chainNetwork);
+
+  const buyFormDisabledMsg = {
+    [BuyDisabledReason.NoBoxLeft]: 'Sold out',
+    [BuyDisabledReason.WhitelistNotRegistered]: 'This box is for whitelisted user only',
+  }
 
   return (
     <div>
@@ -58,7 +77,11 @@ const BoxTypeCard = (props: Props) => {
             dangerouslySetInnerHTML={{ __html: boxType.series_content ?? "" }}
           />
 
-          {canBuyBox && (
+          {/*
+          - Show buy form when sale open
+          - Form was disabled if user have not meet buy condition
+          */}
+          {isSaleRound && (
             <Form className={s.buyForm}>
               <div className="flex justify-between text-white font-bold text-24px mb-2">
                 <Form.Item>
@@ -80,9 +103,14 @@ const BoxTypeCard = (props: Props) => {
                 </span>
               )}
               <div className="flex justify-between text-white items-center font-bold text-24px mb-2">
-                <Button className={s.submit} onClick={onBuyBox}>
-                  BUY
-                </Button>
+                <Tooltip placement="top" title={buyFormDisabledReason ? buyFormDisabledMsg[buyFormDisabledReason] : ''}>
+                  <Button
+                    className={s.submit} onClick={onBuyBox}
+                    disabled={!buyFormEnabled}
+                  >
+                    BUY
+                  </Button>
+                </Tooltip>
                 {requireWhitelist && <span>Whitelist only</span>}
               </div>
 
@@ -94,7 +122,10 @@ const BoxTypeCard = (props: Props) => {
             <div className="flex justify-between items-center">
               <span>Price per 1 box:</span>
               <div className="flex items-center gap-1">
-                <img src={boxPrice?.currency.icon ?? ""} width="40px" height="40px" alt="" />
+                <img
+                  src={boxPrice?.currency.icon ?? "/assets/crypto/ico-question-mark.png"}
+                  width="40px" height="40px" alt=""
+                />
                 <span>
                   {boxPrice?.price} {boxPrice?.currency.symbol}
                 </span>
@@ -111,6 +142,6 @@ const BoxTypeCard = (props: Props) => {
       </div>
     </div>
   );
-};
+});
 
 export default BoxTypeCard;

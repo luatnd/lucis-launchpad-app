@@ -1,3 +1,4 @@
+import { calculateCampaignStatus } from "components/campaign/CampaignHelper";
 import ItemSliderBanner from "components/Home/Slider/SilderBanner";
 import React, { Component, useRef } from "react";
 import Slider from "react-slick";
@@ -29,10 +30,12 @@ const SimpleSlider = (props: Props) => {
               return `/campaign/${e.uid}/${slugify(e.name)}`;
             };
 
+            const status = calculateCampaignStatus(e);
+
             return (
               <ItemSliderBanner
                 key="i"
-                status={e.status ?? "UPCOMING"}
+                status={status}
                 time={e.end}
                 logo={e.game.logo}
                 desc={e.desc}

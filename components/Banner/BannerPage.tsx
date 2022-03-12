@@ -1,16 +1,11 @@
-import SimpleSlider from "./SliderBanner";
-import s from "./Banner.module.sass";
-import MainSlider from "./[temp]Slider/MainSlider";
-
-import SubSlider from "./[temp]Slider/SubSlider";
-import { useRef, useState } from "react";
 import Link from "next/link";
+import { useState } from "react";
+import s from "./Banner.module.sass";
+import SimpleSlider from "./SliderBanner";
 import { useSpotlight } from "./useSpotlight";
-import { devNull } from "os";
+import SubSlider from "./[temp]Slider/SubSlider";
 
-type Props = {};
-
-export default function Banner(props: Props) {
+export default function Banner() {
   const { resultSpotlight } = useSpotlight();
   const [slideIndex, setSlideIndex] = useState(0);
 

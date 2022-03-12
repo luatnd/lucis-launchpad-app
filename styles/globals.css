@@ -528,7 +528,7 @@ body .backdrop-blur-sm {
 
 .ant-popconfirm .ant-popover-content .ant-popover-inner {
   background: rgb(12, 6, 81);
-  backdrop-filter: none;
+  backdrop-filter: opacity(1);
 }
 
 /*.ant-input-number-input {*/

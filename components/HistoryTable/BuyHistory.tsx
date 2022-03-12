@@ -18,13 +18,6 @@ const BuyHistory = ({ id, title }: Props) => {
     title: title,
   };
 
-  if (loading) {
-    return <>Loading User Buy History...</>;
-  }
-  if (error) {
-    return null;
-  }
-
   if (id) {
     tableProps = {
       ...tableProps,

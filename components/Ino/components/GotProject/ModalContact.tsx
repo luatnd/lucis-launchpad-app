@@ -21,13 +21,8 @@ const ModalContact = (props: Props) => {
         <p>
           Feel free to discuss more with us, just leave your content here and we'll reach you soon.
         </p>
-        <p>We're mainly opening for Investors, scholars.</p>
-        <p>
-          We also open to discuss with every who wanna become developer and ambassadors, or be a
-          part of our team.
-        </p>
 
-        <p>Please send us the content in Telegram by clicking the bellow button.</p>
+        <p>Please send us the content in Telegram by clicking the below button.</p>
         <p>The content might follow this template:</p>
 
         <div
@@ -39,9 +34,9 @@ const ModalContact = (props: Props) => {
             fontSize: "smaller",
           }}
         >
-          From: Alexander Geogre
+          From: Alexander George
           <br />
-          Proposal: Become an Investor
+          Proposal: Apply for INO
           <br />
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non quam id libero pulvinar
           accumsan at eu est. Nulla faucibus nisi eget mattis cursus.

@@ -1,7 +1,11 @@
 import { gql, useQuery } from "@apollo/client";
 
 export function useDetailCampaign({ box_campaign_uid }: any) {
-  const { loading, error, data } = useQuery(DETAIL_CAMPAIGN);
+  const { loading, error, data } = useQuery(DETAIL_CAMPAIGN, {
+    variables: {
+      box_campaign_uid,
+    },
+  });
 
   const {
     loading: loadingOpening,
@@ -25,16 +29,10 @@ export function useDetailCampaign({ box_campaign_uid }: any) {
 }
 
 const DETAIL_CAMPAIGN = gql`
-  query {
+  query ($box_campaign_uid: String!) {
     campaignDetail(
-      where: { uid: "cl02lx5or0000doo018d7n2zz" }
-      include: {
-        game: true
-        boxTypes: true
-        boxPrices: true
-        chain: true
-        currency: true
-      }
+      where: { uid: $box_campaign_uid }
+      include: { game: true, boxTypes: true, boxPrices: true, chain: true, currency: true }
     ) {
       uid
       game_uid
@@ -90,8 +88,8 @@ const DETAIL_CAMPAIGN = gql`
 `;
 
 const IS_IN_WHITE_LIST = gql(`
-    query { 
-        isInWhitelist(box_campaign_uid: "cl02lx5or0000doo018d7n2zz") 
+    query ($box_campaign_uid: String!) { 
+        isInWhitelist(box_campaign_uid: $box_campaign_uid) 
     }
 `);
 

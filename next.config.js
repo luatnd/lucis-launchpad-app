@@ -47,6 +47,29 @@ module.exports = withAntdLess({
     const rules = config.module.rules;
     rules.push(stringReplaceLoaderRule)
 
+    // Show testnet text on the header
+    const git_branch = require('child_process')
+      .execSync('cat .git/HEAD')
+      // .execSync('git branch --show-current')
+      .toString().trim();
+    rules.push({
+      test: /components\/Header\.tsx$/,
+      loader: 'string-replace-loader',
+      options: {
+        search: '"IS_TESTNET"',
+        replace: (git_branch === 'ref: refs/heads/trial').toString(),
+      },
+    })
+    rules.push({
+      test: /components\/Menu\/MenuMobile\.tsx$/,
+      loader: 'string-replace-loader',
+      options: {
+        search: '"IS_TESTNET"',
+        replace: (git_branch === 'ref: refs/heads/trial').toString(),
+      },
+    })
+
+
 
     // Important: return the modified config
     return config

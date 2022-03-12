@@ -105,10 +105,11 @@ export enum BoxCampaignsStatus {
 
 export type BoxContract = {
   __typename?: 'BoxContract';
+  _count: BoxContractCount;
   address: Scalars['String'];
   admin_address?: Maybe<Scalars['String']>;
   admin_prv_key?: Maybe<Scalars['String']>;
-  box_campaign_uid?: Maybe<Scalars['String']>;
+  boxPrices?: Maybe<Array<BoxPrice>>;
   chain: Chain;
   chain_symbol: ChainSymbol;
   created_at: Scalars['DateTime'];
@@ -119,12 +120,17 @@ export type BoxContract = {
   updated_at: Scalars['DateTime'];
 };
 
+export type BoxContractCount = {
+  __typename?: 'BoxContractCount';
+  boxPrices: Scalars['Int'];
+};
+
 export type BoxPrice = {
   __typename?: 'BoxPrice';
   boxType: BoxType;
   box_type_uid: Scalars['String'];
-  chain: Chain;
-  chain_symbol: ChainSymbol;
+  contract?: Maybe<BoxContract>;
+  contract_address?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   currency: Currency;
   currency_uid: Scalars['String'];
@@ -165,7 +171,6 @@ export type BuyBoxInput = {
 export type Chain = {
   __typename?: 'Chain';
   _count: ChainCount;
-  boxPrices?: Maybe<Array<BoxPrice>>;
   chain_id?: Maybe<Scalars['Int']>;
   created_at: Scalars['DateTime'];
   currencies?: Maybe<Array<Currency>>;
@@ -180,7 +185,6 @@ export type Chain = {
 
 export type ChainCount = {
   __typename?: 'ChainCount';
-  boxPrices: Scalars['Int'];
   currencies: Scalars['Int'];
   nftBox: Scalars['Int'];
 };
@@ -305,12 +309,22 @@ export type GBoxCampaignRound = {
   start: Scalars['String'];
 };
 
+export type GBoxContract = {
+  __typename?: 'GBoxContract';
+  address: Scalars['String'];
+  chain_symbol: ChainSymbol;
+  created_at: Scalars['DateTime'];
+  currency_symbol?: Maybe<Scalars['String']>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+};
+
 export type GBoxPrice = {
   __typename?: 'GBoxPrice';
   boxType: BoxType;
   box_type_uid: Scalars['String'];
-  chain: GChain;
-  chain_symbol: ChainSymbol;
+  contract?: Maybe<GBoxContract>;
+  contract_address?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   currency: GCurrency;
   currency_uid: Scalars['String'];
@@ -325,7 +339,9 @@ export type GBoxPriceHistory = {
   box_type_uid: Scalars['String'];
   chain_icon?: Maybe<Scalars['String']>;
   chain_name?: Maybe<Scalars['String']>;
-  chain_symbol: ChainSymbol;
+  chain_symbol?: Maybe<ChainSymbol>;
+  contract?: Maybe<BoxContract>;
+  contract_address?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   currency_icon?: Maybe<Scalars['String']>;
   currency_name?: Maybe<Scalars['String']>;
@@ -364,18 +380,6 @@ export type GBoxTypeHistory = {
   thumb_img?: Maybe<Scalars['String']>;
   total_amount: Scalars['Int'];
   uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-};
-
-export type GChain = {
-  __typename?: 'GChain';
-  chain_id?: Maybe<Scalars['Int']>;
-  created_at: Scalars['DateTime'];
-  icon?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  rpc_url?: Maybe<Scalars['String']>;
-  status?: Maybe<Scalars['Boolean']>;
-  symbol: ChainSymbol;
   updated_at: Scalars['DateTime'];
 };
 
@@ -549,9 +553,7 @@ export type QueryCampaignDetailArgs = {
 
 export type QueryGetAllowanceAmountArgs = {
   address: Scalars['String'];
-  boxCampaignUid: Scalars['String'];
-  chain: ChainSymbol;
-  currencyUid: Scalars['String'];
+  boxPriceUid: Scalars['String'];
 };
 
 

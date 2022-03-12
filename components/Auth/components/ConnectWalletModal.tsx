@@ -17,7 +17,7 @@ import { AppEmitter } from "../../../services/emitter";
 
 type Props = {};
 export default observer(function ConnectWalletModal(props: Props) {
-  const DEBUG = true;
+  const DEBUG = false;
   DEBUG && console.log('{ConnectWalletModal} render: ');
 
   const [network, setNetwork] = useState<ChainNetwork | null>(null);
@@ -262,15 +262,6 @@ export default observer(function ConnectWalletModal(props: Props) {
     const address = await signer.getAddress()
     const connected_network = await web3Provider.getNetwork()
 
-    // Save to store
-    // ConnectWalletStore.network = connected_network;
-    // ConnectWalletStore.address = address;
-    ConnectWalletStore.setState({
-      network: connected_network,
-      address: address,
-    });
-    DEBUG && console.log('{ConnectWalletStore.handleConnectThen} address: ', address);
-
     /**
      * In case of user connected to BSC network before
      * Then user choose ETH network => Cancel to switch to network => Still on BSC
@@ -281,6 +272,16 @@ export default observer(function ConnectWalletModal(props: Props) {
       DEBUG && console.log('{handleConnectThen} setNetwork: ', n);
       setNetwork(n)
     }
+
+    // Save to store
+    // ConnectWalletStore.network = connected_network;
+    // ConnectWalletStore.address = address;
+    ConnectWalletStore.setState({
+      network: connected_network,
+      address: address,
+      chainNetwork: n,
+    });
+    DEBUG && console.log('{ConnectWalletStore.handleConnectThen} address: ', address);
 
     // If connect failed then => set wallet to null
     // If connect success then => set wallet to connected wallet

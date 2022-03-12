@@ -421,6 +421,7 @@ body .backdrop-blur-sm {
   );
 }
 .ant-modal-root .ant-modal-content {
+  /*background: rgb(47 33 102);*/
   background: linear-gradient(
     126.08deg,
     rgba(255, 255, 255, 0.3) 13.84%,
@@ -522,10 +523,18 @@ body .backdrop-blur-sm {
   border-radius: 10px;
   color: white;
 }
-
-.ant-input-number-input {
-  background-color: none !important;
+.ant-popover-inner-content a, div {
+  color: white
 }
+
+.ant-popconfirm .ant-popover-content .ant-popover-inner {
+  background: rgb(12, 6, 81);
+  backdrop-filter: opacity(1);
+}
+
+/*.ant-input-number-input {*/
+/*  background-color: transparent !important;*/
+/*}*/
 
 ::-webkit-scrollbar {
   display: none;

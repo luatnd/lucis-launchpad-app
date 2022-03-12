@@ -8,8 +8,10 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { isClient } from "./DOM";
-import AuthService from "../components/Auth/AuthService";
-import { getLocalAuthInfo } from "../components/Auth/AuthLocal";
+import {
+  clearLocalAuthInfo,
+  getLocalAuthInfo,
+} from "../components/Auth/AuthLocal";
 import { notification } from "antd";
 //   import { CachePersistor } from 'apollo-cache-persist';
 
@@ -60,12 +62,26 @@ const httpLink = createHttpLink({
 
 let countGqlErrNetwork = 0;
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
+  if (graphQLErrors) {
     graphQLErrors.forEach(({ message, locations, path }) => {
       console.log(
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
       );
+      if (message === "Unauthorized") {
+        // Clean auth info in case of auth error
+        // Might be JWT is expired
+        // We do clear info only if there was a logged-in user
+        if (_getAuthToken()) {
+          clearLocalAuthInfo();
+        }
+
+        // notification.error({
+        //   message: "Unauthorized",
+        //   description: "Please connect your wallet again",
+        // });
+      }
     });
+  }
 
   if (networkError) {
     console.log(`[Network error]: ${networkError}`);
@@ -75,13 +91,8 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
-  // TODO: Get token from auth service
-  // let token = "";
-  // if (!!window) {
-  //   token = localStorage.getItem("token") ?? "";
-  // }
   const token = _getAuthToken();
-  console.log("{apolo.authLink} token: ", token);
+  // console.log("{apolo.authLink} token: ", token);
 
   // return the headers to the context so httpLink can read them
   return {
@@ -100,19 +111,17 @@ const client = new ApolloClient({
 
 export default client;
 
+/**
+ * User for external error handling
+ */
 export function handleApolloError(error: ApolloError) {
   const { graphQLErrors, networkError } = error;
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path }) => {
       if (message === "Unauthorized") {
-        // when token expired or die, localStorage clear
-        // localStorage.clear();
-
-        // redirect to login page
-        // window.location.href = "/auth/login";
         notification["error"]({
           message: "Unauthorized",
-          description: "Please connect wallet before!",
+          description: "Please connect wallet first!",
         });
       } else {
         console.log(

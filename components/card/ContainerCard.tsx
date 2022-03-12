@@ -23,8 +23,9 @@ type Props = {
 };
 
 export default function CardItem(props: Props) {
-  const { soldOutResult, time, statusTime, title, description, id } = props;
-  // console.log(title);
+  const { soldOutResult, time, statusTime, title, description, id, srcFb } = props;
+
+  // console.log(srcFb);
 
   const typeTime =
     statusTime == "UpComing"
@@ -133,6 +134,7 @@ export default function CardItem(props: Props) {
           <h5>{props.nameGame}</h5>
           <div className={s.text}>{handleDesc}</div>
         </div>
+
         <div className={s.btnDetail}>
           <Link href={getCampaignDetailUrl()} passHref={true}>
             <GradientLinkButton type={1} className={s.styleBtn}>
@@ -140,20 +142,27 @@ export default function CardItem(props: Props) {
             </GradientLinkButton>
           </Link>
         </div>
+
         <div className={s.groupIcon}>
-          <a href={props.srcWeb}>
+          {/* <a href={props.srcWeb}> */}
+          <a href="https://lucis.network" target="_blank" rel="noopener noreferrer">
             <img src="/assets/UpComing/win.svg" alt="" />
           </a>
-          <a href={props.srcFb}>
+          {/* <a href="https://www.facebook.com/lucistv.news"> */}
+          <a href="https://www.facebook.com/lucistv.news" target="_blank" rel="noopener noreferrer">
             <img src="/assets/UpComing/fb.png" alt="" />
           </a>
-          <a href={props.srcDiscord}>
+          <a
+            href="https://discord.com/channels/911921072830574603/926398655093702666"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <img src="/assets/UpComing/dis.svg" alt="" />
           </a>
-          <a href={props.srcTele}>
+          <a href="https://t.me/sankeonft" target="_blank" rel="noopener noreferrer">
             <img src="/assets/UpComing/tele.svg" alt="" />
           </a>
-          <a href={props.srcTwitter}>
+          <a href="https://www.tiktok.com/@lucistvv" target="_blank" rel="noopener noreferrer">
             <img src="/assets/UpComing/tw.svg" alt="" />
           </a>
         </div>

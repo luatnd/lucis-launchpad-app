@@ -1,18 +1,26 @@
 import { gql, useQuery } from "@apollo/client";
 
-export function useDetailCampaign() {
+export function useDetailCampaign({ box_campaign_uid }: any) {
   const { loading, error, data } = useQuery(DETAIL_CAMPAIGN);
+
   const {
     loading: loadingOpening,
     error: errorOpening,
     data: dataIsInWhiteList,
   } = useQuery(IS_IN_WHITE_LIST);
 
+  const {
+    loading: loadingWhiteListRegistered,
+    error: errorWhiteListRegistered,
+    data: dataWhiteListRegistered,
+  } = useQuery(WHITE_LIST_REGISTERED, { variables: { box_campaign_uid } });
+
   return {
     loading,
     error,
     boxCampaign: data?.campaignDetail,
     isInWhitelist: dataIsInWhiteList?.isInWhitelist ?? false,
+    dataWhiteListRegistered,
   };
 }
 
@@ -44,6 +52,17 @@ const DETAIL_CAMPAIGN = gql`
         start
         end
       }
+      game {
+        name
+        desc
+        desc_team
+        trailer_video
+        facebook
+        twitter
+        telegram
+        youtube
+        discord
+      }
       status
       start
       end
@@ -59,10 +78,10 @@ const DETAIL_CAMPAIGN = gql`
         prices {
           uid
           price
-          chain_symbol
           currency {
             symbol
             icon
+            chain_symbol
           }
         }
       }
@@ -74,4 +93,13 @@ const IS_IN_WHITE_LIST = gql(`
     query { 
         isInWhitelist(box_campaign_uid: "cl02lx5or0000doo018d7n2zz") 
     }
+`);
+
+const WHITE_LIST_REGISTERED = gql(`
+  query getRegisteredWhiteList($box_campaign_uid: String!){
+    registeredWhitelist(box_campaign_uid: $box_campaign_uid){
+      registered
+      limit
+    }
+  }
 `);

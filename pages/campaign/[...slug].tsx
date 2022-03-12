@@ -16,6 +16,7 @@ import s from "./detail.module.sass";
 import { useDetailCampaign } from "../../hooks/campaign/useDetailCampaign";
 import BoxCard from "../../components/campaign/components/Box/Box";
 import SiteMap from "components/campaign/components/SiteMap/SiteMap";
+import {useWindowSize} from "../../hooks/useWindowSize";
 
 /**
  * Match all route: /campaign/....
@@ -23,19 +24,14 @@ import SiteMap from "components/campaign/components/SiteMap/SiteMap";
 function DetailCampaign() {
   const router = useRouter();
   const { slug } = router.query;
-  const id = slug?.length ? slug[0] : undefined;
+  // const id = slug?.length ? slug[0] : undefined;
+  const box_campaign_uid = "cl02lx5or0000doo018d7n2zz"; // TODO: ifx demo id
   const [timeCountDown, setTimeCountDown] = useState(0);
+  const [textNow, setTextNow] = useState("");
+  const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const [widthScreen, height] = useWindowSize();
 
-  const { boxCampaign, loading, error, isInWhitelist } = useDetailCampaign();
-  console.log("boxCampaign: ", boxCampaign);
-
-  if (loading) {
-    return <>Loading</>;
-  }
-
-  if (error) {
-    return <>Error</>;
-  }
+  const { boxCampaign, loading, error, isInWhitelist } = useDetailCampaign({ box_campaign_uid });
 
   return (
     <>
@@ -51,29 +47,29 @@ function DetailCampaign() {
                   start={boxCampaign?.start}
                   end={boxCampaign?.end}
                   setTimeCountDown={setTimeCountDown}
-                  isInWhitelist={isInWhitelist}
+                  setTextNow={setTextNow}
+                  boxCampaignUid={box_campaign_uid}
+                  tzid={tzid}
+                  widthScreen={widthScreen}
                 />
               )}
-              <CountDown timeCountDown={timeCountDown} />
-              {!!boxCampaign && (
-                <BoxCard
-                  boxCampaign={boxCampaign}
-                  isInWhitelist={isInWhitelist}
-                />
-              )}
+              {textNow.length > 0 && <CountDown timeCountDown={timeCountDown} textNow={textNow} />}
+              {!!boxCampaign && <BoxCard boxCampaign={boxCampaign} isInWhitelist={isInWhitelist} />}
               <div className="container">
-                <BuyHistory
-                  id={"cl02lx5or0000doo018d7n2zz"}
-                  title="recently bought"
-                />
+                <BuyHistory id={"cl02lx5or0000doo018d7n2zz"} title="recently bought" />
               </div>
             </TabPane>
             <TabPane tab="RULE" key="2">
-              hello rule
+              <div className="lucis-container mt-[40px!important]">
+                {boxCampaign?.rules && boxCampaign?.rules.substring(0, 8) !== "https://" ?
+                    (<iframe srcDoc={boxCampaign?.rules} width='100%'></iframe>) :
+                    (<iframe src={boxCampaign?.rules} width='100%'></iframe>)
+                }
+              </div>
             </TabPane>
             <TabPane tab="ABOUT PROJECT" key="3">
-              <Trailer />
-              <Team />
+              <Trailer game={boxCampaign?.game} />
+              <Team game={boxCampaign?.game} />
             </TabPane>
           </Tabs>
           <Footer />

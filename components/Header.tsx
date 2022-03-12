@@ -58,14 +58,17 @@ export default function Header(props: Props) {
                 <Image src={Logo} alt='logo' priority />
               </a>
             </Link>
+            {"IS_TESTNET" && <p>Testnet</p>}
           </div>
           <nav>
             <ul className='flex justify-between items-center m-0'>
               {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Home</a></li>*/}
               <li>
                 <a
-                  href='#'
-                  onClick={() => router.push('/')}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    router.push('/')
+                  }}
                   className='text-white text-24px leading-28px p-15px'
                 >
                   Home
@@ -74,7 +77,7 @@ export default function Header(props: Props) {
               <li className={s.groundSubMenu}>
                 <a
                   href='#'
-                  onClick={() => scrollAndCloseMenu("#Investors")}
+                  onClick={(e) => e.preventDefault()}
                   className='text-white text-24px leading-28px p-15px'
                 >
                   Guide

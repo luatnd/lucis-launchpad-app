@@ -138,8 +138,12 @@ export default function BoxCard(props: BoxCardProps) {
     <div className="lucis-container mt-[116px]">
       <Row gutter={[24, 50]} className="justify-center">
         {boxTypes.map((e, index) => (
-          <Col key={index}>
-            <BoxTypeCard boxType={e} round={currentRound} isInWhitelist={props.isInWhitelist} />
+          <Col key={index} xs={24} md={12} lg={8}>
+            <BoxTypeCard
+              boxType={e}
+              round={currentRound}
+              isInWhitelist={props.isInWhitelist}
+            />
           </Col>
         ))}
       </Row>

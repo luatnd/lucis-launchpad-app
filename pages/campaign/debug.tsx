@@ -11,7 +11,6 @@ import {
   ChainSymbol,
   GBoxCampaign,
   GBoxType,
-  GChain,
   GGame,
 } from "../../src/generated/graphql";
 
@@ -39,9 +38,6 @@ const CampaignDebug: NextPage = () => {
     name: "Thetan Arena",
     created_at: undefined,
     updated_at: undefined,
-    // _count: {
-    //   boxCampaigns: 0
-    // },
   };
 
   // @ts-ignore
@@ -65,9 +61,10 @@ const CampaignDebug: NextPage = () => {
     // _count: {
     //   prices: 0
     // },
-    uid: "box1_123456789",
-    name: "Test campaign 1",
-    desc: "Common box includes 5 upgradable NFT monsters that can be used in all game modes",
+    "uid": "cl02lx5or0000doo018d7n2zz",
+    "game_uid": "cl02lx5os0001doo0f3oiu144",
+    "name": "Axie box 1",
+    "desc": "Wide variety of game modes: MOBA & Battle Royale, coming with monthly updates and attractive rewards.",
     box_campaign_uid: "cp_12a34f56b89",
     campaign: campaign,
     limit_per_user: 100,
@@ -78,6 +75,7 @@ const CampaignDebug: NextPage = () => {
         currency: {
           symbol: "BUSD",
           chain_symbol: ChainSymbol.Bsc,
+          icon: "https://s2.coinmarketcap.com/static/img/coins/64x64/4687.png",
         },
       },
     ],
@@ -106,35 +104,86 @@ const CampaignDebug: NextPage = () => {
   const box2: GBoxType = {
     ...box1,
     uid: "box1_123456789_2",
-    name: "Test campaign 2",
+    name: "Test box 2",
     thumb_img: "/assets/Box/image109.png",
+    sold_amount: 500,
+    total_amount: 500,
   };
   const box3: GBoxType = {
     ...box1,
     uid: "box1_123456789_3",
-    name: "Test campaign 3",
+    name: "Test box 3",
     thumb_img: "/assets/Box/image110.png",
+    sold_amount: 500,
+    total_amount: 500,
   };
 
   return (
     <>
       <DocHead title={"Draft Page for campaign"} />
-      <div className="lucis-container">
-        <div className={s.containerApp} style={{ paddingTop: 150 }}>
+
+      <div className="lucis-container mt-[116px]">
           <Row gutter={[24, 50]} className="justify-center">
-            <Col>
-              <BoxTypeCard boxType={box1} />
+            <Col xs={24} md={12} lg={8}>
+              <BoxTypeCard
+                boxType={box1}
+                round={{
+                  id: 0,
+                  name: "",
+                  start: new Date().toISOString(),
+                  end: new Date().toISOString(),
+                  is_whitelist: false,
+                  require_whitelist: false,
+                }}
+                isInWhitelist={false}
+              />
             </Col>
-            <Col>
-              <BoxTypeCard boxType={box2} />
+            <Col xs={24} md={12} lg={8}>
+              <BoxTypeCard
+                boxType={box2}
+                round={{
+                  id: 0,
+                  name: "",
+                  start: new Date().toISOString(),
+                  end: new Date().toISOString(),
+                  is_whitelist: false,
+                  require_whitelist: false,
+                }}
+                isInWhitelist={true}
+              />
             </Col>
-            <Col>
-              <BoxTypeCard boxType={box3} />
+            <Col xs={24} md={12} lg={8}>
+              <BoxTypeCard
+                boxType={box3}
+                round={{
+                  id: 0,
+                  name: "",
+                  start: new Date().toISOString(),
+                  end: new Date().toISOString(),
+                  is_whitelist: false,
+                  require_whitelist: true,
+                }}
+                isInWhitelist={false}
+              />
+            </Col>
+            <Col xs={24} md={12} lg={8}>
+              <BoxTypeCard
+                boxType={box3}
+                round={{
+                  id: 0,
+                  name: "",
+                  start: new Date().toISOString(),
+                  end: new Date().toISOString(),
+                  is_whitelist: false,
+                  require_whitelist: true,
+                }}
+                isInWhitelist={true}
+              />
             </Col>
           </Row>
-          <Footer />
-        </div>
       </div>
+
+      <Footer />
     </>
   );
 };

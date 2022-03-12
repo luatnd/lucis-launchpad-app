@@ -12,32 +12,56 @@ import { handleApolloError } from "utils/apollo_client";
 
 import EthersService from "services/blockchain/Ethers";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
+import {ChainNetwork} from "../../utils/blockchain/BlockChain";
+
+
+export enum BuyDisabledReason {
+  SoldOut,
+  WhitelistNotRegistered,
+  NotSaleRound,
+}
 
 export function useBuyBox(
   boxType: GBoxType,
   round: GBoxCampaignRound | undefined,
-  isInWhitelist: boolean | undefined
+  isInWhitelist: boolean | undefined,
+  chainNetwork: ChainNetwork | undefined,
 ) {
   const [buyBox, { data, loading, error }] = useMutation(BUY_BOX_MUT);
 
-  const chainSymbol = ChainSymbol.Bsc;
+  const chainSymbol = chainNetwork;
   const boxPrice: GBoxPrice | undefined =
     (boxType.prices?.length ?? 0) > 0
       ? boxType.prices!.find(
-          (item) => item.currency?.chain_symbol.toLowerCase() === chainSymbol
+          (item) => item.currency.chain_symbol?.toLowerCase() == chainSymbol
         )
       : undefined;
 
-  const requireWhitelist =
-    round?.is_whitelist === false && round?.require_whitelist === true;
-  // can buy box: in buy round + enough box to buy + registered whitelist if need
-  const canBuyBox = useMemo(() => {
-    return (
-      round?.is_whitelist === false &&
-      boxType.total_amount > boxType.sold_amount
-      //   && (requireWhitelist ? registeredWhitelist : true)
-    );
-  }, [boxType, round]);
+  const requireWhitelist = round?.is_whitelist === false && round?.require_whitelist === true;
+
+
+  // can buy box: in buy round + enough box to buy + registered whitelist if need + box left
+  // @ts-ignore
+  const isSaleRound = !round?.is_whitelist && !round?.is_abstract_round;
+
+  let buyBtnDisabledReason: BuyDisabledReason | undefined = undefined;
+  // const buyFormEnabled = isSaleRound
+  //   && boxType.total_amount > boxType.sold_amount
+  //   && (requireWhitelist ? isInWhitelist : true)
+  // ;
+  let buyFormEnabled = true;
+  if (!isSaleRound) {
+    buyFormEnabled = false
+    buyBtnDisabledReason = BuyDisabledReason.NotSaleRound
+  }
+  else if (!(boxType.sold_amount < boxType.total_amount)) {
+    buyFormEnabled = false
+    buyBtnDisabledReason = BuyDisabledReason.SoldOut
+  } else if (!(requireWhitelist ? isInWhitelist : true)) {
+    buyFormEnabled = false
+    buyBtnDisabledReason = BuyDisabledReason.WhitelistNotRegistered
+  }
+
 
   const txtAmount = useInput("");
   const [err, setErr] = useState<string | undefined>();
@@ -53,7 +77,7 @@ export function useBuyBox(
     }
     if (round.require_whitelist === true && !isInWhitelist) {
       notification["error"]({
-        message: "You not register whitelist before!",
+        message: "This box is for whitelisted user only",
       });
       return;
     }
@@ -63,6 +87,13 @@ export function useBuyBox(
       txtAmount.setErr("Quantity must be greater than 0");
       return;
     }
+
+    const maxPerUser = boxType.limit_per_user ?? 100; // default is 100 per user
+    if (quantity > maxPerUser) {
+      txtAmount.setErr(`A user can buy up to ${maxPerUser} boxes only`);
+      return;
+    }
+
     // console.log("round: ", round);
     setErr(undefined);
 
@@ -91,7 +122,6 @@ export function useBuyBox(
     const ethersService = new EthersService(
       ConnectWalletStore_NonReactiveData.web3Provider
     );
-    await ethersService.getMyAddress();
 
     //Todo: get contract address from box price
     const contract_addr = "";
@@ -101,7 +131,9 @@ export function useBuyBox(
 
   return {
     loading,
-    canBuyBox,
+    isSaleRound,
+    buyFormEnabled,
+    buyBtnDisabledReason,
     err,
     txtAmount,
     onBuyBox,

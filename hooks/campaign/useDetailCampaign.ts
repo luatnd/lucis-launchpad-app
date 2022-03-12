@@ -52,6 +52,17 @@ const DETAIL_CAMPAIGN = gql`
         start
         end
       }
+      game {
+        name
+        desc
+        desc_team
+        trailer_video
+        facebook
+        twitter
+        telegram
+        youtube
+        discord
+      }
       status
       start
       end

@@ -280,7 +280,7 @@ class ConnectWalletHelper {
         break;
       case ChainNetwork.bsc:
         requiredChainId = parseInt('' + process.env.NEXT_PUBLIC_CHAIN_ID__BSC);
-        console.log('{ConnectWalletHelper.getConfiguredChainId} process.env.NEXT_PUBLIC_CHAIN_ID__BSC: ', process.env.NEXT_PUBLIC_CHAIN_ID__BSC, requiredChainId);
+        // console.log('{ConnectWalletHelper.getConfiguredChainId} process.env.NEXT_PUBLIC_CHAIN_ID__BSC: ', process.env.NEXT_PUBLIC_CHAIN_ID__BSC, requiredChainId);
         break;
       default:
         // @ts-ignore

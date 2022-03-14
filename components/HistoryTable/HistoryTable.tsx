@@ -125,6 +125,7 @@ const HistoryTable = (props: Props) => {
                 <img
                   style={{ width: "15px", margin: "5px 0 0 0" }}
                   src={"/assets/MyProfile/link.svg"}
+                  alt=""
                 />
               </a>
             )}
@@ -136,7 +137,7 @@ const HistoryTable = (props: Props) => {
 
   return (
     <>
-      {data.length > 0 ? (
+      {data && data.length > 0 ? (
         <div className={s.history}>
           <h1 className="text-center">{title.toUpperCase()}</h1>
 

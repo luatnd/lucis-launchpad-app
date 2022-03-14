@@ -109,37 +109,48 @@
             img
                 padding: 0px 16px
                 margin-top: 30px
-        .btnDetail
-            background: linear-gradient(284deg, rgba(205, 40, 232, 0.2) 0%, rgba(11, 235, 214, 0.2) 100%)
-            border-radius: 0px 0px 16px 16px
-            display: flex
-            align-items: center
-            justify-content: center
-            height: 47%
-            width: 100%
-            position: absolute
-            bottom: 0
-            left: 0
-            opacity: 0
-            transition: 0.5s
-            .styleBtn
-                display: flex
-                align-items: center
-                justify-content: center
-                max-width: 47%
-                width: 100%
-                color: #FFF
-                font-size: 24px
-                font-weight: 600
-                line-height: 28px
-                cursor: pointer
-                @media (min-width: 0px)
-                    padding: 8px 15px
-                @media (min-width: 1025px)
-                    padding: 10px 15px
+
                   
 .CardContainer:hover .btnDetail
     opacity: 1
+
+
+.btnDetail
+    background: linear-gradient(284deg, rgba(205, 40, 232, 0.2) 0%, rgba(11, 235, 214, 0.2) 100%)
+    border-radius: 0px 0px 16px 16px
+    display: flex
+    align-items: center
+    justify-content: center
+    height: 47%
+    width: 100%
+    position: absolute
+    bottom: 0
+    left: 0
+    opacity: 0
+    transition: 0.5s
+    @media screen and (min-width: 767px) 
+        height: 50%
+    @media screen and (min-width: 1023px) 
+        height: 54%
+    @media screen and (min-width: 1199px) 
+        height: 55%
+    @media screen and (min-width: 1399px) 
+        height: 45%
+
+.styleBtn
+    display: flex
+    align-items: center
+    justify-content: center
+    max-width: 47%
+    width: 100%
+    color: #FFF
+    font-size: 24px
+    font-weight: 600
+    line-height: 28px
+    cursor: pointer
+    padding: 8px 15px
+    @media (min-width: 1023px)
+        padding: 10px 15px    
 
 @media (min-width: 640px)
     .CardContainer
@@ -149,8 +160,8 @@
                 font-size: 24px  !important
             .styleTime::before
                 left: 0 !important
-        .btnDetail
-            height: 52% !important
+        // .btnDetail
+        //     height: 45% !important
 @media (min-width: 768px)
     .CardContainer
         .headingCard

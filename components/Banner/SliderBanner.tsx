@@ -34,7 +34,6 @@ const SimpleSlider = (props: Props) => {
           const getCampaignDetailUrl = () => {
             return `/campaign/${e.uid}/${slugify(e.name)}`;
           };
-          // console.log(e.cover_img);
 
           const status = calculateCampaignStatus(e);
 

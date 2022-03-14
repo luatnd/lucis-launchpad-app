@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from "react";
-import {Button, Form, InputNumber, notification, Progress, Tooltip} from "antd";
+import React, {useCallback, useMemo, useState} from "react";
+import {Button, Form, InputNumber, notification, Popconfirm, Progress, Tooltip} from "antd";
 import s from "../Box/Box.module.sass";
 import {
   GBoxType,
@@ -15,6 +15,8 @@ import ConnectWalletStore from "../../../Auth/ConnectWalletStore";
 import {ChainNetwork, ChainNetworkAvatar, symbol2Network} from "../../../../utils/blockchain/BlockChain";
 import {correctBoxShadow} from "framer-motion/types/projection";
 import {currency} from "../../../../utils/Number";
+import {AppEmitter} from "../../../../services/emitter";
+import AuthStore from "../../../Auth/AuthStore";
 
 type Props = {
   boxType: GBoxType;
@@ -26,6 +28,13 @@ type Props = {
 const BoxTypeCard = observer((props: Props) => {
   const { boxType, round, isInWhitelist } = props;
   const { chainNetwork } = ConnectWalletStore;
+  const { isLoggedIn } = AuthStore;
+
+
+  // TODO: Fetch refetch whitelist info after logged in status
+  // change from false to true
+  // use Mobx autorun
+
   const {
     loading,
     txtAmount,
@@ -36,7 +45,7 @@ const BoxTypeCard = observer((props: Props) => {
     onBuyBox,
     requireWhitelist,
     boxPrice,
-  } = useBuyBox(boxType, round, isInWhitelist, chainNetwork);
+  } = useBuyBox(boxType, round, isInWhitelist, chainNetwork, isLoggedIn);
 
   const supported_chains_avatars: {
     url: string,
@@ -47,10 +56,15 @@ const BoxTypeCard = observer((props: Props) => {
   })) ?? [];
 
   const buyFormDisabledMsg: Record<BuyDisabledReason, string> = {
+    [BuyDisabledReason.WalletNotConnected]: 'you need to connect wallet in order to buy boxes',
     [BuyDisabledReason.SoldOut]: 'Sold out',
     [BuyDisabledReason.WhitelistNotRegistered]: 'This box is for whitelisted user only',
     [BuyDisabledReason.NotSaleRound]: 'Please wait the campaign open',
   }
+
+  const showConnectWalletModal = useCallback(() => {
+    AppEmitter.emit('showConnectWalletModal')
+  }, [])
 
   return (
     <div>
@@ -127,16 +141,38 @@ const BoxTypeCard = observer((props: Props) => {
                 </span>
               )}
               <div className="flex justify-between text-white items-center font-bold text-24px mb-2 mt-5">
-                <Tooltip placement="top" title={buyBtnDisabledReason !== undefined ? buyFormDisabledMsg[buyBtnDisabledReason] : ''}>
-                  <div>
-                    <Button
-                      className={s.submit} onClick={onBuyBox}
-                      disabled={!buyFormEnabled}
-                    >
-                      BUY
-                    </Button>
-                  </div>
-                </Tooltip>
+                {(
+                  !buyFormEnabled
+                    // if btn is disable, show tooltip
+                    ? <Tooltip placement="top" title={buyBtnDisabledReason !== undefined ? buyFormDisabledMsg[buyBtnDisabledReason] : ''}>
+                      <div>
+                        <Button className={s.submit} disabled={true}>
+                          BUY
+                        </Button>
+                      </div>
+                    </Tooltip>
+                    : (
+                      !(isLoggedIn)
+                        // if wallet was not connected => popconfirm
+                        ? <Popconfirm
+                          title={<span>You need to {chainNetwork ? "verify" : "connect"} wallet<br/> in order to buy this box</span>}
+                          onConfirm={showConnectWalletModal}
+                          // onCancel={cancel}
+                          okText={chainNetwork ? "Verify Wallet" : "Connect Wallet"}
+                          cancelText="Close"
+                        >
+                          <div>
+                            <Button className={s.submit} loading={loading}>
+                              BUY
+                            </Button>
+                          </div>
+                        </Popconfirm>
+
+                        : <Button className={s.submit} onClick={onBuyBox} loading={loading}>
+                          BUY
+                        </Button>
+                    )
+                )}
                 {requireWhitelist && <span style={{paddingLeft: 20, lineHeight: 1.3}}>Whitelist only</span>}
               </div>
 
@@ -164,7 +200,7 @@ const BoxTypeCard = observer((props: Props) => {
               percent={Math.floor((boxType.sold_amount / boxType.total_amount) * 100)}
               showInfo={false}
               // status="active"
-              strokeColor={"#0BEBD6"}
+              strokeColor={boxType.sold_amount < boxType.total_amount ? "#0BEBD6" : undefined}
               strokeWidth={10}
             />
             <div className={s.flexRear}>

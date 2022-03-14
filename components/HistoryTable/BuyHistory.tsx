@@ -21,7 +21,7 @@ const BuyHistory = ({ id, title }: Props) => {
   if (id) {
     tableProps = {
       ...tableProps,
-      data: data.boxCampaignBuyHistories.filter((box: any) => box.box_campaign_uid === id),
+      data: data?.boxCampaignBuyHistories.filter((box: any) => box.box_campaign_uid === id),
     };
   }
 

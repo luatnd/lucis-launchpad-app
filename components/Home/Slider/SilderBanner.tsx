@@ -9,11 +9,14 @@ type Props = {
   logo: Maybe<string> | undefined;
   desc: Maybe<string> | undefined;
   href: string;
+  loading: boolean;
 };
 
 export default function ItemSliderBanner(props: Props) {
-  const { status, time, logo, desc, href } = props;
+  const { status, time, logo, desc, href, loading } = props;
   const timer = useCountDown(time);
+
+  console.log("Loading in item: ", loading);
 
   const statusStyle =
     status === "OPENING" ? s.opening : status === "CLOSED" ? s.closed : s.upcoming;

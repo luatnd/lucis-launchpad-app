@@ -52,35 +52,67 @@
         width: 30%
 
 .subSliderContainer 
-    color: white
-    width: 375px
-    position: relative
-    .coverContainer
-        display: flex
-        flex-wrap: nowrap
-        gap: 5px
-        // overflow-x: scroll
-        .coverImage
-            // border: 1px solid white
-            // overflow: hidden
-            @include box-glass
-            @include border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
-            box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, 0.69)
-            backdrop-filter: blur(40px)
-            padding: 1px 
-            img
-                max-width: 100%
-        .selected 
-            position: relative
-            top: -10px
-    .buttonContainer 
-        width: 100%
-        position: absolute
-        top: 50%
-        display: flex
-        justify-content: space-between 
-    @media screen and (min-width: 767px)
-    @media screen and (min-width: 1024px)
+    display: flex
+    align-items: center
+    height: 100px
+.coverContainer 
+    width: 400px
+    white-space: nowrap
+    overflow: auto
+    height: 100px
+    .coverImage 
+        @include box-glass
+        @include border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
+        box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, 0.69)
+        backdrop-filter: blur(40px)
+        padding: 1px 
+        height: 50px
+        width: 80px
+        margin: 3px
+    .selected 
+        position: relative
+        top: -10px
+
+    // height: 100px
+    // display: flex
+    // gap: 8px
+    // align-items: center
+    // .item
+    //     width: 100px
+    //     height: 80px
+    //     background: red
+    //     position: relative
+    //     .selected 
+    //         top: -20px
+    // color: white
+    // width: 375px
+    // position: relative
+    // .coverContainer
+    //     display: flex
+    //     flex-wrap: nowrap
+    //     gap: 5px
+    //     // overflow-x: scroll
+    //     .coverImage
+    //         // border: 1px solid white
+    //         // overflow: hidden
+            // @include box-glass
+            // @include border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
+            // box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, 0.69)
+            // backdrop-filter: blur(40px)
+            // padding: 1px 
+    //         img
+    //             max-width: 100%
+    //     .selected 
+    //         position: relative
+    //         top: -10px
+    // .buttonContainer 
+    //     width: 100%
+    //     position: absolute
+    //     top: 50%
+    //     display: flex
+    //     justify-content: space-between 
+    // @media screen and (min-width: 767px)
+    // @media screen and (min-width: 1024px)
 
 
 .active 
@@ -154,4 +186,5 @@
         font-size: 24px
     @media screen and (min-width: 767px)
         font-size: 36px
+
 

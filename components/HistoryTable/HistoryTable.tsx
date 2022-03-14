@@ -10,7 +10,7 @@ type Props = {
 
 const HistoryTable = (props: Props) => {
   const { data, title } = props;
-  console.log(data);
+  // console.log(data);
 
   const columns = [
     {

@@ -16,7 +16,7 @@ import s from "./detail.module.sass";
 import { useDetailCampaign } from "../../hooks/campaign/useDetailCampaign";
 import BoxCard from "../../components/campaign/components/Box/Box";
 import SiteMap from "components/campaign/components/SiteMap/SiteMap";
-import {useWindowSize} from "../../hooks/useWindowSize";
+import { useWindowSize } from "../../hooks/useWindowSize";
 
 /**
  * Match all route: /campaign/....
@@ -24,14 +24,14 @@ import {useWindowSize} from "../../hooks/useWindowSize";
 function DetailCampaign() {
   const router = useRouter();
   const { slug } = router.query;
-  // const id = slug?.length ? slug[0] : undefined;
-  const box_campaign_uid = "cl02lx5or0000doo018d7n2zz"; // TODO: ifx demo id
+  const id = slug?.length ? slug[0] : undefined;
+
   const [timeCountDown, setTimeCountDown] = useState(0);
   const [textNow, setTextNow] = useState("");
   const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [widthScreen, height] = useWindowSize();
 
-  const { boxCampaign, loading, error, isInWhitelist } = useDetailCampaign({ box_campaign_uid });
+  const { boxCampaign, isInWhitelist } = useDetailCampaign({ box_campaign_uid: id });
 
   return (
     <>
@@ -48,7 +48,7 @@ function DetailCampaign() {
                   end={boxCampaign?.end}
                   setTimeCountDown={setTimeCountDown}
                   setTextNow={setTextNow}
-                  boxCampaignUid={box_campaign_uid}
+                  boxCampaignUid={id ?? ""}
                   tzid={tzid}
                   widthScreen={widthScreen}
                 />
@@ -61,10 +61,11 @@ function DetailCampaign() {
             </TabPane>
             <TabPane tab="RULE" key="2">
               <div className="lucis-container mt-[40px!important]">
-                {boxCampaign?.rules && boxCampaign?.rules.substring(0, 8) !== "https://" ?
-                    (<iframe srcDoc={boxCampaign?.rules} width='100%'></iframe>) :
-                    (<iframe src={boxCampaign?.rules} width='100%'></iframe>)
-                }
+                {boxCampaign?.rules && boxCampaign?.rules.substring(0, 8) !== "https://" ? (
+                  <iframe srcDoc={boxCampaign?.rules} width="100%"></iframe>
+                ) : (
+                  <iframe src={boxCampaign?.rules} width="100%"></iframe>
+                )}
               </div>
             </TabPane>
             <TabPane tab="ABOUT PROJECT" key="3">

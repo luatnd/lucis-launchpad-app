@@ -1,18 +1,15 @@
-import SimpleSlider from "./SliderBanner";
-import s from "./Banner.module.sass";
-import MainSlider from "./[temp]Slider/MainSlider";
-
-import SubSlider from "./[temp]Slider/SubSlider";
-import { useRef, useState } from "react";
 import Link from "next/link";
+import { useState } from "react";
+import s from "./Banner.module.sass";
+import SimpleSlider from "./SliderBanner";
 import { useSpotlight } from "./useSpotlight";
-import { devNull } from "os";
+import SubSlider from "./[temp]Slider/SubSlider";
 
-type Props = {};
-
-export default function Banner(props: Props) {
-  const { resultSpotlight, loading, error } = useSpotlight();
+export default function Banner() {
+  const { resultSpotlight } = useSpotlight();
   const [slideIndex, setSlideIndex] = useState(0);
+  const [mainSlider, setMainSlider] = useState(null);
+  const [subSlider, setSubSlider] = useState(null);
 
   const handleNextSlide = () => {
     if (slideIndex >= resultSpotlight.spotlightBoxCampaign.length - 1) {
@@ -36,15 +33,12 @@ export default function Banner(props: Props) {
     nextSlide: handleNextSlide,
     prevSlide: handlePrevSlide,
     setSlideIndex: setSlideIndex,
+
+    setSubSlider: setSubSlider,
+    setMainSlider: setMainSlider,
+    mainSlider: mainSlider,
+    subSlider: subSlider,
   };
-
-  if (loading) {
-    return <>Loading</>;
-  }
-
-  if (error) {
-    return <>Error</>;
-  }
 
   return (
     <section className={s.containerBanner}>
@@ -58,7 +52,7 @@ export default function Banner(props: Props) {
               <span>Apply for INO</span>
             </a>
           </Link>
-          <SubSlider {...sliderProps} />
+          {/* <SubSlider {...sliderProps} /> */}
         </div>
       </div>
     </section>

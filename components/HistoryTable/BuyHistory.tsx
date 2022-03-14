@@ -11,19 +11,12 @@ const BuyHistory = ({ id, title }: Props) => {
     include: { boxTypes: true, game: true },
   });
 
-  console.log(id);
+  // console.log(id);
 
   let tableProps = {
     data: data?.boxCampaignBuyHistories,
     title: title,
   };
-
-  if (loading) {
-    return <>Loading User Buy History...</>;
-  }
-  if (error) {
-    return null;
-  }
 
   if (id) {
     tableProps = {

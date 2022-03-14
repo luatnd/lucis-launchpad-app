@@ -19,8 +19,8 @@ const GET_ALLBOX = gql`
       banner_img
       cover_img
       start
-      status
       end
+      opening_at
       game {
         logo
       }

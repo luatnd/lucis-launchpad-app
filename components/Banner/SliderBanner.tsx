@@ -4,6 +4,7 @@ import React, { Component, Dispatch, SetStateAction, useRef } from "react";
 import Slider from "react-slick";
 import { GBoxCampaign } from "src/generated/graphql";
 import { slugify } from "utils/String";
+import s from "../Home/Slider/SilderBanner.module.sass";
 
 type Props = {
   data: GBoxCampaign[];
@@ -24,7 +25,7 @@ const SimpleSlider = (props: Props) => {
     slidesToScroll: 1,
   };
 
-  console.log("Loading in container: ", loading);
+  // console.log("Loading in container: ", loading);
 
   return (
     <div className="simple-slider">
@@ -33,6 +34,7 @@ const SimpleSlider = (props: Props) => {
           const getCampaignDetailUrl = () => {
             return `/campaign/${e.uid}/${slugify(e.name)}`;
           };
+          // console.log(e.cover_img);
 
           const status = calculateCampaignStatus(e);
 
@@ -45,6 +47,7 @@ const SimpleSlider = (props: Props) => {
               desc={e.desc}
               href={getCampaignDetailUrl()}
               loading={loading}
+              banner={e.cover_img}
             />
           );
         })}

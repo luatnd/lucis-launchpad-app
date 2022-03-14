@@ -8,15 +8,16 @@ type Props = {
   time: string;
   logo: Maybe<string> | undefined;
   desc: Maybe<string> | undefined;
+  banner: Maybe<string> | undefined;
   href: string;
   loading: boolean;
 };
 
 export default function ItemSliderBanner(props: Props) {
-  const { status, time, logo, desc, href, loading } = props;
+  const { status, time, logo, desc, href, loading, banner } = props;
   const timer = useCountDown(time);
 
-  console.log("Loading in item: ", loading);
+  // console.log("Loading in item: ", banner);
 
   const statusStyle =
     status === "OPENING" ? s.opening : status === "CLOSED" ? s.closed : s.upcoming;
@@ -65,7 +66,7 @@ export default function ItemSliderBanner(props: Props) {
           </div>
         </div>
         <div className={s.imGame}>
-          <img src="/assets/Banner/im_Thetan.png" alt="" />
+          <img src={banner ?? ""} alt="" />
         </div>
       </div>
     </div>

@@ -9,27 +9,28 @@ import s from "../Home/Slider/SilderBanner.module.sass";
 type Props = {
   data: GBoxCampaign[];
   slideIndex: number;
-  setMainSlider: Dispatch<SetStateAction<null>>;
-  subSlider: any;
+  sliderRef: any;
   loading: boolean;
+  setSlideIndex: any;
 };
 
 const SimpleSlider = (props: Props) => {
-  const { data, slideIndex, setMainSlider, subSlider, loading } = props;
+  const { data, loading, sliderRef, setSlideIndex } = props;
 
   const settings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    afterChange: (index: number) => {
+      setSlideIndex(index);
+    },
   };
-
-  // console.log("Loading in container: ", loading);
 
   return (
     <div className="simple-slider">
-      <Slider {...settings} asNavFor={subSlider} ref={(slider: any) => setMainSlider(slider)}>
+      <Slider {...settings} ref={sliderRef}>
         {data?.map((e, i) => {
           const getCampaignDetailUrl = () => {
             return `/campaign/${e.uid}/${slugify(e.name)}`;

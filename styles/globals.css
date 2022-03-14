@@ -36,9 +36,9 @@ body {
   overflow-y: auto;
   height: auto !important;
 }
-body .slick-dots {
+/* body .slick-dots {
   display: none !important;
-}
+} */
 body .ant-Layout {
   background-color: red;
 }
@@ -523,8 +523,9 @@ body .backdrop-blur-sm {
   border-radius: 10px;
   color: white;
 }
-.ant-popover-inner-content a, div {
-  color: white
+.ant-popover-inner-content a,
+div {
+  color: white;
 }
 
 .ant-popconfirm .ant-popover-content .ant-popover-inner {

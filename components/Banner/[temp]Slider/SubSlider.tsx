@@ -1,4 +1,5 @@
 import { Skeleton } from "antd";
+import { useRef, useState } from "react";
 import Slider from "react-slick";
 import { GBoxCampaign } from "src/generated/graphql";
 import { slugify } from "utils/String";
@@ -7,76 +8,37 @@ import s from "../Banner.module.sass";
 type Props = {
   data: GBoxCampaign[];
   slideIndex: number;
-  nextSlide: () => void;
-  prevSlide: () => void;
-  setSlideIndex: (index: number) => void;
-  setSubSlider: (i: Slider) => void;
-  mainSlider: any;
+  sliderRef: any;
 };
 
 const SubSlider = (props: Props) => {
-  const { data, slideIndex, nextSlide, prevSlide, setSlideIndex, setSubSlider, mainSlider } = props;
+  const { data, slideIndex, sliderRef } = props;
 
   const handleClick = (i: number) => {
-    setSlideIndex(i);
-    console.log(i);
-  };
-
-  const settings = {
-    className: s.center,
-    centerMode: true,
-    infinite: true,
-    centerPadding: "60px",
-    slidesToShow: 1,
-    speed: 500,
+    sliderRef.current.slickGoTo(i);
   };
 
   return (
     <div className={s.subSliderContainer}>
-      <div className={s.coverContainer}>
+      <div className={s.thumbs}>
         {data &&
           data.map((item, index) => {
+            const activeSlide = slideIndex === index ? s.active : "";
+
             return (
-              // <div
-              //   key={index}
-              //   className={`${s.coverImage} ${slideIndex === index ? s.selected : ""}`}
-              //   onClick={() => handleClick(index)}
-              // >
-              <img
+              <div
+                className={`${s.thumbItem} ${activeSlide}`}
                 key={index}
-                className={`${s.coverImage} ${slideIndex === index ? s.selected : ""}`}
-                src={item.cover_img ?? ""}
-                alt=""
+                // style={{ backgroundImage: `url(${item.banner_img})` }}
                 onClick={() => handleClick(index)}
-              />
-              // </div>
+              >
+                <img src={item.banner_img ?? ""} alt="" />
+              </div>
             );
           })}
       </div>
-
-      {/* <div className={s.buttonContainer}>
-        <button onClick={prevSlide}>PREV</button>
-        <button onClick={nextSlide}>NEXT</button>
-      </div> */}
     </div>
   );
 };
 
 export default SubSlider;
-
-{
-  /* <Slider {...settings} asNavFor={mainSlider} ref={(slider: Slider) => setSubSlider(slider)}>
-        {data &&
-          data.map((e, i) => {
-            return (
-              <div
-                key={i}
-                className={`${s.coverImage} ${slideIndex === i ? s.selected : ""}`}
-                onClick={() => handleClick(i)}
-              >
-                <img src={e.cover_img ?? ""} alt="" />
-              </div>
-            );
-          })}
-      </Slider> */
-}

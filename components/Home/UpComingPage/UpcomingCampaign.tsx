@@ -20,7 +20,7 @@ export default function UpComing(props: Props) {
           return (
             <Col key={index} xs={24} md={12} lg={8}>
               <CardItem
-                key={i}
+                key={index}
                 srcGame={e.cover_img}
                 statusTime={"UpComing"}
                 time={e.opening_at}

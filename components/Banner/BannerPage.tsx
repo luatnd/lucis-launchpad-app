@@ -1,3 +1,4 @@
+import { Skeleton } from "antd";
 import Link from "next/link";
 import { useState } from "react";
 import s from "./Banner.module.sass";
@@ -6,7 +7,7 @@ import { useSpotlight } from "./useSpotlight";
 import SubSlider from "./[temp]Slider/SubSlider";
 
 export default function Banner() {
-  const { resultSpotlight } = useSpotlight();
+  const { resultSpotlight, loading, error } = useSpotlight();
   const [slideIndex, setSlideIndex] = useState(0);
   const [mainSlider, setMainSlider] = useState(null);
   const [subSlider, setSubSlider] = useState(null);
@@ -38,6 +39,7 @@ export default function Banner() {
     setMainSlider: setMainSlider,
     mainSlider: mainSlider,
     subSlider: subSlider,
+    loading: loading,
   };
 
   return (

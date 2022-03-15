@@ -41,9 +41,6 @@ export function useBuyBox(
   // const [buyBox, { data, loading, error }] = useMutation(BUY_BOX_MUT);
 
   const [loading, setLoading] = useState(false);
-  const [currencyEnabled, setCurrencyEnabled] = useState(false);
-
-  // TODO: setCurrencyEnabled on chain or symbol changed
 
   const chainSymbol = connectedChainNetwork;
 
@@ -61,6 +58,8 @@ export function useBuyBox(
       boxPrice = boxType.prices[0]
     }
   }
+  const currencyEnabled = ApprovalStore.isCurrencyEnabled(boxPrice?.currency.symbol as GQL_Currency ?? false)
+  // TODO: setCurrencyEnabled on chain or symbol changed
 
   /**
    * Re-fetch allowance info whenever the currency to buy box was changed
@@ -75,18 +74,19 @@ export function useBuyBox(
     }
 
     const currency_symbol = boxPrice?.currency.symbol as GQL_Currency;
+
+    // Call with debounce
     _callFnDebounced(async () => {
       console.log('{UseBuyBox} <== re-fetch allowance for currency: ', currency_symbol);
 
       switch (currency_symbol) {
         case GQL_Currency.BUSD:
-          ApprovalStore.busd_allowance = await checkAllowanceForBoxPrice()
+          ApprovalStore.setState({
+            busd_allowance: await checkAllowanceForBoxPrice()
+          });
           console.log('{UseBuyBox} ==> re-fetch allowance result: ', currency_symbol, ApprovalStore.busd_allowance);
-
-          setCurrencyEnabled(ApprovalStore.isCurrencyEnabled(GQL_Currency.BUSD))
           break;
         case GQL_Currency.undefined:
-          setCurrencyEnabled(false)
           break;
         default:
           throw new Error("{UseBuyBox} re-fetch allowance does handle currency: " + currency_symbol)
@@ -291,14 +291,14 @@ export function useBuyBox(
     }
 
 
-    const nft_contract_address = boxPrice?.contract?.address ?? '';
+    const nft_contract_address = boxPrice?.contract_address ?? '';
     const currency_address = boxPrice?.currency.address ?? ''; // address of token to buy
     const ethersService = new EthersService(ConnectWalletStore_NonReactiveData.web3Provider);
 
     // Request approval
     const success = await ethersService.requestApproval(nft_contract_address, currency_address);
     if (success) {
-      setCurrencyEnabled(true)
+      ApprovalStore.setCurrencyEnabled(boxPrice?.currency.symbol as GQL_Currency ?? false)
     }
 
     return success;

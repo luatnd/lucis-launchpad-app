@@ -44,6 +44,17 @@ class ApprovalStore implements IApprovalStore {
     }
   }
 
+  setCurrencyEnabled(c: GQL_Currency) {
+    switch (c) {
+      case GQL_Currency.BUSD:
+        this.busd_allowance = ETHER_MIN_ALLOWANCE;
+      case GQL_Currency.undefined:
+        break;
+      default:
+        throw new Error("{isCurrencyEnabled} Did not handle: " + c)
+    }
+  }
+
   constructor() {
     makeAutoObservable(this)
   }

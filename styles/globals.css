@@ -363,9 +363,9 @@ body .ant-menu {
     max-width: 1279px;
     padding: 0 5rem;
   }
-  .simple-slider {
+  /* .simple-slider {
     margin-top: 60px;
-  }
+  } */
 }
 @media (min-width: 1440px) {
   .lucis-container {
@@ -515,13 +515,13 @@ body .backdrop-blur-sm {
   /*  #c1d8f8 100%*/
   /*);*/
   background: linear-gradient(
-      105.27deg,
-      #aa6ee5 0%,
-      #caffff 20.31%,
-      rgba(202, 255, 255, 0.3) 37.5%,
-      rgba(253, 240, 116, 0.3) 68.75%,
-      #fdf074 84.9%,
-      #c1d8f8 100%
+    105.27deg,
+    #aa6ee5 0%,
+    #caffff 20.31%,
+    rgba(202, 255, 255, 0.3) 37.5%,
+    rgba(253, 240, 116, 0.3) 68.75%,
+    #fdf074 84.9%,
+    #c1d8f8 100%
   );
 }
 .ant-popover-content .ant-popover-inner {

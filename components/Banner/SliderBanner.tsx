@@ -1,3 +1,4 @@
+import { Skeleton } from "antd";
 import { calculateCampaignStatus } from "components/campaign/CampaignHelper";
 import ItemSliderBanner from "components/Home/Slider/SilderBanner";
 import React, { Component, Dispatch, SetStateAction, useRef } from "react";
@@ -29,30 +30,41 @@ const SimpleSlider = (props: Props) => {
   };
 
   return (
-    <div className="simple-slider">
-      <Slider {...settings} ref={sliderRef}>
-        {data?.map((e, i) => {
-          const getCampaignDetailUrl = () => {
-            return `/campaign/${e.uid}/${slugify(e.name)}`;
-          };
+    <>
+      {loading ? (
+        <div className="lucis-container">
+          <div className={s.skeContainer}>
+            <Skeleton.Image />
+            <Skeleton paragraph={{ rows: 5 }} />
+          </div>
+        </div>
+      ) : (
+        <div className="simple-slider">
+          <Slider {...settings} ref={sliderRef}>
+            {data?.map((e, i) => {
+              const getCampaignDetailUrl = () => {
+                return `/campaign/${e.uid}/${slugify(e.name)}`;
+              };
 
-          const status = calculateCampaignStatus(e);
+              const status = calculateCampaignStatus(e);
 
-          return (
-            <ItemSliderBanner
-              key={i}
-              status={status}
-              time={e.end}
-              logo={e.game.logo}
-              desc={e.desc}
-              href={getCampaignDetailUrl()}
-              loading={loading}
-              banner={e.cover_img}
-            />
-          );
-        })}
-      </Slider>
-    </div>
+              return (
+                <ItemSliderBanner
+                  key={i}
+                  status={status}
+                  time={e.end}
+                  logo={e.game.logo}
+                  desc={e.desc}
+                  href={getCampaignDetailUrl()}
+                  loading={loading}
+                  banner={e.cover_img}
+                />
+              );
+            })}
+          </Slider>
+        </div>
+      )}
+    </>
   );
 };
 

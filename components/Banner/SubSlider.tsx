@@ -1,5 +1,5 @@
 import { Skeleton } from "antd";
-import { useRef, useState } from "react";
+import { ReactElement, useRef, useState } from "react";
 import Slider from "react-slick";
 import { GBoxCampaign } from "src/generated/graphql";
 import { slugify } from "utils/String";
@@ -10,6 +10,17 @@ type Props = {
   slideIndex: number;
   sliderRef: any;
 };
+
+// const SkeletonContainer = (): ReactElement => {
+//   return (
+//     <div style={{ display: "flex", gap: "10px" }}>
+//       <Skeleton.Image />
+//       <Skeleton.Image />
+//       <Skeleton.Image />
+//       <Skeleton.Image />
+//     </div>
+//   );
+// };
 
 const SubSlider = (props: Props) => {
   const { data, slideIndex, sliderRef } = props;

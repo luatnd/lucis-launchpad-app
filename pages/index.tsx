@@ -45,11 +45,6 @@ const Home: NextPage = () => {
       <Opening />
       <ClosedCampaign />
       <Footer />
-      {/*{showButton && (*/}
-      {/*  <button onClick={scrollToTop} className="btn-scrollTop">*/}
-      {/*    &#8679;*/}
-      {/*  </button>*/}
-      {/*)}*/}
     </div>
   );
 };

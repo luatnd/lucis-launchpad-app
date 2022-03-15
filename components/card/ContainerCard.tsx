@@ -20,10 +20,11 @@ type Props = {
   soldOutResult?: boolean;
   description: Maybe<string> | undefined;
   id: string;
+  highlight: Maybe<string> | undefined;
 };
 
 export default function CardItem(props: Props) {
-  const { soldOutResult, time, statusTime, title, description, id, srcFb } = props;
+  const { soldOutResult, time, statusTime, title, description, id, srcFb, highlight } = props;
 
   // console.log(srcFb);
 
@@ -121,17 +122,25 @@ export default function CardItem(props: Props) {
       <div className={s.content}>
         <div className={s.headingCard}>
           <div className={`${s.styleTime} ${typeTime}`}>
-            {props.statusTime == "UpComing"
+            {statusTime == "UpComing"
               ? `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
                   timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
                 }s`
-              : props.statusTime == "Opening"
+              : statusTime == "Opening"
               ? soldOutResult
                 ? "SOLD OUT"
                 : `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
                     timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
                   }s`
-              : props.time}
+              : time}
+            <span className="text-[12px] md:text-[16px] pl-2">{highlight ?? ""}</span>
+
+            {/* Highlight for closed campaign */}
+            {statusTime == "Sale" && (
+              <p>
+                SOLD OUT <span>in 15mins</span>
+              </p>
+            )}
           </div>
           <h5>{props.nameGame}</h5>
           <div className={s.text}>{handleDesc}</div>

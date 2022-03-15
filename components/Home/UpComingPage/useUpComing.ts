@@ -19,6 +19,7 @@ const GET_UPCOMING = gql`
       end
       opening_at
       name
+      highlight
       rounds {
         id
         start

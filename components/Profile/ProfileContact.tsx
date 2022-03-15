@@ -106,7 +106,7 @@ const Contact = ({ isEdit, setIsEdit, profile, refetch }: Props) => {
                 placeholder={"091xxx0909"}
               />
             ) : (
-              <p>{tempContact.phone ? tempContact.phone : "Invalid phone"}</p>
+              <p>{tempContact.phone ? tempContact.phone : "Not available"}</p>
             )}
           </Col>
 
@@ -126,7 +126,7 @@ const Contact = ({ isEdit, setIsEdit, profile, refetch }: Props) => {
                     onBlur={handleBlurEmailInput}
                     placeholder={"your.email@example.com"}
                   />
-                  {!validEmail ? <p className={s.invalid}>Invalid email</p> : ""}
+                  {!validEmail ? <p className={s.invalid}>Not available</p> : ""}
                 </>
               ) : tempContact.email ? (
                 validEmail ? (
@@ -135,7 +135,7 @@ const Contact = ({ isEdit, setIsEdit, profile, refetch }: Props) => {
                   <p>{profile.me.email}</p>
                 )
               ) : (
-                <p>Invalid email address</p>
+                <p>Not available</p>
               )
               // <p>{tempContact.email ? tempContact.email : "Invalid email address"}</p>
             }

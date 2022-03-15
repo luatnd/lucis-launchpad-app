@@ -49,8 +49,9 @@
                 line-height: 32px
                 position: relative
                 padding-left: 10%
+                white-space: nowrap
                 @media (max-width: 640px)
-                    padding-left: 12%
+                    padding-left: 10%
                 p
                     color:#0BEBD6
                     font-size: 18px
@@ -155,6 +156,11 @@
     @media (min-width: 1023px)
         padding: 10px 15px    
 
+@media (min-width: 424px)
+    .CardContainer
+        .headingCard
+            padding: 250px 22px 80px 22px !important
+
 @media (min-width: 640px)
     .CardContainer
         .headingCard
@@ -170,7 +176,7 @@
         .headingCard
             padding: 200px 22px 80px 22px !important
             .styleTime
-                font-size: 28px  !important
+                font-size: 24px  !important
             .styleTime::before
                 left: 0 !important
  
@@ -179,7 +185,7 @@
         .headingCard
             padding: 150px 22px 80px 22px !important
             .styleTime
-                font-size: 28px  !important
+                font-size: 24px  !important
             .styleTime::before
                 left: 0 !important
 

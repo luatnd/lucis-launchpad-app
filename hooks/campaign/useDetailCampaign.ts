@@ -11,7 +11,7 @@ export function useDetailCampaign({ box_campaign_uid }: any) {
     loading: loadingOpening,
     error: errorOpening,
     data: dataIsInWhiteList,
-  } = useQuery(IS_IN_WHITE_LIST);
+  } = useQuery(IS_IN_WHITE_LIST, { variables: { box_campaign_uid } });
 
   const {
     loading: loadingWhiteListRegistered,

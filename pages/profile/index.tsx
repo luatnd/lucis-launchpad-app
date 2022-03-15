@@ -1,5 +1,5 @@
 import DocHead from "components/DocHead";
-import Footer from "components/Footer";
+import Footer from "components/Footer/Footer";
 import BuyHistory from "components/HistoryTable/BuyHistory";
 import { useState } from "react";
 import { useQueryProfile } from "../../components/Profile/Hooks/useQueryProfile";

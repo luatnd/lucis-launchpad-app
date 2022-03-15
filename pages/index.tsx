@@ -6,7 +6,7 @@ import styles from "../styles/Home.module.css";
 // import HotGame from "components/Games";
 import useScroll from "hooks/useScroll";
 
-import Footer from "components/Footer";
+import Footer from "components/Footer/Footer";
 import Banner from "../components/Banner/BannerPage";
 import DocHead from "../components/DocHead";
 import { useHome } from "hooks/home/useHome";

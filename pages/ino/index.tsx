@@ -1,5 +1,5 @@
 import DocHead from "components/DocHead";
-import Footer from "components/Footer";
+import Footer from "components/Footer/Footer";
 import Banner from "components/Ino/components/Banner/Banner";
 import Content from "components/Ino/components/Content/Content";
 import GotProject from "components/Ino/components/GotProject/GotProject";
@@ -15,9 +15,9 @@ const LucisDebugPage: NextPage = () => {
         <div className={s.containerApp}>
           <GotProject />
           <Content />
-          <Footer />
         </div>
       </div>
+      <Footer />
     </>
   );
 };

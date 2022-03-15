@@ -49,7 +49,7 @@ module.exports = withAntdLess({
 
     // Show testnet text on the header
     const git_branch = require('child_process')
-      .execSync('cat .git/HEAD')
+      // .execSync('cat .git/HEAD')
       // .execSync('git branch --show-current')
       .toString().trim();
     rules.push({

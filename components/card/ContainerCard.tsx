@@ -31,10 +31,10 @@ export default function CardItem(props: Props) {
     statusTime == "UpComing"
       ? s.time
       : soldOutResult
-      ? s.sold
-      : statusTime == "SALE"
-      ? s.sale
-      : s.time;
+        ? s.sold
+        : statusTime == "SALE"
+          ? s.sale
+          : s.time;
 
   const bg_card = props.styleBg ? s.bg_1 : s.bg_2;
 
@@ -122,16 +122,14 @@ export default function CardItem(props: Props) {
         <div className={s.headingCard}>
           <div className={`${s.styleTime} ${typeTime}`}>
             {props.statusTime == "UpComing"
-              ? `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
-                  timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
-                }s`
+              ? `${timer.days}d ${timer.hours}h ${timer.minutes}m ${timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
+              }s`
               : props.statusTime == "Opening"
-              ? soldOutResult
-                ? "SOLD OUT"
-                : `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
-                    timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
+                ? soldOutResult
+                  ? "SOLD OUT"
+                  : `${timer.days}d ${timer.hours}h ${timer.minutes}m ${timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
                   }s`
-              : props.time}
+                : props.time}
           </div>
           <h5>{props.nameGame}</h5>
           <div className={s.text}>{handleDesc}</div>
@@ -146,27 +144,27 @@ export default function CardItem(props: Props) {
         </div>
 
         <div className={s.groupIcon}>
-          {/* <a href={props.srcWeb}> */}
-          <a href="https://lucis.network" target="_blank" rel="noopener noreferrer">
-            <img src="/assets/UpComing/win.svg" alt="" />
-          </a>
-          {/* <a href="https://www.facebook.com/lucistv.news"> */}
-          <a href="https://www.facebook.com/lucistv.news" target="_blank" rel="noopener noreferrer">
-            <img src="/assets/UpComing/fb.png" alt="" />
-          </a>
-          <a
-            href="https://discord.com/channels/911921072830574603/926398655093702666"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img src="/assets/UpComing/dis.svg" alt="" />
-          </a>
-          <a href="https://t.me/sankeonft" target="_blank" rel="noopener noreferrer">
-            <img src="/assets/UpComing/tele.svg" alt="" />
-          </a>
-          <a href="https://www.tiktok.com/@lucistvv" target="_blank" rel="noopener noreferrer">
-            <img src="/assets/UpComing/tw.svg" alt="" />
-          </a>
+          <img src="/assets/crypto/ico-chain-bsc.png" alt="" />
+          <div>
+            <a href="https://lucis.network" target="_blank" rel="noopener noreferrer">
+              <img src="/assets/UpComing/win.svg" alt="" />
+            </a>
+            <a href="https://www.facebook.com/lucistv.news" target="_blank" rel="noopener noreferrer">
+              <img src="/assets/UpComing/fb.png" alt="" />
+            </a>
+            <a
+              href="https://discord.com/channels/911921072830574603/926398655093702666"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src="/assets/UpComing/dis.svg" alt="" />
+            </a>
+            <a href="https://t.me/sankeonft" target="_blank" rel="noopener noreferrer">
+              <img src="/assets/UpComing/tele.svg" alt="" />
+            </a>
+            <a href="https://www.tiktok.com/@lucistvv" target="_blank" rel="noopener noreferrer">
+              <img src="/assets/UpComing/tw.svg" alt="" />
+            </a></div>
         </div>
       </div>
     </div>

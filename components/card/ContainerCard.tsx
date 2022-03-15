@@ -155,25 +155,32 @@ export default function CardItem(props: Props) {
         </div>
 
         <div className={s.groupIcon}>
-          <a href="https://lucis.network" target="_blank" rel="noopener noreferrer">
-            <img src="/assets/UpComing/win.svg" alt="" />
-          </a>
-          <a href="https://www.facebook.com/lucistv.news" target="_blank" rel="noopener noreferrer">
-            <img src="/assets/UpComing/fb.png" alt="" />
-          </a>
-          <a
-            href="https://discord.com/channels/911921072830574603/926398655093702666"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img src="/assets/UpComing/dis.svg" alt="" />
-          </a>
-          <a href="https://t.me/sankeonft" target="_blank" rel="noopener noreferrer">
-            <img src="/assets/UpComing/tele.svg" alt="" />
-          </a>
-          <a href="https://www.tiktok.com/@lucistvv" target="_blank" rel="noopener noreferrer">
-            <img src="/assets/UpComing/tw.svg" alt="" />
-          </a>
+          <img src="/assets/crypto/ico-chain-bsc.png" alt="" />
+          <div>
+            <a href="https://lucis.network" target="_blank" rel="noopener noreferrer">
+              <img src="/assets/UpComing/win.svg" alt="" />
+            </a>
+            <a
+              href="https://www.facebook.com/lucistv.news"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src="/assets/UpComing/fb.png" alt="" />
+            </a>
+            <a
+              href="https://discord.com/channels/911921072830574603/926398655093702666"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src="/assets/UpComing/dis.svg" alt="" />
+            </a>
+            <a href="https://t.me/sankeonft" target="_blank" rel="noopener noreferrer">
+              <img src="/assets/UpComing/tele.svg" alt="" />
+            </a>
+            <a href="https://www.tiktok.com/@lucistvv" target="_blank" rel="noopener noreferrer">
+              <img src="/assets/UpComing/tw.svg" alt="" />
+            </a>
+          </div>
         </div>
       </div>
     </div>

@@ -78,8 +78,8 @@ export const MenuMobile = (props: any) => {
       <div
         className={`${s.mobileMenu} fixed top-0 left-0 right-0 z-[101] bg-nav backdrop-blur-sm`}
       >
-        <div className={`${s.container} flex justify-between items-center`}>
-          <div style={{width: 80, padding: 0}}>
+        <div className={`${s.container} flex justify-between items-center lucis-container`}>
+          <div style={{width: 100, padding: 0}}>
             <Link href='/' passHref>
               <a>
                 <Image src={Logo} width={120} height={42} alt="logo" layout="responsive"></Image>

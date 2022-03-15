@@ -1,8 +1,4 @@
-import { Skeleton } from "antd";
-import { ReactElement, useRef, useState } from "react";
-import Slider from "react-slick";
 import { GBoxCampaign } from "src/generated/graphql";
-import { slugify } from "utils/String";
 import s from "./Banner.module.sass";
 
 type Props = {

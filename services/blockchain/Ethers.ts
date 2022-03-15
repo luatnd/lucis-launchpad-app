@@ -99,7 +99,12 @@ export default class EtherContract {
       .approve(address, ethers.constants.MaxUint256)
       .then((r: any) => {
         console.log('{EtherContract.requestApproval} r: ', r);
-        return true
+        if (r.hash) {
+          console.log('{EtherContract.requestApproval} r.hash', r.hash);
+          return true
+        } else {
+          return true
+        }
       })
       .catch((e: any) => {
         console.error('{requestApproval} catch e: ', e)

@@ -80,6 +80,10 @@ const DETAIL_CAMPAIGN = gql`
             symbol
             icon
             chain_symbol
+            address
+          }
+          contract {
+            address
           }
         }
       }

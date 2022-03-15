@@ -12,6 +12,7 @@ import {ChainNetwork, GQL_Currency} from "../../utils/blockchain/BlockChain";
 import {GraphQLError} from "graphql";
 import {AppEmitter} from "../../services/emitter";
 import ApprovalStore, {ETHER_MIN_ALLOWANCE} from "../../components/Auth/Blockchain/ApprovalStore";
+import {Transaction} from "ethers";
 
 
 export enum BuyDisabledReason {
@@ -40,6 +41,7 @@ export function useBuyBox(
   // const [buyBox, { data, loading, error }] = useMutation(BUY_BOX_MUT);
 
   const [loading, setLoading] = useState(false);
+  const [currencyEnabled, setCurrencyEnabled] = useState(false);
 
   const chainSymbol = connectedChainNetwork;
 
@@ -72,13 +74,17 @@ export function useBuyBox(
 
     const currency_symbol = boxPrice?.currency.symbol as GQL_Currency;
     _callFnDebounced(async () => {
-      console.log('{UseBuyBox} re-fetch allowance for currency: ', currency_symbol);
+      console.log('{UseBuyBox} <== re-fetch allowance for currency: ', currency_symbol);
 
       switch (currency_symbol) {
         case GQL_Currency.BUSD:
           ApprovalStore.busd_allowance = await checkAllowanceForBoxPrice()
+          console.log('{UseBuyBox} ==> re-fetch allowance result: ', currency_symbol, ApprovalStore.busd_allowance);
+
+          setCurrencyEnabled(ApprovalStore.isCurrencyEnabled(GQL_Currency.BUSD))
           break;
         case GQL_Currency.undefined:
+          setCurrencyEnabled(false)
           break;
         default:
           throw new Error("{UseBuyBox} re-fetch allowance does handle currency: " + currency_symbol)
@@ -268,7 +274,7 @@ export function useBuyBox(
     return await checkAllowanceForBoxPrice() >= ETHER_MIN_ALLOWANCE
   }
 
-  const requestAllowanceForBoxPrice = () => {
+  const requestAllowanceForBoxPrice = async () => {
     if (!isLoggedIn) {
       message.warn("Please connect wallet and verify your address first!");
       return false;
@@ -304,6 +310,7 @@ export function useBuyBox(
     doBuyBox,
     hasEnoughAllowanceForBoxPrice,
     requestAllowanceForBoxPrice,
+    currencyEnabled,
   };
 }
 

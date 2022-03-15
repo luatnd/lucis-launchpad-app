@@ -1,13 +1,10 @@
-import type { NextPage } from "next";
+import type {NextPage} from "next";
 import DocHead from "../../components/DocHead";
-import s from "./detail.module.sass";
-import Banner from "../../components/campaign/components/Banner/Banner";
-import { Col, Row, Tabs } from "antd";
-import { TabPane } from "rc-tabs";
+import {Col, Row} from "antd";
 import Footer from "../../components/Footer/Footer";
 import React from "react";
 import BoxTypeCard from "../../components/campaign/components/box_type";
-import { ChainSymbol, GBoxCampaign, GBoxPrice, GBoxType, GGame } from "../../src/generated/graphql";
+import {ChainSymbol, GBoxCampaign, GBoxPrice, GBoxType, GGame} from "../../src/generated/graphql";
 
 /**
  * This has no function in project
@@ -60,7 +57,15 @@ const CampaignDebug: NextPage = () => {
       symbol: "BUSD",
       chain_symbol: ChainSymbol.Bsc,
       icon: "https://s2.coinmarketcap.com/static/img/coins/64x64/4687.png",
+      address: '0xA16699880297FF63F331D7136549F01f768ea47E',
     },
+    contract: {
+      uid: '_fake___',
+      chain_symbol: ChainSymbol.Bsc,
+      address: '0x5B2447Df55372321A3bBf7eDEAdEA866ff5de95D',
+      created_at: '3456789',
+      updated_at: '3456789',
+    }
   };
 
   const box1: GBoxType = {

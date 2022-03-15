@@ -17,6 +17,7 @@ import {correctBoxShadow} from "framer-motion/types/projection";
 import {currency} from "../../../../utils/Number";
 import {AppEmitter} from "../../../../services/emitter";
 import AuthStore from "../../../Auth/AuthStore";
+import ApprovalStore from "../../../Auth/Blockchain/ApprovalStore";
 
 type Props = {
   boxType: GBoxType;
@@ -45,8 +46,8 @@ const BoxTypeCard = observer((props: Props) => {
     boxPrice,
 
     doBuyBox,
-    hasEnoughAllowanceForBoxPrice,
     requestAllowanceForBoxPrice,
+    currencyEnabled,
   } = useBuyBox(boxType, round, isInWhitelist, chainNetwork, isLoggedIn);
 
   const supported_chains_avatars: {
@@ -170,9 +171,15 @@ const BoxTypeCard = observer((props: Props) => {
                           </div>
                         </Popconfirm>
 
-                        : <Button className={s.submit} onClick={doBuyBox} loading={loading}>
-                          BUY
-                        </Button>
+                        : (
+                          !currencyEnabled
+                          ? <Button className={s.submitApproval} onClick={requestAllowanceForBoxPrice}>
+                              Enable {boxPrice?.currency.symbol}
+                            </Button>
+                          : <Button className={s.submit} onClick={doBuyBox} loading={loading}>
+                            BUY
+                          </Button>
+                        )
                     )
                 )}
                 {requireWhitelist && <span style={{paddingLeft: 20, lineHeight: 1.3}}>Whitelist only</span>}

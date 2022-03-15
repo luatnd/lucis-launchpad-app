@@ -43,6 +43,8 @@ export function useBuyBox(
   const [loading, setLoading] = useState(false);
   const [currencyEnabled, setCurrencyEnabled] = useState(false);
 
+  // TODO: setCurrencyEnabled on chain or symbol changed
+
   const chainSymbol = connectedChainNetwork;
 
 
@@ -294,7 +296,12 @@ export function useBuyBox(
     const ethersService = new EthersService(ConnectWalletStore_NonReactiveData.web3Provider);
 
     // Request approval
-    return ethersService.requestApproval(nft_contract_address, currency_address);
+    const success = await ethersService.requestApproval(nft_contract_address, currency_address);
+    if (success) {
+      setCurrencyEnabled(true)
+    }
+
+    return success;
   }
 
   return {

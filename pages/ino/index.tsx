@@ -15,9 +15,9 @@ const LucisDebugPage: NextPage = () => {
         <div className={s.containerApp}>
           <GotProject />
           <Content />
-          <Footer />
         </div>
       </div>
+      <Footer />
     </>
   );
 };

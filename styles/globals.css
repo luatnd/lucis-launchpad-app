@@ -505,14 +505,23 @@ body .backdrop-blur-sm {
   mask-composite: exclude;
 
   /*background: linear-gradient(105.27deg, #aa6ee5 0%, #caffff 20.31%, rgba(202, 255, 255, 0) 37.5%, rgba(253, 240, 116, 0) 68.75%, #fdf074 84.9%, #c1d8f8 100%);*/
+  /*background: linear-gradient(*/
+  /*  105.27deg,*/
+  /*  #aa6ee5 0%,*/
+  /*  #caffff 20.31%,*/
+  /*  rgba(202, 255, 255, 0) 37.5%,*/
+  /*  rgba(253, 240, 116, 0) 68.75%,*/
+  /*  #fdf074 84.9%,*/
+  /*  #c1d8f8 100%*/
+  /*);*/
   background: linear-gradient(
-    105.27deg,
-    #aa6ee5 0%,
-    #caffff 20.31%,
-    rgba(202, 255, 255, 0) 37.5%,
-    rgba(253, 240, 116, 0) 68.75%,
-    #fdf074 84.9%,
-    #c1d8f8 100%
+      105.27deg,
+      #aa6ee5 0%,
+      #caffff 20.31%,
+      rgba(202, 255, 255, 0.3) 37.5%,
+      rgba(253, 240, 116, 0.3) 68.75%,
+      #fdf074 84.9%,
+      #c1d8f8 100%
   );
 }
 .ant-popover-content .ant-popover-inner {
@@ -526,6 +535,11 @@ body .backdrop-blur-sm {
 .ant-popover-inner-content a,
 div {
   color: white;
+}
+
+.ant-popover-buttons button {
+  background: transparent;
+  color: #ddd;
 }
 
 .ant-popconfirm .ant-popover-content .ant-popover-inner {

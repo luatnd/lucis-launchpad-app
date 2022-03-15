@@ -19,10 +19,6 @@ export default function Header(props: Props) {
   const router = useRouter();
   const [width] = useWindowSize();
 
-  useEffect(() => {
-    console.log('{HEADER} run 2time?: ');
-  }, [])
-
   if (width > 1024) {
     return (
     <div className={`${s.pcMenu} bg-nav`}>

@@ -58,6 +58,7 @@ const SimpleSlider = (props: Props) => {
                   href={getCampaignDetailUrl()}
                   loading={loading}
                   banner={e.cover_img}
+                  name={e.name}
                 />
               );
             })}

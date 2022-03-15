@@ -11,10 +11,11 @@ type Props = {
   banner: Maybe<string> | undefined;
   href: string;
   loading: boolean;
+  name: Maybe<string> | undefined;
 };
 
 export default function ItemSliderBanner(props: Props) {
-  const { status, time, logo, desc, href, loading, banner } = props;
+  const { status, time, logo, desc, href, banner, name } = props;
   const timer = useCountDown(time);
 
   const checkTimeLeft =
@@ -41,7 +42,8 @@ export default function ItemSliderBanner(props: Props) {
             <img src={logo ?? ""} alt="" />
           </div>
           {/* logo game */}
-          <p>{desc}</p>
+          <p className={`${s.nameCampaign} py-2`}>{name}</p>
+          <p className={`${s.desc} pb-5`}>{desc}</p>
           {/* text */}
           <div className={s.contentItemBottom}>
             <div className={s.groupLink}>

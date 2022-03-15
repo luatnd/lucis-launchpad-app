@@ -256,7 +256,7 @@ export function useBuyBox(
       return 0;
     }
 
-    const nft_contract_address = boxPrice?.contract?.address ?? '';
+    const nft_contract_address = boxPrice?.contract_address ?? '';
     const currency_address = boxPrice?.currency.address ?? ''; // address of token to buy
     const ethersService = new EthersService(ConnectWalletStore_NonReactiveData.web3Provider);
 

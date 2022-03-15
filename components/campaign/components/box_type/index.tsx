@@ -1,21 +1,26 @@
-import React, {useCallback, useMemo, useState} from "react";
-import {Button, Form, InputNumber, notification, Popconfirm, Progress, Tooltip} from "antd";
+import React, { useCallback, useMemo, useState } from "react";
+import { Button, Form, InputNumber, notification, Popconfirm, Progress, Tooltip } from "antd";
 import s from "../Box/Box.module.sass";
 import {
   GBoxType,
   GCurrency,
   GBoxPrice,
-  GBoxCampaignRound, ChainSymbol,
+  GBoxCampaignRound,
+  ChainSymbol,
 } from "src/generated/graphql";
 import { useInput } from "hooks/common/use_input";
-import {BuyDisabledReason, useBuyBox} from "hooks/campaign/use_buy_box";
+import { BuyDisabledReason, useBuyBox } from "hooks/campaign/use_buy_box";
 import { handleApolloError } from "utils/apollo_client";
-import {observer} from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import ConnectWalletStore from "../../../Auth/ConnectWalletStore";
-import {ChainNetwork, ChainNetworkAvatar, symbol2Network} from "../../../../utils/blockchain/BlockChain";
-import {correctBoxShadow} from "framer-motion/types/projection";
-import {currency} from "../../../../utils/Number";
-import {AppEmitter} from "../../../../services/emitter";
+import {
+  ChainNetwork,
+  ChainNetworkAvatar,
+  symbol2Network,
+} from "../../../../utils/blockchain/BlockChain";
+import { correctBoxShadow } from "framer-motion/types/projection";
+import { currency } from "../../../../utils/Number";
+import { AppEmitter } from "../../../../services/emitter";
 import AuthStore from "../../../Auth/AuthStore";
 
 type Props = {
@@ -29,7 +34,6 @@ const BoxTypeCard = observer((props: Props) => {
   const { boxType, round, isInWhitelist } = props;
   const { chainNetwork } = ConnectWalletStore;
   const { isLoggedIn } = AuthStore;
-
 
   // TODO: Fetch refetch whitelist info after logged in status
   // change from false to true
@@ -48,23 +52,24 @@ const BoxTypeCard = observer((props: Props) => {
   } = useBuyBox(boxType, round, isInWhitelist, chainNetwork, isLoggedIn);
 
   const supported_chains_avatars: {
-    url: string,
-    symbol: ChainSymbol,
-  }[] = boxType.prices?.map(i => ({
-    url: ChainNetworkAvatar[symbol2Network(i.currency.chain_symbol) ?? 'undefined'],
-    symbol: i.currency.chain_symbol,
-  })) ?? [];
+    url: string;
+    symbol: ChainSymbol;
+  }[] =
+    boxType.prices?.map((i) => ({
+      url: ChainNetworkAvatar[symbol2Network(i.currency.chain_symbol) ?? "undefined"],
+      symbol: i.currency.chain_symbol,
+    })) ?? [];
 
   const buyFormDisabledMsg: Record<BuyDisabledReason, string> = {
-    [BuyDisabledReason.WalletNotConnected]: 'you need to connect wallet in order to buy boxes',
-    [BuyDisabledReason.SoldOut]: 'Sold out',
-    [BuyDisabledReason.WhitelistNotRegistered]: 'This box is for whitelisted user only',
-    [BuyDisabledReason.NotSaleRound]: 'Please wait the campaign open',
-  }
+    [BuyDisabledReason.WalletNotConnected]: "you need to connect wallet in order to buy boxes",
+    [BuyDisabledReason.SoldOut]: "Sold out",
+    [BuyDisabledReason.WhitelistNotRegistered]: "This box is for whitelisted user only",
+    [BuyDisabledReason.NotSaleRound]: "Please wait the campaign open",
+  };
 
   const showConnectWalletModal = useCallback(() => {
-    AppEmitter.emit('showConnectWalletModal')
-  }, [])
+    AppEmitter.emit("showConnectWalletModal");
+  }, []);
 
   return (
     <div>
@@ -106,9 +111,9 @@ const BoxTypeCard = observer((props: Props) => {
           <div className="flex justify-between text-white font-bold text-24px mb-2">
             <span>Chain</span>
             <div className={s.chainIcoC}>
-              {supported_chains_avatars
-                .map((i, idx) => <img key={idx} src={i.url} alt="" title={i.symbol} />)
-              }
+              {supported_chains_avatars.map((i, idx) => (
+                <img key={idx} src={i.url} alt="" title={i.symbol} />
+              ))}
             </div>
           </div>
 
@@ -121,12 +126,17 @@ const BoxTypeCard = observer((props: Props) => {
               <div className={`text-white font-bold text-24px mb-2`}>
                 <Form.Item className={s.inputRow}>
                   <label className={s.label}>
-                    <span>Amount: </span><br/>
-                    {boxType.limit_per_user != null &&
+                    <span>Amount: </span>
+                    <br />
+                    {boxType.limit_per_user != null && (
                       <span className={s.max}>Max: {boxType.limit_per_user}</span>
-                    }
+                    )}
                   </label>
-                  <InputNumber value={txtAmount.value} onChange={txtAmount.onChange} />
+                  <InputNumber
+                    controls={false}
+                    value={txtAmount.value}
+                    onChange={txtAmount.onChange}
+                  />
                 </Form.Item>
               </div>
               {!!txtAmount.err && (
@@ -141,39 +151,50 @@ const BoxTypeCard = observer((props: Props) => {
                 </span>
               )}
               <div className="flex justify-between text-white items-center font-bold text-24px mb-2 mt-5">
-                {(
-                  !buyFormEnabled
-                    // if btn is disable, show tooltip
-                    ? <Tooltip placement="top" title={buyBtnDisabledReason !== undefined ? buyFormDisabledMsg[buyBtnDisabledReason] : ''}>
-                      <div>
-                        <Button className={s.submit} disabled={true}>
-                          BUY
-                        </Button>
-                      </div>
-                    </Tooltip>
-                    : (
-                      !(isLoggedIn)
-                        // if wallet was not connected => popconfirm
-                        ? <Popconfirm
-                          title={<span>You need to {chainNetwork ? "verify" : "connect"} wallet<br/> in order to buy this box</span>}
-                          onConfirm={showConnectWalletModal}
-                          // onCancel={cancel}
-                          okText={chainNetwork ? "Verify Wallet" : "Connect Wallet"}
-                          cancelText="Close"
-                        >
-                          <div>
-                            <Button className={s.submit} loading={loading}>
-                              BUY
-                            </Button>
-                          </div>
-                        </Popconfirm>
-
-                        : <Button className={s.submit} onClick={onBuyBox} loading={loading}>
-                          BUY
-                        </Button>
-                    )
+                {!buyFormEnabled ? (
+                  // if btn is disable, show tooltip
+                  <Tooltip
+                    placement="top"
+                    title={
+                      buyBtnDisabledReason !== undefined
+                        ? buyFormDisabledMsg[buyBtnDisabledReason]
+                        : ""
+                    }
+                  >
+                    <div>
+                      <Button className={s.submit} disabled={true}>
+                        BUY
+                      </Button>
+                    </div>
+                  </Tooltip>
+                ) : !isLoggedIn ? (
+                  // if wallet was not connected => popconfirm
+                  <Popconfirm
+                    title={
+                      <span>
+                        You need to {chainNetwork ? "verify" : "connect"} wallet
+                        <br /> in order to buy this box
+                      </span>
+                    }
+                    onConfirm={showConnectWalletModal}
+                    // onCancel={cancel}
+                    okText={chainNetwork ? "Verify Wallet" : "Connect Wallet"}
+                    cancelText="Close"
+                  >
+                    <div>
+                      <Button className={s.submit} loading={loading}>
+                        BUY
+                      </Button>
+                    </div>
+                  </Popconfirm>
+                ) : (
+                  <Button className={s.submit} onClick={onBuyBox} loading={loading}>
+                    BUY
+                  </Button>
                 )}
-                {requireWhitelist && <span style={{paddingLeft: 20, lineHeight: 1.3}}>Whitelist only</span>}
+                {requireWhitelist && (
+                  <span style={{ paddingLeft: 20, lineHeight: 1.3 }}>Whitelist only</span>
+                )}
               </div>
 
               {/*{buyBtnDisabledReason === BuyDisabledReason.SoldOut &&*/}
@@ -189,7 +210,9 @@ const BoxTypeCard = observer((props: Props) => {
               <div className="flex items-center justify-end gap-1">
                 <img
                   src={boxPrice?.currency.icon ?? "/assets/crypto/ico-question-mark.png"}
-                  width="40px" height="40px" alt=""
+                  width="40px"
+                  height="40px"
+                  alt=""
                 />
                 <span>
                   {currency(boxPrice?.price, 2)} {boxPrice?.currency.symbol}

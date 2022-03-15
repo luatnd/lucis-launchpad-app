@@ -40,6 +40,7 @@ const DETAIL_CAMPAIGN = gql`
       desc
       rules
       cover_img
+      banner_img
       rounds {
         id
         name
@@ -60,6 +61,7 @@ const DETAIL_CAMPAIGN = gql`
         telegram
         youtube
         discord
+        logo
       }
       status
       start

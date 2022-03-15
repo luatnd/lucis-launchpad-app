@@ -38,7 +38,7 @@ function DetailCampaign() {
       <DocHead />
       <div className="lucis-container">
         <div className={s.containerApp}>
-          <Banner />
+          <Banner boxCampaign={boxCampaign} />
           <Tabs defaultActiveKey="1" className={s.tabs}>
             <TabPane tab="TIMELINE" key="1">
               {boxCampaign?.rounds != null && (

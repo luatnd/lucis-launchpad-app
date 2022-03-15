@@ -133,7 +133,7 @@ export default function CardItem(props: Props) {
                     timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
                   }s`
               : time}
-            <span className="text-[12px] md:text-[16px] pl-2">{highlight ?? ""}</span>
+            <span className="text-[12px] xl:text-[14px] pl-2">{highlight ?? ""}</span>
 
             {/* Highlight for closed campaign */}
             {statusTime == "Sale" && (

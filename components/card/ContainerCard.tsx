@@ -146,11 +146,9 @@ export default function CardItem(props: Props) {
         </div>
 
         <div className={s.groupIcon}>
-          {/* <a href={props.srcWeb}> */}
           <a href="https://lucis.network" target="_blank" rel="noopener noreferrer">
             <img src="/assets/UpComing/win.svg" alt="" />
           </a>
-          {/* <a href="https://www.facebook.com/lucistv.news"> */}
           <a href="https://www.facebook.com/lucistv.news" target="_blank" rel="noopener noreferrer">
             <img src="/assets/UpComing/fb.png" alt="" />
           </a>

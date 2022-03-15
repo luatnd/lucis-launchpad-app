@@ -4,7 +4,7 @@ import { Tabs } from "antd";
 import { TabPane } from "rc-tabs";
 
 import DocHead from "../../components/DocHead";
-import Footer from "components/Footer";
+import Footer from "components/Footer/Footer";
 import BuyHistory from "components/HistoryTable/BuyHistory";
 import Banner from "../../components/campaign/components/Banner/Banner";
 import Box from "../../components/campaign/components/Box/Box";
@@ -56,7 +56,7 @@ function DetailCampaign() {
               {textNow.length > 0 && <CountDown timeCountDown={timeCountDown} textNow={textNow} />}
               {!!boxCampaign && <BoxCard boxCampaign={boxCampaign} isInWhitelist={isInWhitelist} />}
               <div className="container">
-                <BuyHistory id={"cl02lx5or0000doo018d7n2zz"} title="recently bought" />
+                <BuyHistory id={id} title="recently bought" />
               </div>
             </TabPane>
             <TabPane tab="RULE" key="2">

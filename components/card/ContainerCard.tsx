@@ -156,7 +156,7 @@ export default function CardItem(props: Props) {
 
         <div className={s.groupIcon}>
           <img src="/assets/crypto/ico-chain-bsc.png" alt="" />
-          <div>
+          <div className={s.block_iconLeft}>
             <a href="https://lucis.network" target="_blank" rel="noopener noreferrer">
               <img src="/assets/UpComing/win.svg" alt="" />
             </a>

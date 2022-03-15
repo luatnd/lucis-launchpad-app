@@ -105,14 +105,24 @@
             justify-content: space-between
             position: absolute
             bottom: 20px
-            padding: 0px 12px
+            padding: 0px 22px
             width: 100%
             z-index: 20
-            img
-                padding: 0px 16px
-                margin-top: 30px
+            .block_iconLeft
+                display: flex
+                align-items: center
+                justify-content: flex-end
+                width: 100%
+                a
+                    margin: 0px 16px
+                    @media  ( min-width: 992px) and (max-width: 1278px)
+                        margin: 0px 8px
+                        
         .groupIcon > img
-            width: 56px
+            width: 24px
+            // .block_iconLeft a img
+            //     padding: 0px 16px
+            //     margin-top: 30px
                   
 .CardContainer:hover .btnDetail
     opacity: 1

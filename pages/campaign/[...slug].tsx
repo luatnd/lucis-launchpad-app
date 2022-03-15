@@ -53,8 +53,15 @@ function DetailCampaign() {
                   widthScreen={widthScreen}
                 />
               )}
-              {textNow.length > 0 && <CountDown timeCountDown={timeCountDown} textNow={textNow} />}
-              {!!boxCampaign && <BoxCard boxCampaign={boxCampaign} isInWhitelist={isInWhitelist} />}
+
+              {textNow.length > 0 &&
+                <CountDown timeCountDown={timeCountDown} textNow={textNow} />
+              }
+
+              {!!boxCampaign &&
+                <BoxCard boxCampaign={boxCampaign} isInWhitelist={isInWhitelist} />
+              }
+
               <div className="container">
                 <BuyHistory id={"cl02lx5or0000doo018d7n2zz"} title="recently bought" />
               </div>

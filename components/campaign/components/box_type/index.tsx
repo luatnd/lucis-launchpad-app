@@ -22,7 +22,6 @@ type Props = {
   boxType: GBoxType;
   round?: GBoxCampaignRound;
   isInWhitelist?: boolean;
-  onBuyBox?: () => void;
 };
 
 const BoxTypeCard = observer((props: Props) => {
@@ -42,9 +41,12 @@ const BoxTypeCard = observer((props: Props) => {
     buyFormEnabled,
     buyBtnDisabledReason,
     err,
-    onBuyBox,
     requireWhitelist,
     boxPrice,
+
+    doBuyBox,
+    hasEnoughAllowanceForBoxPrice,
+    requestAllowanceForBoxPrice,
   } = useBuyBox(boxType, round, isInWhitelist, chainNetwork, isLoggedIn);
 
   const supported_chains_avatars: {
@@ -168,7 +170,7 @@ const BoxTypeCard = observer((props: Props) => {
                           </div>
                         </Popconfirm>
 
-                        : <Button className={s.submit} onClick={onBuyBox} loading={loading}>
+                        : <Button className={s.submit} onClick={doBuyBox} loading={loading}>
                           BUY
                         </Button>
                     )

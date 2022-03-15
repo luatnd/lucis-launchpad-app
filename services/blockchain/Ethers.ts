@@ -61,10 +61,12 @@ export default class EtherContract {
   }
 
   /**
-   * Get my address allowance
+   * Check allowance for the process of:
+   * erc20 contract give permission for the address/contract to spend money from
    *
-   * @param address not sure
-   * @param erc20Address not sure
+   * @param address NFT boxes, event boxes, the spender
+   * @param erc20Address The currency that address spend
+   * @return number|null amount in Wei
    */
   async getMyAllowanceOf(
     address: string,
@@ -82,19 +84,27 @@ export default class EtherContract {
   }
 
 
+  /**
+   * erc20 contract give permission for the address/contract to spend money from
+   *
+   * @param address NFT boxes, event boxes, the spender
+   * @param erc20Address The currency that address spend
+   */
   async requestApproval(
     address: string,
     erc20Address: string
   ): Promise<boolean> {
     const contract = await this.getContractWithSignerErc20(erc20Address)
-    const res = await contract
+    return contract
       .approve(address, ethers.constants.MaxUint256)
+      .then((r: any) => {
+        console.log('{EtherContract.requestApproval} r: ', r);
+        return true
+      })
       .catch((e: any) => {
         console.error('{requestApproval} catch e: ', e)
         return false
       })
-
-    return res
   }
 
   async transferNft(

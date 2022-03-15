@@ -45,7 +45,7 @@ const CampaignDebug: NextPage = () => {
     // @ts-ignore
     game: game,
     game_uid: "",
-    uid: "cp_12a34f56b89",
+    uid: "cl02lx5or0000doo018d7n2aa",
     start: new Date(),
     end: new Date(),
     created_at: undefined,
@@ -58,7 +58,7 @@ const CampaignDebug: NextPage = () => {
   };
 
   const boxPrice: GBoxPrice = {
-    uid: "fake_a_id_box_price",
+    uid: "cl02lyn3o00r2doh032gy1l3y",
     price: 16.6899634,
     // @ts-ignore
     currency: {
@@ -72,7 +72,7 @@ const CampaignDebug: NextPage = () => {
     // _count: {
     //   prices: 0
     // },
-    "uid": "cl02lx5or0000doo018d7n2zz",
+    "uid": "cl02lx5os0005doo0qmjbsdgsy",
     // "game_uid": "cl02lx5os0001doo0f3oiu144",
     "name": "Axie box 1",
     "desc": "Wide variety of game modes: MOBA & Battle Royale, coming with monthly updates and attractive rewards.",
@@ -106,7 +106,7 @@ const CampaignDebug: NextPage = () => {
   };
   const box2: GBoxType = {
     ...box1,
-    uid: "box1_123456789_2",
+    uid: "cl02lx5os0005doo0qmjbsdysh",
     name: "Test box 2",
     thumb_img: "/assets/Box/image109.png",
     sold_amount: 500,
@@ -114,7 +114,7 @@ const CampaignDebug: NextPage = () => {
   };
   const box3: GBoxType = {
     ...box1,
-    uid: "box1_123456789_3",
+    uid: "cl02lx5os0005doo0qmjbsjgki",
     name: "Test box 3",
     thumb_img: "/assets/Box/image110.png",
     sold_amount: 300,

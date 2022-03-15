@@ -1,12 +1,12 @@
 FROM node:16 AS builder
 
 WORKDIR /home/node
+COPY --chown=node:node package.json .
+COPY --chown=node:node yarn.lock .
+USER node
+RUN yarn install
 COPY --chown=node:node . .
 # RUN npm i -g yarn
-
-USER node
-
-RUN yarn install
 RUN yarn build
 RUN yarn export
 # CMD ["yarn", "start"]

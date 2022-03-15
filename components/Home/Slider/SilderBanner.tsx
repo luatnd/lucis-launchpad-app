@@ -1,4 +1,6 @@
+import { calculateCampaignStatus } from "components/campaign/CampaignHelper";
 import { Maybe } from "graphql/jsutils/Maybe";
+import Link from "next/link";
 import { useCountDown } from "utils/Time";
 import s from "./SilderBanner.module.sass";
 type Props = {
@@ -6,31 +8,42 @@ type Props = {
   time: string;
   logo: Maybe<string> | undefined;
   desc: Maybe<string> | undefined;
+  banner: Maybe<string> | undefined;
   href: string;
+  loading: boolean;
+  name: Maybe<string> | undefined;
 };
 
 export default function ItemSliderBanner(props: Props) {
-  const { status, time, logo, desc, href } = props;
+  const { status, time, logo, desc, href, banner, name } = props;
   const timer = useCountDown(time);
+
+  const checkTimeLeft =
+    timer.days <= 0 && timer.hours <= 0 && timer.minutes <= 0 && timer.seconds <= 0 ? false : true;
+
+  const statusStyle =
+    status === "OPENING" ? s.opening : status === "CLOSED" ? s.closed : s.upcoming;
 
   return (
     <div className={`${s.contentItemSilder} lucis-container`}>
       <div className={s.contentDetail}>
-        <div className={s.bgItemSlider}></div>
         <div className={s.headingItem}>
           <div className={s.contentItemTop}>
-            <div className={s.statusGame}>{status}</div>
-            <div className={s.Time}>{`${timer.days}d ${timer.hours}h ${timer.minutes}m ${
-              timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
-            }s`}</div>
+            <div className={statusStyle}>{status}</div>
+            {checkTimeLeft && (
+              <div className={s.Time}>
+                {timer.days}d {timer.hours}h {timer.minutes}m{" "}
+                {timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`}s
+              </div>
+            )}
           </div>
           {/* status game */}
           <div className={s.logoGame}>
-            {/* @ts-ignore */}
-            <img src={logo} alt="" />
+            <img src={logo ?? ""} alt="" />
           </div>
           {/* logo game */}
-          <p>{desc}</p>
+          <p className={`${s.nameCampaign} py-2`}>{name}</p>
+          <p className={`${s.desc} pb-5`}>{desc}</p>
           {/* text */}
           <div className={s.contentItemBottom}>
             <div className={s.groupLink}>
@@ -50,13 +63,15 @@ export default function ItemSliderBanner(props: Props) {
                 <img src="/assets/Banner/svg/win.svg" alt="" />
               </a>
             </div>
-            <a href={href} className={s.btnMore}>
-              MORE DETAIL
-            </a>
+
+            <Link href="/ino" passHref>
+              <a className={s.btnMore}>MORE DETAIL</a>
+            </Link>
           </div>
         </div>
-        <div className={s.imGame}>
-          <img src="/assets/Banner/im_Thetan.png" alt="" />
+
+        <div className={s.imgGame}>
+          <img src={banner ?? ""} alt="" />
         </div>
       </div>
     </div>

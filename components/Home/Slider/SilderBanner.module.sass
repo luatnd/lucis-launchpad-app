@@ -22,9 +22,13 @@
     display: flex
     align-items: center
     justify-content: space-between
+    gap: 10px
+    p
+      margin: 0
+    // @media (max-width: 424px)
     @media (max-width: 767px)
       flex-direction: column
-      
+      gap: 90px
     .headingItem
       flex: 50% 0 0 
       @media (max-width: 767px)
@@ -73,9 +77,6 @@
             // margin-left: 32px
           @media (min-width: 1279px)
             font-size: 36px
-
-          
-
       .logoGame
         margin-top: 52px
         img
@@ -85,7 +86,14 @@
             width: 110px
         @media (max-width: 1279px)
           margin-top: 16px
-      p
+      .nameCampaign
+        font-size: 14px
+        @media (min-width: 768px)
+        font-size: 18px
+        @media (min-width: 992px)
+        font-size: 22px
+
+      .desc
         font-size: 22px 
         line-height: 32px
         font-weight: 300
@@ -227,3 +235,52 @@
     img
       @media (min-width: 768px)
         width: 8%
+
+.opening, .closed, .upcoming
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
+  font-family: 'Transformer'
+  border-radius: 8px
+  padding: 7px 20px 5px 20px
+  font-size: 14px
+  @media (max-width: 991px)
+    font-size: 18px
+  @media (min-width: 992px)
+    font-size: 24px
+  @media (min-width: 1279px)
+    font-size: 32px
+
+.opening  
+  background: rgba(255, 138, 0, 0.2)
+  color: #FF8A00
+
+.closed
+  background: rgba(255, 0, 199, 0.2)
+  color: #FF00C7
+
+.upcoming
+  color: #0BEBD6
+  background: rgba(11, 235, 214, 0.2)
+
+
+.skeContainer 
+  padding-top: 100px
+  display: flex
+  flex-direction: column
+  
+  @media screen and (min-width: 540px)
+  @media screen and (min-width: 768px)
+    flex-direction: row-reverse
+    gap: 10px
+  :global(.ant-skeleton-element)
+    width: 100%
+  :global(.ant-skeleton-image)
+    width: 100%
+    min-height: 336px
+
+.imgGame
+  min-height: 336px
+  width: 100%
+  img
+    margin: auto
+    max-width: 100%
+  

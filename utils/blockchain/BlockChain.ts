@@ -79,12 +79,21 @@ export const ChainNetworkAvatar: Record<string, string> = {
   [ChainNetwork.avax]: "/assets/crypto/ico-chain-avax.svg",
 }
 
+export enum GQL_Currency {
+  undefined = 'undefined',
+  NEAR = 'NEAR',
+  BUSD = 'BUSD',
+}
+
+export function to_GQL_Currency(symbol: string): GQL_Currency {
+  return symbol as GQL_Currency
+}
 
 export const CurrencyAvatar: Record<string, string> = {
   // symbol: url
   undefined: "/assets/crypto/ico-chain-near.svg",
-  NEAR: "/assets/crypto/ico-chain-near.svg",
-  BUSD: '/assets/Box/image125.png',
+  [GQL_Currency.NEAR]: "/assets/crypto/ico-chain-near.svg",
+  [GQL_Currency.BUSD]: '/assets/Box/image125.png',
 }
 
 export function getChainNetworkFromChainData(c: IChainData): ChainNetwork | undefined {

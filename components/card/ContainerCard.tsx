@@ -1,3 +1,4 @@
+import { Maybe } from "graphql/jsutils/Maybe";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { slugify } from "../../utils/String";
@@ -5,25 +6,25 @@ import { GradientLinkButton } from "../Button/GradientButton";
 import s from "./ContainerCard.module.sass";
 
 type Props = {
-  srcGame: string;
+  srcGame: Maybe<string> | undefined;
   time: any;
-  nameGame: string;
-  title: string;
+  nameGame: Maybe<string> | undefined;
+  title: Maybe<string> | undefined;
   statusTime: string;
   styleBg: boolean;
-  inTime: string;
-  srcWeb: string;
-  srcFb: string;
-  srcTele: string;
-  srcDiscord: string;
-  srcTwitter: string;
+  srcWeb: Maybe<string> | undefined;
+  srcFb: Maybe<string> | undefined;
+  srcTele: Maybe<string> | undefined;
+  srcDiscord: Maybe<string> | undefined;
+  srcTwitter: Maybe<string> | undefined;
   soldOutResult?: boolean;
-  description: string;
+  description: Maybe<string> | undefined;
   id: string;
+  highlight: Maybe<string> | undefined;
 };
 
 export default function CardItem(props: Props) {
-  const { soldOutResult, time, statusTime, title, description, id, srcFb } = props;
+  const { soldOutResult, time, statusTime, title, description, id, srcFb, highlight } = props;
 
   // console.log(srcFb);
 
@@ -38,7 +39,8 @@ export default function CardItem(props: Props) {
 
   const bg_card = props.styleBg ? s.bg_1 : s.bg_2;
 
-  const handleDesc = description.length > 120 ? description.substring(0, 120) + "..." : description;
+  const handleDesc =
+    description && description.length > 120 ? description?.substring(0, 120) + "..." : description;
 
   const getCampaignDetailUrl = () => {
     return `/campaign/${id}/${slugify(props.title)}`;
@@ -114,22 +116,31 @@ export default function CardItem(props: Props) {
   return (
     <div className={`${s.CardContainer} ${bg_card}`}>
       <div className={s.img_game}>
-        <img src={props.srcGame} alt="" />
+        <img src={props.srcGame ?? ""} alt="" />
       </div>
+
       <div className={s.content}>
         <div className={s.headingCard}>
           <div className={`${s.styleTime} ${typeTime}`}>
-            {props.statusTime == "UpComing"
+            {statusTime == "UpComing"
               ? `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
                   timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
                 }s`
-              : props.statusTime == "Opening"
+              : statusTime == "Opening"
               ? soldOutResult
                 ? "SOLD OUT"
                 : `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
                     timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
                   }s`
-              : props.time}
+              : time}
+            <span className="text-[12px] xl:text-[14px] pl-2">{highlight ?? ""}</span>
+
+            {/* Highlight for closed campaign */}
+            {statusTime == "Sale" && (
+              <p>
+                SOLD OUT <span>in 15mins</span>
+              </p>
+            )}
           </div>
           <h5>{props.nameGame}</h5>
           <div className={s.text}>{handleDesc}</div>
@@ -144,27 +155,32 @@ export default function CardItem(props: Props) {
         </div>
 
         <div className={s.groupIcon}>
-          {/* <a href={props.srcWeb}> */}
-          <a href="https://lucis.network" target="_blank" rel="noopener noreferrer">
-            <img src="/assets/UpComing/win.svg" alt="" />
-          </a>
-          {/* <a href="https://www.facebook.com/lucistv.news"> */}
-          <a href="https://www.facebook.com/lucistv.news" target="_blank" rel="noopener noreferrer">
-            <img src="/assets/UpComing/fb.png" alt="" />
-          </a>
-          <a
-            href="https://discord.com/channels/911921072830574603/926398655093702666"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img src="/assets/UpComing/dis.svg" alt="" />
-          </a>
-          <a href="https://t.me/sankeonft" target="_blank" rel="noopener noreferrer">
-            <img src="/assets/UpComing/tele.svg" alt="" />
-          </a>
-          <a href="https://www.tiktok.com/@lucistvv" target="_blank" rel="noopener noreferrer">
-            <img src="/assets/UpComing/tw.svg" alt="" />
-          </a>
+          <img src="/assets/crypto/ico-chain-bsc.png" alt="" />
+          <div className={s.block_iconLeft}>
+            <a href="https://lucis.network" target="_blank" rel="noopener noreferrer">
+              <img src="/assets/UpComing/win.svg" alt="" />
+            </a>
+            <a
+              href="https://www.facebook.com/lucistv.news"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src="/assets/UpComing/fb.png" alt="" />
+            </a>
+            <a
+              href="https://discord.com/channels/911921072830574603/926398655093702666"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src="/assets/UpComing/dis.svg" alt="" />
+            </a>
+            <a href="https://t.me/sankeonft" target="_blank" rel="noopener noreferrer">
+              <img src="/assets/UpComing/tele.svg" alt="" />
+            </a>
+            <a href="https://www.tiktok.com/@lucistvv" target="_blank" rel="noopener noreferrer">
+              <img src="/assets/UpComing/tw.svg" alt="" />
+            </a>
+          </div>
         </div>
       </div>
     </div>

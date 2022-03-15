@@ -14,9 +14,6 @@ export default function ConnectWalletBtn(props: Props) {
     AuthBoxStore.connectModalVisible = true;
   };
 
-  // NOTE: Comment this after done
-  console.log('{ConnectWallet} rendered');
-
   return (
     <div className={s.container}>
       <GradientButton

@@ -1,7 +1,7 @@
 import React from "react";
-import { Button, Col, Form, Input, InputNumber, Row } from "antd";
+import {Button, Col, Form, Input, InputNumber, Modal, Row, Progress} from "antd";
+
 import s from "./Box.module.sass";
-import { Progress } from "antd";
 import { GBoxCampaign } from "src/generated/graphql";
 import BoxTypeCard from "../box_type";
 import { getOriginCurrentCampaignRound } from "components/campaign/CampaignHelper";

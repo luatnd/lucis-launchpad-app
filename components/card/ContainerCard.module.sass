@@ -1,3 +1,4 @@
+@import styles/common
 .bg_1
     background: linear-gradient(339deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
     &:global(:before)
@@ -9,8 +10,6 @@
 .CardContainer
     backdrop-filter: blur(4px)
     border-radius: 16px
-    width: 328px
-    height: 450px
     position: relative
     margin-bottom: 140px
     z-index: 19
@@ -23,7 +22,6 @@
         bottom: 0
         border-radius: 16px
         padding: 1px
-        //background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
         -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
         -webkit-mask-composite: xor
         mask-composite: exclude
@@ -44,16 +42,16 @@
         height: 100%
         border-radius: 16px
         .headingCard
-            padding: 200px 22px 0px 22px
+            padding: 200px 22px 80px 22px
             .styleTime
-                // text-align: center
                 font-size: 28px
                 font-weight: 700
                 line-height: 32px
                 position: relative
                 padding-left: 10%
+                white-space: nowrap
                 @media (max-width: 640px)
-                    padding-left: 12%
+                    padding-left: 10%
                 p
                     color:#0BEBD6
                     font-size: 18px
@@ -104,90 +102,127 @@
         .groupIcon
             display: flex
             align-items: center
-            justify-content: flex-end
+            justify-content: space-between
             position: absolute
             bottom: 20px
-            right: 12px
-            z-index: 20
-            img
-                padding: 0px 16px
-                margin-top: 30px
-        .btnDetail
-            background: linear-gradient(284deg, rgba(205, 40, 232, 0.2) 0%, rgba(11, 235, 214, 0.2) 100%)
-            border-radius: 0px 0px 16px 16px
-            display: flex
-            align-items: center
-            justify-content: center
-            height: 47%
+            padding: 0px 22px
             width: 100%
-            position: absolute
-            bottom: 0
-            left: 0
-            opacity: 0
-            transition: 0.5s
-            .styleBtn
+            z-index: 20
+            .block_iconLeft
                 display: flex
                 align-items: center
-                justify-content: center
-                max-width: 47%
+                justify-content: flex-end
                 width: 100%
-                color: #FFF
-                font-size: 24px
-                font-weight: 600
-                line-height: 28px
-                cursor: pointer
-                @media (min-width: 0px)
-                    padding: 8px 15px
-                @media (min-width: 1025px)
-                    padding: 10px 15px
-                
-
-                
+                a
+                    margin: 0px 16px
+                    @media  ( min-width: 992px) and (max-width: 1278px)
+                        margin: 0px 8px
+                        
+        .groupIcon > img
+            width: 24px
+            // .block_iconLeft a img
+            //     padding: 0px 16px
+            //     margin-top: 30px
+                  
 .CardContainer:hover .btnDetail
     opacity: 1
 
+
+.btnDetail
+    background: linear-gradient(284deg, rgba(205, 40, 232, 0.2) 0%, rgba(11, 235, 214, 0.2) 100%)
+    border-radius: 0px 0px 16px 16px
+    display: flex
+    align-items: center
+    justify-content: center
+    height: 47%
+    width: 100%
+    position: absolute
+    bottom: 0
+    left: 0
+    opacity: 0
+    transition: 0.5s
+    &:hover 
+        a 
+            color: white
+    @media screen and (min-width: 415px) 
+        height: 40%
+    @media screen and (min-width: 540px) 
+        height: 32%
+    @media screen and (min-width: 640px) 
+        height: 26%
+    @media screen and (min-width: 767px) 
+        height: 48%
+    @media screen and (min-width: 767px) 
+        height: 54%
+    @media screen and (min-width: 1199px) 
+        height: 55%
+    @media screen and (min-width: 1280px) 
+        height: 47%
+    @media screen and (min-width: 1440px) 
+        height: 43%
+
+.styleBtn
+    display: flex
+    align-items: center
+    justify-content: center
+    max-width: 47%
+    width: 100%
+    color: #FFF
+    font-size: 24px
+    font-weight: 600
+    line-height: 28px
+    cursor: pointer
+    padding: 8px 15px
+    @media (min-width: 1023px)
+        padding: 10px 15px    
+
+@media (min-width: 415px)
+    .CardContainer
+        .headingCard
+            padding: 270px 22px 80px 22px !important
+
+@media (min-width: 520px)
+    .CardContainer
+        .headingCard
+            padding: 250px 22px 80px 22px !important
+
+@media (min-width: 540px)
+    .CardContainer
+        .headingCard
+            padding: 370px 22px 80px 22px !important
+
 @media (min-width: 640px)
     .CardContainer
-        width: 280px
-        height: 400px
         .headingCard
-            padding: 140px 22px 0px 22px !important
+            padding: 440px 22px 80px 22px !important
             .styleTime
                 font-size: 24px  !important
             .styleTime::before
                 left: 0 !important
-        .btnDetail
-            height: 52% !important
+        // .btnDetail
+        //     height: 45% !important
 @media (min-width: 768px)
     .CardContainer
-        width: 328px
-        height: 440px
         .headingCard
-            padding: 200px 22px 0px 22px !important
+            padding: 200px 22px 80px 22px !important
             .styleTime
-                font-size: 28px  !important
+                font-size: 24px  !important
             .styleTime::before
                 left: 0 !important
-        .btnDetail
-            height: 45% !important
+ 
 @media (min-width: 992px)
     .CardContainer
-        width: 32%
-        height: 400px
         .headingCard
-            padding: 150px 22px 0px 22px !important
+            padding: 150px 22px 80px 22px !important
             .styleTime
-                font-size: 28px  !important
+                font-size: 24px  !important
             .styleTime::before
                 left: 0 !important
-        .btnDetail
-            height: 52% !important
+
 @media (min-width: 1279px)
     .CardContainer
-        width: 32%
-        height: 500px
         .headingCard
-            padding: 220px 22px 0px 22px !important
+            padding: 220px 22px 80px 22px !important
             .styleTime
                 font-size: 28px  !important
             .styleTime::before
@@ -197,14 +232,11 @@
             .text
                 font-size: 18px !important
                 margin-top: 12px
-        .btnDetail
-            height: 47% !important
+
 @media (min-width: 1439px)
     .CardContainer
-        width: 31.5%
-        height: 600px
         .headingCard
-            padding: 270px 22px 0px 22px !important
+            padding: 270px 22px 80px 22px !important
             .styleTime
                 font-size: 36px  !important
             .styleTime::before
@@ -214,5 +246,5 @@
             .text
                 font-size: 20px !important
                 margin-top: 12px
-        .btnDetail
-            height: 47% !important
+
+

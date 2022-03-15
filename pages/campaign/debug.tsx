@@ -1,18 +1,10 @@
-import type { NextPage } from "next";
+import type {NextPage} from "next";
 import DocHead from "../../components/DocHead";
-import s from "./detail.module.sass";
-import Banner from "../../components/campaign/components/Banner/Banner";
-import { Col, Row, Tabs } from "antd";
-import { TabPane } from "rc-tabs";
-import Footer from "../../components/Footer";
+import {Col, Row} from "antd";
+import Footer from "../../components/Footer/Footer";
 import React from "react";
 import BoxTypeCard from "../../components/campaign/components/box_type";
-import {
-  ChainSymbol,
-  GBoxCampaign,
-  GBoxType,
-  GGame,
-} from "../../src/generated/graphql";
+import {ChainSymbol, GBoxCampaign, GBoxPrice, GBoxType, GGame} from "../../src/generated/graphql";
 
 /**
  * This has no function in project
@@ -45,7 +37,7 @@ const CampaignDebug: NextPage = () => {
     // @ts-ignore
     game: game,
     game_uid: "",
-    uid: "cp_12a34f56b89",
+    uid: "cl02lx5or0000doo018d7n2aa",
     start: new Date(),
     end: new Date(),
     created_at: undefined,
@@ -57,28 +49,37 @@ const CampaignDebug: NextPage = () => {
     // },
   };
 
+  const boxPrice: GBoxPrice = {
+    uid: "cl02lyn3o00r2doh032gy1l3y",
+    price: 16.6899634,
+    // @ts-ignore
+    currency: {
+      symbol: "BUSD",
+      chain_symbol: ChainSymbol.Bsc,
+      icon: "https://s2.coinmarketcap.com/static/img/coins/64x64/4687.png",
+      address: '0xA16699880297FF63F331D7136549F01f768ea47E',
+    },
+    contract: {
+      uid: '_fake___',
+      chain_symbol: ChainSymbol.Bsc,
+      address: '0x5B2447Df55372321A3bBf7eDEAdEA866ff5de95D',
+      created_at: '3456789',
+      updated_at: '3456789',
+    }
+  };
+
   const box1: GBoxType = {
     // _count: {
     //   prices: 0
     // },
-    "uid": "cl02lx5or0000doo018d7n2zz",
-    "game_uid": "cl02lx5os0001doo0f3oiu144",
-    "name": "Axie box 1",
-    "desc": "Wide variety of game modes: MOBA & Battle Royale, coming with monthly updates and attractive rewards.",
+    "uid": "cl02lx5os0005doo0qmjbsdgsy",
+    // "game_uid": "cl02lx5os0001doo0f3oiu144",
+    name: "Axie box 1",
+    desc: "Wide variety of game modes: MOBA & Battle Royale, coming with monthly updates and attractive rewards.",
     box_campaign_uid: "cp_12a34f56b89",
-    campaign: campaign,
+    // campaign: campaign,
     limit_per_user: 100,
-    prices: [
-      {
-        price: 16.6899634,
-        // @ts-ignore
-        currency: {
-          symbol: "BUSD",
-          chain_symbol: ChainSymbol.Bsc,
-          icon: "https://s2.coinmarketcap.com/static/img/coins/64x64/4687.png",
-        },
-      },
-    ],
+    prices: [boxPrice],
     series_content: `
     <table>
       <tr>
@@ -103,7 +104,7 @@ const CampaignDebug: NextPage = () => {
   };
   const box2: GBoxType = {
     ...box1,
-    uid: "box1_123456789_2",
+    uid: "cl02lx5os0005doo0qmjbsdysh",
     name: "Test box 2",
     thumb_img: "/assets/Box/image109.png",
     sold_amount: 500,
@@ -111,10 +112,10 @@ const CampaignDebug: NextPage = () => {
   };
   const box3: GBoxType = {
     ...box1,
-    uid: "box1_123456789_3",
+    uid: "cl02lx5os0005doo0qmjbsjgki",
     name: "Test box 3",
     thumb_img: "/assets/Box/image110.png",
-    sold_amount: 500,
+    sold_amount: 300,
     total_amount: 500,
   };
 
@@ -123,64 +124,64 @@ const CampaignDebug: NextPage = () => {
       <DocHead title={"Draft Page for campaign"} />
 
       <div className="lucis-container mt-[116px]">
-          <Row gutter={[24, 50]} className="justify-center">
-            <Col xs={24} md={12} lg={8}>
-              <BoxTypeCard
-                boxType={box1}
-                round={{
-                  id: 0,
-                  name: "",
-                  start: new Date().toISOString(),
-                  end: new Date().toISOString(),
-                  is_whitelist: false,
-                  require_whitelist: false,
-                }}
-                isInWhitelist={false}
-              />
-            </Col>
-            <Col xs={24} md={12} lg={8}>
-              <BoxTypeCard
-                boxType={box2}
-                round={{
-                  id: 0,
-                  name: "",
-                  start: new Date().toISOString(),
-                  end: new Date().toISOString(),
-                  is_whitelist: false,
-                  require_whitelist: false,
-                }}
-                isInWhitelist={true}
-              />
-            </Col>
-            <Col xs={24} md={12} lg={8}>
-              <BoxTypeCard
-                boxType={box3}
-                round={{
-                  id: 0,
-                  name: "",
-                  start: new Date().toISOString(),
-                  end: new Date().toISOString(),
-                  is_whitelist: false,
-                  require_whitelist: true,
-                }}
-                isInWhitelist={false}
-              />
-            </Col>
-            <Col xs={24} md={12} lg={8}>
-              <BoxTypeCard
-                boxType={box3}
-                round={{
-                  id: 0,
-                  name: "",
-                  start: new Date().toISOString(),
-                  end: new Date().toISOString(),
-                  is_whitelist: false,
-                  require_whitelist: true,
-                }}
-                isInWhitelist={true}
-              />
-            </Col>
-          </Row>
+        <Row gutter={[24, 50]} className="justify-center">
+          <Col xs={24} md={12} lg={8}>
+            <BoxTypeCard
+              boxType={box1}
+              round={{
+                id: 1,
+                name: "",
+                start: new Date().toISOString(),
+                end: new Date().toISOString(),
+                is_whitelist: false,
+                require_whitelist: false,
+              }}
+              isInWhitelist={false}
+            />
+          </Col>
+          <Col xs={24} md={12} lg={8}>
+            <BoxTypeCard
+              boxType={box2}
+              round={{
+                id: 1,
+                name: "",
+                start: new Date().toISOString(),
+                end: new Date().toISOString(),
+                is_whitelist: false,
+                require_whitelist: false,
+              }}
+              isInWhitelist={true}
+            />
+          </Col>
+          <Col xs={24} md={12} lg={8}>
+            <BoxTypeCard
+              boxType={box3}
+              round={{
+                id: 1,
+                name: "",
+                start: new Date().toISOString(),
+                end: new Date().toISOString(),
+                is_whitelist: false,
+                require_whitelist: true,
+              }}
+              isInWhitelist={false}
+            />
+          </Col>
+          <Col xs={24} md={12} lg={8}>
+            <BoxTypeCard
+              boxType={box3}
+              round={{
+                id: 1,
+                name: "",
+                start: new Date().toISOString(),
+                end: new Date().toISOString(),
+                is_whitelist: false,
+                require_whitelist: true,
+              }}
+              isInWhitelist={true}
+            />
+          </Col>
+        </Row>
       </div>
 
       <Footer />

@@ -20,6 +20,7 @@ const GET_OPENING = gql`
       opening_at
       start
       end
+      highlight
       game {
         uid
         name

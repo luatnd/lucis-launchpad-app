@@ -1,13 +1,17 @@
 import { gql, useQuery } from "@apollo/client";
 
 export function useDetailCampaign({ box_campaign_uid }: any) {
-  const { loading, error, data } = useQuery(DETAIL_CAMPAIGN);
+  const { loading, error, data } = useQuery(DETAIL_CAMPAIGN, {
+    variables: {
+      box_campaign_uid,
+    },
+  });
 
   const {
     loading: loadingOpening,
     error: errorOpening,
     data: dataIsInWhiteList,
-  } = useQuery(IS_IN_WHITE_LIST);
+  } = useQuery(IS_IN_WHITE_LIST, { variables: { box_campaign_uid } });
 
   const {
     loading: loadingWhiteListRegistered,
@@ -25,16 +29,10 @@ export function useDetailCampaign({ box_campaign_uid }: any) {
 }
 
 const DETAIL_CAMPAIGN = gql`
-  query {
+  query ($box_campaign_uid: String!) {
     campaignDetail(
-      where: { uid: "cl02lx5or0000doo018d7n2zz" }
-      include: {
-        game: true
-        boxTypes: true
-        boxPrices: true
-        chain: true
-        currency: true
-      }
+      where: { uid: $box_campaign_uid }
+      include: { game: true, boxTypes: true, boxPrices: true, chain: true, currency: true }
     ) {
       uid
       game_uid
@@ -42,6 +40,7 @@ const DETAIL_CAMPAIGN = gql`
       desc
       rules
       cover_img
+      banner_img
       rounds {
         id
         name
@@ -62,6 +61,7 @@ const DETAIL_CAMPAIGN = gql`
         telegram
         youtube
         discord
+        logo
       }
       status
       start
@@ -82,7 +82,9 @@ const DETAIL_CAMPAIGN = gql`
             symbol
             icon
             chain_symbol
+            address
           }
+          contract_address
         }
       }
     }
@@ -90,8 +92,8 @@ const DETAIL_CAMPAIGN = gql`
 `;
 
 const IS_IN_WHITE_LIST = gql(`
-    query { 
-        isInWhitelist(box_campaign_uid: "cl02lx5or0000doo018d7n2zz") 
+    query ($box_campaign_uid: String!) { 
+        isInWhitelist(box_campaign_uid: $box_campaign_uid) 
     }
 `);
 

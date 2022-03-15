@@ -11,7 +11,7 @@ export function useDetailCampaign({ box_campaign_uid }: any) {
     loading: loadingOpening,
     error: errorOpening,
     data: dataIsInWhiteList,
-  } = useQuery(IS_IN_WHITE_LIST);
+  } = useQuery(IS_IN_WHITE_LIST, { variables: { box_campaign_uid } });
 
   const {
     loading: loadingWhiteListRegistered,
@@ -40,6 +40,7 @@ const DETAIL_CAMPAIGN = gql`
       desc
       rules
       cover_img
+      banner_img
       rounds {
         id
         name
@@ -60,6 +61,7 @@ const DETAIL_CAMPAIGN = gql`
         telegram
         youtube
         discord
+        logo
       }
       status
       start

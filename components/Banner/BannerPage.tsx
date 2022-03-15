@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import s from "./Banner.module.sass";
 import SimpleSlider from "./SliderBanner";
 import { useSpotlight } from "./useSpotlight";
-import SubSlider from "./[temp]Slider/SubSlider";
+import SubSlider from "./SubSlider";
 
 export default function Banner() {
   const { resultSpotlight, loading, error } = useSpotlight();

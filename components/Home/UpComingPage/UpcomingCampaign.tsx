@@ -35,34 +35,12 @@ export default function UpComing(props: Props) {
                 srcDiscord={e?.game.discord}
                 srcTwitter={e?.game.twitter}
                 id={e?.uid}
+                highlight={e?.highlight}
               />
             </Col>
           );
         })}
       </Row>
-      {/* <div className={s.blockCard}>
-        {resultUpComing?.upcomingBoxCampaign.map((e: any, i: any) => {
-          return (
-            <CardItem
-              key={i}
-              srcGame={e.cover_img}
-              statusTime={"UpComing"}
-              time={e.opening_at}
-              inTime={e.inTime}
-              nameGame={e?.game.name}
-              styleBg={true}
-              title={e?.name}
-              description={e?.game.desc}
-              srcWeb={e?.game.website}
-              srcFb={e?.game.facebook}
-              srcTele={e?.game.telegram}
-              srcDiscord={e?.game.discord}
-              srcTwitter={e?.game.twitter}
-              id={e?.uid}
-            />
-          );
-        })}
-      </div> */}
     </section>
   );
 }

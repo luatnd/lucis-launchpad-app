@@ -49,8 +49,9 @@
                 line-height: 32px
                 position: relative
                 padding-left: 10%
+                white-space: nowrap
                 @media (max-width: 640px)
-                    padding-left: 12%
+                    padding-left: 10%
                 p
                     color:#0BEBD6
                     font-size: 18px
@@ -143,14 +144,22 @@
     &:hover 
         a 
             color: white
+    @media screen and (min-width: 415px) 
+        height: 40%
+    @media screen and (min-width: 540px) 
+        height: 32%
+    @media screen and (min-width: 640px) 
+        height: 26%
     @media screen and (min-width: 767px) 
-        height: 50%
-    @media screen and (min-width: 1023px) 
+        height: 48%
+    @media screen and (min-width: 767px) 
         height: 54%
     @media screen and (min-width: 1199px) 
         height: 55%
-    @media screen and (min-width: 1399px) 
-        height: 45%
+    @media screen and (min-width: 1280px) 
+        height: 47%
+    @media screen and (min-width: 1440px) 
+        height: 43%
 
 .styleBtn
     display: flex
@@ -167,10 +176,25 @@
     @media (min-width: 1023px)
         padding: 10px 15px    
 
+@media (min-width: 415px)
+    .CardContainer
+        .headingCard
+            padding: 270px 22px 80px 22px !important
+
+@media (min-width: 520px)
+    .CardContainer
+        .headingCard
+            padding: 250px 22px 80px 22px !important
+
+@media (min-width: 540px)
+    .CardContainer
+        .headingCard
+            padding: 370px 22px 80px 22px !important
+
 @media (min-width: 640px)
     .CardContainer
         .headingCard
-            padding: 140px 22px 800px 22px !important
+            padding: 440px 22px 80px 22px !important
             .styleTime
                 font-size: 24px  !important
             .styleTime::before
@@ -182,7 +206,7 @@
         .headingCard
             padding: 200px 22px 80px 22px !important
             .styleTime
-                font-size: 28px  !important
+                font-size: 24px  !important
             .styleTime::before
                 left: 0 !important
  
@@ -191,7 +215,7 @@
         .headingCard
             padding: 150px 22px 80px 22px !important
             .styleTime
-                font-size: 28px  !important
+                font-size: 24px  !important
             .styleTime::before
                 left: 0 !important
 

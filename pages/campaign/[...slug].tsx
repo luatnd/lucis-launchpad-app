@@ -38,7 +38,7 @@ function DetailCampaign() {
       <DocHead />
       <div className="lucis-container">
         <div className={s.containerApp}>
-          <Banner />
+          <Banner boxCampaign={boxCampaign} />
           <Tabs defaultActiveKey="1" className={s.tabs}>
             <TabPane tab="TIMELINE" key="1">
               {boxCampaign?.rounds != null && (
@@ -59,6 +59,7 @@ function DetailCampaign() {
                 <BuyHistory id={id} title="recently bought" />
               </div>
             </TabPane>
+
             <TabPane tab="RULE" key="2">
               <div className="lucis-container mt-[40px!important]">
                 {boxCampaign?.rules && boxCampaign?.rules.substring(0, 8) !== "https://" ? (
@@ -68,6 +69,7 @@ function DetailCampaign() {
                 )}
               </div>
             </TabPane>
+
             <TabPane tab="ABOUT PROJECT" key="3">
               <Trailer game={boxCampaign?.game} />
               <Team game={boxCampaign?.game} />

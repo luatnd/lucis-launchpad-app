@@ -363,9 +363,9 @@ body .ant-menu {
     max-width: 1279px;
     padding: 0 5rem;
   }
-  .simple-slider {
+  /* .simple-slider {
     margin-top: 60px;
-  }
+  } */
 }
 @media (min-width: 1440px) {
   .lucis-container {
@@ -514,7 +514,7 @@ body .backdrop-blur-sm {
   /*  #fdf074 84.9%,*/
   /*  #c1d8f8 100%*/
   /*);*/
-  background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%);
+  background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%);
 }
 .ant-popover-content .ant-popover-inner {
   background: rgba(123, 123, 123, 0.2);
@@ -540,8 +540,8 @@ div {
   backdrop-filter: blur(10px);
 }
 
-body .ant-btn-primary{
-  background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%);
+body .ant-btn-primary {
+  background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%);
   border-color: none;
   border: none;
 }
@@ -553,3 +553,8 @@ body .ant-btn-primary{
   display: none;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

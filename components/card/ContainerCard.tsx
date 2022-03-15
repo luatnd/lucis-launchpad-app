@@ -20,10 +20,11 @@ type Props = {
   soldOutResult?: boolean;
   description: Maybe<string> | undefined;
   id: string;
+  highlight: Maybe<string> | undefined;
 };
 
 export default function CardItem(props: Props) {
-  const { soldOutResult, time, statusTime, title, description, id, srcFb } = props;
+  const { soldOutResult, time, statusTime, title, description, id, srcFb, highlight } = props;
 
   // console.log(srcFb);
 
@@ -31,10 +32,10 @@ export default function CardItem(props: Props) {
     statusTime == "UpComing"
       ? s.time
       : soldOutResult
-        ? s.sold
-        : statusTime == "SALE"
-          ? s.sale
-          : s.time;
+      ? s.sold
+      : statusTime == "SALE"
+      ? s.sale
+      : s.time;
 
   const bg_card = props.styleBg ? s.bg_1 : s.bg_2;
 
@@ -121,15 +122,25 @@ export default function CardItem(props: Props) {
       <div className={s.content}>
         <div className={s.headingCard}>
           <div className={`${s.styleTime} ${typeTime}`}>
-            {props.statusTime == "UpComing"
-              ? `${timer.days}d ${timer.hours}h ${timer.minutes}m ${timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
-              }s`
-              : props.statusTime == "Opening"
-                ? soldOutResult
-                  ? "SOLD OUT"
-                  : `${timer.days}d ${timer.hours}h ${timer.minutes}m ${timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
+            {statusTime == "UpComing"
+              ? `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
+                  timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
+                }s`
+              : statusTime == "Opening"
+              ? soldOutResult
+                ? "SOLD OUT"
+                : `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
+                    timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
                   }s`
-                : props.time}
+              : time}
+            <span className="text-[12px] xl:text-[14px] pl-2">{highlight ?? ""}</span>
+
+            {/* Highlight for closed campaign */}
+            {statusTime == "Sale" && (
+              <p>
+                SOLD OUT <span>in 15mins</span>
+              </p>
+            )}
           </div>
           <h5>{props.nameGame}</h5>
           <div className={s.text}>{handleDesc}</div>
@@ -145,11 +156,15 @@ export default function CardItem(props: Props) {
 
         <div className={s.groupIcon}>
           <img src="/assets/crypto/ico-chain-bsc.png" alt="" />
-          <div>
+          <div className={s.block_iconLeft}>
             <a href="https://lucis.network" target="_blank" rel="noopener noreferrer">
               <img src="/assets/UpComing/win.svg" alt="" />
             </a>
-            <a href="https://www.facebook.com/lucistv.news" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://www.facebook.com/lucistv.news"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <img src="/assets/UpComing/fb.png" alt="" />
             </a>
             <a
@@ -164,7 +179,8 @@ export default function CardItem(props: Props) {
             </a>
             <a href="https://www.tiktok.com/@lucistvv" target="_blank" rel="noopener noreferrer">
               <img src="/assets/UpComing/tw.svg" alt="" />
-            </a></div>
+            </a>
+          </div>
         </div>
       </div>
     </div>

@@ -217,6 +217,15 @@ export function useBuyBox(
     return buyBox(boxPrice?.uid, round?.id ?? 0, quantity)
       .then(res => {
         console.log('{onBuyBox.res} res: ', res);
+        const success = res.data.buyBox;
+        if (success) {
+          message.success(
+            '<span>Successfully buy the box (TODO: INFO) | tx hash: (TODO: txhash)</span>',
+            15
+          )
+        } else {
+          message.error("Buy box failed")
+        }
       })
       .catch((err) => {
         onApolloError(

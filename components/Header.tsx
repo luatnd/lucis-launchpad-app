@@ -4,8 +4,6 @@ import { useRouter } from "next/router";
 
 import s from "./Header.module.sass";
 import { useWindowSize } from "../hooks/useWindowSize";
-import { scrollToSection } from "../utils/DOM";
-import { AppEmitter } from "../services/emitter";
 
 import Image from "./Image";
 import { MenuMobile } from "./Menu/MenuMobile";
@@ -18,35 +16,12 @@ type Props = {
   handleMenuOpen: Function;
 };
 export default function Header(props: Props) {
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const router = useRouter();
-
-
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-  const [width, height] = useWindowSize();
-
-  const scrollAndCloseMenu = useCallback((selector: string) => {
-    scrollToSection(selector ?? "", true, -90);
-  }, []);
+  const [width] = useWindowSize();
 
   useEffect(() => {
-    const subscription = AppEmitter.addListener("setJoinUsVisible", (visible: boolean) => {
-      setIsModalVisible(visible);
-    });
-    return () => {
-      subscription.remove();
-    };
-  }, []);
+    console.log('{HEADER} run 2time?: ');
+  }, [])
 
   if (width > 1024) {
     return (
@@ -97,6 +72,8 @@ export default function Header(props: Props) {
       </div>
     );
   } else {
+
+    console.log('{Header} MOBILE: ');
     return <MenuMobile />;
   }
 }

@@ -77,7 +77,7 @@ const BoxTypeCard = observer((props: Props) => {
   return (
     <div>
       <div className="flex justify-center">
-        <h3 className="uppercase text-center text-white font-bold text-[24px] md:text-[36px]">
+        <h3 className="uppercase text-center text-white font-bold text-[24px] lg:text-[36px]" style={{ whiteSpace: "nowrap" }}>
           {boxType.name}
         </h3>
       </div>

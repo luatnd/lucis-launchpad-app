@@ -67,6 +67,12 @@ body {
 .slick-prev:before {
   display: none;
 }
+body .slick-prev{
+  display: none !important;
+}
+body .slick-next{
+  display: none !important;
+}
 
 .highcharts-credits {
   display: none !important;

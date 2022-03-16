@@ -1,8 +1,8 @@
 import { gql, useQuery, useSubscription } from "@apollo/client";
 
 type Props = {
-  box_campaign_uid: string
-}
+  box_campaign_uid: string;
+};
 
 export function useDetailCampaign({ box_campaign_uid }: Props) {
   const { loading, error, data } = useQuery(DETAIL_CAMPAIGN, {
@@ -10,7 +10,6 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
       box_campaign_uid,
     },
   });
-
 
   const {
     loading: loadingOpening,
@@ -31,7 +30,16 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
     loading: loadingWhiteListRegistered,
     error: errorWhiteListRegistered,
     data: dataWhiteListRegistered,
-  } = useSubscription(WHITE_LIST_REGISTERED, { variables: { box_campaign_uid } });
+  } = useSubscription(WHITE_LIST_REGISTERED, {
+    variables: { box_campaign_uid },
+  });
+
+  const {
+    // error: errorPurchasedBox,
+    data: purchasedBox,
+  } = useSubscription(PURCHASED_BOX_SUBSCRIPTION, {
+    variables: { box_campaign_uid },
+  });
 
   return {
     loading,
@@ -43,15 +51,21 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
     loadingOfRegisteredWhitelist,
     errorOfRegisteredWhitelist,
     dataOfRegisteredWhitelist,
+    purchasedBox,
   };
 }
-
 
 const DETAIL_CAMPAIGN = gql`
   query ($box_campaign_uid: String!) {
     campaignDetail(
       where: { uid: $box_campaign_uid }
-      include: { game: true, boxTypes: true, boxPrices: true, chain: true, currency: true }
+      include: {
+        game: true
+        boxTypes: true
+        boxPrices: true
+        chain: true
+        currency: true
+      }
     ) {
       uid
       game_uid
@@ -111,8 +125,8 @@ const DETAIL_CAMPAIGN = gql`
 `;
 
 const IS_IN_WHITE_LIST = gql`
-  query ($box_campaign_uid: String!) { 
-    isInWhitelist(box_campaign_uid: $box_campaign_uid) 
+  query ($box_campaign_uid: String!) {
+    isInWhitelist(box_campaign_uid: $box_campaign_uid)
   }
 `;
 
@@ -126,10 +140,21 @@ const REGISTERED_WHITELIST = gql`
 `;
 
 const WHITE_LIST_REGISTERED = gql`
-  subscription ($box_campaign_uid: String!){
-    whitelistRegistered(box_campaign_uid: $box_campaign_uid){
+  subscription ($box_campaign_uid: String!) {
+    whitelistRegistered(box_campaign_uid: $box_campaign_uid) {
       registered
       limit
+      box_campaign_uid
+    }
+  }
+`;
+
+const PURCHASED_BOX_SUBSCRIPTION = gql`
+  subscription ($box_campaign_uid: String!) {
+    purchasedBox(box_campaign_uid: $box_campaign_uid) {
+      total_amount
+      sold_amount
+      box_campaign_uid
     }
   }
 `;

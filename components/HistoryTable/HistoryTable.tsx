@@ -18,6 +18,7 @@ const HistoryTable = (props: Props) => {
       title: "Item",
       dataIndex: "box",
       key: "box",
+      // @ts-ignore
       render: (_, item: GBoxCampaignBuyHistory) => {
         return <img src={item.box_price?.boxType?.thumb_img ?? ""} alt="" />;
       },

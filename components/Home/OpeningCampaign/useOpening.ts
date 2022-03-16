@@ -37,6 +37,9 @@ const GET_OPENING = gql`
         sold_amount
         total_amount
       }
+      chains{
+        icon
+      }
     }
   }
 `;

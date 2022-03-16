@@ -2,9 +2,10 @@ import { Table } from "antd";
 import moment from "moment";
 import s from "./History.module.sass";
 import { trim_middle } from "utils/String";
+import { GBoxCampaignBase, GBoxCampaignBuyHistory } from "src/generated/graphql";
 
 type Props = {
-  data: any;
+  data: GBoxCampaignBuyHistory[];
   title: string;
 };
 
@@ -17,8 +18,9 @@ const HistoryTable = (props: Props) => {
       title: "Item",
       dataIndex: "box",
       key: "box",
-      render: (item: any) => {
-        return <img src={item.cover_img} />;
+      // @ts-ignore
+      render: (_, item: GBoxCampaignBuyHistory) => {
+        return <img src={item.box_price?.boxType?.thumb_img ?? ""} alt="" />;
       },
       width: "10%",
     },
@@ -27,15 +29,15 @@ const HistoryTable = (props: Props) => {
       dataIndex: "box",
       key: "box",
       // @ts-ignore
-      render: (_, item: any) => {
+      render: (_, item: GBoxCampaignBuyHistory) => {
         return (
           <>
             <p className="descText">
-              {item.box_price.boxType?.name ? item.box_price.boxType.name : "Common box"}
+              {item.box_price?.boxType?.name ? item.box_price?.boxType.name : "Common box"}
             </p>
             <p className="descSubText">
-              <img src={item.box_price.chain_icon} />
-              <span>{item.box_price.chain_name}</span>
+              <img src={item.box_price?.chain_icon ?? ""} alt="" />
+              <span>{item.box_price?.chain_symbol}</span>
             </p>
             <p className="descSubText pt-3" style={{ whiteSpace: "nowrap" }}>
               {item.box.game.name} | {item.box.name ? item.box.name : "Box campaign name"}
@@ -55,7 +57,7 @@ const HistoryTable = (props: Props) => {
           <>
             <p className="descText">{item.quantity}</p>
             <p className="descSubText" style={{ whiteSpace: "nowrap" }}>
-              {moment(item.created_at).format("YYYY-MM-DD hh:mm:ss")}
+              {moment(item.created_at).format("YYYY-MM-DD HH:mm:ss")}
             </p>
           </>
         );

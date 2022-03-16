@@ -20,7 +20,7 @@ const MyProfile = () => {
       <div className={s.banner}>
         <img src="/assets/MyProfile/banner.png" alt="" />
 
-        <div className="container">
+        <div className={`${s.profileContainer} container`}>
           <Info {...props} />
           <Contact {...props} />
           <Box {...props} />

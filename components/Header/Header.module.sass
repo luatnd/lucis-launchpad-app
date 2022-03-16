@@ -6,8 +6,10 @@
   background: rgba(40, 38, 54, 0.2)
   position: relative
   background: #28263633
-  padding: 20px 0px
   z-index: 10
+  @media (min-width: 1024px)
+    padding: 20px 0px
+    
 .logo
   height: 75px
   width: 268px
@@ -51,12 +53,3 @@
   opacity: 1
   transform: scale(1) translate(-115px, 80px)
 
-@media (min-width: 992px) and (max-width: 1024px)
-  .container
-    max-width: 992px
-    padding: 0px 3rem
-
-@media (min-width: 0px) and (max-width: 414px)
-  .container
-    max-width: 360px
-    padding: 0px 1rem

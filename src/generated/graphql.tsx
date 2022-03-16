@@ -164,7 +164,7 @@ export type BoxTypeCount = {
 
 export type BuyBoxInput = {
   box_price_uid: Scalars['String'];
-  quantity: Scalars['Float'];
+  quantity: Scalars['Int'];
   round_id: Scalars['Int'];
 };
 
@@ -229,6 +229,8 @@ export type GBoxCampaign = {
   __typename?: 'GBoxCampaign';
   banner_img?: Maybe<Scalars['String']>;
   boxTypes?: Maybe<Array<GBoxType>>;
+  /** get the chains which campaign supports */
+  chains: Array<GChain>;
   cover_img?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   desc?: Maybe<Scalars['String']>;
@@ -380,6 +382,16 @@ export type GBoxTypeHistory = {
   thumb_img?: Maybe<Scalars['String']>;
   total_amount: Scalars['Int'];
   uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+};
+
+export type GChain = {
+  __typename?: 'GChain';
+  created_at: Scalars['DateTime'];
+  icon?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  status?: Maybe<Scalars['Boolean']>;
+  symbol: ChainSymbol;
   updated_at: Scalars['DateTime'];
 };
 

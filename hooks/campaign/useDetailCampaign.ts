@@ -1,11 +1,16 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useSubscription } from "@apollo/client";
 
-export function useDetailCampaign({ box_campaign_uid }: any) {
+type Props = {
+  box_campaign_uid: string
+}
+
+export function useDetailCampaign({ box_campaign_uid }: Props) {
   const { loading, error, data } = useQuery(DETAIL_CAMPAIGN, {
     variables: {
       box_campaign_uid,
     },
   });
+
 
   const {
     loading: loadingOpening,
@@ -13,20 +18,23 @@ export function useDetailCampaign({ box_campaign_uid }: any) {
     data: dataIsInWhiteList,
   } = useQuery(IS_IN_WHITE_LIST, { variables: { box_campaign_uid } });
 
-  const {
-    loading: loadingWhiteListRegistered,
-    error: errorWhiteListRegistered,
-    data: dataWhiteListRegistered,
-  } = useQuery(WHITE_LIST_REGISTERED, { variables: { box_campaign_uid } });
+
+
+  // const {
+  //   loading: loadingWhiteListRegistered,
+  //   error: errorWhiteListRegistered,
+  //   data: dataWhiteListRegistered,
+  // } = useSubscription(WHITE_LIST_REGISTERED, { variables: { box_campaign_uid } });
 
   return {
     loading,
     error,
     boxCampaign: data?.campaignDetail,
     isInWhitelist: dataIsInWhiteList?.isInWhitelist ?? false,
-    dataWhiteListRegistered,
+    // dataWhiteListRegistered,
   };
 }
+
 
 const DETAIL_CAMPAIGN = gql`
   query ($box_campaign_uid: String!) {
@@ -91,17 +99,17 @@ const DETAIL_CAMPAIGN = gql`
   }
 `;
 
-const IS_IN_WHITE_LIST = gql(`
-    query ($box_campaign_uid: String!) { 
-        isInWhitelist(box_campaign_uid: $box_campaign_uid) 
-    }
-`);
-
-const WHITE_LIST_REGISTERED = gql(`
-  query getRegisteredWhiteList($box_campaign_uid: String!){
-    registeredWhitelist(box_campaign_uid: $box_campaign_uid){
-      registered
-      limit
-    }
+const IS_IN_WHITE_LIST = gql`
+  query ($box_campaign_uid: String!) { 
+    isInWhitelist(box_campaign_uid: $box_campaign_uid) 
   }
-`);
+`;
+
+// const WHITE_LIST_REGISTERED = gql`
+//   subscription getRegisteredWhiteList($box_campaign_uid: String!){
+//     registeredWhitelist(box_campaign_uid: $box_campaign_uid){
+//       registered
+//       limit
+//     }
+//   }
+// `;

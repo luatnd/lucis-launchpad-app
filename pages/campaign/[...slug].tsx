@@ -26,6 +26,8 @@ function DetailCampaign() {
   const { slug } = router.query;
   const id = slug?.length ? slug[0] : undefined;
 
+  console.log(id)
+
   const [timeCountDown, setTimeCountDown] = useState(0);
   const [textNow, setTextNow] = useState("");
   const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;

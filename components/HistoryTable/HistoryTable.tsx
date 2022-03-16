@@ -18,8 +18,9 @@ const HistoryTable = (props: Props) => {
       title: "Item",
       dataIndex: "box",
       key: "box",
-      render: (item: GBoxCampaignBase) => {
-        return <img src={item.cover_img ?? ""} alt=""/>;
+      // @ts-ignore
+      render: (_, item: GBoxCampaignBuyHistory) => {
+        return <img src={item.box_price?.boxType?.thumb_img ?? ""} alt="" />;
       },
       width: "10%",
     },
@@ -35,7 +36,7 @@ const HistoryTable = (props: Props) => {
               {item.box_price?.boxType?.name ? item.box_price?.boxType.name : "Common box"}
             </p>
             <p className="descSubText">
-              <img src={item.box_price?.chain_icon ?? "" } alt=""/>
+              <img src={item.box_price?.chain_icon ?? ""} alt="" />
               <span>{item.box_price?.chain_symbol}</span>
             </p>
             <p className="descSubText pt-3" style={{ whiteSpace: "nowrap" }}>
@@ -56,7 +57,7 @@ const HistoryTable = (props: Props) => {
           <>
             <p className="descText">{item.quantity}</p>
             <p className="descSubText" style={{ whiteSpace: "nowrap" }}>
-              {moment(item.created_at).format("YYYY-MM-DD hh:mm:ss")}
+              {moment(item.created_at).format("YYYY-MM-DD HH:mm:ss")}
             </p>
           </>
         );

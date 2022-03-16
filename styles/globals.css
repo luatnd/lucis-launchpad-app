@@ -67,6 +67,12 @@ body {
 .slick-prev:before {
   display: none;
 }
+body .slick-prev{
+  display: none !important;
+}
+body .slick-next{
+  display: none !important;
+}
 
 .highcharts-credits {
   display: none !important;
@@ -557,4 +563,8 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+body .ant-col{
+  z-index: 1;
 }

@@ -1,6 +1,7 @@
 import { Maybe } from "graphql/jsutils/Maybe";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { GChain } from "src/generated/graphql";
 import { slugify } from "../../utils/String";
 import { GradientLinkButton } from "../Button/GradientButton";
 import s from "./ContainerCard.module.sass";
@@ -21,13 +22,12 @@ type Props = {
   description: Maybe<string> | undefined;
   id: string;
   highlight: Maybe<string> | undefined;
-  ic_chan: Maybe<string> | undefined;
+  chains: GChain[];
 };
 
 export default function CardItem(props: Props) {
-  const { soldOutResult, time, statusTime, title, description, id, srcFb, highlight , ic_chan} = props;
-
-  // console.log(srcFb);
+  const { soldOutResult, time, statusTime, title, description, id, srcFb, highlight, chains } =
+    props;
 
   const typeTime =
     statusTime == "UpComing"
@@ -134,12 +134,14 @@ export default function CardItem(props: Props) {
                     timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
                   }s`
               : time}
-            <span className="text-[12px] xl:text-[14px] pl-2">{highlight ?? ""}</span>
+            {time !== "SALE ENDED" && (
+              <span className="text-[12px] xl:text-[14px] pl-2">{highlight ?? ""}</span>
+            )}
 
             {/* Highlight for closed campaign */}
-            {statusTime == "Sale" && (
+            {time == "SALE ENDED" && (
               <p>
-                SOLD OUT <span>in 15mins</span>
+                SOLD OUT <span>{highlight}</span>
               </p>
             )}
           </div>
@@ -156,7 +158,7 @@ export default function CardItem(props: Props) {
         </div>
 
         <div className={s.groupIcon}>
-          <img src={ic_chan ?? ""} alt="" />
+          <img src={chains[0]?.icon ?? "/assets/crypto/ico-chain-bsc.png"} alt="" />
           <div className={s.block_iconLeft}>
             <a href="https://lucis.network" target="_blank" rel="noopener noreferrer">
               <img src="/assets/UpComing/win.svg" alt="" />

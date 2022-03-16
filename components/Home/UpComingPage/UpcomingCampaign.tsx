@@ -12,7 +12,6 @@ type Props = {};
 export default function UpComing(props: Props) {
   const { resultUpComing, loading, error } = useUpComing();
   console.log(resultUpComing);
-  
 
   return (
     <section className="lucis-container">
@@ -38,7 +37,7 @@ export default function UpComing(props: Props) {
                 srcTwitter={e?.game.twitter}
                 id={e?.uid}
                 highlight={e?.highlight}
-                ic_chan={e?.chains[0]?.icon}
+                chains={e?.chains}
               />
             </Col>
           );

@@ -36,6 +36,7 @@ export default function UpComing(props: Props) {
                 srcTwitter={e?.game.twitter}
                 id={e?.uid}
                 highlight={e?.highlight}
+                chains={e?.chains}
               />
             </Col>
           );

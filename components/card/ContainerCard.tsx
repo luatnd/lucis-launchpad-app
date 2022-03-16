@@ -1,6 +1,7 @@
 import { Maybe } from "graphql/jsutils/Maybe";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { GChain } from "src/generated/graphql";
 import { slugify } from "../../utils/String";
 import { GradientLinkButton } from "../Button/GradientButton";
 import s from "./ContainerCard.module.sass";
@@ -21,10 +22,12 @@ type Props = {
   description: Maybe<string> | undefined;
   id: string;
   highlight: Maybe<string> | undefined;
+  chains: GChain[];
 };
 
 export default function CardItem(props: Props) {
-  const { soldOutResult, time, statusTime, title, description, id, srcFb, highlight } = props;
+  const { soldOutResult, time, statusTime, title, description, id, srcFb, highlight, chains } =
+    props;
 
   // console.log(srcFb);
 
@@ -155,7 +158,7 @@ export default function CardItem(props: Props) {
         </div>
 
         <div className={s.groupIcon}>
-          <img src="/assets/crypto/ico-chain-bsc.png" alt="" />
+          <img src={chains ? chains[0].symbol : "/assets/crypto/ico-chain-bsc.png"} alt="" />
           <div className={s.block_iconLeft}>
             <a href="https://lucis.network" target="_blank" rel="noopener noreferrer">
               <img src="/assets/UpComing/win.svg" alt="" />

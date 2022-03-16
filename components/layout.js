@@ -1,7 +1,7 @@
 // components/layout.js
 import React, {useState} from "react";
 
-import AppHeader from "./Header";
+import AppHeader from "./Header/Header";
 // import AppFooter from "./Footer";
 export default class AppLayout extends React.Component {
   

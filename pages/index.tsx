@@ -44,6 +44,7 @@ const Home: NextPage = () => {
       <UpComing />
       <Opening />
       <ClosedCampaign />
+      <ClosedCampaign />
       <Footer />
     </div>
   );

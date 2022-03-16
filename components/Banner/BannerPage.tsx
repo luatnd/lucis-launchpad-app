@@ -23,7 +23,7 @@ export default function Banner() {
     <section className={s.containerBanner}>
       <SimpleSlider {...sliderProps} />
 
-      <div className="container py-5">
+      <div className="container md:py-5">
         <div className={s.thumbContainer}>
           <Link href="/ino" passHref>
             <a className={`${s.btnApplyINO}`}>

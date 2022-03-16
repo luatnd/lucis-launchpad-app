@@ -21,10 +21,11 @@ type Props = {
   description: Maybe<string> | undefined;
   id: string;
   highlight: Maybe<string> | undefined;
+  ic_chan: Maybe<string> | undefined;
 };
 
 export default function CardItem(props: Props) {
-  const { soldOutResult, time, statusTime, title, description, id, srcFb, highlight } = props;
+  const { soldOutResult, time, statusTime, title, description, id, srcFb, highlight , ic_chan} = props;
 
   // console.log(srcFb);
 
@@ -155,7 +156,7 @@ export default function CardItem(props: Props) {
         </div>
 
         <div className={s.groupIcon}>
-          <img src="/assets/crypto/ico-chain-bsc.png" alt="" />
+          <img src={ic_chan ?? ""} alt="" />
           <div className={s.block_iconLeft}>
             <a href="https://lucis.network" target="_blank" rel="noopener noreferrer">
               <img src="/assets/UpComing/win.svg" alt="" />

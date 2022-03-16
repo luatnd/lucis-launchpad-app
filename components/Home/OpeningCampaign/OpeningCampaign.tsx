@@ -13,6 +13,7 @@ export default function Opening(props: Props) {
   useEffect(() => {
     return resultOpening;
   }, [resultOpening]);
+  console.log(resultOpening);
 
   return (
     <section className="lucis-container">

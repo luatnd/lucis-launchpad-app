@@ -11,6 +11,7 @@ type Props = {};
 
 export default function UpComing(props: Props) {
   const { resultUpComing, loading, error } = useUpComing();
+  console.log(resultUpComing);
 
   return (
     <section className="lucis-container">

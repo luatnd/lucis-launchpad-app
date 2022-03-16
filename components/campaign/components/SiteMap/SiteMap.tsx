@@ -45,7 +45,12 @@ export default observer(function SiteMap(props: IRound) {
   const [isActiveUpComing, setIsActiveUpComing] = useState(false);
   const {registerWhitelist, error, loading, data} = useMutationRegisterWhiteList()
   const [keyActiveSlide, setKeyActiveSlide] = useState(0);
-  const {dataWhiteListRegistered, isInWhitelist} = useDetailCampaign({ box_campaign_uid: boxCampaignUid })
+  const {
+    dataWhiteListRegistered, isInWhitelist,
+    // loadingOfRegisteredWhitelist,
+    // errorOfRegisteredWhitelist,
+    dataOfRegisteredWhitelist,
+  } = useDetailCampaign({ box_campaign_uid: boxCampaignUid })
   const isWhitelisted = isInWhitelist || data?.registerWhitelist;
 
   const getCurrentRound = () => {
@@ -121,9 +126,10 @@ export default observer(function SiteMap(props: IRound) {
   }, [keyActiveSlide])
 
 
+  const whitelistDataSource = dataWhiteListRegistered ?? dataOfRegisteredWhitelist;
 
-  const whitelist_total_registered = dataWhiteListRegistered?.registeredWhitelist?.registered ?? 0;
-  const whitelist_total_limit = dataWhiteListRegistered?.registeredWhitelist?.limit ?? 0;
+  const whitelist_total_registered = whitelistDataSource?.registeredWhitelist?.registered ?? 0;
+  const whitelist_total_limit = whitelistDataSource?.registeredWhitelist?.limit ?? 0;
   const whitelistHaSlotLeft = whitelist_total_registered < whitelist_total_limit;
   const disableClickWhitelist = isWhitelisted || !whitelistHaSlotLeft;
 

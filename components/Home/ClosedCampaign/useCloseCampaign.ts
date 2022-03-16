@@ -31,6 +31,9 @@ const GET_UPCOMING = gql`
         youtube
         discord
       }
+      chains{
+        icon
+      }
     }
   }
 `;

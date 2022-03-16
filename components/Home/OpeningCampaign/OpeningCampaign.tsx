@@ -13,7 +13,8 @@ export default function Opening(props: Props) {
   useEffect(() => {
     return resultOpening;
   }, [resultOpening]);
-
+  console.log(resultOpening);
+  
   return (
     <section className="lucis-container">
       <TitleSection text="Opening campaign" />
@@ -52,6 +53,7 @@ export default function Opening(props: Props) {
                 srcTwitter={e?.game.twitter}
                 id={e?.uid}
                 highlight={e?.highlight}
+                ic_chan={e?.chains[0]?.icon}
               />
             </Col>
           );

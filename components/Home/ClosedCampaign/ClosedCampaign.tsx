@@ -49,6 +49,7 @@ export default function ClosedCampaign(props: Props) {
                 srcTwitter={e?.game.twitter}
                 id={e?.uid}
                 highlight={e?.highlight}
+                ic_chan={e?.chains[0]?.icon}
               />
             </Col>
           );

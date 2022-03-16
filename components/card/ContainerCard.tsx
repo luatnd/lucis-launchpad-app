@@ -29,8 +29,6 @@ export default function CardItem(props: Props) {
   const { soldOutResult, time, statusTime, title, description, id, srcFb, highlight, chains } =
     props;
 
-  // console.log(srcFb);
-
   const typeTime =
     statusTime == "UpComing"
       ? s.time
@@ -136,12 +134,14 @@ export default function CardItem(props: Props) {
                     timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
                   }s`
               : time}
-            <span className="text-[12px] xl:text-[14px] pl-2">{highlight ?? ""}</span>
+            {time !== "SALE ENDED" && (
+              <span className="text-[12px] xl:text-[14px] pl-2">{highlight ?? ""}</span>
+            )}
 
             {/* Highlight for closed campaign */}
-            {statusTime == "Sale" && (
+            {time == "SALE ENDED" && (
               <p>
-                SOLD OUT <span>in 15mins</span>
+                SOLD OUT <span>{highlight}</span>
               </p>
             )}
           </div>

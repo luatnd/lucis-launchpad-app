@@ -31,7 +31,7 @@ function DetailCampaign() {
   const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [widthScreen, height] = useWindowSize();
 
-  const { boxCampaign, isInWhitelist } = useDetailCampaign({ box_campaign_uid: id });
+  const { boxCampaign, isInWhitelist } = useDetailCampaign({ box_campaign_uid: id ?? "" });
 
   return (
     <>

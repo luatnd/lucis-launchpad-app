@@ -3,7 +3,10 @@ import {
   createHttpLink,
   InMemoryCache,
   from,
-  ApolloError, ServerParseError, ServerError,
+  ApolloError,
+  ServerParseError,
+  ServerError,
+  split,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
@@ -12,8 +15,11 @@ import {
   clearLocalAuthInfo,
   getLocalAuthInfo,
 } from "../components/Auth/AuthLocal";
-import {message as antd_message, notification} from "antd";
-import {GraphQLError} from "graphql";
+import { message as antd_message, notification } from "antd";
+import { GraphQLError } from "graphql";
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { createClient } from "graphql-ws";
+import { getMainDefinition } from "@apollo/client/utilities";
 //   import { CachePersistor } from 'apollo-cache-persist';
 
 // Cache implementation
@@ -60,6 +66,27 @@ const httpLink = createHttpLink({
   // You should use an absolute URL here
   uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
 });
+var splitLink: any;
+
+if (isClient) {
+  const wsLink = new GraphQLWsLink(
+    createClient({
+      url: "ws://localhost:13030/graphql",
+    })
+  );
+
+  splitLink = split(
+    ({ query }) => {
+      const definition = getMainDefinition(query);
+      return (
+        definition.kind === "OperationDefinition" &&
+        definition.operation === "subscription"
+      );
+    },
+    wsLink,
+    httpLink
+  );
+}
 
 let countGqlErrNetwork = 0;
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -105,7 +132,10 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const client = new ApolloClient({
-  link: from([errorLink, authLink.concat(httpLink)]),
+  link: from([
+    errorLink,
+    authLink.concat(splitLink != null ? splitLink : httpLink),
+  ]),
   cache,
   connectToDevTools: true,
 });
@@ -125,8 +155,8 @@ export function handleApolloError(error: ApolloError) {
         //   description: "Please connect wallet first!",
         // });
         antd_message.error(
-          'Error: Unauthorized: Please connect wallet first!',
-          3,
+          "Error: Unauthorized: Please connect wallet first!",
+          3
         );
       } else {
         console.log(
@@ -136,10 +166,7 @@ export function handleApolloError(error: ApolloError) {
         //   message: "Error!",
         //   description: message,
         // });
-        antd_message.error(
-          message,
-          3,
-        );
+        antd_message.error(message, 3);
       }
     });
 
@@ -152,22 +179,22 @@ export function onApolloError(
   error: ApolloError,
   onError: (e: GraphQLError) => void,
   onAuthError: (e: GraphQLError) => void,
-  onNetworkError: (e: Error | ServerParseError | ServerError) => void,
+  onNetworkError: (e: Error | ServerParseError | ServerError) => void
 ) {
-  const {graphQLErrors, networkError} = error;
+  const { graphQLErrors, networkError } = error;
 
   if (networkError) {
-    onNetworkError(networkError)
+    onNetworkError(networkError);
     return;
   }
 
   if (graphQLErrors)
     graphQLErrors.forEach((e) => {
-      const {message, locations, path} = e;
+      const { message, locations, path } = e;
       if (message === "Unauthorized") {
-        onAuthError(e)
+        onAuthError(e);
       } else {
-        onError(e)
+        onError(e);
       }
     });
 }

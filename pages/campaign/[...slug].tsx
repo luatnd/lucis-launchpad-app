@@ -32,9 +32,11 @@ function DetailCampaign() {
     if (slug) {
       return slug[0];
     }
-    const paths = router.asPath.split("/").filter((item) => item !== "");
-    if (paths.length > 1) {
-      return paths[1];
+    if (isClient) {
+      const paths = router.asPath.split("/").filter((item) => item !== "");
+      if (paths.length > 1) {
+        return paths[1];
+      }
     }
     return "";
   }, [router]);

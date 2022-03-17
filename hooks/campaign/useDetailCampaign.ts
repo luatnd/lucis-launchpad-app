@@ -1,4 +1,5 @@
 import { gql, useQuery, useSubscription } from "@apollo/client";
+import { useEffect } from "react";
 
 type Props = {
   box_campaign_uid: string;
@@ -20,14 +21,14 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
   const {
     loading: loadingOfRegisteredWhitelist,
     error: errorOfRegisteredWhitelist,
-    data: dataOfRegisteredWhitelist,
-  } = useQuery(REGISTERED_WHITELIST, { variables: { box_campaign_uid } });
+    data: dataWhitelistRegistered,
+  } = useQuery(WHITELIST_REGISTERED, { variables: { box_campaign_uid } });
 
   const {
     loading: loadingWhiteListRegistered,
     error: errorWhiteListRegistered,
-    data: dataWhiteListRegistered,
-  } = useSubscription(WHITE_LIST_REGISTERED, {
+    data: dataWhitelistRegisteredRecently,
+  } = useSubscription(WHITELIST_REGISTERED_RECENTLY_SUB, {
     variables: { box_campaign_uid },
   });
 
@@ -37,19 +38,19 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
   } = useSubscription(PURCHASED_BOX_SUBSCRIPTION, {
     variables: { box_campaign_uid },
   });
-  // console.log("purchasedBox:", purchasedBox);
 
   return {
     loading,
     error,
     boxCampaign: data?.campaignDetail,
     isInWhitelist: dataIsInWhiteList?.isInWhitelist ?? false,
-    dataWhiteListRegistered,
+    whitelistRegistered: dataWhitelistRegistered?.whitelistRegistered,
 
     loadingOfRegisteredWhitelist,
     errorOfRegisteredWhitelist,
-    dataOfRegisteredWhitelist,
-    purchasedBox,
+    whitelistRegisteredRecently:
+      dataWhitelistRegisteredRecently?.whitelistRegisteredRecently,
+    purchasedBox: purchasedBox?.purchasedBox,
   };
 }
 
@@ -128,18 +129,18 @@ const IS_IN_WHITE_LIST = gql`
   }
 `;
 
-const REGISTERED_WHITELIST = gql`
+const WHITELIST_REGISTERED = gql`
   query ($box_campaign_uid: String!) {
-    registeredWhitelist(box_campaign_uid: $box_campaign_uid) {
+    whitelistRegistered(box_campaign_uid: $box_campaign_uid) {
       registered
       limit
     }
   }
 `;
 
-const WHITE_LIST_REGISTERED = gql`
+const WHITELIST_REGISTERED_RECENTLY_SUB = gql`
   subscription ($box_campaign_uid: String!) {
-    whitelistRegistered(box_campaign_uid: $box_campaign_uid) {
+    whitelistRegisteredRecently(box_campaign_uid: $box_campaign_uid) {
       registered
       limit
       box_campaign_uid
@@ -150,6 +151,7 @@ const WHITE_LIST_REGISTERED = gql`
 const PURCHASED_BOX_SUBSCRIPTION = gql`
   subscription ($box_campaign_uid: String!) {
     purchasedBox(box_campaign_uid: $box_campaign_uid) {
+      uid
       total_amount
       sold_amount
       box_campaign_uid

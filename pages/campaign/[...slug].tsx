@@ -17,32 +17,49 @@ import { useDetailCampaign } from "../../hooks/campaign/useDetailCampaign";
 import BoxCard from "../../components/campaign/components/Box/Box";
 import SiteMap from "components/campaign/components/SiteMap/SiteMap";
 import { useWindowSize } from "../../hooks/useWindowSize";
+import { isClient } from "utils/DOM";
 
 /**
  * Match all route: /campaign/....
  */
 function DetailCampaign() {
   const router = useRouter();
+  console.log("router:", router);
+
   const campaignUid = useMemo(() => {
+    console.log("router:", router);
     const { slug } = router.query;
     if (slug) {
       return slug[0];
     }
+    if (isClient) {
+      const paths = router.asPath.split("/").filter((item) => item !== "");
+      if (paths.length > 1) {
+        return paths[1];
+      }
+    }
     return "";
-  }, [router.query]);
+  }, [router]);
 
   const [timeCountDown, setTimeCountDown] = useState(0);
   const [textNow, setTextNow] = useState("");
   const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [widthScreen, height] = useWindowSize();
 
-  const { boxCampaign, isInWhitelist } = useDetailCampaign({
+  const {
+    boxCampaign,
+    isInWhitelist,
+    purchasedBox,
+    whitelistRegistered,
+    whitelistRegisteredRecently,
+  } = useDetailCampaign({
     box_campaign_uid: campaignUid,
   });
 
   return (
     <>
       <DocHead />
+
       <div className="lucis-container">
         <div className={s.containerApp}>
           <Banner boxCampaign={boxCampaign} />
@@ -58,6 +75,9 @@ function DetailCampaign() {
                   boxCampaignUid={campaignUid}
                   tzid={tzid}
                   widthScreen={widthScreen}
+                  isInWhitelist={isInWhitelist}
+                  whitelistRegistered={whitelistRegistered}
+                  whitelistRegisteredRecently={whitelistRegisteredRecently}
                 />
               )}
 
@@ -69,6 +89,7 @@ function DetailCampaign() {
                 <BoxCard
                   boxCampaign={boxCampaign}
                   isInWhitelist={isInWhitelist}
+                  purchasedBox={purchasedBox}
                 />
               )}
 

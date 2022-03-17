@@ -23,13 +23,16 @@ import { useWindowSize } from "../../hooks/useWindowSize";
  */
 function DetailCampaign() {
   const router = useRouter();
+  console.log("router:", router);
+
   const campaignUid = useMemo(() => {
+    console.log("router:", router);
     const { slug } = router.query;
     if (slug) {
       return slug[0];
     }
     return "";
-  }, [router.query]);
+  }, [router]);
 
   const [timeCountDown, setTimeCountDown] = useState(0);
   const [textNow, setTextNow] = useState("");

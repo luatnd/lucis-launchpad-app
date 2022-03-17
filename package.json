@@ -12,7 +12,8 @@
     "format": "prettier --write .",
     "lint-new": "eslint . --ext ts --ext tsx --ext js",
     "test": "jest",
-    "test-all": "yarn lint && yarn type-check && yarn test"
+    "test-all": "yarn lint && yarn type-check && yarn test",
+    "serve": "npx serve out"
   },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",

@@ -13,6 +13,7 @@ export default function Opening(props: Props) {
   useEffect(() => {
     return resultOpening;
   }, [resultOpening]);
+  console.log(resultOpening);
 
   return (
     <section className="lucis-container">
@@ -32,6 +33,8 @@ export default function Opening(props: Props) {
               .reduce((prev: number, curr: number) => prev + curr, 0);
 
           const soldOutResult = soldAmount === totalAmount ? true : false;
+
+          console.log(e.chains);
           return (
             <Col key={index} xs={24} md={12} lg={8}>
               <CardItem
@@ -49,6 +52,8 @@ export default function Opening(props: Props) {
                 srcDiscord={e?.game.discord}
                 srcTwitter={e?.game.twitter}
                 id={e?.uid}
+                highlight={e?.highlight}
+                chains={e?.chains}
               />
             </Col>
           );

@@ -9,6 +9,7 @@ import Image from '../Image';
 import Logo from "../../assets/icon/logo.png";
 import {AppEmitter} from "../../services/emitter";
 import AuthBox from "../Auth/components/AuthBox";
+import Link from "next/link";
 
 const sidebar = {
   open: (height = 1000) => ({
@@ -77,9 +78,13 @@ export const MenuMobile = (props: any) => {
       <div
         className={`${s.mobileMenu} fixed top-0 left-0 right-0 z-[101] bg-nav backdrop-blur-sm`}
       >
-        <div className={`${s.container} flex justify-between items-center`}>
-          <div style={{width: 80, height: 42, padding: 0}}>
-            <Image src={Logo} width={120} height={42} alt="logo" layout="responsive"></Image>
+        <div className={`${s.containerMobile} lucis-container`}>
+          <div style={{width: 100, padding: 0}}>
+            <Link href='/' passHref>
+              <a>
+                <Image src={Logo} width={120} height={42} alt="logo" layout="responsive"></Image>
+              </a>
+            </Link>
             {"IS_TESTNET" && <p style={{
               fontSize: '10px',
               color: '#dee0e2',

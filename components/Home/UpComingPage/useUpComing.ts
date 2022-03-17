@@ -19,6 +19,7 @@ const GET_UPCOMING = gql`
       end
       opening_at
       name
+      highlight
       rounds {
         id
         start
@@ -35,6 +36,9 @@ const GET_UPCOMING = gql`
         telegram
         youtube
         discord
+      }
+      chains{
+        icon
       }
     }
   }

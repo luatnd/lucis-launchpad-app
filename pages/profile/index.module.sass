@@ -21,6 +21,7 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
     position: relative
     // top: 50px
     width: 100%
+    top: 0px
     > img
         width: 100%
     @media screen and ( min-width: 767px ) 
@@ -45,7 +46,7 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
     word-break: break-word
     gap: 12px
     button
-        font-size: $font14
+        font-size: 18px
     p 
         margin: 0
     .name
@@ -59,13 +60,15 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
                 position: relative
                 top: -4px
             img 
-                width: $width15
+                width: 18px
     .id, .balance  
         font-size: $font9
         font-weight: 300
     .balance 
         font-weight: 400
     @media (min-width: 425px) and (max-width: 767px)
+        button
+            font-size: 20px
         .fullName
             font-size: 20px
         .id, .balance 
@@ -208,3 +211,10 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
                     font-size: $font24
                 img 
                     width: $width30
+
+.profileContainer 
+    margin-bottom: 20px
+    @media screen and ( min-width:787px )
+        margin-bottom: 200px
+    @media screen and ( min-width:1023px )
+        margin-bottom: 300px

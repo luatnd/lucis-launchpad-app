@@ -1,4 +1,4 @@
-import { Progress, Modal, Popconfirm, Button } from "antd";
+import { Progress, Modal, Popconfirm, Button, Tooltip } from "antd";
 import moment from "moment";
 import timeMoment from "moment-timezone";
 import React, {useEffect, useRef, useState} from "react";
@@ -45,7 +45,12 @@ export default observer(function SiteMap(props: IRound) {
   const [isActiveUpComing, setIsActiveUpComing] = useState(false);
   const {registerWhitelist, error, loading, data} = useMutationRegisterWhiteList()
   const [keyActiveSlide, setKeyActiveSlide] = useState(0);
-  const {dataWhiteListRegistered, isInWhitelist} = useDetailCampaign({ box_campaign_uid: boxCampaignUid })
+  const {
+    dataWhiteListRegistered, isInWhitelist,
+    // loadingOfRegisteredWhitelist,
+    // errorOfRegisteredWhitelist,
+    dataOfRegisteredWhitelist,
+  } = useDetailCampaign({ box_campaign_uid: boxCampaignUid })
   const isWhitelisted = isInWhitelist || data?.registerWhitelist;
 
   const getCurrentRound = () => {
@@ -119,6 +124,14 @@ export default observer(function SiteMap(props: IRound) {
     swiperRef.current?.swiper.slideTo(keyActiveSlide)
     console.log('keyActiveSlide', keyActiveSlide)
   }, [keyActiveSlide])
+
+
+  const whitelistDataSource = dataWhiteListRegistered ?? dataOfRegisteredWhitelist;
+
+  const whitelist_total_registered = whitelistDataSource?.registeredWhitelist?.registered ?? 0;
+  const whitelist_total_limit = whitelistDataSource?.registeredWhitelist?.limit ?? 0;
+  const whitelistHaSlotLeft = whitelist_total_registered < whitelist_total_limit;
+  const disableClickWhitelist = isWhitelisted || !whitelistHaSlotLeft;
 
 
   return (
@@ -216,30 +229,68 @@ export default observer(function SiteMap(props: IRound) {
                   <>
                     {AuthStore.isLoggedIn ? (
                         <div className="max-w-[250.91px]">
-                          <Popconfirm
+
+
+                          {!disableClickWhitelist
+                            ? <Popconfirm
+                                placement="top"
+                                title={"You're going to be whitelisted"}
+                                onConfirm={handleApplyWhiteList}
+                                okText="Yes"
+                                cancelText="No"
+                              >
+                                <button
+                                  className={`
+                                    ${s.button} 
+                                    ${!whitelistHaSlotLeft ? s.disabledBtn : ''} 
+                                    ${isWhitelisted ? s.whitelisted : ''} 
+                                    font-bold text-white text-center uppercase
+                                  `}
+                                >
+                                  APPLY WHITELIST
+                                </button>
+                              </Popconfirm>
+
+                            : <Tooltip
                               placement="top"
-                              title={"You're going to be whitelisted"}
-                              onConfirm={handleApplyWhiteList}
-                              okText="Yes"
-                              cancelText="No"
-                              disabled={isWhitelisted || dataWhiteListRegistered?.registeredWhitelist?.registered === dataWhiteListRegistered?.registeredWhitelist?.limit}
-                          >
-                            <button
-                                disabled={isWhitelisted || dataWhiteListRegistered?.registeredWhitelist?.registered === dataWhiteListRegistered?.registeredWhitelist?.limit}
-                                className={`${s.button} ${isWhitelisted || dataWhiteListRegistered?.registeredWhitelist?.registered === dataWhiteListRegistered?.registeredWhitelist?.limit ? s.disabledBtn : ''} font-bold text-white text-center uppercase`}
+                              title={
+                                isWhitelisted
+                                  ? `You've already in the whitelist`
+                                  : !whitelistHaSlotLeft
+                                  ? `No whitelist slot left, you cannot register anymore`
+                                  : ''
+                              }
                             >
-                              <CheckOutlined/>
-                              {isWhitelisted ? "Whitelisted" : "Apply Whitelist"}
-                            </button>
-                          </Popconfirm>
-                          <Progress strokeColor="#0BEBD6" percent={(dataWhiteListRegistered?.registeredWhitelist?.registered/dataWhiteListRegistered?.registeredWhitelist?.limit)*100} showInfo={false} />
-                          <p className="text-right text-white mt-1">{`${dataWhiteListRegistered?.registeredWhitelist?.registered}/${dataWhiteListRegistered?.registeredWhitelist?.limit}`}</p>
+                              <button
+                                disabled={disableClickWhitelist}
+                                className={`
+                                  ${s.button} 
+                                  ${!whitelistHaSlotLeft ? s.disabledBtn : ''} 
+                                  ${isWhitelisted ? s.whitelisted : ''} 
+                                  font-bold text-white text-center uppercase
+                                `}
+                              >
+                                {isWhitelisted
+                                  ? (<>
+                                    <img src="/assets/UpComing/tick-done-2.svg" alt="" style={{width: 24, padding: '0 0 3px 0'}} />
+                                    WHITELISTED
+                                  </>)
+                                  : !whitelistHaSlotLeft
+                                    ? `NO WL SLOT LEFT`
+                                    : ''
+                                }
+                              </button>
+                            </Tooltip>
+                          }
+
+                          <Progress strokeColor="#0BEBD6" percent={whitelist_total_limit ? (whitelist_total_registered / whitelist_total_limit) * 100 : 0} showInfo={false} />
+                          <p className="text-right text-white mt-1">{`${whitelist_total_registered} / ${whitelist_total_limit}`}</p>
                         </div>
                       ) : (
-                         <div className={`mt-3 ${s.btnConnect}`}>
-                           <ConnectWalletBtn small={widthScreen <= 1024}/>
-                         </div>
-                    )
+                        <div className={`mt-3 ${s.btnConnect}`}>
+                          <ConnectWalletBtn small={widthScreen <= 1024} />
+                        </div>
+                      )
                     }
 
                   </>

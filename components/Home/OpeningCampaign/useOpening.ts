@@ -20,6 +20,7 @@ const GET_OPENING = gql`
       opening_at
       start
       end
+      highlight
       game {
         uid
         name
@@ -35,6 +36,9 @@ const GET_OPENING = gql`
       boxTypes {
         sold_amount
         total_amount
+      }
+      chains{
+        icon
       }
     }
   }

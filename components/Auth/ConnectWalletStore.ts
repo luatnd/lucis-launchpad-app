@@ -84,12 +84,17 @@ export const nonReactive: {
   web3Provider?: ethers.providers.Web3Provider,
   web3Modal?: Web3Modal,
 
+  isConnected: boolean,
   resetStates: () => void,
 } = {
   provider: undefined,
   web3Provider: undefined,
   web3Modal: undefined,
   // signer: undefined, // Use when needed: const signer = web3Provider.getSigner()
+
+  get isConnected(): boolean {
+    return !!this.web3Provider
+  },
 
   resetStates() {
     this.provider = undefined;

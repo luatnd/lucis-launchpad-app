@@ -30,12 +30,14 @@
         top: -140px
         left: 0
         width: 100%
+        text-align: center
+        @media (max-width: 767px)
         @media (min-width: 1280px)
             top: -160px
         @media (min-width: 1439px)
             top: -170px
-        img
-            width: 100%
+        // img
+        //     width: 100%
     .content
         position: relative
         overflow: hidden
@@ -49,8 +51,9 @@
                 line-height: 32px
                 position: relative
                 padding-left: 10%
+                white-space: nowrap
                 @media (max-width: 640px)
-                    padding-left: 12%
+                    padding-left: 10%
                 p
                     color:#0BEBD6
                     font-size: 18px
@@ -101,62 +104,111 @@
         .groupIcon
             display: flex
             align-items: center
-            justify-content: flex-end
+            justify-content: space-between
             position: absolute
             bottom: 20px
-            right: 12px
-            z-index: 20
-            img
-                padding: 0px 16px
-                margin-top: 30px
-        .btnDetail
-            background: linear-gradient(284deg, rgba(205, 40, 232, 0.2) 0%, rgba(11, 235, 214, 0.2) 100%)
-            border-radius: 0px 0px 16px 16px
-            display: flex
-            align-items: center
-            justify-content: center
-            height: 47%
+            padding: 0px 22px
             width: 100%
-            position: absolute
-            bottom: 0
-            left: 0
-            opacity: 0
-            transition: 0.5s
-            .styleBtn
+            z-index: 20
+            .block_iconLeft
                 display: flex
                 align-items: center
-                justify-content: center
-                max-width: 47%
+                justify-content: flex-end
                 width: 100%
-                color: #FFF
-                font-size: 24px
-                font-weight: 600
-                line-height: 28px
-                cursor: pointer
-                @media (min-width: 0px)
-                    padding: 8px 15px
-                @media (min-width: 1025px)
-                    padding: 10px 15px
+                a
+                    margin: 0px 16px
+                    @media  ( min-width: 992px) and (max-width: 1278px)
+                        margin: 0px 8px
+                        
+        .groupIcon > img
+            width: 24px
+            // .block_iconLeft a img
+            //     padding: 0px 16px
+            //     margin-top: 30px
                   
 .CardContainer:hover .btnDetail
     opacity: 1
 
+
+.btnDetail
+    background: linear-gradient(284deg, rgba(205, 40, 232, 0.2) 0%, rgba(11, 235, 214, 0.2) 100%)
+    border-radius: 0px 0px 16px 16px
+    display: flex
+    align-items: center
+    justify-content: center
+    height: 47%
+    width: 100%
+    position: absolute
+    bottom: 0
+    left: 0
+    opacity: 0
+    transition: 0.5s
+    &:hover 
+        a 
+            color: white
+    @media screen and (min-width: 415px) 
+        height: 39%
+    @media screen and (min-width: 540px) 
+        height: 39%
+    @media screen and (min-width: 640px) 
+        height: 35%
+    @media screen and (min-width: 768px) 
+        height: 48%
+    @media screen and (min-width: 992px) 
+        height: 56%
+    @media screen and (min-width: 1199px) 
+        height: 56%
+    @media screen and (min-width: 1280px) 
+        height: 48%
+    @media screen and (min-width: 1439px) 
+        height: 43%
+
+.styleBtn
+    display: flex
+    align-items: center
+    justify-content: center
+    max-width: 47%
+    width: 100%
+    color: #FFF
+    font-size: 24px
+    font-weight: 600
+    line-height: 28px
+    cursor: pointer
+    padding: 8px 15px
+    @media (min-width: 1023px)
+        padding: 10px 15px    
+
+@media (min-width: 414px)
+    .CardContainer
+        .headingCard
+            padding: 270px 22px 80px 22px !important
+
+@media (min-width: 520px)
+    .CardContainer
+        .headingCard
+            padding: 250px 22px 80px 22px !important
+
+@media (min-width: 540px)
+    .CardContainer
+        .headingCard
+            padding: 280px 22px 80px 22px !important
+
 @media (min-width: 640px)
     .CardContainer
         .headingCard
-            padding: 140px 22px 800px 22px !important
+            padding: 280px 22px 80px 22px !important
             .styleTime
                 font-size: 24px  !important
             .styleTime::before
                 left: 0 !important
-        .btnDetail
-            height: 52% !important
+        // .btnDetail
+        //     height: 45% !important
 @media (min-width: 768px)
     .CardContainer
         .headingCard
             padding: 200px 22px 80px 22px !important
             .styleTime
-                font-size: 28px  !important
+                font-size: 24px  !important
             .styleTime::before
                 left: 0 !important
  
@@ -165,7 +217,7 @@
         .headingCard
             padding: 150px 22px 80px 22px !important
             .styleTime
-                font-size: 28px  !important
+                font-size: 24px  !important
             .styleTime::before
                 left: 0 !important
 

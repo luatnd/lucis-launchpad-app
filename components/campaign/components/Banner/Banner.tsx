@@ -1,12 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
-import { truncateStr } from "utils/String";
+import { GBoxCampaign } from "src/generated/graphql";
 import s from "./Banner.module.sass";
 
-const content =
-  "Thetan Arena is an esport game based on blockchain technology. You can gather your friends, form a team, battle with others and earn money with just your skills.";
+type Props = {
+  boxCampaign: GBoxCampaign;
+};
 
-const Banner = () => {
+const Banner = ({ boxCampaign }: Props) => {
   const [isEnableNotification, setIsEnableNotification] = useState(false);
 
   const handleSubscription = () => {
@@ -14,7 +15,10 @@ const Banner = () => {
   };
 
   return (
-    <div className={s.backgroundBanner}>
+    <div
+      className={s.backgroundBanner}
+      style={{ backgroundImage: `url(${boxCampaign?.banner_img ?? ""})` }}
+    >
       <div className="container">
         <button className={s.noti} onClick={handleSubscription}>
           <img
@@ -31,15 +35,15 @@ const Banner = () => {
         <div className={s.inf}>
           <div className={s.infContainer}>
             <div className={s.infLogo}>
-              <img src="/assets/logo.png" alt="" />
+              <img src={boxCampaign?.game.logo ?? ""} alt="" />
             </div>
 
             <div className={s.infTitle}>
-              <p>THETA ARENA</p>
-              <p>AXIE CAMPAIGN 1</p>
+              <p>{boxCampaign?.game.name}</p>
+              <p>{boxCampaign?.name}</p>
             </div>
 
-            <div className={s.infContent}>{content}</div>
+            <div className={s.infContent}>{boxCampaign?.game.desc}</div>
 
             <div className={s.infSocial}>
               <div className={s.infSocialIcons}>

@@ -4,7 +4,7 @@ import { Tabs } from "antd";
 import { TabPane } from "rc-tabs";
 
 import DocHead from "../../components/DocHead";
-import Footer from "components/Footer";
+import Footer from "components/Footer/Footer";
 import BuyHistory from "components/HistoryTable/BuyHistory";
 import Banner from "../../components/campaign/components/Banner/Banner";
 import Box from "../../components/campaign/components/Box/Box";
@@ -26,19 +26,21 @@ function DetailCampaign() {
   const { slug } = router.query;
   const id = slug?.length ? slug[0] : undefined;
 
+  console.log(id)
+
   const [timeCountDown, setTimeCountDown] = useState(0);
   const [textNow, setTextNow] = useState("");
   const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [widthScreen, height] = useWindowSize();
 
-  const { boxCampaign, isInWhitelist } = useDetailCampaign({ box_campaign_uid: id });
+  const { boxCampaign, isInWhitelist } = useDetailCampaign({ box_campaign_uid: id ?? "" });
 
   return (
     <>
       <DocHead />
       <div className="lucis-container">
         <div className={s.containerApp}>
-          <Banner />
+          <Banner boxCampaign={boxCampaign} />
           <Tabs defaultActiveKey="1" className={s.tabs}>
             <TabPane tab="TIMELINE" key="1">
               {boxCampaign?.rounds != null && (
@@ -53,12 +55,20 @@ function DetailCampaign() {
                   widthScreen={widthScreen}
                 />
               )}
-              {textNow.length > 0 && <CountDown timeCountDown={timeCountDown} textNow={textNow} />}
-              {!!boxCampaign && <BoxCard boxCampaign={boxCampaign} isInWhitelist={isInWhitelist} />}
+
+              {textNow.length > 0 &&
+                <CountDown timeCountDown={timeCountDown} textNow={textNow} />
+              }
+
+              {!!boxCampaign &&
+                <BoxCard boxCampaign={boxCampaign} isInWhitelist={isInWhitelist} />
+              }
+
               <div className="container">
-                <BuyHistory id={"cl02lx5or0000doo018d7n2zz"} title="recently bought" />
+                <BuyHistory id={id} title="recently bought" />
               </div>
             </TabPane>
+
             <TabPane tab="RULE" key="2">
               <div className="lucis-container mt-[40px!important]">
                 {boxCampaign?.rules && boxCampaign?.rules.substring(0, 8) !== "https://" ? (
@@ -68,6 +78,7 @@ function DetailCampaign() {
                 )}
               </div>
             </TabPane>
+
             <TabPane tab="ABOUT PROJECT" key="3">
               <Trailer game={boxCampaign?.game} />
               <Team game={boxCampaign?.game} />

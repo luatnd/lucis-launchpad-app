@@ -5,20 +5,22 @@
         margin: 0
 
 .btnApplyINO 
-    padding: 10px 20px
+    padding: 5px 20px
     color: white
     margin-bottom: 20px
     max-height: 70px
     @include box-glass
-    @include border-grad-3(linear-gradient(290.92deg,#0bebd6,#cd28e8))
+    @include border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
     background: linear-gradient(126.08deg, rgba(0, 0, 0, 0.3) 13.84%, rgba(0, 0, 0, 0.1) 74.14%)
     box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
     backdrop-filter: blur(40px)
     display: flex
     align-items: center
+    justify-content: center
     gap: 10px
+    background-color: rgba(0,0,0, 0.3)
     span
-      font-size: 14px
+      font-size: 18px
       font-weight: 700
       line-height: 42px
       background: -webkit-linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
@@ -30,8 +32,9 @@
         padding: 10px 30px
         span
             font-size: 24px
+            white-space: nowrap
         img
-            width: 36px
+            width: 24px
     @media screen and (min-width: 1023px)
         padding: 15px 60px
         span
@@ -50,78 +53,79 @@
         width: 70%
     .bannerContainer
         width: 30%
+    @media screen and (min-width: 767px) 
+    @media screen and (min-width: 1023px) 
 
-.subSliderContainer 
+.thumbContainer 
+    // flex-direction: column-reverse
+    @media screen and (min-width: 767px) 
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        align-items: center
+    @media screen and (min-width: 1023px) 
+
+.subSliderContainer
+    width: 100%
+    height: 100px
     display: flex
+    justify-content: center
     align-items: center
-    height: 100px
-.coverContainer 
-    width: 400px
-    white-space: nowrap
-    overflow: auto
-    height: 100px
-    .coverImage 
-        @include box-glass
-        @include border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
-        box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, 0.69)
-        backdrop-filter: blur(40px)
-        padding: 1px 
-        height: 50px
-        width: 80px
-        margin: 3px
-    .selected 
-        position: relative
-        top: -10px
-
-    // height: 100px
-    // display: flex
-    // gap: 8px
-    // align-items: center
-    // .item
-    //     width: 100px
-    //     height: 80px
-    //     background: red
-    //     position: relative
-    //     .selected 
-    //         top: -20px
-    // color: white
-    // width: 375px
-    // position: relative
-    // .coverContainer
-    //     display: flex
-    //     flex-wrap: nowrap
-    //     gap: 5px
-    //     // overflow-x: scroll
-    //     .coverImage
-    //         // border: 1px solid white
-    //         // overflow: hidden
-            // @include box-glass
-            // @include border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
-            // box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, 0.69)
-            // backdrop-filter: blur(40px)
-            // padding: 1px 
-    //         img
-    //             max-width: 100%
-    //     .selected 
-    //         position: relative
-    //         top: -10px
-    // .buttonContainer 
-    //     width: 100%
-    //     position: absolute
-    //     top: 50%
-    //     display: flex
-    //     justify-content: space-between 
-    // @media screen and (min-width: 767px)
-    // @media screen and (min-width: 1024px)
-
-
+    overflow-x: auto
+    padding: 5px
+    position: relative
+    top: -500px
+    .thumbs 
+        display: flex
+        gap: 5px
+        .thumbItem
+            transition: 0.5s
+            cursor: pointer
+            width: 77px
+            height: 56px
+            background-repeat: no-repeat
+            background-size: contain
+            background-position: center
+            overflow: hidden
+            @include box-glass
+            @include border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
+            background-color: linear-gradient(126.08deg, rgba(0, 0, 0, 0.3) 13.84%, rgba(0, 0, 0, 0.1) 74.14%)
+            box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, 0.69)
+            img
+                width: 100%
+                height: 100%
+                padding: 1px
+                border-radius: 10px
+        .active
+            transform: translateY(-10px)
+            // top: -10px
+    @media screen and (min-width: 540px)
+        top: -525px 
+        .thumbs
+            .thumbItem
+                width: 110px
+                height: 70px
+    @media screen and (min-width: 640px)
+        top: -495px 
+        .thumbs
+            .thumbItem
+                width: 135px
+                height: 70px
+    @media screen and (min-width: 767px) 
+        top: 0
+        width: 500px
+        .thumbs
+            .thumbItem
+                width: 100px
+                height: 60px
+    @media screen and (min-width: 1023px) 
+    
 .active 
     display: block
+
 .hidden 
     display: none
-
-
-    
+ 
 .logo
     img 
         width: 100px
@@ -184,7 +188,7 @@
     font-size: 16px
     @media screen and (min-width: 767px)
         font-size: 24px
-    @media screen and (min-width: 767px)
+    @media screen and (min-width: 1023px)
         font-size: 36px
 
 

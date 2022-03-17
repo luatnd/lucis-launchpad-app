@@ -43,6 +43,14 @@ class AuthStore {
   private _loading: boolean = false
 
 
+  /**
+   * This state will ensure:
+   * - User connected their wallet
+   * - User completed the verification process
+   *
+   * So this will be use in the whole app,
+   * whenever you wanna check if user have finished connecting their wallet and logging in
+   */
   public get isLoggedIn(): boolean {
     return !!this._token
   }

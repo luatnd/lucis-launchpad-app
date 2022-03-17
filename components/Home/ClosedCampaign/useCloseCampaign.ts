@@ -12,13 +12,14 @@ export function useCloseCampaign() {
 
 const GET_UPCOMING = gql`
   query {
-    closedBoxCampaign{
+    closedBoxCampaign {
       uid
       cover_img
       start
       end
       name
-      game{
+      highlight
+      game {
         uid
         name
         desc
@@ -29,6 +30,9 @@ const GET_UPCOMING = gql`
         telegram
         youtube
         discord
+      }
+      chains{
+        icon
       }
     }
   }

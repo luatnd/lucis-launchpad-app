@@ -17,6 +17,7 @@ import { useDetailCampaign } from "../../hooks/campaign/useDetailCampaign";
 import BoxCard from "../../components/campaign/components/Box/Box";
 import SiteMap from "components/campaign/components/SiteMap/SiteMap";
 import { useWindowSize } from "../../hooks/useWindowSize";
+import { isClient } from "utils/DOM";
 
 /**
  * Match all route: /campaign/....
@@ -30,6 +31,10 @@ function DetailCampaign() {
     const { slug } = router.query;
     if (slug) {
       return slug[0];
+    }
+    const paths = router.asPath.split("/");
+    if (paths.length > 1) {
+      return paths[1];
     }
     return "";
   }, [router]);

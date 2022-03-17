@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { Tabs } from "antd";
-import { TabPane } from "rc-tabs";
-
-import DocHead from "../../components/DocHead";
+import SiteMap from "components/campaign/components/SiteMap/SiteMap";
 import Footer from "components/Footer/Footer";
 import BuyHistory from "components/HistoryTable/BuyHistory";
+import { useRouter } from "next/router";
+import { TabPane } from "rc-tabs";
+import React, { useEffect, useState } from "react";
 import Banner from "../../components/campaign/components/Banner/Banner";
-import Box from "../../components/campaign/components/Box/Box";
+import BoxCard from "../../components/campaign/components/Box/Box";
 import CountDown from "../../components/campaign/components/CountDown/CountDown";
 import Team from "../../components/campaign/components/Team/Team";
-import Trailer from "../../components/campaign/components/Trailer/Trailer";
-
-import s from "./detail.module.sass";
+import DocHead from "../../components/DocHead";
 import { useDetailCampaign } from "../../hooks/campaign/useDetailCampaign";
-import BoxCard from "../../components/campaign/components/Box/Box";
-import SiteMap from "components/campaign/components/SiteMap/SiteMap";
 import { useWindowSize } from "../../hooks/useWindowSize";
+import s from "./detail.module.sass";
 
 /**
  * Match all route: /campaign/....
@@ -71,9 +67,9 @@ function DetailCampaign() {
             <TabPane tab="RULE" key="2">
               <div className="lucis-container mt-[40px!important]">
                 {boxCampaign?.rules && boxCampaign?.rules.substring(0, 8) !== "https://" ? (
-                  <iframe srcDoc={boxCampaign?.rules} width="100%"></iframe>
+                  <iframe srcDoc={boxCampaign?.rules} width="100%" height="500px"></iframe>
                 ) : (
-                  <iframe src={boxCampaign?.rules} width="100%"></iframe>
+                  <iframe src={boxCampaign?.rules} width="100%" height="300px"></iframe>
                 )}
               </div>
             </TabPane>

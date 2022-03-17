@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { Tabs } from "antd";
 import { TabPane } from "rc-tabs";
@@ -23,20 +23,22 @@ import { useWindowSize } from "../../hooks/useWindowSize";
  */
 function DetailCampaign() {
   const router = useRouter();
-  const { slug } = router.query;
-  const [idCampaign, setIdCampaign] = useState("");
-  // const id = slug?.length ? slug[0] : undefined;
+  const campaignUid = useMemo(() => {
+    const { slug } = router.query;
+    if (slug) {
+      return slug[0];
+    }
+    return "";
+  }, [router.query]);
 
   const [timeCountDown, setTimeCountDown] = useState(0);
   const [textNow, setTextNow] = useState("");
   const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [widthScreen, height] = useWindowSize();
 
-  const { boxCampaign, isInWhitelist } = useDetailCampaign({ box_campaign_uid: idCampaign });
-
-  useEffect(() => {
-    slug && setIdCampaign(slug[0]);
-  }, [slug]);
+  const { boxCampaign, isInWhitelist } = useDetailCampaign({
+    box_campaign_uid: campaignUid,
+  });
 
   return (
     <>
@@ -53,24 +55,32 @@ function DetailCampaign() {
                   end={boxCampaign?.end}
                   setTimeCountDown={setTimeCountDown}
                   setTextNow={setTextNow}
-                  boxCampaignUid={idCampaign}
+                  boxCampaignUid={campaignUid}
                   tzid={tzid}
                   widthScreen={widthScreen}
                 />
               )}
 
-              {textNow.length > 0 && <CountDown timeCountDown={timeCountDown} textNow={textNow} />}
+              {textNow.length > 0 && (
+                <CountDown timeCountDown={timeCountDown} textNow={textNow} />
+              )}
 
-              {!!boxCampaign && <BoxCard boxCampaign={boxCampaign} isInWhitelist={isInWhitelist} />}
+              {!!boxCampaign && (
+                <BoxCard
+                  boxCampaign={boxCampaign}
+                  isInWhitelist={isInWhitelist}
+                />
+              )}
 
               <div className="container">
-                <BuyHistory id={idCampaign} title="recently bought" />
+                <BuyHistory id={campaignUid} title="recently bought" />
               </div>
             </TabPane>
 
             <TabPane tab="RULE" key="2">
               <div className="lucis-container mt-[40px!important]">
-                {boxCampaign?.rules && boxCampaign?.rules.substring(0, 8) !== "https://" ? (
+                {boxCampaign?.rules &&
+                boxCampaign?.rules.substring(0, 8) !== "https://" ? (
                   <iframe srcDoc={boxCampaign?.rules} width="100%"></iframe>
                 ) : (
                   <iframe src={boxCampaign?.rules} width="100%"></iframe>

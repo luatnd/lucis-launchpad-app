@@ -33,6 +33,7 @@ deploy-trial:
     - trial
   script:
     - echo NEXT_PUBLIC_GRAPHQL_URL=$NEXT_PUBLIC_GRAPHQL_URL_TRIAL >> .env
+    - echo NEXT_PUBLIC_GRAPHQL_SUBSCRIPTION_URL=$NEXT_PUBLIC_GRAPHQL_SUBSCRIPTION_URL_TRIAL >> .env
     - docker build -t lucis_launchpad_trial:$CI_COMMIT_SHORT_SHA -f deploy/Dockerfile .
     - docker stop lucis_launchpad_trial
     - docker rm lucis_launchpad_trial

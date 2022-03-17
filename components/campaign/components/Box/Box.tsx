@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Col, Form, Input, InputNumber, Modal, Row, Progress} from "antd";
+import { Button, Col, Form, Input, InputNumber, Modal, Row, Progress } from "antd";
 
 import s from "./Box.module.sass";
 import { GBoxCampaign } from "src/generated/graphql";
@@ -135,15 +135,11 @@ export default function BoxCard(props: BoxCardProps) {
   const currentRound = getOriginCurrentCampaignRound(props.boxCampaign);
 
   return (
-    <div className="lucis-container mt-[116px]">
+    <div className="lucis-container mt-[60px] md:mt-[100px]">
       <Row gutter={[24, 50]} className="justify-center">
         {boxTypes.map((e, index) => (
           <Col key={index} xs={24} md={12} lg={8}>
-            <BoxTypeCard
-              boxType={e}
-              round={currentRound}
-              isInWhitelist={props.isInWhitelist}
-            />
+            <BoxTypeCard boxType={e} round={currentRound} isInWhitelist={props.isInWhitelist} />
           </Col>
         ))}
       </Row>

@@ -4,7 +4,7 @@ import Footer from "components/Footer/Footer";
 import BuyHistory from "components/HistoryTable/BuyHistory";
 import { useRouter } from "next/router";
 import { TabPane } from "rc-tabs";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Banner from "../../components/campaign/components/Banner/Banner";
 import BoxCard from "../../components/campaign/components/Box/Box";
 import CountDown from "../../components/campaign/components/CountDown/CountDown";
@@ -19,20 +19,22 @@ import s from "./detail.module.sass";
  */
 function DetailCampaign() {
   const router = useRouter();
-  const { slug } = router.query;
-  const [idCampaign, setIdCampaign] = useState("");
-  // const id = slug?.length ? slug[0] : undefined;
+  const campaignUid = useMemo(() => {
+    const { slug } = router.query;
+    if (slug) {
+      return slug[0];
+    }
+    return "";
+  }, [router.query]);
 
   const [timeCountDown, setTimeCountDown] = useState(0);
   const [textNow, setTextNow] = useState("");
   const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [widthScreen, height] = useWindowSize();
 
-  const { boxCampaign, isInWhitelist } = useDetailCampaign({ box_campaign_uid: idCampaign });
-
-  useEffect(() => {
-    slug && setIdCampaign(slug[0]);
-  }, [slug]);
+  const { boxCampaign, isInWhitelist } = useDetailCampaign({
+    box_campaign_uid: campaignUid,
+  });
 
   return (
     <>
@@ -49,7 +51,7 @@ function DetailCampaign() {
                   end={boxCampaign?.end}
                   setTimeCountDown={setTimeCountDown}
                   setTextNow={setTextNow}
-                  boxCampaignUid={idCampaign}
+                  boxCampaignUid={campaignUid}
                   tzid={tzid}
                   widthScreen={widthScreen}
                 />
@@ -60,7 +62,7 @@ function DetailCampaign() {
               {!!boxCampaign && <BoxCard boxCampaign={boxCampaign} isInWhitelist={isInWhitelist} />}
 
               <div className="container">
-                <BuyHistory id={idCampaign} title="recently bought" />
+                <BuyHistory id={campaignUid} title="recently bought" />
               </div>
             </TabPane>
 

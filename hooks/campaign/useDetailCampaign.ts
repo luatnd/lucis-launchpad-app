@@ -17,14 +17,11 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
     data: dataIsInWhiteList,
   } = useQuery(IS_IN_WHITE_LIST, { variables: { box_campaign_uid } });
 
-
   const {
     loading: loadingOfRegisteredWhitelist,
     error: errorOfRegisteredWhitelist,
     data: dataOfRegisteredWhitelist,
   } = useQuery(REGISTERED_WHITELIST, { variables: { box_campaign_uid } });
-
-
 
   const {
     loading: loadingWhiteListRegistered,
@@ -40,6 +37,7 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
   } = useSubscription(PURCHASED_BOX_SUBSCRIPTION, {
     variables: { box_campaign_uid },
   });
+  // console.log("purchasedBox:", purchasedBox);
 
   return {
     loading,
@@ -131,12 +129,12 @@ const IS_IN_WHITE_LIST = gql`
 `;
 
 const REGISTERED_WHITELIST = gql`
-    query ($box_campaign_uid: String!) {
-        registeredWhitelist(box_campaign_uid: $box_campaign_uid) {
-            registered
-            limit
-        }
+  query ($box_campaign_uid: String!) {
+    registeredWhitelist(box_campaign_uid: $box_campaign_uid) {
+      registered
+      limit
     }
+  }
 `;
 
 const WHITE_LIST_REGISTERED = gql`

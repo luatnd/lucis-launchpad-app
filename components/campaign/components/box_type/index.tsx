@@ -77,7 +77,10 @@ const BoxTypeCard = observer((props: Props) => {
   return (
     <div>
       <div className="flex justify-center">
-        <h3 className="uppercase text-center text-white font-bold text-[24px] lg:text-[36px]" style={{ whiteSpace: "nowrap" }}>
+        <h3
+          className="uppercase text-center text-white font-bold text-[24px] lg:text-[36px]"
+          style={{ whiteSpace: "nowrap" }}
+        >
           {boxType.name}
         </h3>
       </div>
@@ -154,43 +157,50 @@ const BoxTypeCard = observer((props: Props) => {
                 </span>
               )}
               <div className="flex justify-between text-white items-center font-bold text-24px mb-2 mt-5">
-                {(
-                  !buyFormEnabled
-                    // if btn is disable, show tooltip
-                    ? <Tooltip placement="top" title={buyBtnDisabledReason !== undefined ? buyFormDisabledMsg[buyBtnDisabledReason] : ''}>
-                      <div>
-                        <Button className={s.submit} disabled={true}>
-                          BUY
-                        </Button>
-                      </div>
-                    </Tooltip>
-                    : (
-                      !(isLoggedIn)
-                        // if wallet was not connected => popconfirm
-                        ? <Popconfirm
-                          title={<span>You need to {chainNetwork ? "verify" : "connect"} wallet<br/> in order to buy this box</span>}
-                          onConfirm={showConnectWalletModal}
-                          // onCancel={cancel}
-                          okText={chainNetwork ? "Verify Wallet" : "Connect Wallet"}
-                          cancelText="Close"
-                        >
-                          <div>
-                            <Button className={s.submit} loading={loading}>
-                              BUY
-                            </Button>
-                          </div>
-                        </Popconfirm>
-
-                        : (
-                          !currencyEnabled
-                          ? <Button className={s.submitApproval} onClick={requestAllowanceForBoxPrice}>
-                              Enable {boxPrice?.currency.symbol}
-                            </Button>
-                          : <Button className={s.submit} onClick={doBuyBox} loading={loading}>
-                            BUY
-                          </Button>
-                        )
-                    )
+                {!buyFormEnabled ? (
+                  // if btn is disable, show tooltip
+                  <Tooltip
+                    placement="top"
+                    title={
+                      buyBtnDisabledReason !== undefined
+                        ? buyFormDisabledMsg[buyBtnDisabledReason]
+                        : ""
+                    }
+                  >
+                    <div>
+                      <Button className={s.submit} disabled={true}>
+                        BUY
+                      </Button>
+                    </div>
+                  </Tooltip>
+                ) : !isLoggedIn ? (
+                  // if wallet was not connected => popconfirm
+                  <Popconfirm
+                    title={
+                      <span>
+                        You need to {chainNetwork ? "verify" : "connect"} wallet
+                        <br /> in order to buy this box
+                      </span>
+                    }
+                    onConfirm={showConnectWalletModal}
+                    // onCancel={cancel}
+                    okText={chainNetwork ? "Verify Wallet" : "Connect Wallet"}
+                    cancelText="Close"
+                  >
+                    <div>
+                      <Button className={s.submit} loading={loading}>
+                        BUY
+                      </Button>
+                    </div>
+                  </Popconfirm>
+                ) : !currencyEnabled ? (
+                  <Button className={s.submitApproval} onClick={requestAllowanceForBoxPrice}>
+                    Enable {boxPrice?.currency.symbol}
+                  </Button>
+                ) : (
+                  <Button className={s.submit} onClick={doBuyBox} loading={loading}>
+                    BUY
+                  </Button>
                 )}
 
                 {requireWhitelist && (

@@ -26,6 +26,7 @@ deploy-dev:
   script:
     - cd ./deploy;
     - docker-compose up --build -d
+  when: manual
 
 deploy-trial:
   stage: deploy

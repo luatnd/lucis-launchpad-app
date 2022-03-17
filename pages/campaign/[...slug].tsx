@@ -36,13 +36,20 @@ function DetailCampaign() {
   const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [widthScreen, height] = useWindowSize();
 
-  const { boxCampaign, isInWhitelist } = useDetailCampaign({
+  const {
+    boxCampaign,
+    isInWhitelist,
+    purchasedBox,
+    whitelistRegistered,
+    whitelistRegisteredRecently,
+  } = useDetailCampaign({
     box_campaign_uid: campaignUid,
   });
 
   return (
     <>
       <DocHead />
+
       <div className="lucis-container">
         <div className={s.containerApp}>
           <Banner boxCampaign={boxCampaign} />
@@ -58,6 +65,9 @@ function DetailCampaign() {
                   boxCampaignUid={campaignUid}
                   tzid={tzid}
                   widthScreen={widthScreen}
+                  isInWhitelist={isInWhitelist}
+                  whitelistRegistered={whitelistRegistered}
+                  whitelistRegisteredRecently={whitelistRegisteredRecently}
                 />
               )}
 
@@ -69,6 +79,7 @@ function DetailCampaign() {
                 <BoxCard
                   boxCampaign={boxCampaign}
                   isInWhitelist={isInWhitelist}
+                  purchasedBox={purchasedBox}
                 />
               )}
 

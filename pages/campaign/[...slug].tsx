@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Tabs } from "antd";
 import { TabPane } from "rc-tabs";
@@ -24,16 +24,19 @@ import { useWindowSize } from "../../hooks/useWindowSize";
 function DetailCampaign() {
   const router = useRouter();
   const { slug } = router.query;
-  const id = slug?.length ? slug[0] : undefined;
-
-  console.log(id)
+  const [idCampaign, setIdCampaign] = useState("");
+  // const id = slug?.length ? slug[0] : undefined;
 
   const [timeCountDown, setTimeCountDown] = useState(0);
   const [textNow, setTextNow] = useState("");
   const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [widthScreen, height] = useWindowSize();
 
-  const { boxCampaign, isInWhitelist } = useDetailCampaign({ box_campaign_uid: id ?? "" });
+  const { boxCampaign, isInWhitelist } = useDetailCampaign({ box_campaign_uid: idCampaign });
+
+  useEffect(() => {
+    slug && setIdCampaign(slug[0]);
+  }, [slug]);
 
   return (
     <>
@@ -50,22 +53,18 @@ function DetailCampaign() {
                   end={boxCampaign?.end}
                   setTimeCountDown={setTimeCountDown}
                   setTextNow={setTextNow}
-                  boxCampaignUid={id ?? ""}
+                  boxCampaignUid={idCampaign}
                   tzid={tzid}
                   widthScreen={widthScreen}
                 />
               )}
 
-              {textNow.length > 0 &&
-                <CountDown timeCountDown={timeCountDown} textNow={textNow} />
-              }
+              {textNow.length > 0 && <CountDown timeCountDown={timeCountDown} textNow={textNow} />}
 
-              {!!boxCampaign &&
-                <BoxCard boxCampaign={boxCampaign} isInWhitelist={isInWhitelist} />
-              }
+              {!!boxCampaign && <BoxCard boxCampaign={boxCampaign} isInWhitelist={isInWhitelist} />}
 
               <div className="container">
-                <BuyHistory id={id} title="recently bought" />
+                <BuyHistory id={idCampaign} title="recently bought" />
               </div>
             </TabPane>
 
@@ -80,7 +79,7 @@ function DetailCampaign() {
             </TabPane>
 
             <TabPane tab="ABOUT PROJECT" key="3">
-              <Trailer game={boxCampaign?.game} />
+              {/* <Trailer game={boxCampaign?.game} /> */}
               <Team game={boxCampaign?.game} />
             </TabPane>
           </Tabs>

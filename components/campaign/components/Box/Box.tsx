@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Col, Form, Input, InputNumber, Modal, Row, Progress } from "antd";
 
 import s from "./Box.module.sass";
-import { GBoxCampaign } from "src/generated/graphql";
+import { GBoxCampaign, GBoxType, PurchasedBoxStatus } from "src/generated/graphql";
 import BoxTypeCard from "../box_type";
 import { getOriginCurrentCampaignRound } from "components/campaign/CampaignHelper";
 
@@ -128,6 +128,7 @@ export const Box = () => {
 type BoxCardProps = {
   boxCampaign: GBoxCampaign;
   isInWhitelist?: boolean;
+  purchasedBox?: GBoxType;
 };
 
 export default function BoxCard(props: BoxCardProps) {
@@ -139,7 +140,12 @@ export default function BoxCard(props: BoxCardProps) {
       <Row gutter={[24, 50]} className="justify-center">
         {boxTypes.map((e, index) => (
           <Col key={index} xs={24} md={12} lg={8}>
-            <BoxTypeCard boxType={e} round={currentRound} isInWhitelist={props.isInWhitelist} />
+            <BoxTypeCard
+              boxType={e}
+              round={currentRound}
+              isInWhitelist={props.isInWhitelist}
+              purchasedBox={props.purchasedBox}
+            />
           </Col>
         ))}
       </Row>

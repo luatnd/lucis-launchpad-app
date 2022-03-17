@@ -7,6 +7,7 @@ import {
   GBoxPrice,
   GBoxCampaignRound,
   ChainSymbol,
+  PurchasedBoxStatus,
 } from "src/generated/graphql";
 import { useInput } from "hooks/common/use_input";
 import { BuyDisabledReason, useBuyBox } from "hooks/campaign/use_buy_box";
@@ -28,10 +29,12 @@ type Props = {
   boxType: GBoxType;
   round?: GBoxCampaignRound;
   isInWhitelist?: boolean;
+  purchasedBox?: GBoxType;
 };
 
 const BoxTypeCard = observer((props: Props) => {
   const { boxType, round, isInWhitelist } = props;
+  const purchasedBox = props.purchasedBox?.uid == boxType.uid ? props.purchasedBox : null;
   const { chainNetwork } = ConnectWalletStore;
   const { isLoggedIn } = AuthStore;
 
@@ -239,7 +242,12 @@ const BoxTypeCard = observer((props: Props) => {
             />
             <div className={s.flexRear}>
               <p>Sold</p>
-              <p className="text-right">{`${boxType.sold_amount}/${boxType.total_amount}`} boxes</p>
+              <p className="text-right">
+                {`${purchasedBox?.sold_amount ?? boxType.sold_amount}/${
+                  purchasedBox?.total_amount ?? boxType.total_amount
+                }`}{" "}
+                boxes
+              </p>
             </div>
           </div>
         </div>

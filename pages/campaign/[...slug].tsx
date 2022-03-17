@@ -32,13 +32,20 @@ function DetailCampaign() {
   const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [widthScreen, height] = useWindowSize();
 
-  const { boxCampaign, isInWhitelist } = useDetailCampaign({
+  const {
+    boxCampaign,
+    isInWhitelist,
+    purchasedBox,
+    whitelistRegistered,
+    whitelistRegisteredRecently,
+  } = useDetailCampaign({
     box_campaign_uid: campaignUid,
   });
 
   return (
     <>
       <DocHead />
+
       <div className="lucis-container">
         <div className={s.containerApp}>
           <Banner boxCampaign={boxCampaign} />
@@ -54,12 +61,21 @@ function DetailCampaign() {
                   boxCampaignUid={campaignUid}
                   tzid={tzid}
                   widthScreen={widthScreen}
+                  isInWhitelist={isInWhitelist}
+                  whitelistRegistered={whitelistRegistered}
+                  whitelistRegisteredRecently={whitelistRegisteredRecently}
                 />
               )}
 
               {textNow.length > 0 && <CountDown timeCountDown={timeCountDown} textNow={textNow} />}
 
-              {!!boxCampaign && <BoxCard boxCampaign={boxCampaign} isInWhitelist={isInWhitelist} />}
+              {!!boxCampaign && (
+                <BoxCard
+                  boxCampaign={boxCampaign}
+                  isInWhitelist={isInWhitelist}
+                  purchasedBox={purchasedBox}
+                />
+              )}
 
               <div className="container">
                 <BuyHistory id={campaignUid} title="recently bought" />

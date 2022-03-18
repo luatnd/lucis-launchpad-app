@@ -13,7 +13,7 @@ export default function Opening(props: Props) {
   useEffect(() => {
     return resultOpening;
   }, [resultOpening]);
-  console.log(resultOpening);
+  // console.log(resultOpening);
 
   return (
     <section className="lucis-container">
@@ -34,7 +34,7 @@ export default function Opening(props: Props) {
 
           const soldOutResult = soldAmount === totalAmount ? true : false;
 
-          console.log(e.chains);
+          // console.log(e.chains);
           return (
             <Col key={index} xs={24} md={12} lg={8}>
               <CardItem

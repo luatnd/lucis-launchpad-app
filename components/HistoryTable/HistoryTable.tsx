@@ -3,15 +3,24 @@ import moment from "moment";
 import s from "./History.module.sass";
 import { trim_middle } from "utils/String";
 import { GBoxCampaignBase, GBoxCampaignBuyHistory } from "src/generated/graphql";
+import { useQueryBoxHistories } from "components/Profile/Hooks/useQueryBoxHistories";
 
 type Props = {
-  data: GBoxCampaignBuyHistory[];
+  // data: GBoxCampaignBuyHistory[];
+  id: string;
   title: string;
 };
 
 const HistoryTable = (props: Props) => {
-  const { data, title } = props;
-  // console.log(data);
+  const { id, title } = props;
+  const { data } = useQueryBoxHistories({
+    include: { boxTypes: true, game: true },
+  });
+
+  const dataHistory =
+    id !== ""
+      ? data?.boxCampaignBuyHistories.filter((box: any) => box.box_campaign_uid === id)
+      : data?.boxCampaignBuyHistories;
 
   const columns = [
     {
@@ -30,16 +39,19 @@ const HistoryTable = (props: Props) => {
       key: "box",
       // @ts-ignore
       render: (_, item: GBoxCampaignBuyHistory) => {
+        console.log(item.box.game.logo);
+
         return (
           <>
             <p className="descText">
               {item.box_price?.boxType?.name ? item.box_price?.boxType.name : "Common box"}
             </p>
             <p className="descSubText">
-              <img src={item.box_price?.chain_icon ?? ""} alt="" />
-              <span>{item.box_price?.chain_symbol}</span>
+              <img className={s.chainIcon} src={item.box_price?.chain_icon ?? ""} alt="" />
+              {item.box_price?.chain_symbol}
             </p>
-            <p className="descSubText pt-3" style={{ whiteSpace: "nowrap" }}>
+            <p className="descGameText pt-3" style={{ whiteSpace: "nowrap" }}>
+              <img className={s.logoGame} src={item.box?.game.logo ?? ""} alt="" />
               {item.box.game.name} | {item.box.name ? item.box.name : "Box campaign name"}
             </p>
           </>
@@ -82,9 +94,9 @@ const HistoryTable = (props: Props) => {
               className="hidden md:block"
               target="_blank"
               href={
-                item.box_price.chain_symbol === "bsc"
+                item.box_price.chain_symbol === "BSC"
                   ? `https://testnet.bscscan.com/tx/${item.tx_hash}`
-                  : `https://etherscan.io/tx/${item.tx_hash}`
+                  : `https://rinkeby.etherscan.io//tx/${item.tx_hash}`
               }
               style={{ whiteSpace: "nowrap" }}
               rel="noopener noreferrer"
@@ -119,7 +131,7 @@ const HistoryTable = (props: Props) => {
         return (
           <>
             <div className={`${statusClass} ${s.status}`}></div>
-            {item.box_price.chain_symbol === "BSC" && (
+            {item?.tx_hash && item.box_price.chain_symbol === "BSC" && (
               <a
                 className="block md:hidden"
                 href={`https://testnet.bscscan.com/tx/${item.tx_hash}`}
@@ -139,7 +151,7 @@ const HistoryTable = (props: Props) => {
 
   return (
     <>
-      {data && data.length > 0 ? (
+      {dataHistory && dataHistory.length > 0 ? (
         <div className={s.history}>
           <h1 className="text-center">{title.toUpperCase()}</h1>
 
@@ -154,7 +166,7 @@ const HistoryTable = (props: Props) => {
             ></div>
             <Table
               columns={columns}
-              dataSource={data}
+              dataSource={[...dataHistory].reverse()}
               pagination={false}
               footer={() => <></>}
               scroll={{ y: 1000 }}

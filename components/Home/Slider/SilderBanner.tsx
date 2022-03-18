@@ -64,7 +64,7 @@ export default function ItemSliderBanner(props: Props) {
               </a>
             </div>
 
-            <Link href="/ino" passHref>
+            <Link href={href} passHref>
               <a className={s.btnMore}>MORE DETAIL</a>
             </Link>
           </div>

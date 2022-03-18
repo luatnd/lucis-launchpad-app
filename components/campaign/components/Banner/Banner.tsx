@@ -10,8 +10,6 @@ type Props = {
 const Banner = ({ boxCampaign }: Props) => {
   const [isEnableNotification, setIsEnableNotification] = useState(false);
 
-  console.log(boxCampaign.game);
-
   const handleSubscription = () => {
     setIsEnableNotification(!isEnableNotification);
   };
@@ -49,26 +47,26 @@ const Banner = ({ boxCampaign }: Props) => {
 
             <div className={s.infSocial}>
               <div className={s.infSocialIcons}>
-                {boxCampaign.game.facebook && (
-                  <a href={boxCampaign.game.facebook} target="_blank" rel="noopener noreferrer">
+                {boxCampaign?.game.facebook && (
+                  <a href={boxCampaign?.game.facebook} target="_blank" rel="noopener noreferrer">
                     <img src={"/assets/Campaign/Banner/svg/fb.svg"} alt="icon" />
                   </a>
                 )}
 
-                {boxCampaign.game.discord && (
-                  <a href={boxCampaign.game.discord} target="_blank" rel="noopener noreferrer">
+                {boxCampaign?.game.discord && (
+                  <a href={boxCampaign?.game.discord} target="_blank" rel="noopener noreferrer">
                     <img src={"/assets/Campaign/Banner/svg/dis.svg"} alt="icon" />
                   </a>
                 )}
 
-                {boxCampaign.game.telegram && (
-                  <a href={boxCampaign.game.telegram} target="_blank" rel="noopener noreferrer">
+                {boxCampaign?.game.telegram && (
+                  <a href={boxCampaign?.game.telegram} target="_blank" rel="noopener noreferrer">
                     <img src={"/assets/Campaign/Banner/svg/dis.svg"} alt="icon" />
                   </a>
                 )}
 
-                {boxCampaign.game.twitter && (
-                  <a href={boxCampaign.game.twitter} target="_blank" rel="noopener noreferrer">
+                {boxCampaign?.game.twitter && (
+                  <a href={boxCampaign?.game.twitter} target="_blank" rel="noopener noreferrer">
                     <img src={"/assets/Campaign/Banner/svg/dis.svg"} alt="icon" />
                   </a>
                 )}

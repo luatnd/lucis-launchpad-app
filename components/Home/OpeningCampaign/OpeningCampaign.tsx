@@ -21,7 +21,7 @@ export default function Opening(props: Props) {
       <TitleSection text="Opening campaign" />
       <Row gutter={[30, 30]}>
         {resultOpening?.openingBoxCampaign.map((e: GBoxCampaign, index: number) => {
-          // const statusTime = calculateCampaignStatus(e);
+          const statusTime = calculateCampaignStatus(e);
           // console.log(statusTime);
 
           const soldAmount =
@@ -44,7 +44,7 @@ export default function Opening(props: Props) {
               <CardItem
                 soldOutResult={soldOutResult}
                 srcGame={e.cover_img}
-                statusTime={"Opening"}
+                statusTime={statusTime}
                 time={e.end}
                 nameGame={e?.game?.name}
                 styleBg={true}

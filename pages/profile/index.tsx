@@ -24,7 +24,7 @@ const MyProfile = () => {
           <Info {...props} />
           <Contact {...props} />
           <Box {...props} />
-          <BuyHistory title="History" id="" />
+          <BuyHistory title="History" />
         </div>
         <Footer />
       </div>

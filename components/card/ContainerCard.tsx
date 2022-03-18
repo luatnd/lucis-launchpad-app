@@ -133,7 +133,7 @@ export default function CardItem(props: Props) {
                 : `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
                     timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
                   }s`
-              : time}
+              : "SALE ENDED"}
             {time !== "SALE ENDED" && (
               <span className="text-[12px] xl:text-[14px] pl-2">{highlight ?? ""}</span>
             )}

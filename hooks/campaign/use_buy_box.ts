@@ -1,7 +1,7 @@
 import { gql, ServerError, ServerParseError } from "@apollo/client";
 import { message } from "antd";
 import { useInput } from "hooks/common/use_input";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { GBoxCampaignRound, GBoxPrice, GBoxType } from "src/generated/graphql";
 import apoloClient, { onApolloError } from "utils/apollo_client";
 import { debounce } from "@github/mini-throttle";
@@ -11,7 +11,9 @@ import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Au
 import { ChainNetwork, GQL_Currency } from "../../utils/blockchain/BlockChain";
 import { GraphQLError } from "graphql";
 import { AppEmitter } from "../../services/emitter";
-import ApprovalStore, { ETHER_MIN_ALLOWANCE } from "../../components/Auth/Blockchain/ApprovalStore";
+import ApprovalStore, {
+  ETHER_MIN_ALLOWANCE,
+} from "../../components/Auth/Blockchain/ApprovalStore";
 import { Transaction } from "ethers";
 
 export enum BuyDisabledReason {
@@ -34,19 +36,23 @@ export function useBuyBox(
   round: GBoxCampaignRound | undefined,
   isInWhitelist: boolean | undefined,
   connectedChainNetwork: ChainNetwork | undefined,
-  isLoggedIn: boolean
+  isLoggedIn: boolean,
+  purchasedBox?: GBoxType
 ) {
   // Lib Bug: loading is always true after mutate with error, so plz use promise approach instead
   // const [buyBox, { data, loading, error }] = useMutation(BUY_BOX_MUT);
 
   const [loading, setLoading] = useState(false);
+  // const [buyFormEnabled, setBuyFormEnabled] = useState(false)
 
   const chainSymbol = connectedChainNetwork;
 
   // get first matched box on connected chain (if connected)
   let boxPrice: GBoxPrice | undefined =
     (boxType.prices?.length ?? 0) > 0
-      ? boxType.prices!.find((item) => item.currency.chain_symbol?.toLowerCase() == chainSymbol)
+      ? boxType.prices!.find(
+          (item) => item.currency.chain_symbol?.toLowerCase() == chainSymbol
+        )
       : undefined;
   // else if no chain was connected, select first box
   if (!boxPrice) {
@@ -75,7 +81,10 @@ export function useBuyBox(
 
     // Call with debounce
     _callFnDebounced(async () => {
-      console.log("{UseBuyBox} <== re-fetch allowance for currency: ", currency_symbol);
+      console.log(
+        "{UseBuyBox} <== re-fetch allowance for currency: ",
+        currency_symbol
+      );
 
       switch (currency_symbol) {
         case GQL_Currency.BUSD:
@@ -92,24 +101,30 @@ export function useBuyBox(
           break;
         default:
           throw new Error(
-            "{UseBuyBox} re-fetch allowance does handle currency: " + currency_symbol
+            "{UseBuyBox} re-fetch allowance does handle currency: " +
+              currency_symbol
           );
       }
     });
   }, [isLoggedIn, boxPrice?.currency.symbol]);
 
-  const requireWhitelist = round?.is_whitelist === false && round?.require_whitelist === true;
+  const requireWhitelist =
+    round?.is_whitelist === false && round?.require_whitelist === true;
 
-  // can buy box: in buy round + enough box to buy + registered whitelist if need + box left
-  // @ts-ignore
-  const isSaleRound = !round?.is_whitelist && !round?.is_abstract_round;
+  const isSaleRound = useMemo(() => {
+    if (round == null) {
+      return false;
+    }
+    //@ts-ignore
+    return !round.is_whitelist && !round.is_abstract_round;
+  }, [round]);
 
   let buyBtnDisabledReason: BuyDisabledReason | undefined = undefined;
   // const buyFormEnabled = isSaleRound
   //   && boxType.total_amount > boxType.sold_amount
   //   && (requireWhitelist ? isInWhitelist : true)
   // ;
-  let buyFormEnabled = true;
+
   // if (!connectedChainNetwork) {
   /**
    * If wallet was not connect => Allow click buy but show modal to connect wallet
@@ -117,16 +132,21 @@ export function useBuyBox(
   // buyFormEnabled = false
   // buyBtnDisabledReason = BuyDisabledReason.WalletNotConnected
   // } else
-  if (!isSaleRound) {
-    buyFormEnabled = false;
-    buyBtnDisabledReason = BuyDisabledReason.NotSaleRound;
-  } else if (!(boxType.sold_amount < boxType.total_amount)) {
-    buyFormEnabled = false;
-    buyBtnDisabledReason = BuyDisabledReason.SoldOut;
-  } else if (!(requireWhitelist ? isInWhitelist : true)) {
-    buyFormEnabled = false;
-    buyBtnDisabledReason = BuyDisabledReason.WhitelistNotRegistered;
-  }
+
+  // can buy box: in buy round + enough box to buy + registered whitelist if need + box left
+  const buyFormEnabled = useMemo(() => {
+    if (!isSaleRound) {
+      buyBtnDisabledReason = BuyDisabledReason.NotSaleRound;
+      return false;
+    } else if (boxType.sold_amount >= boxType.total_amount) {
+      buyBtnDisabledReason = BuyDisabledReason.SoldOut;
+      return false;
+    } else if (!(requireWhitelist ? isInWhitelist : true)) {
+      buyBtnDisabledReason = BuyDisabledReason.WhitelistNotRegistered;
+      return false;
+    }
+    return true;
+  }, [isSaleRound, boxType, isInWhitelist]);
 
   const txtAmount = useInput("");
   const [err, setErr] = useState<string | undefined>();
@@ -148,7 +168,10 @@ export function useBuyBox(
   const onAuthError = (e: GraphQLError) => {
     // show connect wallet modal and message
     console.log("{onAuthError} e: ", e);
-    message.error("Error: Unauthorized: Please connect and verify your wallet first!", 6);
+    message.error(
+      "Error: Unauthorized: Please connect and verify your wallet first!",
+      6
+    );
     AppEmitter.emit("showConnectWalletModal");
   };
 
@@ -173,7 +196,7 @@ export function useBuyBox(
 
     const quantity = parseFloat(txtAmount.value ?? "0");
     if (!txtAmount.value || quantity <= 0) {
-      txtAmount.setErr("Quantity must be greater than 0");
+      txtAmount.setErr("Amount must be greater than 0");
       return;
     }
 
@@ -262,7 +285,9 @@ export function useBuyBox(
 
     const nft_contract_address = boxPrice?.contract_address ?? "";
     const currency_address = boxPrice?.currency.address ?? ""; // address of token to buy
-    const ethersService = new EthersService(ConnectWalletStore_NonReactiveData.web3Provider);
+    const ethersService = new EthersService(
+      ConnectWalletStore_NonReactiveData.web3Provider
+    );
 
     // check enough allowance
     const allowanceWei = await ethersService.getMyAllowanceOf(
@@ -271,7 +296,11 @@ export function useBuyBox(
     );
     if (allowanceWei == null) {
       const msg = "Cannot ensure the allowance";
-      console.error(msg, { nft_contract_address, currency_address, allowanceWei });
+      console.error(msg, {
+        nft_contract_address,
+        currency_address,
+        allowanceWei,
+      });
       // message.error(msg, 6);
       return 0;
     }
@@ -299,12 +328,19 @@ export function useBuyBox(
 
     const nft_contract_address = boxPrice?.contract_address ?? "";
     const currency_address = boxPrice?.currency.address ?? ""; // address of token to buy
-    const ethersService = new EthersService(ConnectWalletStore_NonReactiveData.web3Provider);
+    const ethersService = new EthersService(
+      ConnectWalletStore_NonReactiveData.web3Provider
+    );
 
     // Request approval
-    const success = await ethersService.requestApproval(nft_contract_address, currency_address);
+    const success = await ethersService.requestApproval(
+      nft_contract_address,
+      currency_address
+    );
     if (success) {
-      ApprovalStore.setCurrencyEnabled((boxPrice?.currency.symbol as GQL_Currency) ?? false);
+      ApprovalStore.setCurrencyEnabled(
+        (boxPrice?.currency.symbol as GQL_Currency) ?? false
+      );
     }
 
     return success;
@@ -333,7 +369,11 @@ const BUY_BOX_MUT = gql`
   }
 `;
 
-async function buyBox(box_price_uid: string, round_id: number, quantity: number): Promise<any> {
+async function buyBox(
+  box_price_uid: string,
+  round_id: number,
+  quantity: number
+): Promise<any> {
   const res = await apoloClient.mutate({
     mutation: gql`
       mutation buyBox($input: BuyBoxInput!) {

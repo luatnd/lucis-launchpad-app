@@ -5,6 +5,7 @@ import { useOpening } from "./useOpening";
 import { useEffect } from "react";
 import { GBoxCampaign, GBoxType } from "../../../src/generated/graphql";
 import { Col, Row } from "antd";
+import { calculateCampaignStatus } from "components/campaign/CampaignHelper";
 type Props = {};
 
 export default function Opening(props: Props) {
@@ -20,6 +21,9 @@ export default function Opening(props: Props) {
       <TitleSection text="Opening campaign" />
       <Row gutter={[30, 30]}>
         {resultOpening?.openingBoxCampaign.map((e: GBoxCampaign, index: number) => {
+          // const statusTime = calculateCampaignStatus(e);
+          // console.log(statusTime);
+
           const soldAmount =
             e.boxTypes &&
             e.boxTypes

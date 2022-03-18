@@ -10,6 +10,7 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
     variables: {
       box_campaign_uid,
     },
+    fetchPolicy: "cache-and-network",
   });
 
   const {

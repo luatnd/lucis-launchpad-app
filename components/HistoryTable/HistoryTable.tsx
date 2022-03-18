@@ -21,8 +21,6 @@ const HistoryTable = (props: Props) => {
     ? data?.boxCampaignBuyHistories.filter((box: any) => box.box_campaign_uid === id)
     : data?.boxCampaignBuyHistories;
 
-  console.log(data?.boxCampaignBuyHistories[0].box.game.logo);
-
   const columns = [
     {
       title: "Item",

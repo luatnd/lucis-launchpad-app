@@ -159,40 +159,10 @@ const BoxTypeCard = observer((props: Props) => {
                     style={{ background: "none" }}
                     value={txtAmount.value}
                     onChange={txtAmount.onChange}
+                    controls={false}
                   />
                 </Form.Item>
               </div>
-
-              {/* <div className={`text-white font-bold text-24px mb-2`}>
-                <Form.Item
-                  className={s.inputRow}
-                  rules={[
-                    {
-                      type: "number",
-                      min: 1,
-                      message: "Amount must be greater than 0",
-                    },
-                    {
-                      type: "integer",
-                      message: "Please enter an integer",
-                    },
-                  ]}
-                >
-                  <label className={s.label}>
-                    <span>Amount: </span>
-                    <br />
-                    {boxType.limit_per_user != null && (
-                      <span className={s.max}>Max: {boxType.limit_per_user}</span>
-                    )}
-                  </label>
-
-                  <InputNumber
-                    controls={false}
-                    value={txtAmount.value}
-                    onChange={txtAmount.onChange}
-                  />
-                </Form.Item>
-              </div> */}
 
               {!!txtAmount.err && (
                 <span
@@ -247,17 +217,9 @@ const BoxTypeCard = observer((props: Props) => {
                     Enable {boxPrice?.currency.symbol}
                   </Button>
                 ) : (
-                  // TODO: Type text
-                  <Popconfirm
-                    title={<span></span>}
-                    onConfirm={doBuyBox}
-                    okText={"OK"}
-                    cancelText={"Close"}
-                  >
-                    <Button className={s.submit} onClick={doBuyBox} loading={loading}>
-                      BUY
-                    </Button>
-                  </Popconfirm>
+                  <Button className={s.submit} onClick={doBuyBox} loading={loading}>
+                    BUY
+                  </Button>
                 )}
 
                 {requireWhitelist && (

@@ -24,6 +24,8 @@ import { currency } from "../../../../utils/Number";
 import { AppEmitter } from "../../../../services/emitter";
 import AuthStore from "../../../Auth/AuthStore";
 import ApprovalStore from "../../../Auth/Blockchain/ApprovalStore";
+import ModalConfirm from "./ModalConfirm";
+import { useForm } from "antd/lib/form/Form";
 
 type Props = {
   boxType: GBoxType;
@@ -34,6 +36,7 @@ type Props = {
 
 const BoxTypeCard = observer((props: Props) => {
   const { boxType, round, isInWhitelist } = props;
+
   const purchasedBox = props.purchasedBox?.uid == boxType.uid ? props.purchasedBox : null;
   const { chainNetwork } = ConnectWalletStore;
   const { isLoggedIn } = AuthStore;
@@ -41,6 +44,31 @@ const BoxTypeCard = observer((props: Props) => {
   // TODO: Fetch refetch whitelist info after logged in status
   // change from false to true
   // use Mobx autorun
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [disabledButton, setDisabledButton] = useState(false);
+
+  // --- Detect amount field type wrong
+  const [form] = useForm();
+  const handleFormChange = () => {
+    const hasErrors = form.getFieldsError().some(({ errors }) => errors.length);
+    console.log(hasErrors);
+
+    setDisabledButton(hasErrors);
+  };
+
+  const handleOk = () => {
+    doBuyBox();
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleOpen = () => {
+    txtAmount.value !== "" && setIsModalVisible(true);
+  };
 
   const {
     loading,
@@ -77,6 +105,17 @@ const BoxTypeCard = observer((props: Props) => {
     AppEmitter.emit("showConnectWalletModal");
   }, []);
 
+  const modalConfirmProps = {
+    handleOk,
+    handleCancel,
+    isModalVisible,
+    boxName: boxType.name,
+    chainIcon: boxPrice?.currency.icon,
+    amount: txtAmount.value,
+    price: boxPrice?.price,
+    symbol: boxPrice?.currency.symbol,
+  };
+
   return (
     <div>
       <div className="flex justify-center">
@@ -105,7 +144,9 @@ const BoxTypeCard = observer((props: Props) => {
               <div>
                 <div className={s.boxDes} />
               </div>
-              <p className="text-white text-14px md:text-[16px]">{boxType.desc}</p>
+              <p className="text-white text-14px md:text-[16px]" style={{ whiteSpace: "pre-wrap" }}>
+                {boxType.desc}
+              </p>
             </div>
           )}
 
@@ -131,7 +172,7 @@ const BoxTypeCard = observer((props: Props) => {
           - Form was disabled if user have not meet buy condition
           */}
           {isSaleRound && (
-            <Form className={s.buyForm}>
+            <Form className={s.buyForm} form={form} onFieldsChange={handleFormChange}>
               <div className={`${s.amount} font-bold`}>
                 <label className={s.label}>
                   <span>Amount: </span>
@@ -152,6 +193,13 @@ const BoxTypeCard = observer((props: Props) => {
                       type: "integer",
                       message: "Please enter an integer",
                     },
+                    {
+                      type: "number",
+                      max: boxType.limit_per_user ?? boxType.total_amount,
+                      message: `Amount must be less than ${
+                        boxType.limit_per_user ?? boxType.total_amount
+                      }`,
+                    },
                   ]}
                   className={s.inputRow}
                 >
@@ -164,7 +212,7 @@ const BoxTypeCard = observer((props: Props) => {
                 </Form.Item>
               </div>
 
-              {!!txtAmount.err && (
+              {/* {!!txtAmount.err && (
                 <span
                   style={{
                     color: "red",
@@ -174,7 +222,7 @@ const BoxTypeCard = observer((props: Props) => {
                 >
                   {txtAmount.err}
                 </span>
-              )}
+              )} */}
               <div className="flex justify-between text-white items-center font-bold text-24px mb-2 mt-5">
                 {!buyFormEnabled ? (
                   // if btn is disable, show tooltip
@@ -217,7 +265,12 @@ const BoxTypeCard = observer((props: Props) => {
                     Enable {boxPrice?.currency.symbol}
                   </Button>
                 ) : (
-                  <Button className={s.submit} onClick={doBuyBox} loading={loading}>
+                  <Button
+                    className={s.submit}
+                    onClick={handleOpen}
+                    loading={loading}
+                    disabled={disabledButton}
+                  >
                     BUY
                   </Button>
                 )}
@@ -268,6 +321,7 @@ const BoxTypeCard = observer((props: Props) => {
           </div>
         </div>
       </div>
+      <ModalConfirm {...modalConfirmProps} />
     </div>
   );
 });

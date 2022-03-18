@@ -51,8 +51,7 @@ const BoxTypeCard = observer((props: Props) => {
   const [form] = useForm();
   const handleFormChange = () => {
     const hasErrors = form.getFieldsError().some(({ errors }) => errors.length);
-    console.log(hasErrors);
-
+    // console.log(hasErrors);
     setDisabledButton(hasErrors);
   };
 

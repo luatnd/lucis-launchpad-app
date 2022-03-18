@@ -23,6 +23,7 @@ const ModalConfirm = (props: Props) => {
       visible={isModalVisible}
       onOk={handleOk}
       onCancel={handleCancel}
+      okText="Confirm"
       centered
     >
       <div>

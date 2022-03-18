@@ -36,8 +36,7 @@ type Props = {
 
 const BoxTypeCard = observer((props: Props) => {
   const { boxType, round, isInWhitelist } = props;
-
-  const purchasedBox = props.purchasedBox?.uid == boxType.uid ? props.purchasedBox : null;
+  const purchasedBox = props.purchasedBox?.uid == boxType.uid ? props.purchasedBox : undefined;
   const { chainNetwork } = ConnectWalletStore;
   const { isLoggedIn } = AuthStore;
 
@@ -83,7 +82,7 @@ const BoxTypeCard = observer((props: Props) => {
     doBuyBox,
     requestAllowanceForBoxPrice,
     currencyEnabled,
-  } = useBuyBox(boxType, round, isInWhitelist, chainNetwork, isLoggedIn);
+  } = useBuyBox(boxType, round, isInWhitelist, chainNetwork, isLoggedIn, purchasedBox);
 
   const supported_chains_avatars: {
     url: string;
@@ -115,6 +114,8 @@ const BoxTypeCard = observer((props: Props) => {
     price: boxPrice?.price,
     symbol: boxPrice?.currency.symbol,
   };
+
+  console.log(isSaleRound);
 
   return (
     <div>

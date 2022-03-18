@@ -82,15 +82,19 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
                 font-size: 12px
                 font-weight: 700
                 margin-bottom: 15px
-            .descSubText
+            .descSubText, .descGameText
                 display: flex
                 font-size: $font9
-                align-items: self-start
+                align-items: center
                 flex-shrink: 0
                 img
                     width: 15px
                     // height: 15px
-                    margin: 3px 4px 0 0 
+                    margin: 3px 4px 0 0
+            .descGameText
+                img
+                    width: 25px
+                     
             img
                 width: 36px
                 margin-left: 2px
@@ -106,6 +110,10 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
         .ant-table-footer
             margin: 30px 0
             background: none
+        @media screen and ( min-width: 540px )
+            .ant-table-cell
+                .descSubText, .descGameText
+                    font-size: 11px
         @media screen and ( min-width: 767px )
             .ant-table-thead 
                 font-size: 24px
@@ -120,15 +128,18 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
                 padding: 35px 10px 
                 .descText
                     font-size: 16px
-                    margin-bottom: 25px
-                .descSubText
+                    margin-bottom: 15px
+                .descSubText, .descGameText
                     font-size: 12px
                     font-weight: 300
-                    margin-bottom: 25px
+                    margin-bottom: 5px
                     align-items: center
                     img
                         width: 15px
                         margin: 0 10px 0 0 
+                .descGameText
+                    img
+                        width: 35px
                 img
                     width: 70px
                 a 
@@ -148,12 +159,15 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
                     padding: 35px 20px 35px 5px
                     .descText
                         font-size: $font24
-                    .descSubText
+                    .descSubText, .descGameText
                         font-size: $font20
                         font-weight: 300
                         img
                             width: 25px
                             margin: 0 14px 0 0 
+                    .descGameText
+                        img
+                            width: 50px
                     img
                         width: 100px
                     a 
@@ -176,4 +190,5 @@ $backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(
         .status 
             width: 22px
             height: 22px
-    
+
+

@@ -112,8 +112,11 @@ export function useBuyBox(
     round?.is_whitelist === false && round?.require_whitelist === true;
 
   const isSaleRound = useMemo(() => {
+    if (round == null) {
+      return false;
+    }
     //@ts-ignore
-    return round?.is_whitelist === false && !round?.is_abstract_round === false;
+    return !round.is_whitelist && !round.is_abstract_round;
   }, [round]);
 
   let buyBtnDisabledReason: BuyDisabledReason | undefined = undefined;

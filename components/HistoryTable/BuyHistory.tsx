@@ -2,7 +2,7 @@ import HistoryTable from "./HistoryTable";
 import { useQueryBoxHistories } from "../../components/Profile/Hooks/useQueryBoxHistories";
 
 type Props = {
-  id: string;
+  id?: string;
   title: string;
 };
 

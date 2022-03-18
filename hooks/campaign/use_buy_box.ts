@@ -196,7 +196,7 @@ export function useBuyBox(
 
     const quantity = parseFloat(txtAmount.value ?? "0");
     if (!txtAmount.value || quantity <= 0) {
-      txtAmount.setErr("Quantity must be greater than 0");
+      txtAmount.setErr("Amount must be greater than 0");
       return;
     }
 

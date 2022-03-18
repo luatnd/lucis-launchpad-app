@@ -1,13 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import {
-  Button,
-  Form,
-  InputNumber,
-  notification,
-  Popconfirm,
-  Progress,
-  Tooltip,
-} from "antd";
+import { Button, Form, InputNumber, notification, Popconfirm, Progress, Tooltip } from "antd";
 import s from "../Box/Box.module.sass";
 import {
   GBoxType,
@@ -32,6 +24,8 @@ import { currency } from "../../../../utils/Number";
 import { AppEmitter } from "../../../../services/emitter";
 import AuthStore from "../../../Auth/AuthStore";
 import ApprovalStore from "../../../Auth/Blockchain/ApprovalStore";
+import ModalConfirm from "./ModalConfirm";
+import { useForm } from "antd/lib/form/Form";
 
 type Props = {
   boxType: GBoxType;
@@ -42,14 +36,38 @@ type Props = {
 
 const BoxTypeCard = observer((props: Props) => {
   const { boxType, round, isInWhitelist } = props;
-  const purchasedBox =
-    props.purchasedBox?.uid == boxType.uid ? props.purchasedBox : undefined;
+  const purchasedBox = props.purchasedBox?.uid == boxType.uid ? props.purchasedBox : undefined;
   const { chainNetwork } = ConnectWalletStore;
   const { isLoggedIn } = AuthStore;
 
   // TODO: Fetch refetch whitelist info after logged in status
   // change from false to true
   // use Mobx autorun
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [disabledButton, setDisabledButton] = useState(false);
+
+  // --- Detect amount field type wrong
+  const [form] = useForm();
+  const handleFormChange = () => {
+    const hasErrors = form.getFieldsError().some(({ errors }) => errors.length);
+    console.log(hasErrors);
+
+    setDisabledButton(hasErrors);
+  };
+
+  const handleOk = () => {
+    doBuyBox();
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleOpen = () => {
+    txtAmount.value !== "" && setIsModalVisible(true);
+  };
 
   const {
     loading,
@@ -64,38 +82,40 @@ const BoxTypeCard = observer((props: Props) => {
     doBuyBox,
     requestAllowanceForBoxPrice,
     currencyEnabled,
-  } = useBuyBox(
-    boxType,
-    round,
-    isInWhitelist,
-    chainNetwork,
-    isLoggedIn,
-    purchasedBox
-  );
+  } = useBuyBox(boxType, round, isInWhitelist, chainNetwork, isLoggedIn, purchasedBox);
 
   const supported_chains_avatars: {
     url: string;
     symbol: ChainSymbol;
   }[] =
     boxType.prices?.map((i) => ({
-      url: ChainNetworkAvatar[
-        symbol2Network(i.currency.chain_symbol) ?? "undefined"
-      ],
+      url: ChainNetworkAvatar[symbol2Network(i.currency.chain_symbol) ?? "undefined"],
       symbol: i.currency.chain_symbol,
     })) ?? [];
 
   const buyFormDisabledMsg: Record<BuyDisabledReason, string> = {
-    [BuyDisabledReason.WalletNotConnected]:
-      "you need to connect wallet in order to buy boxes",
+    [BuyDisabledReason.WalletNotConnected]: "you need to connect wallet in order to buy boxes",
     [BuyDisabledReason.SoldOut]: "Sold out",
-    [BuyDisabledReason.WhitelistNotRegistered]:
-      "This box is for whitelisted user only",
+    [BuyDisabledReason.WhitelistNotRegistered]: "This box is for whitelisted user only",
     [BuyDisabledReason.NotSaleRound]: "Please wait the campaign open",
   };
 
   const showConnectWalletModal = useCallback(() => {
     AppEmitter.emit("showConnectWalletModal");
   }, []);
+
+  const modalConfirmProps = {
+    handleOk,
+    handleCancel,
+    isModalVisible,
+    boxName: boxType.name,
+    chainIcon: boxPrice?.currency.icon,
+    amount: txtAmount.value,
+    price: boxPrice?.price,
+    symbol: boxPrice?.currency.symbol,
+  };
+
+  console.log(isSaleRound);
 
   return (
     <div>
@@ -125,7 +145,7 @@ const BoxTypeCard = observer((props: Props) => {
               <div>
                 <div className={s.boxDes} />
               </div>
-              <p className="text-white text-14px md:text-[16px]">
+              <p className="text-white text-14px md:text-[16px]" style={{ whiteSpace: "pre-wrap" }}>
                 {boxType.desc}
               </p>
             </div>
@@ -153,7 +173,7 @@ const BoxTypeCard = observer((props: Props) => {
           - Form was disabled if user have not meet buy condition
           */}
           {isSaleRound && (
-            <Form className={s.buyForm}>
+            <Form className={s.buyForm} form={form} onFieldsChange={handleFormChange}>
               <div className={`${s.amount} font-bold`}>
                 <label className={s.label}>
                   <span>Amount: </span>
@@ -174,6 +194,13 @@ const BoxTypeCard = observer((props: Props) => {
                       type: "integer",
                       message: "Please enter an integer",
                     },
+                    {
+                      type: "number",
+                      max: boxType.limit_per_user ?? boxType.total_amount,
+                      message: `Amount must be less than ${
+                        boxType.limit_per_user ?? boxType.total_amount
+                      }`,
+                    },
                   ]}
                   className={s.inputRow}
                 >
@@ -181,42 +208,12 @@ const BoxTypeCard = observer((props: Props) => {
                     style={{ background: "none" }}
                     value={txtAmount.value}
                     onChange={txtAmount.onChange}
+                    controls={false}
                   />
                 </Form.Item>
               </div>
 
-              {/* <div className={`text-white font-bold text-24px mb-2`}>
-                <Form.Item
-                  className={s.inputRow}
-                  rules={[
-                    {
-                      type: "number",
-                      min: 1,
-                      message: "Amount must be greater than 0",
-                    },
-                    {
-                      type: "integer",
-                      message: "Please enter an integer",
-                    },
-                  ]}
-                >
-                  <label className={s.label}>
-                    <span>Amount: </span>
-                    <br />
-                    {boxType.limit_per_user != null && (
-                      <span className={s.max}>Max: {boxType.limit_per_user}</span>
-                    )}
-                  </label>
-
-                  <InputNumber
-                    controls={false}
-                    value={txtAmount.value}
-                    onChange={txtAmount.onChange}
-                  />
-                </Form.Item>
-              </div> */}
-
-              {!!txtAmount.err && (
+              {/* {!!txtAmount.err && (
                 <span
                   style={{
                     color: "red",
@@ -226,7 +223,7 @@ const BoxTypeCard = observer((props: Props) => {
                 >
                   {txtAmount.err}
                 </span>
-              )}
+              )} */}
               <div className="flex justify-between text-white items-center font-bold text-24px mb-2 mt-5">
                 {!buyFormEnabled ? (
                   // if btn is disable, show tooltip
@@ -265,43 +262,29 @@ const BoxTypeCard = observer((props: Props) => {
                     </div>
                   </Popconfirm>
                 ) : !currencyEnabled ? (
-                  <Button
-                    className={s.submitApproval}
-                    onClick={requestAllowanceForBoxPrice}
-                  >
+                  <Button className={s.submitApproval} onClick={requestAllowanceForBoxPrice}>
                     Enable {boxPrice?.currency.symbol}
                   </Button>
                 ) : (
-                  // TODO: Type text
-                  <Popconfirm
-                    title={<span></span>}
-                    onConfirm={doBuyBox}
-                    okText={"OK"}
-                    cancelText={"Close"}
+                  <Button
+                    className={s.submit}
+                    onClick={handleOpen}
+                    loading={loading}
+                    disabled={disabledButton}
                   >
-                    <Button
-                      className={s.submit}
-                      onClick={doBuyBox}
-                      loading={loading}
-                    >
-                      BUY
-                    </Button>
-                  </Popconfirm>
+                    BUY
+                  </Button>
                 )}
 
                 {requireWhitelist && (
-                  <span style={{ paddingLeft: 20, lineHeight: 1.3 }}>
-                    Whitelist only
-                  </span>
+                  <span style={{ paddingLeft: 20, lineHeight: 1.3 }}>Whitelist only</span>
                 )}
               </div>
 
               {/*{buyBtnDisabledReason === BuyDisabledReason.SoldOut &&*/}
               {/*<p style={{paddingLeft: 20, lineHeight: 1.3}}>Sold out</p>}*/}
 
-              {!!err && (
-                <span style={{ color: "red", fontSize: "13px" }}>{err}</span>
-              )}
+              {!!err && <span style={{ color: "red", fontSize: "13px" }}>{err}</span>}
             </Form>
           )}
 
@@ -310,10 +293,7 @@ const BoxTypeCard = observer((props: Props) => {
               <span>Price per 1 box:</span>
               <div className="flex items-center justify-end gap-1">
                 <img
-                  src={
-                    boxPrice?.currency.icon ??
-                    "/assets/crypto/ico-question-mark.png"
-                  }
+                  src={boxPrice?.currency.icon ?? "/assets/crypto/ico-question-mark.png"}
                   width="40px"
                   height="40px"
                   alt=""
@@ -324,16 +304,10 @@ const BoxTypeCard = observer((props: Props) => {
               </div>
             </div>
             <Progress
-              percent={Math.floor(
-                (boxType.sold_amount / boxType.total_amount) * 100
-              )}
+              percent={Math.floor((boxType.sold_amount / boxType.total_amount) * 100)}
               showInfo={false}
               // status="active"
-              strokeColor={
-                boxType.sold_amount < boxType.total_amount
-                  ? "#0BEBD6"
-                  : undefined
-              }
+              strokeColor={boxType.sold_amount < boxType.total_amount ? "#0BEBD6" : undefined}
               strokeWidth={10}
             />
             <div className={s.flexRear}>
@@ -348,6 +322,7 @@ const BoxTypeCard = observer((props: Props) => {
           </div>
         </div>
       </div>
+      <ModalConfirm {...modalConfirmProps} />
     </div>
   );
 });

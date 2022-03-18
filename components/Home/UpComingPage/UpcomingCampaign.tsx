@@ -1,4 +1,5 @@
 import { Col, message, Row } from "antd";
+import { calculateCampaignStatus } from "components/campaign/CampaignHelper";
 import CardItem from "components/card/ContainerCard";
 import TitleSection from "components/TitleNameSection";
 import moment from "moment";
@@ -18,6 +19,8 @@ export default function UpComing(props: Props) {
       <TitleSection text="Upcoming campaign" />
       <Row gutter={[30, 30]}>
         {resultUpComing?.upcomingBoxCampaign.map((e: GBoxCampaign, index: number) => {
+          // const statusTime = calculateCampaignStatus(e);
+          // console.log(statusTime);
           return (
             <Col key={index} xs={24} md={12} lg={8}>
               <CardItem

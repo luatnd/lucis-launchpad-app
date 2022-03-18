@@ -67,10 +67,10 @@ body {
 .slick-prev:before {
   display: none;
 }
-body .slick-prev{
+body .slick-prev {
   display: none !important;
 }
-body .slick-next{
+body .slick-next {
   display: none !important;
 }
 
@@ -551,6 +551,20 @@ body .ant-btn-primary {
   border-color: none;
   border: none;
 }
+
+body .ant-btn-default {
+  /* background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%); */
+  background: none;
+  color: white;
+  /* border-color: none;
+  border: none; */
+}
+
+body .ant-btn-default:hover {
+  background: none;
+  color: white;
+  border-color: white;
+}
 /*.ant-input-number-input {*/
 /*  background-color: transparent !important;*/
 /*}*/
@@ -565,6 +579,6 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-body .ant-col{
+body .ant-col {
   z-index: 1;
 }

@@ -1,4 +1,5 @@
 import { Col, Row } from "antd";
+import { calculateCampaignStatus } from "components/campaign/CampaignHelper";
 import CardItem from "components/card/ContainerCard";
 import TitleSection from "components/TitleNameSection";
 import { useEffect } from "react";
@@ -27,11 +28,15 @@ export default function ClosedCampaign(props: Props) {
       return `SALE ENDED`;
     }
   };
+
   return (
     <section className="lucis-container">
       <TitleSection text="Closed campaign" />
       <Row gutter={[30, 30]}>
         {resultCloseCampaign?.closedBoxCampaign?.map((e: GBoxCampaign, index: number) => {
+          // const statusTime = calculateCampaignStatus(e);
+          // console.log(statusTime);
+
           return (
             <Col key={index} xs={24} md={12} lg={8}>
               <CardItem

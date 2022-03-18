@@ -13,19 +13,29 @@ import DocHead from "../../components/DocHead";
 import { useDetailCampaign } from "../../hooks/campaign/useDetailCampaign";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import s from "./detail.module.sass";
+import { isClient } from "utils/DOM";
 
 /**
  * Match all route: /campaign/....
  */
 function DetailCampaign() {
   const router = useRouter();
+  console.log("router:", router);
+
   const campaignUid = useMemo(() => {
+    console.log("router:", router);
     const { slug } = router.query;
     if (slug) {
       return slug[0];
     }
+    if (isClient) {
+      const paths = router.asPath.split("/").filter((item) => item !== "");
+      if (paths.length > 1) {
+        return paths[1];
+      }
+    }
     return "";
-  }, [router.query]);
+  }, [router]);
 
   const [timeCountDown, setTimeCountDown] = useState(0);
   const [textNow, setTextNow] = useState("");

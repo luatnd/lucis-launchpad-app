@@ -17,9 +17,10 @@ const HistoryTable = (props: Props) => {
     include: { boxTypes: true, game: true },
   });
 
-  const dataHistory = id
-    ? data?.boxCampaignBuyHistories.filter((box: any) => box.box_campaign_uid === id)
-    : data?.boxCampaignBuyHistories;
+  const dataHistory =
+    id !== ""
+      ? data?.boxCampaignBuyHistories.filter((box: any) => box.box_campaign_uid === id)
+      : data?.boxCampaignBuyHistories;
 
   const columns = [
     {

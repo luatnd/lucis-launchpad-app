@@ -247,6 +247,7 @@ const BoxTypeCard = observer((props: Props) => {
                     Enable {boxPrice?.currency.symbol}
                   </Button>
                 ) : (
+                  // TODO: Type text
                   <Popconfirm
                     title={<span></span>}
                     onConfirm={doBuyBox}

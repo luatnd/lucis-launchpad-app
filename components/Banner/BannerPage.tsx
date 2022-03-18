@@ -5,6 +5,7 @@ import s from "./Banner.module.sass";
 import SimpleSlider from "./SliderBanner";
 import { useSpotlight } from "./useSpotlight";
 import SubSlider from "./SubSlider";
+import InputSearch from "components/Home/Search/InputSearch";
 
 export default function Banner() {
   const { resultSpotlight, loading, error } = useSpotlight();
@@ -33,6 +34,7 @@ export default function Banner() {
           </Link>
           <SubSlider {...sliderProps} />
         </div>
+        {/* <InputSearch /> */}
       </div>
     </section>
   );

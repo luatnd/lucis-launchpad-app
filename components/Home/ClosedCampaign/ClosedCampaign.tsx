@@ -34,14 +34,14 @@ export default function ClosedCampaign(props: Props) {
       <TitleSection text="Closed campaign" />
       <Row gutter={[30, 30]}>
         {resultCloseCampaign?.closedBoxCampaign?.map((e: GBoxCampaign, index: number) => {
-          // const statusTime = calculateCampaignStatus(e);
+          const statusTime = calculateCampaignStatus(e);
           // console.log(statusTime);
 
           return (
             <Col key={index} xs={24} md={12} lg={8}>
               <CardItem
                 srcGame={e.cover_img}
-                statusTime={"SALE"}
+                statusTime={statusTime}
                 time={handleTest()}
                 nameGame={e?.game.name}
                 styleBg={false}

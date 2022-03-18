@@ -30,11 +30,11 @@ export default function CardItem(props: Props) {
     props;
 
   const typeTime =
-    statusTime == "UpComing"
+    statusTime == "UPCOMING"
       ? s.time
       : soldOutResult
       ? s.sold
-      : statusTime == "SALE"
+      : statusTime == "CLOSED"
       ? s.sale
       : s.time;
 
@@ -123,11 +123,11 @@ export default function CardItem(props: Props) {
       <div className={s.content}>
         <div className={s.headingCard}>
           <div className={`${s.styleTime} ${typeTime}`}>
-            {statusTime == "UpComing"
+            {statusTime == "UPCOMING"
               ? `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
                   timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
                 }s`
-              : statusTime == "Opening"
+              : statusTime == "OPENING"
               ? soldOutResult
                 ? "SOLD OUT"
                 : `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
@@ -139,7 +139,7 @@ export default function CardItem(props: Props) {
             )}
 
             {/* Highlight for closed campaign */}
-            {time == "SALE ENDED" && (
+            {statusTime == "CLOSED" && (
               <p>
                 SOLD OUT <span>{highlight}</span>
               </p>

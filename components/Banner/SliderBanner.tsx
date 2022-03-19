@@ -22,7 +22,9 @@ const SimpleSlider = (props: Props) => {
   const settings = {
     dots: false,
     infinite: true,
+    autoplay: true,
     speed: 500,
+    autoplaySpeed: 5000,
     slidesToShow: 1,
     slidesToScroll: 1,
     afterChange: (index: number) => {

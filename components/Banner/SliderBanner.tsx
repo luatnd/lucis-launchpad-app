@@ -1,7 +1,7 @@
 import { Skeleton } from "antd";
 import { calculateCampaignStatus } from "components/campaign/CampaignHelper";
 import ItemSliderBanner from "components/Home/Slider/SilderBanner";
-import React, { Component, Dispatch, SetStateAction, useRef } from "react";
+import React, { Component, Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import { GBoxCampaign } from "src/generated/graphql";
 import { slugify } from "utils/String";
@@ -17,6 +17,7 @@ type Props = {
 
 const SimpleSlider = (props: Props) => {
   const { data, loading, sliderRef, setSlideIndex } = props;
+  const [listBanner, setListBanner] = useState<GBoxCampaign[]>();
 
   const settings = {
     dots: false,
@@ -28,6 +29,10 @@ const SimpleSlider = (props: Props) => {
       setSlideIndex(index);
     },
   };
+
+  useEffect(() => {
+    setListBanner([...data].sort((a, b) => a.spotlight_position! - b.spotlight_position!));
+  }, [data]);
 
   return (
     <>
@@ -41,7 +46,7 @@ const SimpleSlider = (props: Props) => {
       ) : (
         <div className="simple-slider">
           <Slider {...settings} ref={sliderRef}>
-            {data?.map((e, i) => {
+            {listBanner?.map((e, i) => {
               const getCampaignDetailUrl = () => {
                 return `/campaign/${e.uid}/${slugify(e.name)}`;
               };

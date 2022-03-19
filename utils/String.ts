@@ -43,7 +43,7 @@ export function slugify(str: Maybe<string> | undefined): string {
   return ascii.replace(/\s/g, "-");
 }
 
-export function truncateStr(str: string, start: number, end: number) {
-  str = `${str.split(" ").splice(start, end).join(" ")}...`;
+export function truncateStr(str: Maybe<string>, start: number, end: number) {
+  str = `${str?.split(" ").splice(start, end).join(" ")}...`;
   return str;
 }

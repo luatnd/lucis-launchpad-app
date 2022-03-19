@@ -34,6 +34,11 @@ type Props = {
   purchasedBox?: GBoxType;
 };
 
+type ChainProps = {
+  url: string;
+  symbol: ChainSymbol;
+};
+
 const BoxTypeCard = observer((props: Props) => {
   const { boxType, round, isInWhitelist } = props;
   const purchasedBox = props.purchasedBox?.uid == boxType.uid ? props.purchasedBox : undefined;
@@ -52,6 +57,7 @@ const BoxTypeCard = observer((props: Props) => {
   const handleFormChange = () => {
     const hasErrors = form.getFieldsError().some(({ errors }) => errors.length);
     // console.log(hasErrors);
+
     setDisabledButton(hasErrors);
   };
 
@@ -83,10 +89,7 @@ const BoxTypeCard = observer((props: Props) => {
     currencyEnabled,
   } = useBuyBox(boxType, round, isInWhitelist, chainNetwork, isLoggedIn, purchasedBox);
 
-  const supported_chains_avatars: {
-    url: string;
-    symbol: ChainSymbol;
-  }[] =
+  const supported_chains_avatars: ChainProps[] =
     boxType.prices?.map((i) => ({
       url: ChainNetworkAvatar[symbol2Network(i.currency.chain_symbol) ?? "undefined"],
       symbol: i.currency.chain_symbol,
@@ -108,13 +111,13 @@ const BoxTypeCard = observer((props: Props) => {
     handleCancel,
     isModalVisible,
     boxName: boxType.name,
-    chainIcon: boxPrice?.currency.icon,
+    chainIcon: supported_chains_avatars,
     amount: txtAmount.value,
     price: boxPrice?.price,
     symbol: boxPrice?.currency.symbol,
   };
 
-  console.log(isSaleRound);
+  // console.log(isSaleRound);
 
   return (
     <div>
@@ -293,8 +296,8 @@ const BoxTypeCard = observer((props: Props) => {
               <div className="flex items-center justify-end gap-1">
                 <img
                   src={boxPrice?.currency.icon ?? "/assets/crypto/ico-question-mark.png"}
-                  width="40px"
-                  height="40px"
+                  width="36px"
+                  height="36px"
                   alt=""
                 />
                 <span>

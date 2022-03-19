@@ -1,13 +1,18 @@
 import Modal from "antd/lib/modal/Modal";
 import { Maybe } from "graphql/jsutils/Maybe";
-import s from "./GotProject.module.sass";
+import { ChainSymbol } from "src/generated/graphql";
+
+type ChainProps = {
+  url: string;
+  symbol: ChainSymbol;
+};
 
 type Props = {
   handleOk: () => void;
   handleCancel: () => void;
   isModalVisible: boolean;
   boxName: Maybe<string> | undefined;
-  chainIcon: Maybe<string> | undefined;
+  chainIcon: ChainProps[];
   price: string;
   amount: string;
   symbol: Maybe<string> | undefined;
@@ -29,7 +34,10 @@ const ModalConfirm = (props: Props) => {
       <div>
         <p>Box name: {boxName}</p>
         <p>
-          Chain: <img src={chainIcon ?? ""} alt="" />
+          Chain:{" "}
+          {chainIcon.map((i, idx) => (
+            <img className="w-20px lg:w-30px" key={idx} src={i.url} alt="" title={i.symbol} />
+          ))}
         </p>
         <p>Amount: {amount}</p>
         <p>

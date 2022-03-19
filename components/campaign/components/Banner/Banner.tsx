@@ -47,26 +47,30 @@ const Banner = ({ boxCampaign }: Props) => {
 
             <div className={s.infSocial}>
               <div className={s.infSocialIcons}>
-                <a
-                  href="https://www.facebook.com/lucistv.news"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img src={"/assets/Campaign/Banner/svg/fb.svg"} alt="icon" />
-                </a>
-                <a
-                  href="https://discord.com/channels/911921072830574603/926398655093702666"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img src={"/assets/Campaign/Banner/svg/dis.svg"} alt="icon" />
-                </a>
-                <a href="https://t.me/sankeonft" target="_blank" rel="noopener noreferrer">
-                  <img src={"/assets/Campaign/Banner/svg/tele.svg"} alt="icon" />
-                </a>
-                <a href="https://twitter.com/Lucis_TV" target="_blank" rel="noopener noreferrer">
-                  <img src={"/assets/Campaign/Banner/svg/tw.svg"} alt="icon" />
-                </a>
+                {boxCampaign?.game.facebook && (
+                  <a href={boxCampaign?.game.facebook} target="_blank" rel="noopener noreferrer">
+                    <img src={"/assets/Campaign/Banner/svg/fb.svg"} alt="icon" />
+                  </a>
+                )}
+
+                {boxCampaign?.game.discord && (
+                  <a href={boxCampaign?.game.discord} target="_blank" rel="noopener noreferrer">
+                    <img src={"/assets/Campaign/Banner/svg/dis.svg"} alt="icon" />
+                  </a>
+                )}
+
+                {boxCampaign?.game.telegram && (
+                  <a href={boxCampaign?.game.telegram} target="_blank" rel="noopener noreferrer">
+                    <img src={"/assets/Campaign/Banner/svg/dis.svg"} alt="icon" />
+                  </a>
+                )}
+
+                {boxCampaign?.game.twitter && (
+                  <a href={boxCampaign?.game.twitter} target="_blank" rel="noopener noreferrer">
+                    <img src={"/assets/Campaign/Banner/svg/dis.svg"} alt="icon" />
+                  </a>
+                )}
+
                 <a href="https://lucis.network" target="_blank" rel="noopener noreferrer">
                   <img src={"/assets/Campaign/Banner/svg/win.svg"} alt="icon" />
                 </a>

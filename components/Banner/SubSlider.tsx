@@ -1,5 +1,5 @@
 import { Skeleton } from "antd";
-import { ReactElement, useRef, useState } from "react";
+import { ReactElement, useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import { GBoxCampaign } from "src/generated/graphql";
 import { slugify } from "utils/String";
@@ -24,29 +24,33 @@ type Props = {
 
 const SubSlider = (props: Props) => {
   const { data, slideIndex, sliderRef } = props;
+  const [listBanner, setListBanner] = useState<GBoxCampaign[]>();
 
   const handleClick = (i: number) => {
     sliderRef.current.slickGoTo(i);
   };
 
+  useEffect(() => {
+    data && setListBanner([...data].sort((a, b) => a.spotlight_position! - b.spotlight_position!));
+  }, [data]);
+
   return (
     <div className={s.subSliderContainer}>
       <div className={s.thumbs}>
-        {data &&
-          data.map((item, index) => {
-            const activeSlide = slideIndex === index ? s.active : "";
+        {listBanner?.map((item, index) => {
+          const activeSlide = slideIndex === index ? s.active : "";
 
-            return (
-              <div
-                className={`${s.thumbItem} ${activeSlide}`}
-                key={index}
-                // style={{ backgroundImage: `url(${item.banner_img})` }}
-                onClick={() => handleClick(index)}
-              >
-                <img src={item.banner_img ?? ""} alt="" />
-              </div>
-            );
-          })}
+          return (
+            <div
+              className={`${s.thumbItem} ${activeSlide}`}
+              key={index}
+              // style={{ backgroundImage: `url(${item.banner_img})` }}
+              onClick={() => handleClick(index)}
+            >
+              <img src={item.banner_img ?? ""} alt="" />
+            </div>
+          );
+        })}
       </div>
     </div>
   );

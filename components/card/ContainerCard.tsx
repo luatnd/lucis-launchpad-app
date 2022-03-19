@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { GChain } from "src/generated/graphql";
 import { useCountDown } from "utils/Time";
-import { slugify } from "../../utils/String";
+import { slugify, truncateStr } from "../../utils/String";
 import { GradientLinkButton } from "../Button/GradientButton";
 import s from "./ContainerCard.module.sass";
 
@@ -82,7 +82,7 @@ export default function CardItem(props: Props) {
             )}
           </div>
           <h5>{props.nameGame}</h5>
-          <div className={s.text}>{handleDesc}</div>
+          <div className={s.text}>{truncateStr(handleDesc, 0, 20)}</div>
         </div>
 
         <div className={s.btnDetail}>

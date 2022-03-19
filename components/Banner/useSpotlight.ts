@@ -18,6 +18,7 @@ const GET_ALLBOX = gql`
       desc
       banner_img
       cover_img
+      spotlight_position
       start
       end
       opening_at

@@ -39,8 +39,8 @@ const Banner = ({ boxCampaign }: Props) => {
             </div>
 
             <div className={s.infTitle}>
-              <p>{boxCampaign?.game.name}</p>
-              <p>{boxCampaign?.name}</p>
+              <p>{boxCampaign?.game.name?.toUpperCase()}</p>
+              <p>{boxCampaign?.name?.toUpperCase()}</p>
             </div>
 
             <div className={s.infContent}>{boxCampaign?.game.desc}</div>

@@ -42,7 +42,7 @@ export default function ItemSliderBanner(props: Props) {
             <img src={logo ?? ""} alt="" />
           </div>
           {/* logo game */}
-          <p className={`${s.nameCampaign} py-2`}>{name}</p>
+          <p className={`${s.nameCampaign} py-2`}>{name?.toUpperCase()}</p>
           <p className={`${s.desc} pb-5`}>{desc}</p>
           {/* text */}
           <div className={s.contentItemBottom}>

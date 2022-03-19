@@ -49,7 +49,7 @@ const ModalContact = (props: Props) => {
       <div className={s.btnChatContainer}>
         <a
           className={`${s.btnChat} text-[14px] md:text-[18px]`}
-          href="https://t.me/lucis_network_application_form"
+          href="https://t.me/lucislaunchpad_support"
           target="_blank"
           rel="noreferrer"
         >

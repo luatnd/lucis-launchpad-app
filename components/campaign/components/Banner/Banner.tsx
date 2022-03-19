@@ -61,13 +61,13 @@ const Banner = ({ boxCampaign }: Props) => {
 
                 {boxCampaign?.game.telegram && (
                   <a href={boxCampaign?.game.telegram} target="_blank" rel="noopener noreferrer">
-                    <img src={"/assets/Campaign/Banner/svg/dis.svg"} alt="icon" />
+                    <img src={"/assets/Campaign/Banner/svg/tele.svg"} alt="icon" />
                   </a>
                 )}
 
                 {boxCampaign?.game.twitter && (
                   <a href={boxCampaign?.game.twitter} target="_blank" rel="noopener noreferrer">
-                    <img src={"/assets/Campaign/Banner/svg/dis.svg"} alt="icon" />
+                    <img src={"/assets/Campaign/Banner/svg/tw.svg"} alt="icon" />
                   </a>
                 )}
 

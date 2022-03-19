@@ -31,7 +31,7 @@ const SimpleSlider = (props: Props) => {
   };
 
   useEffect(() => {
-    setListBanner([...data].sort((a, b) => a.spotlight_position! - b.spotlight_position!));
+    data && setListBanner([...data].sort((a, b) => a.spotlight_position! - b.spotlight_position!));
   }, [data]);
 
   return (

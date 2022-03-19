@@ -27,7 +27,7 @@
     // @media (max-width: 424px)
     @media (max-width: 767px)
       flex-direction: column
-      gap: 90px
+      // gap: 90px
     @media (min-width: 767px)
       gap: 20px
     @media (min-width: 1024px)
@@ -85,7 +85,7 @@
       .logoGame
         margin-top: 52px
         img
-          width: 50px
+          width: 80px
         @media screen and (min-width: 767px)
           img
             width: 110px
@@ -300,8 +300,12 @@
 
 .imgGame
   min-height: 336px
-  width: 100%
+  max-width: 100%
   img
     margin: auto
+    max-width: 100%
+  @media screen and (min-width: 768px)
     width: 100%
+    img
+      width: 100%
   

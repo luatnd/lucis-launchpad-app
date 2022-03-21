@@ -43,7 +43,7 @@ const ModalContact = (props: Props) => {
           <br />
         </div>
         <br />
-        <p style={{ color: "#00c4ff" }}>Note: Lucis network will never dm you first.</p>
+        {/* <p style={{ color: "#00c4ff" }}>Note: Lucis network will never dm you first.</p> */}
       </div>
 
       <div className={s.btnChatContainer}>

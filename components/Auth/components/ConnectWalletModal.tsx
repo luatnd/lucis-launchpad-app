@@ -430,6 +430,7 @@ export default observer(function ConnectWalletModal(props: Props) {
     setTimeout(() => {
       ConnectWalletStore.resetStates();
       ConnectWalletStore_NonReactiveData.resetStates();
+      // AuthStore.resetStates();
     }, 200);
   }, []);
 

@@ -42,6 +42,12 @@ export default class AuthService {
             email
             profile {
               full_name
+              twitter
+              facebook
+              discord
+              telegram
+              phone
+              avatar
             }
           }
         }
@@ -61,6 +67,10 @@ export default class AuthService {
       address: u.address,
       email: u.email,
       name: !!name ? name : trim_middle(u.address, 6, 6),
+      facebook: u.profile.facebook,
+      twitter: u.profile.twitter,
+      tele: u.profile.tele,
+      discord: u.profile.discord,
     };
 
     return user;

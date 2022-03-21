@@ -16,15 +16,25 @@ type Props = {
   price: string;
   amount: string;
   symbol: Maybe<string> | undefined;
+  boxImg: string;
 };
 
 const ModalConfirm = (props: Props) => {
-  const { isModalVisible, handleOk, handleCancel, boxName, chainIcon, price, amount, symbol } =
-    props;
+  const {
+    isModalVisible,
+    handleOk,
+    handleCancel,
+    boxName,
+    chainIcon,
+    price,
+    amount,
+    symbol,
+    boxImg,
+  } = props;
 
   return (
     <Modal
-      title="Buy order confirmation"
+      title={<strong>Buy order confirmation</strong>}
       visible={isModalVisible}
       onOk={handleOk}
       onCancel={handleCancel}
@@ -32,6 +42,7 @@ const ModalConfirm = (props: Props) => {
       centered
     >
       <div>
+        <img className="w-100px mb-4" src={boxImg ?? ""} alt="" />
         <p>Box name: {boxName}</p>
         <p>
           Chain:{" "}
@@ -42,6 +53,10 @@ const ModalConfirm = (props: Props) => {
         <p>Amount: {amount}</p>
         <p>
           Total price: {Number(amount) * Number(price)} {symbol}
+        </p>
+        <p style={{ color: "#00c4ff" }}>
+          Note: After confirmation, your balance will be deduced directly on your wallet. Please
+          double check before confirming
         </p>
       </div>
     </Modal>

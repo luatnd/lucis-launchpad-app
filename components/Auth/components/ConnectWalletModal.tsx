@@ -216,7 +216,7 @@ export default observer(function ConnectWalletModal(props: Props) {
         )
         .catch((e) => handleConnectCatch(e));
     },
-    [network]
+    [network, connectedChain]
   );
 
   const reUpdateWalletIfNeeded = (

@@ -1,5 +1,5 @@
 import { Button, message, Modal } from "antd";
-import { ReactElement, useCallback, useEffect, useState } from "react";
+import { ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { Network } from "@ethersproject/networks";
 
 import {
@@ -30,14 +30,28 @@ export default observer(function ConnectWalletModal(props: Props) {
   const DEBUG = false;
   DEBUG && console.log("{ConnectWalletModal} render: ");
 
-  const [network, setNetwork] = useState<ChainNetwork | null>(null);
-  const [wallet, setWallet] = useState<Wallet | null>(null);
+  const [network, setNetwork] = useState<ChainNetwork | undefined>();
+  const [wallet, setWallet] = useState<Wallet | undefined>();
 
   const isModalVisible = AuthBoxStore.connectModalVisible,
     setIsModalVisible = (v: boolean) => (AuthBoxStore.connectModalVisible = v);
-  const { address, network: connected_network } = ConnectWalletStore;
+  const {
+    address,
+    network: connected_network,
+    chainNetwork: connectedChain,
+    wallet: connectedWallet,
+  } = ConnectWalletStore;
 
   const { isLoggedIn: logged_in_with_lucis, loading: authing } = AuthStore;
+
+  const activeWallet = useMemo(() => {
+    if (!connectedChain || connectedChain != network) {
+      // normal state
+      return wallet;
+    }
+    // alway show connected wallet
+    return connectedWallet;
+  }, [network, connectedChain, wallet, connectedWallet]);
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -129,6 +143,7 @@ export default observer(function ConnectWalletModal(props: Props) {
               </span>,
               5
             );
+            disconnectWallet();
         }
       } catch (err: any) {
         console.log("err:", err);
@@ -165,6 +180,12 @@ export default observer(function ConnectWalletModal(props: Props) {
         console.error("{changeWallet} ERROR: network is null");
         return;
       }
+      if (connectedChain === network) {
+        console.error(
+          "{changeWallet} ERROR: can't reconnect without disconnect"
+        );
+        return;
+      }
 
       // TODO: Handle mobile
       const opt: ConnectWalletOption = {
@@ -187,7 +208,7 @@ export default observer(function ConnectWalletModal(props: Props) {
           return provider;
         })
         .then(async (provider) =>
-          handleConnectThen(provider, () => {
+          handleConnectThen(provider, w, () => {
             DEBUG && console.log("{handleConnectThen} setWallet:  : ", w);
             setWallet(w);
             connectWalletHelper.cacheConnectionSetting(w, network);
@@ -253,7 +274,7 @@ export default observer(function ConnectWalletModal(props: Props) {
         return provider;
       })
       .then(async (provider) =>
-        handleConnectThen(provider, () => {
+        handleConnectThen(provider, w, () => {
           DEBUG && console.log("{handleConnectThen} setWallet:  : ", w);
           setWallet(w);
           connectWalletHelper.cacheConnectionSetting(w, network);
@@ -279,7 +300,11 @@ export default observer(function ConnectWalletModal(props: Props) {
     // }
   }, [loginWithLucis]);
 
-  const handleConnectThen = async (provider: any, onSuccess = () => {}) => {
+  const handleConnectThen = async (
+    provider: any,
+    _wallet: Wallet,
+    onSuccess = () => {}
+  ) => {
     // console.log('{changeWallet} Wallet Connected: provider: ', provider);
 
     if (!ConnectWalletStore_NonReactiveData.web3Provider) {
@@ -312,6 +337,7 @@ export default observer(function ConnectWalletModal(props: Props) {
       network: connected_network,
       address: address,
       chainNetwork: n,
+      wallet: _wallet,
     });
     DEBUG &&
       console.log("{ConnectWalletStore.handleConnectThen} address: ", address);
@@ -385,7 +411,7 @@ export default observer(function ConnectWalletModal(props: Props) {
       if (network !== n) {
         // change state
         setNetwork(n);
-        setWallet(null); // reset collect wallet
+        setWallet(undefined); // reset collect wallet
 
         // show list of suitable wallet for this network
         // Let UI do this
@@ -396,8 +422,8 @@ export default observer(function ConnectWalletModal(props: Props) {
 
   const disconnectWallet = useCallback(async () => {
     // reset UI
-    setNetwork(null);
-    setWallet(null);
+    setNetwork(undefined);
+    setWallet(undefined);
     connectWalletHelper.cacheConnectionSetting(undefined, undefined);
 
     const provider = ConnectWalletStore_NonReactiveData.provider;
@@ -458,8 +484,7 @@ export default observer(function ConnectWalletModal(props: Props) {
     };
   }, []);
 
-  const supported_wallets =
-    network === null ? [] : NetworkSupportedWallets[network];
+  const supported_wallets = !network ? [] : NetworkSupportedWallets[network];
 
   // @ts-ignored
   const predefined_wallets: Record<Wallet, ReactElement | null> = {
@@ -467,7 +492,9 @@ export default observer(function ConnectWalletModal(props: Props) {
       <div
         key="metamask"
         onClick={() => changeWallet(Wallet.metamask)}
-        className={`${s.item} ${wallet === Wallet.metamask ? s.active : ""}`}
+        className={`${s.item} ${
+          activeWallet === Wallet.metamask ? s.active : ""
+        }`}
       >
         <img src="/assets/crypto/ico-wallet-metamask.png" alt="" />
         <p>Metamask</p>
@@ -477,7 +504,7 @@ export default observer(function ConnectWalletModal(props: Props) {
       <div
         key="wc"
         onClick={() => changeWallet(Wallet.wc)}
-        className={`${s.item} ${wallet === Wallet.wc ? s.active : ""}`}
+        className={`${s.item} ${activeWallet === Wallet.wc ? s.active : ""}`}
       >
         <img src="/assets/crypto/ico-wallet-wc.png" alt="" />
         <p>Wallet Connect</p>
@@ -488,7 +515,7 @@ export default observer(function ConnectWalletModal(props: Props) {
         key="bsc"
         // onClick={() => changeWallet(Wallet.bsc)}
         className={`${s.item} ${s.disable} ${
-          wallet === Wallet.bsc ? s.active : ""
+          activeWallet === Wallet.bsc ? s.active : ""
         }`}
       >
         <img src="/assets/crypto/ico-wallet-bsc.webp" alt="" />
@@ -573,7 +600,7 @@ export default observer(function ConnectWalletModal(props: Props) {
         className={`${s.items} ${s.verifyC}`}
         style={{ display: "block", paddingLeft: 16 }}
       >
-        {!!wallet && (
+        {!!activeWallet && (
           <>
             <p>Address: {!address ? "" : trim_middle(address, 10, 10)}</p>
             <p>Network: {getAppNetworkFriendlyName(connected_network)}</p>

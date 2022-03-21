@@ -75,7 +75,9 @@ function DetailCampaign() {
                 />
               )}
 
-              {textNow.length > 0 && <CountDown timeCountDown={timeCountDown} textNow={textNow} />}
+              {textNow.length > 0 && (
+                <CountDown timeCountDown={timeCountDown} textNow={textNow} />
+              )}
 
               {!!boxCampaign && (
                 <BoxCard
@@ -92,10 +94,19 @@ function DetailCampaign() {
 
             <TabPane tab="RULE" key="2">
               <div className="lucis-container mt-[40px!important]">
-                {boxCampaign?.rules && boxCampaign?.rules.substring(0, 8) !== "https://" ? (
-                  <iframe srcDoc={boxCampaign?.rules} width="100%" height="500px"></iframe>
+                {boxCampaign?.rules &&
+                boxCampaign?.rules.substring(0, 8) !== "https://" ? (
+                  <iframe
+                    srcDoc={boxCampaign?.rules}
+                    width="100%"
+                    height="500px"
+                  ></iframe>
                 ) : (
-                  <iframe src={boxCampaign?.rules} width="100%" height="300px"></iframe>
+                  <iframe
+                    src={boxCampaign?.rules}
+                    width="100%"
+                    height="300px"
+                  ></iframe>
                 )}
               </div>
             </TabPane>

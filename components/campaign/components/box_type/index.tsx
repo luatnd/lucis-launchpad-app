@@ -15,7 +15,7 @@ import {
   GBoxPrice,
   GBoxCampaignRound,
   ChainSymbol,
-  PurchasedBoxStatus,
+  GChain,
 } from "src/generated/graphql";
 import { useInput } from "hooks/common/use_input";
 import { BuyDisabledReason, useBuyBox } from "hooks/campaign/use_buy_box";
@@ -37,6 +37,7 @@ import { useForm } from "antd/lib/form/Form";
 
 type Props = {
   boxType: GBoxType;
+  chains: GChain[];
   round?: GBoxCampaignRound;
   isInWhitelist?: boolean;
   purchasedBox?: GBoxType;
@@ -48,7 +49,8 @@ type ChainProps = {
 };
 
 const BoxTypeCard = observer((props: Props) => {
-  const { boxType, round, isInWhitelist } = props;
+  const { boxType, round, isInWhitelist, chains } = props;
+
   const purchasedBox =
     props.purchasedBox?.uid == boxType.uid ? props.purchasedBox : undefined;
   const { chainNetwork } = ConnectWalletStore;
@@ -79,7 +81,13 @@ const BoxTypeCard = observer((props: Props) => {
     setIsModalVisible(false);
   };
 
-  const handleOpen = () => {
+  // const handleOpen = () => {
+  //   doBuyBox();
+  //   console.log(txtAmount.value);
+  //   txtAmount.value !== "" && setIsModalVisible(true);
+  // };
+
+  const handleFinish = (value: string) => {
     txtAmount.value !== "" && setIsModalVisible(true);
   };
 
@@ -136,6 +144,7 @@ const BoxTypeCard = observer((props: Props) => {
     price: boxPrice?.price,
     symbol: boxPrice?.currency.symbol,
     boxImg: boxType.thumb_img,
+    chains: chains,
   };
 
   // console.log(isSaleRound);
@@ -203,6 +212,7 @@ const BoxTypeCard = observer((props: Props) => {
               className={s.buyForm}
               form={form}
               onFieldsChange={handleFormChange}
+              onFinish={handleFinish}
             >
               <div className={`${s.amount} font-bold`}>
                 <label className={s.label}>
@@ -213,8 +223,10 @@ const BoxTypeCard = observer((props: Props) => {
                   )}
                 </label>
                 <Form.Item
-                  name="email"
+                  name="amount"
                   rules={[
+                    { required: true, message: "Please input amount!" },
+
                     {
                       type: "number",
                       min: 1,
@@ -301,7 +313,8 @@ const BoxTypeCard = observer((props: Props) => {
                 ) : (
                   <Button
                     className={s.submit}
-                    onClick={handleOpen}
+                    // onClick={handleOpen}
+                    htmlType="submit"
                     loading={loading}
                     disabled={disabledButton}
                   >
@@ -349,11 +362,12 @@ const BoxTypeCard = observer((props: Props) => {
               )}
               showInfo={false}
               // status="active"
-              strokeColor={
-                boxType.sold_amount < boxType.total_amount
-                  ? "#0BEBD6"
-                  : undefined
-              }
+              strokeColor={"#0BEBD6"}
+              // strokeColor={
+              //   boxType.sold_amount < boxType.total_amount
+              //     ? "#0BEBD6"
+              //     : undefined
+              // }
               strokeWidth={10}
             />
             <div className={s.flexRear}>

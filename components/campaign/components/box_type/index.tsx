@@ -3,6 +3,7 @@ import {
   Button,
   Form,
   InputNumber,
+  message,
   notification,
   Popconfirm,
   Progress,
@@ -65,6 +66,30 @@ const BoxTypeCard = observer((props: Props) => {
 
   // --- Detect amount field type wrong
   const [form] = useForm();
+
+  const {
+    loading,
+    txtAmount,
+    isSaleRound,
+    buyFormEnabled,
+    buyBtnDisabledReason,
+    err,
+    requireWhitelist,
+    boxPrice,
+
+    doBuyBox,
+    requestAllowanceForBoxPrice,
+    currencyEnabled,
+    isSupportedConnectedChain,
+  } = useBuyBox(
+    boxType,
+    round,
+    isInWhitelist,
+    chainNetwork,
+    isLoggedIn,
+    purchasedBox
+  );
+
   const handleFormChange = () => {
     const hasErrors = form.getFieldsError().some(({ errors }) => errors.length);
     // console.log(hasErrors);
@@ -81,37 +106,19 @@ const BoxTypeCard = observer((props: Props) => {
     setIsModalVisible(false);
   };
 
-  // const handleOpen = () => {
-  //   doBuyBox();
-  //   console.log(txtAmount.value);
-  //   txtAmount.value !== "" && setIsModalVisible(true);
-  // };
+  const handleFinish = () => {
+    if (txtAmount.value !== "") {
+      if (!isSupportedConnectedChain) {
+        message.warn(
+          "Current chain not supported, please connect other wallet on supported chain!",
+          15
+        );
+        return;
+      }
 
-  const handleFinish = (value: string) => {
-    txtAmount.value !== "" && setIsModalVisible(true);
+      setIsModalVisible(true);
+    }
   };
-
-  const {
-    loading,
-    txtAmount,
-    isSaleRound,
-    buyFormEnabled,
-    buyBtnDisabledReason,
-    err,
-    requireWhitelist,
-    boxPrice,
-
-    doBuyBox,
-    requestAllowanceForBoxPrice,
-    currencyEnabled,
-  } = useBuyBox(
-    boxType,
-    round,
-    isInWhitelist,
-    chainNetwork,
-    isLoggedIn,
-    purchasedBox
-  );
 
   const supported_chains_avatars: ChainProps[] =
     boxType.prices?.map((i) => ({

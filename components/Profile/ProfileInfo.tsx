@@ -5,15 +5,19 @@ import { useMutationProfile } from "components/Profile/Hooks/useMutationProfile"
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { isClient } from "utils/DOM";
 import s from "../../pages/profile/index.module.sass";
+import AuthStore from "../Auth/AuthStore";
+import { observer } from "mobx-react-lite";
 
 type Props = {
   isEdit: boolean;
   setIsEdit: (value: boolean) => void;
-  profile: any;
 };
 
-const Info = ({ isEdit, setIsEdit, profile }: Props) => {
-  const [tempName, setTempName] = useState(profile?.me.profile.full_name);
+export default observer(function Info(props: Props) {
+  const { name, address, code } = AuthStore;
+  const { isEdit, setIsEdit } = props;
+
+  const [tempName, setTempName] = useState(name);
   const [isCopy, setIsCopy] = useState(false);
 
   const affilateIdRef = useRef<any>(null);
@@ -50,8 +54,8 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
     });
   };
 
-  const props = {
-    value: tempName,
+  const inputProps = {
+    value: tempName ?? "",
     onChange: handleChangeName,
     onBlur: handleBlur,
     className: s.name,
@@ -83,11 +87,11 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
           <div className={s.info}>
             <div>
               {isEdit ? (
-                <Input {...props} placeholder={"Your name"} />
+                <Input {...inputProps} placeholder={"Your name"} />
               ) : (
                 <p className={s.fullName}>{tempName}</p>
               )}
-              <p className={s.id}>{profile ? profile.me.address : ""}</p>
+              <p className={s.id}>{address}</p>
             </div>
             {/* <p>Exit</p> */}
             <button onClick={toggleEdit}>{isEdit ? <CloseOutlined /> : <EditOutlined />}</button>
@@ -95,16 +99,17 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
 
           <div className={s.info}>
             <p className={s.balance}>
-              Balance: {profile?.me.balance ? profile.me.balance : "0"} BNB
+              {/* Balance: {profile?.me.balance ? profile.me.balance : "0"} BNB */}
+              Balance:
             </p>
           </div>
 
           <div className={`${s.info} sm:mt-2 lg:mt-5`}>
             <p className={s.name}>
               Affiliate ID:
-              <span ref={affilateIdRef}>{profile?.me.code ? profile.me.code : ""}</span>
+              <span ref={affilateIdRef}>{code}</span>
               <button onClick={handleCopyAffilateId} disabled={isCopy}>
-                {!isCopy ? <img src={"/assets/MyProfile/copy.svg"} /> : <CheckOutlined />}
+                {!isCopy ? <img src={"/assets/MyProfile/copy.svg"} alt="" /> : <CheckOutlined />}
               </button>
             </p>
           </div>
@@ -112,8 +117,4 @@ const Info = ({ isEdit, setIsEdit, profile }: Props) => {
       </Row>
     </div>
   );
-};
-
-Info.defaulProps = {};
-
-export default Info;
+});

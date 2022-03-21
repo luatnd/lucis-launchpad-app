@@ -1,23 +1,20 @@
-import { observer } from "mobx-react" // Or "mobx-react".
+import { observer } from "mobx-react"; // Or "mobx-react".
 
-import ConnectWalletBtn from './ConnectWalletBtn';
-import User from './User';
+import ConnectWalletBtn from "./ConnectWalletBtn";
+import User from "./User";
 import AuthStore from "../AuthStore";
 import ConnectWalletModal from "./ConnectWalletModal";
 
-
 type Props = {
-  small?: boolean,
+  small?: boolean;
 };
 export default observer(function AuthBox(props: Props) {
+  console.log(AuthStore.isLoggedIn);
   return (
     <>
-      {AuthStore.isLoggedIn
-        ? <User />
-        : <ConnectWalletBtn small={props.small} />
-      }
+      {AuthStore.isLoggedIn ? <User /> : <ConnectWalletBtn small={props.small} />}
 
       <ConnectWalletModal />
     </>
-  )
-})
+  );
+});

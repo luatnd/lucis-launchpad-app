@@ -115,6 +115,7 @@ const BoxTypeCard = observer((props: Props) => {
     amount: txtAmount.value,
     price: boxPrice?.price,
     symbol: boxPrice?.currency.symbol,
+    boxImg: boxType.thumb_img,
   };
 
   // console.log(isSaleRound);

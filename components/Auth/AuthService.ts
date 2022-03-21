@@ -22,6 +22,14 @@ type LoginResponse = {
   error: AuthError | null;
 };
 
+function delay(time: number) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("");
+    }, time);
+  });
+}
+
 export default class AuthService {
   async fetchUserData(): Promise<AuthUser> {
     const res = await apoloClient.mutate({
@@ -34,6 +42,12 @@ export default class AuthService {
             email
             profile {
               full_name
+              twitter
+              facebook
+              discord
+              telegram
+              phone
+              avatar
             }
           }
         }
@@ -53,6 +67,10 @@ export default class AuthService {
       address: u.address,
       email: u.email,
       name: !!name ? name : trim_middle(u.address, 6, 6),
+      facebook: u.profile.facebook,
+      twitter: u.profile.twitter,
+      tele: u.profile.tele,
+      discord: u.profile.discord,
     };
 
     return user;
@@ -102,7 +120,13 @@ export default class AuthService {
     })
     */
     const web3Provider = ConnectWalletStore_NonReactiveData.web3Provider;
-    const signed_hash = await web3Provider?.send("personal_sign", params);
+    const signed_hash = await Promise.any([
+      web3Provider?.send("personal_sign", params),
+      delay(30000),
+    ]);
+    if (!signed_hash || typeof signed_hash !== "string" || signed_hash === "") {
+      throw new Error("Request timeout");
+    }
     // console.log('{loginByAddress} signed_hash: ', signed_hash);
 
     // const loginRes = await apiClient.req({

@@ -5,12 +5,12 @@ import { useMutaionVerifyEmail } from "components/Profile/Hooks/useVerifyEmail";
 import { ChangeEvent, useState } from "react";
 import s from "../../pages/profile/index.module.sass";
 import VerifyModal from "./VerifyModal/VerifyModal";
+import { observer } from "mobx-react-lite";
+import AuthStore from "../Auth/AuthStore";
 
 type Props = {
   isEdit: boolean;
   setIsEdit: (value: boolean) => void;
-  profile: any;
-  refetch: () => void;
 };
 
 function validateEmail(email?: string) {
@@ -21,12 +21,15 @@ function validateEmail(email?: string) {
   return re.test(email.toLowerCase());
 }
 
-const Contact = ({ isEdit, setIsEdit, profile, refetch }: Props) => {
+const Contact = ({ isEdit, setIsEdit }: Props) => {
   const [openVerifyModal, setOpenVerifyModal] = useState(false);
   const [validEmail, setValidEmail] = useState(true);
+
+  const { phone, email } = AuthStore;
+
   const [tempContact, setTempContact] = useState({
-    phone: profile?.me.profile.phone,
-    email: profile?.me.email,
+    phone: phone ?? "",
+    email: email ?? "",
   });
   // const [validEmail, setValidEmail] = useState(validateEmail(profile?.me.email));
 
@@ -100,7 +103,7 @@ const Contact = ({ isEdit, setIsEdit, profile, refetch }: Props) => {
           <Col xs={16}>
             {isEdit ? (
               <Input
-                value={tempContact.phone !== "" ? tempContact.phone : ""}
+                value={phone ?? ""}
                 onChange={(e) => handleChange(e, "phone")}
                 onBlur={() => handleBlur("phone")}
                 placeholder={"091xxx0909"}
@@ -132,7 +135,7 @@ const Contact = ({ isEdit, setIsEdit, profile, refetch }: Props) => {
                 validEmail ? (
                   <p>{tempContact.email}</p>
                 ) : (
-                  <p>{profile.me.email}</p>
+                  <p>{email}</p>
                 )
               ) : (
                 <p>Not available</p>
@@ -162,4 +165,4 @@ const Contact = ({ isEdit, setIsEdit, profile, refetch }: Props) => {
   );
 };
 
-export default Contact;
+export default observer(Contact);

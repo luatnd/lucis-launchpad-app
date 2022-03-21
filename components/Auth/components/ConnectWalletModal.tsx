@@ -79,38 +79,62 @@ export default observer(function ConnectWalletModal(props: Props) {
      */
   };
 
-  const loginWithLucis = useCallback(async (address, showSuccessMessage = true) => {
-    /**
-     * Web3 User need to link their wallet with Lucis system
-     */
-    if (!address) {
-      message.error(<span>Wallet not connected properly, please connect wallet again</span>, 3);
-      return;
-    }
+  const loginWithLucis = useCallback(
+    async (address, showSuccessMessage = true) => {
+      /**
+       * Web3 User need to link their wallet with Lucis system
+       */
+      if (!address) {
+        message.error(
+          <span>
+            Wallet not connected properly, please connect wallet again
+          </span>,
+          3
+        );
+        return;
+      }
 
-    AuthStore.loading = true;
-    const authService = new AuthService();
-    const r = await authService.login(address!, 0);
-    AuthStore.loading = false;
-    console.log("{loginWithLucis.} r: ", r);
+      try {
+        AuthStore.loading = true;
+        const authService = new AuthService();
+        const r = await authService.login(address!, 0);
+        AuthStore.loading = false;
+        console.log("{loginWithLucis.} r: ", r);
 
-    switch (r.error) {
-      case null:
-        // Success
-        // Already set the auth token to the AuthStore in AuthService
-        showSuccessMessage &&
-          message.success(<span>Successfully connect and verify your wallet</span>, 5);
-        AuthBoxStore.verified = true;
-        setTimeout(() => {
-          setIsModalVisible(false);
-        }, 2000);
-        break;
+        switch (r.error) {
+          case null:
+            // Success
+            // Already set the auth token to the AuthStore in AuthService
+            showSuccessMessage &&
+              message.success(
+                <span>Successfully connect and verify your wallet</span>,
+                5
+              );
+            AuthBoxStore.verified = true;
+            setTimeout(() => {
+              setIsModalVisible(false);
+            }, 2000);
+            break;
 
-      case AuthError.UserDeniedMsgSignature:
-        message.error(<span>User denied</span>, 5);
-        break;
+          case AuthError.UserDeniedMsgSignature:
+            message.error(<span>User denied</span>, 5);
+            break;
 
-      default:
+          default:
+            message.error(
+              <span>
+                Cannot verify your address due to unhandled error.
+                <br />
+                It's might be the improper wallet connection
+              </span>,
+              5
+            );
+        }
+      } catch (err: any) {
+        console.log("err:", err);
+        AuthStore.loading = false;
+        // message.error(`<span>${err.toString()}</span>`, 5);
+
         message.error(
           <span>
             Cannot verify your address due to unhandled error.
@@ -119,8 +143,10 @@ export default observer(function ConnectWalletModal(props: Props) {
           </span>,
           5
         );
-    }
-  }, []);
+      }
+    },
+    []
+  );
 
   const loginWithLucisCb = useCallback(
     async (showSuccessMessage = true) => {
@@ -150,11 +176,13 @@ export default observer(function ConnectWalletModal(props: Props) {
         .connectWallet(w, network!, opt)
         .then(async (provider) => {
           // add profile and switch the network
-          const ensureActiveNetworkResult = await connectWalletHelper.web3_ensureActiveTargetChain(
-            w,
-            network
-          );
-          DEBUG && console.log("ensureActiveNetworkResult: ", ensureActiveNetworkResult);
+          const ensureActiveNetworkResult =
+            await connectWalletHelper.web3_ensureActiveTargetChain(w, network);
+          DEBUG &&
+            console.log(
+              "ensureActiveNetworkResult: ",
+              ensureActiveNetworkResult
+            );
 
           return provider;
         })
@@ -170,7 +198,10 @@ export default observer(function ConnectWalletModal(props: Props) {
     [network]
   );
 
-  const reUpdateWalletIfNeeded = (w: Wallet | undefined, n: ChainNetwork | undefined) => {
+  const reUpdateWalletIfNeeded = (
+    w: Wallet | undefined,
+    n: ChainNetwork | undefined
+  ) => {
     if (w && n && (w != wallet || n != network)) {
       setWallet(w);
       setNetwork(n);
@@ -215,10 +246,8 @@ export default observer(function ConnectWalletModal(props: Props) {
       .connectWallet(w, network!, opt)
       .then(async (provider) => {
         // add profile and switch the network
-        const ensureActiveNetworkResult = await connectWalletHelper.web3_ensureActiveTargetChain(
-          w,
-          network
-        );
+        const ensureActiveNetworkResult =
+          await connectWalletHelper.web3_ensureActiveTargetChain(w, network);
         // console.log('{Restore} ensureActiveNetworkResult: ', ensureActiveNetworkResult);
 
         return provider;
@@ -268,7 +297,9 @@ export default observer(function ConnectWalletModal(props: Props) {
      * Then user choose ETH network => Cancel to switch to network => Still on BSC
      * => Need to alias the UI back to BSC
      */
-    const n: ChainNetwork | undefined = getChainNetworkFromChainId(connected_network.chainId);
+    const n: ChainNetwork | undefined = getChainNetworkFromChainId(
+      connected_network.chainId
+    );
     if (n && n !== network) {
       DEBUG && console.log("{handleConnectThen} setNetwork: ", n);
       setNetwork(n);
@@ -282,7 +313,8 @@ export default observer(function ConnectWalletModal(props: Props) {
       address: address,
       chainNetwork: n,
     });
-    DEBUG && console.log("{ConnectWalletStore.handleConnectThen} address: ", address);
+    DEBUG &&
+      console.log("{ConnectWalletStore.handleConnectThen} address: ", address);
 
     // If connect failed then => set wallet to null
     // If connect success then => set wallet to connected wallet
@@ -302,7 +334,11 @@ export default observer(function ConnectWalletModal(props: Props) {
           <span>
             [PC] Metamask extension is not installed. <br />
             Please install it from{" "}
-            <a href="https://metamask.io/download/" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://metamask.io/download/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               metamask.io
             </a>
           </span>,
@@ -320,11 +356,16 @@ export default observer(function ConnectWalletModal(props: Props) {
         );
         break;
       case ConnectWalletError.ChainNotSupportedByWallet:
-        message.error(<span>This wallet does not support the selected network</span>, 5);
+        message.error(
+          <span>This wallet does not support the selected network</span>,
+          5
+        );
         break;
       case ConnectWalletError.TestNetChainNotSupportedByWallet:
         message.error(
-          <span>This wallet does not support the testnet of the selected network</span>,
+          <span>
+            This wallet does not support the testnet of the selected network
+          </span>,
           5
         );
         break;
@@ -362,9 +403,18 @@ export default observer(function ConnectWalletModal(props: Props) {
     const provider = ConnectWalletStore_NonReactiveData.provider;
     const web3Modal = ConnectWalletStore_NonReactiveData.web3Modal!;
 
-    DEBUG && console.log("{disconnectWallet} provider: ", provider, provider.isMetaMask);
     DEBUG &&
-      console.log("{disconnectWallet} cachedProvider: ", web3Modal, web3Modal.cachedProvider);
+      console.log(
+        "{disconnectWallet} provider: ",
+        provider,
+        provider.isMetaMask
+      );
+    DEBUG &&
+      console.log(
+        "{disconnectWallet} cachedProvider: ",
+        web3Modal,
+        web3Modal.cachedProvider
+      );
 
     // remove provider cache in browser
     await web3Modal.clearCachedProvider();
@@ -388,7 +438,10 @@ export default observer(function ConnectWalletModal(props: Props) {
     /**
      * When user click disconnect button on their profile
      */
-    const listener = AppEmitter.addListener("onWalletDisconnect", disconnectWallet);
+    const listener = AppEmitter.addListener(
+      "onWalletDisconnect",
+      disconnectWallet
+    );
     return () => {
       listener.remove();
     };
@@ -406,7 +459,8 @@ export default observer(function ConnectWalletModal(props: Props) {
     };
   }, []);
 
-  const supported_wallets = network === null ? [] : NetworkSupportedWallets[network];
+  const supported_wallets =
+    network === null ? [] : NetworkSupportedWallets[network];
 
   // @ts-ignored
   const predefined_wallets: Record<Wallet, ReactElement | null> = {
@@ -434,7 +488,9 @@ export default observer(function ConnectWalletModal(props: Props) {
       <div
         key="bsc"
         // onClick={() => changeWallet(Wallet.bsc)}
-        className={`${s.item} ${s.disable} ${wallet === Wallet.bsc ? s.active : ""}`}
+        className={`${s.item} ${s.disable} ${
+          wallet === Wallet.bsc ? s.active : ""
+        }`}
       >
         <img src="/assets/crypto/ico-wallet-bsc.webp" alt="" />
         <p>Binance Wallet</p>
@@ -457,44 +513,67 @@ export default observer(function ConnectWalletModal(props: Props) {
       <div className={s.items}>
         <div
           onClick={() => changeNetwork(ChainNetwork.eth)}
-          className={`${s.item} ${network === ChainNetwork.eth ? s.active : ""}`}
+          className={`${s.item} ${
+            network === ChainNetwork.eth ? s.active : ""
+          }`}
         >
           <img src="/assets/crypto/ico-chain-eth.svg" alt="" />
           <p>Ethereum</p>
         </div>
         <div
           onClick={() => changeNetwork(ChainNetwork.bsc)}
-          className={`${s.item} ${network === ChainNetwork.bsc ? s.active : ""}`}
+          className={`${s.item} ${
+            network === ChainNetwork.bsc ? s.active : ""
+          }`}
         >
           <img src="/assets/crypto/ico-chain-bsc.png" alt="" />
           <p>BSC</p>
         </div>
         <div
           onClick={() => changeNetwork(ChainNetwork.polygon)}
-          className={`${s.item} ${network === ChainNetwork.polygon ? s.active : ""}`}
+          className={`${s.item} ${
+            network === ChainNetwork.polygon ? s.active : ""
+          }`}
         >
           <img src="/assets/crypto/ico-chain-polygon.png" alt="" />
           <p>Polygon</p>
         </div>
-        <div className={`${s.item} ${s.disable} ${network === ChainNetwork.near ? s.active : ""}`}>
+        <div
+          className={`${s.item} ${s.disable} ${
+            network === ChainNetwork.near ? s.active : ""
+          }`}
+        >
           <img src="/assets/crypto/ico-chain-near.svg" alt="" />
           <p>NEAR</p>
         </div>
-        <div className={`${s.item} ${s.disable} ${network === ChainNetwork.flow ? s.active : ""}`}>
+        <div
+          className={`${s.item} ${s.disable} ${
+            network === ChainNetwork.flow ? s.active : ""
+          }`}
+        >
           <img src="/assets/crypto/ico-chain-flow.png" alt="" />
           <p>Flow</p>
         </div>
-        <div className={`${s.item} ${s.disable} ${network === ChainNetwork.avax ? s.active : ""}`}>
+        <div
+          className={`${s.item} ${s.disable} ${
+            network === ChainNetwork.avax ? s.active : ""
+          }`}
+        >
           <img src="/assets/crypto/ico-chain-avax.svg" alt="" />
           <p>Avalanche</p>
         </div>
       </div>
 
       <p className={s.title}>2. Choose wallet</p>
-      <div className={s.items}>{supported_wallets.map((i) => predefined_wallets[i])}</div>
+      <div className={s.items}>
+        {supported_wallets.map((i) => predefined_wallets[i])}
+      </div>
 
       <p className={s.title}>3. Verify address</p>
-      <div className={`${s.items} ${s.verifyC}`} style={{ display: "block", paddingLeft: 16 }}>
+      <div
+        className={`${s.items} ${s.verifyC}`}
+        style={{ display: "block", paddingLeft: 16 }}
+      >
         {!!wallet && (
           <>
             <p>Address: {!address ? "" : trim_middle(address, 10, 10)}</p>
@@ -510,10 +589,17 @@ export default observer(function ConnectWalletModal(props: Props) {
               </Button>
             ) : (
               <>
-                <Button type="primary" size="large" onClick={loginWithLucisCb} loading={authing}>
+                <Button
+                  type="primary"
+                  size="large"
+                  onClick={loginWithLucisCb}
+                  loading={authing}
+                >
                   Verify
                 </Button>
-                {authing && <p className={s.note}>Please do confirm on your wallet</p>}
+                {authing && (
+                  <p className={s.note}>Please do confirm on your wallet</p>
+                )}
               </>
             )}
           </>

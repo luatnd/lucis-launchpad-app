@@ -1,11 +1,17 @@
 import { gql } from "@apollo/client";
 
 import AuthStore, { AuthUser } from "./AuthStore";
-import apoloClient, { setAuthToken as ApoloClient_setAuthToken } from "utils/apollo_client";
+import apoloClient, {
+  setAuthToken as ApoloClient_setAuthToken,
+} from "utils/apollo_client";
 import { to_hex_str, trim_middle } from "../../utils/String";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "./ConnectWalletStore";
 import { Web3ProviderErrorCodes } from "./ConnectWalletHelper";
-import { clearLocalAuthInfo, getLocalAuthInfo, setLocalAuthInfo } from "./AuthLocal";
+import {
+  clearLocalAuthInfo,
+  getLocalAuthInfo,
+  setLocalAuthInfo,
+} from "./AuthLocal";
 
 export enum AuthError {
   Unknown = "Unknown",
@@ -15,6 +21,14 @@ export enum AuthError {
 type LoginResponse = {
   error: AuthError | null;
 };
+
+function delay(time: number) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("");
+    }, time);
+  });
+}
 
 export default class AuthService {
   async fetchUserData(): Promise<AuthUser> {
@@ -106,7 +120,13 @@ export default class AuthService {
     })
     */
     const web3Provider = ConnectWalletStore_NonReactiveData.web3Provider;
-    const signed_hash = await web3Provider?.send("personal_sign", params);
+    const signed_hash = await Promise.any([
+      web3Provider?.send("personal_sign", params),
+      delay(30000),
+    ]);
+    if (!signed_hash || typeof signed_hash !== "string" || signed_hash === "") {
+      throw new Error("Request timeout");
+    }
     // console.log('{loginByAddress} signed_hash: ', signed_hash);
 
     // const loginRes = await apiClient.req({
@@ -142,7 +162,9 @@ export default class AuthService {
     const token = loginRes.data.login.token;
 
     if (address !== u.address) {
-      throw new Error(`Invalid login address(${address}) vs user address(${u.address})`);
+      throw new Error(
+        `Invalid login address(${address}) vs user address(${u.address})`
+      );
     }
 
     const name = u.profile ? u.profile.full_name : "";

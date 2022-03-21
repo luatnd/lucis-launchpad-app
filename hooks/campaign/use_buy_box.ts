@@ -48,21 +48,35 @@ export function useBuyBox(
   const chainSymbol = connectedChainNetwork;
 
   // get first matched box on connected chain (if connected)
-  let boxPrice: GBoxPrice | undefined =
-    (boxType.prices?.length ?? 0) > 0
-      ? boxType.prices!.find(
-          (item) => item.currency.chain_symbol?.toLowerCase() == chainSymbol
-        )
-      : undefined;
-  // else if no chain was connected, select first box
-  if (!boxPrice) {
-    if (boxType.prices?.length) {
-      boxPrice = boxType.prices[0];
+  const boxPrice: GBoxPrice | undefined = useMemo(() => {
+    let _boxPrice =
+      (boxType.prices?.length ?? 0) > 0
+        ? boxType.prices!.find(
+            (item) => item.currency.chain_symbol?.toLowerCase() == chainSymbol
+          )
+        : undefined;
+    // if no chain was connected, select first box
+    if (!_boxPrice && boxType.prices?.length) {
+      _boxPrice = boxType.prices[0];
     }
-  }
-  const currencyEnabled = ApprovalStore.isCurrencyEnabled(
-    (boxPrice?.currency.symbol as GQL_Currency) ?? false
-  );
+    return _boxPrice;
+  }, [chainSymbol, boxType]);
+
+  const isSupportedConnectedChain = useMemo(() => {
+    return !!boxType.prices?.find(
+      (item) =>
+        item.currency?.chain_symbol?.toLowerCase() ===
+        chainSymbol?.toString()?.toLowerCase()
+    )
+      ? true
+      : false;
+  }, [boxType]);
+
+  const currencyEnabled = !isSupportedConnectedChain
+    ? true
+    : ApprovalStore.isCurrencyEnabled(
+        (boxPrice?.currency.symbol as GQL_Currency) ?? false
+      );
   // TODO: setCurrencyEnabled on chain or symbol changed
 
   /**
@@ -76,7 +90,9 @@ export function useBuyBox(
       // only check allowance if user connected the wallet and logged-in
       return;
     }
-
+    if (!boxPrice) {
+      return;
+    }
     const currency_symbol = boxPrice?.currency.symbol as GQL_Currency;
 
     // Call with debounce
@@ -185,6 +201,11 @@ export function useBuyBox(
       setErr("Box price not found!");
       return;
     }
+
+    if (!isSupportedConnectedChain) {
+      setErr("Current chain not supported");
+    }
+
     if (!round) {
       setErr("Round not found!");
       return;
@@ -360,6 +381,7 @@ export function useBuyBox(
     hasEnoughAllowanceForBoxPrice,
     requestAllowanceForBoxPrice,
     currencyEnabled,
+    isSupportedConnectedChain,
   };
 }
 

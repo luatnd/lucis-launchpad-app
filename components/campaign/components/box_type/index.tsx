@@ -1,5 +1,14 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { Button, Form, InputNumber, notification, Popconfirm, Progress, Tooltip } from "antd";
+import {
+  Button,
+  Form,
+  InputNumber,
+  message,
+  notification,
+  Popconfirm,
+  Progress,
+  Tooltip,
+} from "antd";
 import s from "../Box/Box.module.sass";
 import {
   GBoxType,
@@ -41,7 +50,8 @@ type ChainProps = {
 
 const BoxTypeCard = observer((props: Props) => {
   const { boxType, round, isInWhitelist } = props;
-  const purchasedBox = props.purchasedBox?.uid == boxType.uid ? props.purchasedBox : undefined;
+  const purchasedBox =
+    props.purchasedBox?.uid == boxType.uid ? props.purchasedBox : undefined;
   const { chainNetwork } = ConnectWalletStore;
   const { isLoggedIn } = AuthStore;
 
@@ -54,6 +64,30 @@ const BoxTypeCard = observer((props: Props) => {
 
   // --- Detect amount field type wrong
   const [form] = useForm();
+
+  const {
+    loading,
+    txtAmount,
+    isSaleRound,
+    buyFormEnabled,
+    buyBtnDisabledReason,
+    err,
+    requireWhitelist,
+    boxPrice,
+
+    doBuyBox,
+    requestAllowanceForBoxPrice,
+    currencyEnabled,
+    isSupportedConnectedChain,
+  } = useBuyBox(
+    boxType,
+    round,
+    isInWhitelist,
+    chainNetwork,
+    isLoggedIn,
+    purchasedBox
+  );
+
   const handleFormChange = () => {
     const hasErrors = form.getFieldsError().some(({ errors }) => errors.length);
     // console.log(hasErrors);
@@ -71,34 +105,33 @@ const BoxTypeCard = observer((props: Props) => {
   };
 
   const handleOpen = () => {
-    txtAmount.value !== "" && setIsModalVisible(true);
+    if (txtAmount.value !== "") {
+      if (!isSupportedConnectedChain) {
+        message.warn(
+          "Current chain not supported, please connect other wallet on supported chain!",
+          15
+        );
+        return;
+      }
+
+      setIsModalVisible(true);
+    }
   };
-
-  const {
-    loading,
-    txtAmount,
-    isSaleRound,
-    buyFormEnabled,
-    buyBtnDisabledReason,
-    err,
-    requireWhitelist,
-    boxPrice,
-
-    doBuyBox,
-    requestAllowanceForBoxPrice,
-    currencyEnabled,
-  } = useBuyBox(boxType, round, isInWhitelist, chainNetwork, isLoggedIn, purchasedBox);
 
   const supported_chains_avatars: ChainProps[] =
     boxType.prices?.map((i) => ({
-      url: ChainNetworkAvatar[symbol2Network(i.currency.chain_symbol) ?? "undefined"],
+      url: ChainNetworkAvatar[
+        symbol2Network(i.currency.chain_symbol) ?? "undefined"
+      ],
       symbol: i.currency.chain_symbol,
     })) ?? [];
 
   const buyFormDisabledMsg: Record<BuyDisabledReason, string> = {
-    [BuyDisabledReason.WalletNotConnected]: "you need to connect wallet in order to buy boxes",
+    [BuyDisabledReason.WalletNotConnected]:
+      "you need to connect wallet in order to buy boxes",
     [BuyDisabledReason.SoldOut]: "Sold out",
-    [BuyDisabledReason.WhitelistNotRegistered]: "This box is for whitelisted user only",
+    [BuyDisabledReason.WhitelistNotRegistered]:
+      "This box is for whitelisted user only",
     [BuyDisabledReason.NotSaleRound]: "Please wait the campaign open",
   };
 
@@ -148,7 +181,10 @@ const BoxTypeCard = observer((props: Props) => {
               <div>
                 <div className={s.boxDes} />
               </div>
-              <p className="text-white text-14px md:text-[16px]" style={{ whiteSpace: "pre-wrap" }}>
+              <p
+                className="text-white text-14px md:text-[16px]"
+                style={{ whiteSpace: "pre-wrap" }}
+              >
                 {boxType.desc}
               </p>
             </div>
@@ -176,7 +212,11 @@ const BoxTypeCard = observer((props: Props) => {
           - Form was disabled if user have not meet buy condition
           */}
           {isSaleRound && (
-            <Form className={s.buyForm} form={form} onFieldsChange={handleFormChange}>
+            <Form
+              className={s.buyForm}
+              form={form}
+              onFieldsChange={handleFormChange}
+            >
               <div className={`${s.amount} font-bold`}>
                 <label className={s.label}>
                   <span>Amount: </span>
@@ -265,7 +305,10 @@ const BoxTypeCard = observer((props: Props) => {
                     </div>
                   </Popconfirm>
                 ) : !currencyEnabled ? (
-                  <Button className={s.submitApproval} onClick={requestAllowanceForBoxPrice}>
+                  <Button
+                    className={s.submitApproval}
+                    onClick={requestAllowanceForBoxPrice}
+                  >
                     Enable {boxPrice?.currency.symbol}
                   </Button>
                 ) : (
@@ -280,14 +323,18 @@ const BoxTypeCard = observer((props: Props) => {
                 )}
 
                 {requireWhitelist && (
-                  <span style={{ paddingLeft: 20, lineHeight: 1.3 }}>Whitelist only</span>
+                  <span style={{ paddingLeft: 20, lineHeight: 1.3 }}>
+                    Whitelist only
+                  </span>
                 )}
               </div>
 
               {/*{buyBtnDisabledReason === BuyDisabledReason.SoldOut &&*/}
               {/*<p style={{paddingLeft: 20, lineHeight: 1.3}}>Sold out</p>}*/}
 
-              {!!err && <span style={{ color: "red", fontSize: "13px" }}>{err}</span>}
+              {!!err && (
+                <span style={{ color: "red", fontSize: "13px" }}>{err}</span>
+              )}
             </Form>
           )}
 
@@ -296,7 +343,10 @@ const BoxTypeCard = observer((props: Props) => {
               <span>Price per 1 box:</span>
               <div className="flex items-center justify-end gap-1">
                 <img
-                  src={boxPrice?.currency.icon ?? "/assets/crypto/ico-question-mark.png"}
+                  src={
+                    boxPrice?.currency.icon ??
+                    "/assets/crypto/ico-question-mark.png"
+                  }
                   width="36px"
                   height="36px"
                   alt=""
@@ -307,10 +357,16 @@ const BoxTypeCard = observer((props: Props) => {
               </div>
             </div>
             <Progress
-              percent={Math.floor((boxType.sold_amount / boxType.total_amount) * 100)}
+              percent={Math.floor(
+                (boxType.sold_amount / boxType.total_amount) * 100
+              )}
               showInfo={false}
               // status="active"
-              strokeColor={boxType.sold_amount < boxType.total_amount ? "#0BEBD6" : undefined}
+              strokeColor={
+                boxType.sold_amount < boxType.total_amount
+                  ? "#0BEBD6"
+                  : undefined
+              }
               strokeWidth={10}
             />
             <div className={s.flexRear}>

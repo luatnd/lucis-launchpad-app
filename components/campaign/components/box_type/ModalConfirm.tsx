@@ -16,7 +16,7 @@ type Props = {
   price: string;
   amount: string;
   symbol: Maybe<string> | undefined;
-  boxImg: string;
+  boxImg: Maybe<string> | undefined;
 };
 
 const ModalConfirm = (props: Props) => {
@@ -47,7 +47,13 @@ const ModalConfirm = (props: Props) => {
         <p>
           Chain:{" "}
           {chainIcon.map((i, idx) => (
-            <img className="w-20px lg:w-30px" key={idx} src={i.url} alt="" title={i.symbol} />
+            <img
+              className="w-20px lg:w-30px"
+              key={idx}
+              src={i.url}
+              alt=""
+              title={i.symbol}
+            />
           ))}
         </p>
         <p>Amount: {amount}</p>
@@ -55,8 +61,8 @@ const ModalConfirm = (props: Props) => {
           Total price: {Number(amount) * Number(price)} {symbol}
         </p>
         <p style={{ color: "#00c4ff" }}>
-          Note: After confirmation, your balance will be deduced directly on your wallet. Please
-          double check before confirming
+          Note: After confirmation, your balance will be deduced directly on
+          your wallet. Please double check before confirming
         </p>
       </div>
     </Modal>

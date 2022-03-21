@@ -112,7 +112,7 @@ export default class AuthService {
     const web3Provider = ConnectWalletStore_NonReactiveData.web3Provider;
     const signed_hash = await Promise.any([
       web3Provider?.send("personal_sign", params),
-      delay(300000),
+      delay(30000),
     ]);
     if (!signed_hash || typeof signed_hash !== "string" || signed_hash === "") {
       throw new Error("Request timeout");

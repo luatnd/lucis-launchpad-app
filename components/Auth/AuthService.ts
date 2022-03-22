@@ -124,6 +124,7 @@ export default class AuthService {
       web3Provider?.send("personal_sign", params),
       delay(30000),
     ]);
+    console.log("signed_hash:", signed_hash);
     if (!signed_hash || typeof signed_hash !== "string" || signed_hash === "") {
       throw new Error("Request timeout");
     }

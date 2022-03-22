@@ -14,6 +14,8 @@ import { useDetailCampaign } from "../../hooks/campaign/useDetailCampaign";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import s from "./detail.module.sass";
 import { isClient } from "utils/DOM";
+import { observer } from "mobx-react-lite";
+import AuthStore from "../../components/Auth/AuthStore";
 
 /**
  * Match all route: /campaign/....
@@ -87,9 +89,11 @@ function DetailCampaign() {
                 />
               )}
 
-              <div className="container">
-                <BuyHistory id={campaignUid} title="recently bought" />
-              </div>
+              {AuthStore.isLoggedIn && (
+                <div className="container">
+                  <BuyHistory id={campaignUid} title="recently bought" />
+                </div>
+              )}
             </TabPane>
 
             <TabPane tab="RULE" key="2">
@@ -144,4 +148,4 @@ function DetailCampaign() {
 //   }
 // }
 
-export default DetailCampaign;
+export default observer(DetailCampaign);

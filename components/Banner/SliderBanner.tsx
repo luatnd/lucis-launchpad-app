@@ -1,7 +1,14 @@
 import { Skeleton } from "antd";
 import { calculateCampaignStatus } from "components/campaign/CampaignHelper";
 import ItemSliderBanner from "components/Home/Slider/SilderBanner";
-import React, { Component, Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import React, {
+  Component,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Slider from "react-slick";
 import { GBoxCampaign } from "src/generated/graphql";
 import { slugify } from "utils/String";
@@ -33,7 +40,10 @@ const SimpleSlider = (props: Props) => {
   };
 
   useEffect(() => {
-    data && setListBanner([...data].sort((a, b) => a.spotlight_position! - b.spotlight_position!));
+    data &&
+      setListBanner(
+        [...data].sort((a, b) => a.spotlight_position! - b.spotlight_position!)
+      );
   }, [data]);
 
   return (
@@ -66,6 +76,11 @@ const SimpleSlider = (props: Props) => {
                   loading={loading}
                   banner={e.cover_img}
                   name={e.name}
+                  facebook={e.game.facebook}
+                  discord={e.game.discord}
+                  twitter={e.game.facebook}
+                  tele={e.game.telegram}
+                  website={e.game.website}
                 />
               );
             })}

@@ -12,9 +12,9 @@ export default function ClosedCampaign(props: Props) {
   const { resultCloseCampaign } = useCloseCampaign();
   const newDate = new Date();
 
-  useEffect(() => {
-    return resultCloseCampaign;
-  }, [resultCloseCampaign]);
+  // useEffect(() => {
+  //   return resultCloseCampaign;
+  // }, [resultCloseCampaign]);
 
   const arrDate: any = [];
   resultCloseCampaign?.closedBoxCampaign.map((e: any, i: any) => {
@@ -33,55 +33,34 @@ export default function ClosedCampaign(props: Props) {
     <section className="lucis-container">
       <TitleSection text="Closed campaign" />
       <Row gutter={[30, 30]}>
-        {resultCloseCampaign?.closedBoxCampaign?.map((e: GBoxCampaign, index: number) => {
-          const statusTime = calculateCampaignStatus(e);
-          // console.log(statusTime);
+        {resultCloseCampaign?.closedBoxCampaign?.map(
+          (e: GBoxCampaign, index: number) => {
+            const statusTime = calculateCampaignStatus(e);
 
-          return (
-            <Col key={index} xs={24} md={12} lg={8}>
-              <CardItem
-                srcGame={e.cover_img}
-                statusTime={statusTime}
-                time={handleTest()}
-                nameGame={e?.game.name}
-                styleBg={false}
-                title={e?.name}
-                description={e?.game.desc}
-                srcWeb={e?.game.website}
-                srcFb={e?.game.facebook}
-                srcTele={e?.game.telegram}
-                srcDiscord={e?.game.discord}
-                srcTwitter={e?.game.twitter}
-                id={e?.uid}
-                highlight={e?.highlight}
-                chains={e?.chains}
-              />
-            </Col>
-          );
-        })}
+            return (
+              <Col key={index} xs={24} md={12} lg={8}>
+                <CardItem
+                  srcGame={e.cover_img}
+                  statusTime={statusTime}
+                  time={handleTest()}
+                  nameGame={e?.game.name}
+                  styleBg={false}
+                  title={e?.name}
+                  description={e?.game.desc}
+                  srcWeb={e?.game.website}
+                  srcFb={e?.game.facebook}
+                  srcTele={e?.game.telegram}
+                  srcDiscord={e?.game.discord}
+                  srcTwitter={e?.game.twitter}
+                  id={e?.uid}
+                  highlight={e?.highlight}
+                  chains={e?.chains}
+                />
+              </Col>
+            );
+          }
+        )}
       </Row>
-      {/* <div className={s.blockCard}>
-        {resultCloseCampaign?.closedBoxCampaign?.map((e: any, i: any) => {
-          return (
-            <CardItem
-              key={i}
-              srcGame={e.cover_img}
-              statusTime={"SALE"}
-              time={handleTest()}
-              nameGame={e?.game.name}
-              styleBg={false}
-              title={e?.name}
-              description={e?.game.desc}
-              srcWeb={e?.game.website}
-              srcFb={e?.game.facebook}
-              srcTele={e?.game.telegram}
-              srcDiscord={e?.game.discord}
-              srcTwitter={e?.game.twitter}
-              id={e?.uid}
-            />
-          );
-        })}
-      </div> */}
     </section>
   );
 }

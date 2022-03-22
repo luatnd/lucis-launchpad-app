@@ -103,13 +103,18 @@ const Banner = ({ boxCampaign }: Props) => {
                   </a>
                 )}
 
-                <a
-                  href="https://lucis.network"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img src={"/assets/Campaign/Banner/svg/win.svg"} alt="icon" />
-                </a>
+                {boxCampaign?.game.website && (
+                  <a
+                    href={boxCampaign?.game.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={"/assets/Campaign/Banner/svg/win.svg"}
+                      alt="icon"
+                    />
+                  </a>
+                )}
               </div>
 
               {/* <div className={s.infSocialRead}>

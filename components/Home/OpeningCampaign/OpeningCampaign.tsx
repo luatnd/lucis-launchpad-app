@@ -11,57 +11,59 @@ type Props = {};
 export default function Opening(props: Props) {
   const { resultOpening } = useOpening();
 
-  useEffect(() => {
-    return resultOpening;
-  }, [resultOpening]);
+  // useEffect(() => {
+  //   return resultOpening;
+  // }, [resultOpening]);
   // console.log(resultOpening);
 
   return (
     <section className="lucis-container">
       <TitleSection text="Opening campaign" />
       <Row gutter={[30, 30]}>
-        {resultOpening?.openingBoxCampaign.map((e: GBoxCampaign, index: number) => {
-          const statusTime = calculateCampaignStatus(e);
-          // console.log(statusTime);
+        {resultOpening?.openingBoxCampaign.map(
+          (e: GBoxCampaign, index: number) => {
+            const statusTime = calculateCampaignStatus(e);
+            // console.log(statusTime);
 
-          const soldAmount =
-            e.boxTypes &&
-            e.boxTypes
-              .map((item: GBoxType) => item.sold_amount)
-              .reduce((prev: number, curr: number) => prev + curr, 0);
+            const soldAmount =
+              e.boxTypes &&
+              e.boxTypes
+                .map((item: GBoxType) => item.sold_amount)
+                .reduce((prev: number, curr: number) => prev + curr, 0);
 
-          const totalAmount =
-            e.boxTypes &&
-            e.boxTypes
-              .map((item: GBoxType) => item.total_amount)
-              .reduce((prev: number, curr: number) => prev + curr, 0);
+            const totalAmount =
+              e.boxTypes &&
+              e.boxTypes
+                .map((item: GBoxType) => item.total_amount)
+                .reduce((prev: number, curr: number) => prev + curr, 0);
 
-          const soldOutResult = soldAmount === totalAmount ? true : false;
+            const soldOutResult = soldAmount === totalAmount ? true : false;
 
-          // console.log(e.chains);
-          return (
-            <Col key={index} xs={24} md={12} lg={8}>
-              <CardItem
-                soldOutResult={soldOutResult}
-                srcGame={e.cover_img}
-                statusTime={statusTime}
-                time={e.end}
-                nameGame={e?.game?.name}
-                styleBg={true}
-                title={e?.name}
-                description={e?.game.desc}
-                srcWeb={e?.game.website}
-                srcFb={e?.game.facebook}
-                srcTele={e?.game.telegram}
-                srcDiscord={e?.game.discord}
-                srcTwitter={e?.game.twitter}
-                id={e?.uid}
-                highlight={e?.highlight}
-                chains={e?.chains}
-              />
-            </Col>
-          );
-        })}
+            // console.log(e.chains);
+            return (
+              <Col key={index} xs={24} md={12} lg={8}>
+                <CardItem
+                  soldOutResult={soldOutResult}
+                  srcGame={e.cover_img}
+                  statusTime={statusTime}
+                  time={e.end}
+                  nameGame={e?.game?.name}
+                  styleBg={true}
+                  title={e?.name}
+                  description={e?.game.desc}
+                  srcWeb={e?.game.website}
+                  srcFb={e?.game.facebook}
+                  srcTele={e?.game.telegram}
+                  srcDiscord={e?.game.discord}
+                  srcTwitter={e?.game.twitter}
+                  id={e?.uid}
+                  highlight={e?.highlight}
+                  chains={e?.chains}
+                />
+              </Col>
+            );
+          }
+        )}
       </Row>
       {/* <div className={s.blockCard}>
         {resultOpening?.openingBoxCampaign.map((e: any, i: number) => {

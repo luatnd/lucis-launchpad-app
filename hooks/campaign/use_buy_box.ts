@@ -99,12 +99,18 @@ export function useBuyBox(
       return 0;
     }
 
+    if (!isSupportedConnectedChain) {
+      console.warn("Current change not supported to get allowance");
+      return 0;
+    }
+
     const nft_contract_address = boxPrice?.contract_address ?? "";
     const currency_address = boxPrice?.currency.address ?? ""; // address of token to buy
     const ethersService = new EthersService(
       ConnectWalletStore_NonReactiveData.web3Provider
     );
-
+    console.log("nft_contract_address:", nft_contract_address);
+    console.log("currency_address:", currency_address);
     // check enough allowance
     const allowanceWei = await ethersService.getMyAllowanceOf(
       nft_contract_address,
@@ -122,7 +128,7 @@ export function useBuyBox(
     }
 
     return allowanceWei;
-  }, [isLoggedIn, boxPrice]);
+  }, [isLoggedIn, boxPrice, isSupportedConnectedChain]);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -345,6 +351,7 @@ export function useBuyBox(
   };
 
   const requestAllowanceForBoxPrice = async () => {
+    console.log("requestAllowanceForBoxPrice:");
     if (!isLoggedIn) {
       message.warn("Please connect wallet and verify your address first!");
       return false;

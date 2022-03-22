@@ -1,7 +1,7 @@
 import { gql, ServerError, ServerParseError } from "@apollo/client";
 import { message } from "antd";
 import { useInput } from "hooks/common/use_input";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { GBoxCampaignRound, GBoxPrice, GBoxType } from "src/generated/graphql";
 import apoloClient, { onApolloError } from "utils/apollo_client";
 import { debounce } from "@github/mini-throttle";
@@ -70,7 +70,7 @@ export function useBuyBox(
     )
       ? true
       : false;
-  }, [boxType]);
+  }, [boxType, chainSymbol]);
 
   const currencyEnabled = !isSupportedConnectedChain
     ? true
@@ -122,7 +122,12 @@ export function useBuyBox(
           );
       }
     });
-  }, [isLoggedIn, boxPrice?.currency.symbol]);
+  }, [
+    isLoggedIn,
+    boxPrice?.currency.symbol,
+    boxPrice,
+    checkAllowanceForBoxPrice,
+  ]);
 
   const requireWhitelist =
     round?.is_whitelist === false && round?.require_whitelist === true;
@@ -290,7 +295,7 @@ export function useBuyBox(
   //   return true;
   // };
 
-  const checkAllowanceForBoxPrice = async (): Promise<number> => {
+  const checkAllowanceForBoxPrice = useCallback(async (): Promise<number> => {
     if (!isLoggedIn) {
       message.warn("Please connect wallet and verify your address first!");
       return 0;
@@ -327,7 +332,7 @@ export function useBuyBox(
     }
 
     return allowanceWei;
-  };
+  }, [isLoggedIn, boxPrice]);
 
   const hasEnoughAllowanceForBoxPrice = async () => {
     return (await checkAllowanceForBoxPrice()) >= ETHER_MIN_ALLOWANCE;

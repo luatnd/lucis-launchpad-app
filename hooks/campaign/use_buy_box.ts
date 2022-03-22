@@ -78,13 +78,52 @@ export function useBuyBox(
         (boxPrice?.currency.symbol as GQL_Currency) ?? false
       );
   // TODO: setCurrencyEnabled on chain or symbol changed
-
   /**
    * Re-fetch allowance info whenever the currency to buy box was changed
    * Must use debounce to avoid redundant blockchain request because
    * we're inside boxType, this page contain multiple boxTypes so
    * this will fire multiple request if you dont use debounce
    */
+
+  const checkAllowanceForBoxPrice = useCallback(async (): Promise<number> => {
+    if (!isLoggedIn) {
+      message.warn("Please connect wallet and verify your address first!");
+      return 0;
+    }
+
+    if (!ConnectWalletStore_NonReactiveData.web3Provider) {
+      message.error(
+        "[Critical] This is unexpected behavior occur in our app, please reconnect your wallet to ensure the app run correctly",
+        6
+      );
+      return 0;
+    }
+
+    const nft_contract_address = boxPrice?.contract_address ?? "";
+    const currency_address = boxPrice?.currency.address ?? ""; // address of token to buy
+    const ethersService = new EthersService(
+      ConnectWalletStore_NonReactiveData.web3Provider
+    );
+
+    // check enough allowance
+    const allowanceWei = await ethersService.getMyAllowanceOf(
+      nft_contract_address,
+      currency_address
+    );
+    if (allowanceWei == null) {
+      const msg = "Cannot ensure the allowance";
+      console.error(msg, {
+        nft_contract_address,
+        currency_address,
+        allowanceWei,
+      });
+      // message.error(msg, 6);
+      return 0;
+    }
+
+    return allowanceWei;
+  }, [isLoggedIn, boxPrice]);
+
   useEffect(() => {
     if (!isLoggedIn) {
       // only check allowance if user connected the wallet and logged-in
@@ -140,7 +179,16 @@ export function useBuyBox(
     return !round.is_whitelist && !round.is_abstract_round;
   }, [round]);
 
-  let buyBtnDisabledReason: BuyDisabledReason | undefined = undefined;
+  let buyBtnDisabledReason: BuyDisabledReason | undefined = useMemo(() => {
+    if (!isSaleRound) {
+      return BuyDisabledReason.NotSaleRound;
+    } else if (boxType.sold_amount >= boxType.total_amount) {
+      return BuyDisabledReason.SoldOut;
+    } else if (!(requireWhitelist ? isInWhitelist : true)) {
+      return BuyDisabledReason.WhitelistNotRegistered;
+    }
+    return;
+  }, [isSaleRound, boxType, isInWhitelist, requireWhitelist]);
   // const buyFormEnabled = isSaleRound
   //   && boxType.total_amount > boxType.sold_amount
   //   && (requireWhitelist ? isInWhitelist : true)
@@ -157,17 +205,14 @@ export function useBuyBox(
   // can buy box: in buy round + enough box to buy + registered whitelist if need + box left
   const buyFormEnabled = useMemo(() => {
     if (!isSaleRound) {
-      buyBtnDisabledReason = BuyDisabledReason.NotSaleRound;
       return false;
     } else if (boxType.sold_amount >= boxType.total_amount) {
-      buyBtnDisabledReason = BuyDisabledReason.SoldOut;
       return false;
     } else if (!(requireWhitelist ? isInWhitelist : true)) {
-      buyBtnDisabledReason = BuyDisabledReason.WhitelistNotRegistered;
       return false;
     }
     return true;
-  }, [isSaleRound, boxType, isInWhitelist]);
+  }, [isSaleRound, boxType, isInWhitelist, requireWhitelist]);
 
   const txtAmount = useInput("");
   const [err, setErr] = useState<string | undefined>();
@@ -294,45 +339,6 @@ export function useBuyBox(
   //
   //   return true;
   // };
-
-  const checkAllowanceForBoxPrice = useCallback(async (): Promise<number> => {
-    if (!isLoggedIn) {
-      message.warn("Please connect wallet and verify your address first!");
-      return 0;
-    }
-
-    if (!ConnectWalletStore_NonReactiveData.web3Provider) {
-      message.error(
-        "[Critical] This is unexpected behavior occur in our app, please reconnect your wallet to ensure the app run correctly",
-        6
-      );
-      return 0;
-    }
-
-    const nft_contract_address = boxPrice?.contract_address ?? "";
-    const currency_address = boxPrice?.currency.address ?? ""; // address of token to buy
-    const ethersService = new EthersService(
-      ConnectWalletStore_NonReactiveData.web3Provider
-    );
-
-    // check enough allowance
-    const allowanceWei = await ethersService.getMyAllowanceOf(
-      nft_contract_address,
-      currency_address
-    );
-    if (allowanceWei == null) {
-      const msg = "Cannot ensure the allowance";
-      console.error(msg, {
-        nft_contract_address,
-        currency_address,
-        allowanceWei,
-      });
-      // message.error(msg, 6);
-      return 0;
-    }
-
-    return allowanceWei;
-  }, [isLoggedIn, boxPrice]);
 
   const hasEnoughAllowanceForBoxPrice = async () => {
     return (await checkAllowanceForBoxPrice()) >= ETHER_MIN_ALLOWANCE;

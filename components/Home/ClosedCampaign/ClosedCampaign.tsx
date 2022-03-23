@@ -33,7 +33,7 @@ export default function ClosedCampaign(props: Props) {
   return (
     <section className="lucis-container">
       <TitleSection text="Closed campaign" />
-      {/* {resultCloseCampaign?.closedBoxCampaign.length > 0 ? (
+      {resultCloseCampaign?.closedBoxCampaign.length > 0 ? (
         <Row gutter={[30, 30]}>
           {resultCloseCampaign?.closedBoxCampaign?.map(
             (e: GBoxCampaign, index: number) => {
@@ -62,12 +62,10 @@ export default function ClosedCampaign(props: Props) {
               );
             }
           )}
-        </Row>6
+        </Row>
       ) : (
         <BlankState title={"closed"} />
-      )} */}
-
-      <BlankState title={"closed"} />
+      )}
     </section>
   );
 }

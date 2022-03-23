@@ -142,6 +142,12 @@ export default function CardItem(props: Props) {
               </a>
             )}
 
+            {srcTwitter && (
+              <a href={srcTwitter} target="_blank" rel="noopener noreferrer">
+                <img src="/assets/UpComing/tw.svg" alt="" />
+              </a>
+            )}
+
             {/* <a
               href="https://www.tiktok.com/@lucistvv"
               target="_blank"

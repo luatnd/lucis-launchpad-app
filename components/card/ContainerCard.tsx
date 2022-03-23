@@ -66,7 +66,7 @@ export default function CardItem(props: Props) {
   const timer = useCountDown(time);
 
   return (
-    <div className={`${s.CardContainer} ${bg_card}`}>
+    <div className={`${s.CardContainer} ${bg_card} mt-120px sm:mt-150px`}>
       <div className={s.img_game}>
         <img src={props.srcGame ?? ""} alt="" />
       </div>

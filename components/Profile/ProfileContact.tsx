@@ -77,7 +77,7 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
   };
   // TODO: Handle logic after
   const handleBlurEmailInput = () => {
-    console.log(email === tempContact.email);
+    // console.log(email === tempContact.email);
     if (email !== tempContact.email) {
       setIsVerify(true);
     } else {

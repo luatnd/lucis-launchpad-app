@@ -35,7 +35,7 @@ const BlankState = (props: Props) => {
       />
 
       <div
-        className={`${s.blankContainer} text-center px-30px py-40px  mb-220px text-18px md:text-24px lg:text-36px`}
+        className={`${s.blankContainer} text-center px-30px py-40px  mb-220px text-18px md:text-24px lg:text-28px`}
       >
         <p
           style={{

@@ -44,9 +44,7 @@ const Banner = ({ boxCampaign }: Props) => {
               <p className="font-[700]">
                 {boxCampaign?.game.name?.toUpperCase()}
               </p>
-              <p className="font-[400] md:font-[600]">
-                {boxCampaign?.name?.toUpperCase()}
-              </p>
+              <p className="font-[600]">{boxCampaign?.name?.toUpperCase()}</p>
             </div>
 
             <div className={s.infContent}>{boxCampaign?.game.desc}</div>

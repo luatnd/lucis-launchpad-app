@@ -310,6 +310,14 @@ const BoxTypeCard = observer((props: Props) => {
                       </Button>
                     </div>
                   </Popconfirm>
+                ) : !isSupportedConnectedChain ? (
+                  <Tooltip placement="top" title="Switch chain to buy">
+                    <div>
+                      <Button className={s.submit} disabled={true}>
+                        BUY
+                      </Button>
+                    </div>
+                  </Tooltip>
                 ) : !currencyEnabled ? (
                   <Button
                     className={s.submitApproval}

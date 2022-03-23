@@ -57,6 +57,7 @@ const SimpleSlider = (props: Props) => {
               };
 
               const status = calculateCampaignStatus(e);
+              console.log(e.game);
 
               return (
                 <ItemSliderBanner

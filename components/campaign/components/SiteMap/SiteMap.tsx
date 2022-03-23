@@ -45,7 +45,8 @@ export default observer(function SiteMap(props: IRound) {
   } = props;
   const [listRounds, setListRounds] = useState([] as any);
   const [isActiveUpComing, setIsActiveUpComing] = useState(false);
-  const { registerWhitelist, error, loading, data } = useMutationRegisterWhiteList();
+  const { registerWhitelist, error, loading, data } =
+    useMutationRegisterWhiteList();
   const [keyActiveSlide, setKeyActiveSlide] = useState(0);
   const isWhitelisted = isInWhitelist || data?.registerWhitelist;
 
@@ -123,10 +124,12 @@ export default observer(function SiteMap(props: IRound) {
     console.log("keyActiveSlide", keyActiveSlide);
   }, [keyActiveSlide]);
 
-  const whitelistDataSource = whitelistRegisteredRecently ?? whitelistRegistered;
+  const whitelistDataSource =
+    whitelistRegisteredRecently ?? whitelistRegistered;
   const whitelist_total_registered = whitelistDataSource?.registered ?? 0;
   const whitelist_total_limit = whitelistDataSource?.limit ?? 0;
-  const whitelistHaSlotLeft = whitelist_total_registered < whitelist_total_limit;
+  const whitelistHaSlotLeft =
+    whitelist_total_registered < whitelist_total_limit;
   const disableClickWhitelist = isWhitelisted || !whitelistHaSlotLeft;
 
   return (
@@ -160,28 +163,34 @@ export default observer(function SiteMap(props: IRound) {
             >
               <div className={`${s.hSlide} flex flex-col justify-end w-full`}>
                 <div
-                  className={`text-white font-bold ${s.SiteMapLineCircleTitle} ${
-                    isActiveUpComing ? s.active : ""
-                  }`}
+                  className={`text-white font-bold ${
+                    s.SiteMapLineCircleTitle
+                  } ${isActiveUpComing ? s.active : ""}`}
                 >
                   Upcoming
                 </div>
 
                 <div
-                  className={`text-white pb-2 mb-10 ${s.SiteMapLineCircleTime} ${
-                    isActiveUpComing ? s.active : ""
-                  }`}
+                  className={`text-white pb-2 mb-10 ${
+                    s.SiteMapLineCircleTime
+                  } ${isActiveUpComing ? s.active : ""}`}
                 >
                   {timeMoment(start).tz(tzid).format("HH:mm, MMMM DD")}
                 </div>
               </div>
 
               <div style={{ width: "100%" }}>
-                <div className={`${s.SiteMapLineCircle} ${isActiveUpComing ? s.active : ""}`} />
+                <div
+                  className={`${s.SiteMapLineCircle} ${
+                    isActiveUpComing ? s.active : ""
+                  }`}
+                />
                 <div className={s.line} />
               </div>
 
-              <div className={`text-white mt-10 w-full ${s.SiteMapLineCircleContent}`}>
+              <div
+                className={`text-white mt-10 w-full ${s.SiteMapLineCircleContent}`}
+              >
                 Stay tuned and prepare.
               </div>
             </div>
@@ -193,29 +202,35 @@ export default observer(function SiteMap(props: IRound) {
               >
                 <div className={`${s.hSlide} flex flex-col justify-end w-full`}>
                   <div
-                    className={`text-white font-bold ${s.SiteMapLineCircleTitle} ${
-                      item.isActive === true ? s.active : ""
-                    }`}
+                    className={`text-white font-bold ${
+                      s.SiteMapLineCircleTitle
+                    } ${item.isActive === true ? s.active : ""}`}
                   >
                     {item.name}
                   </div>
                   <div
-                    className={`text-white pb-2 mb-10 ${s.SiteMapLineCircleTime} ${
-                      item.isActive === true ? s.active : ""
-                    }`}
+                    className={`text-white pb-2 mb-10 ${
+                      s.SiteMapLineCircleTime
+                    } ${item.isActive === true ? s.active : ""}`}
                   >
-                    {timeMoment(new Date(item.start)).tz(tzid).format("HH:mm, MMMM DD")}
+                    {timeMoment(new Date(item.start))
+                      .tz(tzid)
+                      .format("HH:mm, MMMM DD")}
                   </div>
                 </div>
 
                 <div style={{ width: "100%" }}>
                   <div
-                    className={`${s.SiteMapLineCircle} ${item.isActive === true ? s.active : ""}`}
+                    className={`${s.SiteMapLineCircle} ${
+                      item.isActive === true ? s.active : ""
+                    }`}
                   />
                   <div className={s.line}></div>
                 </div>
 
-                <div className={`text-white mt-10 w-full ${s.SiteMapLineCircleContent}`}>
+                <div
+                  className={`text-white mt-10 w-full ${s.SiteMapLineCircleContent}`}
+                >
                   {item.description}
                 </div>
 
@@ -234,7 +249,9 @@ export default observer(function SiteMap(props: IRound) {
                             <button
                               className={`
                                     ${s.button} 
-                                    ${!whitelistHaSlotLeft ? s.disabledBtn : ""} 
+                                    ${
+                                      !whitelistHaSlotLeft ? s.disabledBtn : ""
+                                    } 
                                     ${isWhitelisted ? s.whitelisted : ""} 
                                     font-bold text-white text-center uppercase
                                   `}
@@ -268,7 +285,11 @@ export default observer(function SiteMap(props: IRound) {
                                   <img
                                     src="/assets/UpComing/tick-done-2.svg"
                                     alt=""
-                                    style={{ width: 24, padding: "0 0 3px 0", fontWeight: "600" }}
+                                    style={{
+                                      width: 24,
+                                      padding: "0 0 3px 0",
+                                      fontWeight: "600",
+                                    }}
                                   />
                                   WHITELISTED
                                 </>
@@ -285,7 +306,9 @@ export default observer(function SiteMap(props: IRound) {
                           strokeColor="#0BEBD6"
                           percent={
                             whitelist_total_limit
-                              ? (whitelist_total_registered / whitelist_total_limit) * 100
+                              ? (whitelist_total_registered /
+                                  whitelist_total_limit) *
+                                100
                               : 0
                           }
                           showInfo={false}
@@ -309,16 +332,26 @@ export default observer(function SiteMap(props: IRound) {
             >
               <div className={`${s.hSlide} flex flex-col justify-end w-full`}>
                 <div
-                  className={`text-white font-bold ${s.SiteMapLineCircleTitle} ${
-                    timeMoment().tz(tzid).unix() >= timeMoment(end).tz(tzid).unix() ? s.active : ""
+                  className={`text-white font-bold ${
+                    s.SiteMapLineCircleTitle
+                  } ${
+                    timeMoment().tz(tzid).unix() >=
+                    timeMoment(end).tz(tzid).unix()
+                      ? s.active
+                      : ""
                   }`}
                 >
-                  Close
+                  Closed
                 </div>
 
                 <div
-                  className={`text-white pb-2 mb-10 ${s.SiteMapLineCircleTime} ${
-                    timeMoment().tz(tzid).unix() >= timeMoment(end).tz(tzid).unix() ? s.active : ""
+                  className={`text-white pb-2 mb-10 ${
+                    s.SiteMapLineCircleTime
+                  } ${
+                    timeMoment().tz(tzid).unix() >=
+                    timeMoment(end).tz(tzid).unix()
+                      ? s.active
+                      : ""
                   }`}
                 >
                   {timeMoment(end).tz(tzid).format("HH:mm, MMMM DD")}
@@ -326,10 +359,15 @@ export default observer(function SiteMap(props: IRound) {
               </div>
               <div
                 className={`${s.SiteMapLineCircle} ${
-                  timeMoment().tz(tzid).unix() >= timeMoment(end).tz(tzid).unix() ? s.active : ""
+                  timeMoment().tz(tzid).unix() >=
+                  timeMoment(end).tz(tzid).unix()
+                    ? s.active
+                    : ""
                 }`}
               ></div>
-              <div className={`text-white mt-10 w-full ${s.SiteMapLineCircleContent}`}>
+              <div
+                className={`text-white mt-10 w-full ${s.SiteMapLineCircleContent}`}
+              >
                 Thank you for watching.
               </div>
             </div>

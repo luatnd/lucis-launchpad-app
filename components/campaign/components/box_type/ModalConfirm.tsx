@@ -1,6 +1,6 @@
 import Modal from "antd/lib/modal/Modal";
 import { Maybe } from "graphql/jsutils/Maybe";
-import { ChainSymbol } from "src/generated/graphql";
+import { ChainSymbol, GChain } from "src/generated/graphql";
 
 type ChainProps = {
   url: string;
@@ -17,6 +17,7 @@ type Props = {
   amount: string;
   symbol: Maybe<string> | undefined;
   boxImg: Maybe<string> | undefined;
+  chains: GChain[];
 };
 
 const ModalConfirm = (props: Props) => {
@@ -30,6 +31,7 @@ const ModalConfirm = (props: Props) => {
     amount,
     symbol,
     boxImg,
+    chains,
   } = props;
 
   return (
@@ -44,7 +46,7 @@ const ModalConfirm = (props: Props) => {
       <div>
         <img className="w-100px mb-4" src={boxImg ?? ""} alt="" />
         <p>Box name: {boxName}</p>
-        <p>
+        {/* <p>
           Chain:{" "}
           {chainIcon.map((i, idx) => (
             <img
@@ -55,7 +57,8 @@ const ModalConfirm = (props: Props) => {
               title={i.symbol}
             />
           ))}
-        </p>
+        </p> */}
+        <p>Chain: {chains.map((i) => i.symbol)}</p>
         <p>Amount: {amount}</p>
         <p>
           Total price: {Number(amount) * Number(price)} {symbol}

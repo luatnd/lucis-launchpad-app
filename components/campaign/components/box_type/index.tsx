@@ -16,7 +16,7 @@ import {
   GBoxPrice,
   GBoxCampaignRound,
   ChainSymbol,
-  PurchasedBoxStatus,
+  GChain,
 } from "src/generated/graphql";
 import { useInput } from "hooks/common/use_input";
 import { BuyDisabledReason, useBuyBox } from "hooks/campaign/use_buy_box";
@@ -38,6 +38,7 @@ import { useForm } from "antd/lib/form/Form";
 
 type Props = {
   boxType: GBoxType;
+  chains: GChain[];
   round?: GBoxCampaignRound;
   isInWhitelist?: boolean;
   purchasedBox?: GBoxType;
@@ -49,7 +50,8 @@ type ChainProps = {
 };
 
 const BoxTypeCard = observer((props: Props) => {
-  const { boxType, round, isInWhitelist } = props;
+  const { boxType, round, isInWhitelist, chains } = props;
+
   const purchasedBox =
     props.purchasedBox?.uid == boxType.uid ? props.purchasedBox : undefined;
   const { chainNetwork } = ConnectWalletStore;
@@ -104,7 +106,7 @@ const BoxTypeCard = observer((props: Props) => {
     setIsModalVisible(false);
   };
 
-  const handleOpen = () => {
+  const handleFinish = () => {
     if (txtAmount.value !== "") {
       if (!isSupportedConnectedChain) {
         message.warn(
@@ -149,6 +151,7 @@ const BoxTypeCard = observer((props: Props) => {
     price: boxPrice?.price,
     symbol: boxPrice?.currency.symbol,
     boxImg: boxType.thumb_img,
+    chains: chains,
   };
 
   // console.log(isSaleRound);
@@ -198,7 +201,7 @@ const BoxTypeCard = observer((props: Props) => {
             dangerouslySetInnerHTML={{ __html: boxType.series_content ?? "" }}
           />
 
-          <div className="flex justify-between text-white font-bold text-24px mb-2">
+          <div className="flex justify-between text-white font-bold text-24px mt-[10px]">
             <span>Chain</span>
             <div className={s.chainIcoC}>
               {supported_chains_avatars.map((i, idx) => (
@@ -216,6 +219,7 @@ const BoxTypeCard = observer((props: Props) => {
               className={s.buyForm}
               form={form}
               onFieldsChange={handleFormChange}
+              onFinish={handleFinish}
             >
               <div className={`${s.amount} font-bold`}>
                 <label className={s.label}>
@@ -226,8 +230,10 @@ const BoxTypeCard = observer((props: Props) => {
                   )}
                 </label>
                 <Form.Item
-                  name="email"
+                  name="amount"
                   rules={[
+                    { required: true, message: "Please input amount!" },
+
                     {
                       type: "number",
                       min: 1,
@@ -267,7 +273,7 @@ const BoxTypeCard = observer((props: Props) => {
                   {txtAmount.err}
                 </span>
               )} */}
-              <div className="flex justify-between text-white items-center font-bold text-24px mb-2 mt-5">
+              <div className="flex justify-between text-white items-center font-bold text-24px">
                 {!buyFormEnabled ? (
                   // if btn is disable, show tooltip
                   <Tooltip
@@ -322,7 +328,8 @@ const BoxTypeCard = observer((props: Props) => {
                 ) : (
                   <Button
                     className={s.submit}
-                    onClick={handleOpen}
+                    // onClick={handleOpen}
+                    htmlType="submit"
                     loading={loading}
                     disabled={disabledButton}
                   >
@@ -370,11 +377,12 @@ const BoxTypeCard = observer((props: Props) => {
               )}
               showInfo={false}
               // status="active"
-              strokeColor={
-                boxType.sold_amount < boxType.total_amount
-                  ? "#0BEBD6"
-                  : undefined
-              }
+              strokeColor={"#0BEBD6"}
+              // strokeColor={
+              //   boxType.sold_amount < boxType.total_amount
+              //     ? "#0BEBD6"
+              //     : undefined
+              // }
               strokeWidth={10}
             />
             <div className={s.flexRear}>

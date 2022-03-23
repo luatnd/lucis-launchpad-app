@@ -33,7 +33,7 @@ const MyProfile = () => {
             className="py-[100px] md:py-[200px] text-24px md:text-36px text-center m-0"
             style={{ color: "white" }}
           >
-            Please connect wallet
+            Please connect your wallet
           </h1>
         )}
         <Footer />

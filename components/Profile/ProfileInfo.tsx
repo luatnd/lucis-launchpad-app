@@ -1,4 +1,9 @@
-import { CheckOutlined, CloseOutlined, CopyOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  CloseOutlined,
+  CopyOutlined,
+  EditOutlined,
+} from "@ant-design/icons";
 import { Col, Row } from "antd";
 import Input from "components/Input/Input";
 import { useMutationProfile } from "components/Profile/Hooks/useMutationProfile";
@@ -94,9 +99,12 @@ export default observer(function Info(props: Props) {
               <p className={s.id}>{address}</p>
             </div>
             {/* <p>Exit</p> */}
-            <button onClick={toggleEdit}>{isEdit ? <CloseOutlined /> : <EditOutlined />}</button>
+            <button onClick={toggleEdit}>
+              {isEdit ? <CloseOutlined /> : <EditOutlined />}
+            </button>
           </div>
 
+          {/* TODO: Need get balance from wallet  */}
           <div className={s.info}>
             <p className={s.balance}>
               {/* Balance: {profile?.me.balance ? profile.me.balance : "0"} BNB */}
@@ -109,7 +117,11 @@ export default observer(function Info(props: Props) {
               Affiliate ID:
               <span ref={affilateIdRef}>{code}</span>
               <button onClick={handleCopyAffilateId} disabled={isCopy}>
-                {!isCopy ? <img src={"/assets/MyProfile/copy.svg"} alt="" /> : <CheckOutlined />}
+                {!isCopy ? (
+                  <img src={"/assets/MyProfile/copy.svg"} alt="" />
+                ) : (
+                  <CheckOutlined />
+                )}
               </button>
             </p>
           </div>

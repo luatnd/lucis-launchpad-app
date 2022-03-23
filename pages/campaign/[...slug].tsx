@@ -14,6 +14,8 @@ import { useDetailCampaign } from "../../hooks/campaign/useDetailCampaign";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import s from "./detail.module.sass";
 import { isClient } from "utils/DOM";
+import { observer } from "mobx-react-lite";
+import AuthStore from "../../components/Auth/AuthStore";
 
 /**
  * Match all route: /campaign/....
@@ -40,6 +42,7 @@ function DetailCampaign() {
   const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [widthScreen, height] = useWindowSize();
 
+
   const {
     boxCampaign,
     isInWhitelist,
@@ -50,6 +53,20 @@ function DetailCampaign() {
     box_campaign_uid: campaignUid,
   });
 
+  const clickToAbout = (key: any) =>{
+    if (key == 3) {
+      if(widthScreen >= 1280){
+        window.scrollTo(0, 750)
+      }else if(widthScreen >= 767){
+        window.scrollTo(0, 672)
+      }else if(widthScreen >= 540){
+        window.scrollTo(0, 386)
+      }else if(widthScreen > 0){
+        window.scrollTo(0, 430)
+      }
+    }
+  }
+
   return (
     <>
       <DocHead />
@@ -57,7 +74,7 @@ function DetailCampaign() {
       <div className="lucis-container">
         <div className={s.containerApp}>
           <Banner boxCampaign={boxCampaign} />
-          <Tabs defaultActiveKey="1" className={s.tabs}>
+          <Tabs defaultActiveKey="1" className={s.tabs} onTabClick={clickToAbout}>
             <TabPane tab="TIMELINE" key="1">
               {boxCampaign?.rounds != null && (
                 <SiteMap
@@ -75,7 +92,9 @@ function DetailCampaign() {
                 />
               )}
 
-              {textNow.length > 0 && <CountDown timeCountDown={timeCountDown} textNow={textNow} />}
+              {textNow.length > 0 && (
+                <CountDown timeCountDown={timeCountDown} textNow={textNow} />
+              )}
 
               {!!boxCampaign && (
                 <BoxCard
@@ -85,17 +104,28 @@ function DetailCampaign() {
                 />
               )}
 
-              <div className="container">
-                <BuyHistory id={campaignUid} title="recently bought" />
-              </div>
+              {AuthStore.isLoggedIn && (
+                <div className="container">
+                  <BuyHistory id={campaignUid} title="recently bought" />
+                </div>
+              )}
             </TabPane>
 
             <TabPane tab="RULE" key="2">
               <div className="lucis-container mt-[40px!important]">
-                {boxCampaign?.rules && boxCampaign?.rules.substring(0, 8) !== "https://" ? (
-                  <iframe srcDoc={boxCampaign?.rules} width="100%" height="500px"></iframe>
+                {boxCampaign?.rules &&
+                boxCampaign?.rules.substring(0, 8) !== "https://" ? (
+                  <iframe
+                    srcDoc={boxCampaign?.rules}
+                    width="100%"
+                    height="500px"
+                  ></iframe>
                 ) : (
-                  <iframe src={boxCampaign?.rules} width="100%" height="300px"></iframe>
+                  <iframe
+                    src={boxCampaign?.rules}
+                    width="100%"
+                    height="300px"
+                  ></iframe>
                 )}
               </div>
             </TabPane>
@@ -133,4 +163,4 @@ function DetailCampaign() {
 //   }
 // }
 
-export default DetailCampaign;
+export default observer(DetailCampaign);

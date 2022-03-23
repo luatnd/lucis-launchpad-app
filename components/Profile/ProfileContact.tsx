@@ -59,42 +59,49 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
   };
 
   const handleVerifyEmail = () => {
-    console.log("Verify");
+    verifyEmail({ variables: { email: tempContact.email } })
+      .then(() => {
+        setIsVerify(false);
+        console.log("Passs");
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleChangeEmailValue = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
+    // console.log(email);
     setTempContact({
       ...tempContact,
       email: e.target.value,
     });
 
-    if (email !== tempContact.email) {
+    if (email !== e.target.value) {
       setIsVerify(true);
     } else {
       setIsVerify(false);
     }
   };
+
   // TODO: Handle logic after
-  const handleBlurEmailInput = () => {
-    // console.log(email === tempContact.email);
-    if (email !== tempContact.email) {
-      setIsVerify(true);
-    } else {
-      setIsVerify(false);
-    }
-    // verifyEmail({
-    //   variables: {
-    //     value: tempContact.email,
-    //   },
-    // })
-    //   .then((res) => {
-    //     setValidEmail(true);
-    //   })
-    //   .catch((err) => {
-    //     setValidEmail(false);
-    //   });
-  };
+  // const handleBlurEmailInput = () => {
+  // console.log(email === tempContact.email);
+  // if (email !== tempContact.email) {
+  //   setIsVerify(true);
+  // } else {
+  //   setIsVerify(false);
+  // }
+  // verifyEmail({
+  //   variables: {
+  //     value: tempContact.email,
+  //   },
+  // })
+  //   .then((res) => {
+  //     setValidEmail(true);
+  //   })
+  //   .catch((err) => {
+  //     setValidEmail(false);
+  //   });
+  // };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>, field: string) => {
     setTempContact({
@@ -148,7 +155,7 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
                   value={tempContact.email !== "" ? tempContact.email : ""}
                   // onChange={(e) => handleChange(e, "email")}
                   onChange={(e) => handleChangeEmailValue(e)}
-                  onBlur={handleBlurEmailInput}
+                  // onBlur={handleBlurEmailInput}
                   placeholder={"your.email@example.com"}
                 />
 

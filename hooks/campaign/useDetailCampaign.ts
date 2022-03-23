@@ -97,6 +97,7 @@ const DETAIL_CAMPAIGN = gql`
         telegram
         youtube
         discord
+        website
         logo
       }
       status

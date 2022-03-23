@@ -27,10 +27,7 @@ const GotProject = () => {
         Apply for an INO on Lucis Launchpad, submit your project and get a
         response within 24 hours
       </p>
-      <p className="text-center text-[14px] md:text-[16px]">
-        Follow our official telegram channel below. Please double check if you
-        receive any emails
-      </p>
+
       <div className={`${s.buttonContainer}`}>
         <a
           href="https://forms.gle/GyCuu9543vQuHMV78"
@@ -43,6 +40,23 @@ const GotProject = () => {
         <button className={s.contactBtn} onClick={handleOpen}>
           Contact Us
         </button>
+      </div>
+
+      <p className="text-center text-[14px] md:text-[16px]">
+        Follow our official telegram channel below. Please double check if you
+        receive any emails
+      </p>
+      <div className={`${s.buttonContainer}`}>
+        <a
+          className={`${s.teleBtn}`}
+          href="https://t.me/lucislaunchpad_support"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img className="mr-[4px]" src="/assets/UpComing/tele.svg" alt="" />{" "}
+          t.me/openware
+        </a>
+        {/* <img src="/assets/MyProfile/teleChat.svg" alt="" /> */}
       </div>
       <ModalContact {...modalProps} />
     </div>

@@ -45,25 +45,30 @@
 .contactBtn 
     background: #1af2fad2
     color: black
+.teleBtn 
+    // background: #1a78fad2
+    color: white
+    &:hover 
+        color: white
 
 .btnChatContainer
     text-align: end
     
-    .btnChat
+.btnChat
+    color: white
+    flex-basis: 242px
+    // font-size: 28px
+    flex-grow: 0
+    height: 76px
+    background: linear-gradient(83.51deg, #CD28E8 3.41%, #0BEBD6 106.98%)
+    border-radius: 16px
+    padding: 2px 10px
+    &:hover
         color: white
-        flex-basis: 242px
-        // font-size: 28px
-        flex-grow: 0
-        height: 76px
-        background: linear-gradient(83.51deg, #CD28E8 3.41%, #0BEBD6 106.98%)
-        border-radius: 16px
-        padding: 2px 10px
-        &:hover
-            background: linear-gradient(83.51deg, #b62fcc 3.41%, #02af9e 106.98%)
-        &:active
-            background: linear-gradient(83.51deg, #8f20a1 3.41%, #09887c 106.98%)
-        &:disabled
-            cursor: not-allowed
-            color: #e7e7e7!important
-            background: linear-gradient(83.51deg, #b62fcc 3.41%, #02af9e 106.98%)!important
-        
+        background: linear-gradient(83.51deg, #b62fcc 3.41%, #02af9e 106.98%)
+    &:active
+        background: linear-gradient(83.51deg, #8f20a1 3.41%, #09887c 106.98%)
+    &:disabled
+        cursor: not-allowed
+        color: #e7e7e7!important
+        background: linear-gradient(83.51deg, #b62fcc 3.41%, #02af9e 106.98%)!important

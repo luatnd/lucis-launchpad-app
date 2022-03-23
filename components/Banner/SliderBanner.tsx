@@ -57,7 +57,7 @@ const SimpleSlider = (props: Props) => {
               };
 
               const status = calculateCampaignStatus(e);
-              console.log(e.game);
+              // console.log(e.game);
 
               return (
                 <ItemSliderBanner
@@ -72,7 +72,7 @@ const SimpleSlider = (props: Props) => {
                   name={e.name}
                   facebook={e.game.facebook}
                   discord={e.game.discord}
-                  twitter={e.game.facebook}
+                  twitter={e.game.twitter}
                   tele={e.game.telegram}
                   website={e.game.website}
                 />

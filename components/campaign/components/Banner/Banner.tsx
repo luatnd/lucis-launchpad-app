@@ -14,6 +14,8 @@ const Banner = ({ boxCampaign }: Props) => {
     setIsEnableNotification(!isEnableNotification);
   };
 
+  console.log(boxCampaign?.game);
+
   return (
     <div
       className={s.backgroundBanner}

@@ -22,6 +22,7 @@ export default function Banner() {
 
   return (
     <section className={s.containerBanner}>
+      {/* <InputSearch /> */}
       <SimpleSlider {...sliderProps} />
 
       <div className="container md:py-5">

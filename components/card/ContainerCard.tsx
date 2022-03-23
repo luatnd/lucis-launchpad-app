@@ -101,7 +101,7 @@ export default function CardItem(props: Props) {
             )}
           </div>
           <h5>{props.nameGame}</h5>
-          <div className={s.text}>{truncateStr(handleDesc, 0, 20)}</div>
+          <div className={s.text}>{truncateStr(handleDesc, 0, 16)}</div>
         </div>
 
         <div className={s.btnDetail}>

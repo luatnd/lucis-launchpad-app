@@ -41,10 +41,14 @@ export function useCountDown(time: any) {
 
   useEffect(() => {
     const newTimeStartCampaign = new Date(time);
-    const days = (newTimeStartCampaign.getDate() - newDate.getDate() - 1) * 86400;
-    const hours = (24 - newDate.getHours() + newTimeStartCampaign.getHours()) * 3600;
-    const minutes = (60 - newTimeStartCampaign.getMinutes() - newDate.getMinutes()) * 60;
-    const seconds = 60 - newTimeStartCampaign.getSeconds() - newDate.getSeconds();
+    const days =
+      (newTimeStartCampaign.getDate() - newDate.getDate() - 1) * 86400;
+    const hours =
+      (24 - newDate.getHours() + newTimeStartCampaign.getHours()) * 3600;
+    const minutes =
+      (60 - newTimeStartCampaign.getMinutes() - newDate.getMinutes()) * 60;
+    const seconds =
+      60 - newTimeStartCampaign.getSeconds() - newDate.getSeconds();
     const totalSeconds = days + hours + minutes + seconds;
 
     setTotalTime(totalSeconds);
@@ -84,7 +88,10 @@ export function useCountDown(time: any) {
   const countTime = () => {
     if (
       totalTime > 0 &&
-      (timer.days !== 0 || timer.hours !== 0 || timer.minutes !== 0 || timer.seconds !== 0)
+      (timer.days !== 0 ||
+        timer.hours !== 0 ||
+        timer.minutes !== 0 ||
+        timer.seconds !== 0)
     ) {
       setTimer((item) => ({ ...item, seconds: item.seconds - 1 }));
       if (timer.minutes >= 0 && timer.seconds - 1 < 0) {
@@ -102,6 +109,7 @@ export function useCountDown(time: any) {
         }
       }
     }
+
     setTotalTime((totalTime: any) => totalTime - 1);
   };
 

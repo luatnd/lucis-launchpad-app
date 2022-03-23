@@ -24,6 +24,11 @@ const GET_ALLBOX = gql`
       opening_at
       game {
         logo
+        facebook
+        website
+        telegram
+        twitter
+        discord
       }
     }
   }

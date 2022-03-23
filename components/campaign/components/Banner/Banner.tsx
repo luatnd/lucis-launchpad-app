@@ -39,8 +39,12 @@ const Banner = ({ boxCampaign }: Props) => {
             </div>
 
             <div className={s.infTitle}>
-              <p>{boxCampaign?.game.name?.toUpperCase()}</p>
-              <p>{boxCampaign?.name?.toUpperCase()}</p>
+              <p className="font-[700]">
+                {boxCampaign?.game.name?.toUpperCase()}
+              </p>
+              <p className="font-[400] md:font-[600]">
+                {boxCampaign?.name?.toUpperCase()}
+              </p>
             </div>
 
             <div className={s.infContent}>{boxCampaign?.game.desc}</div>
@@ -48,32 +52,69 @@ const Banner = ({ boxCampaign }: Props) => {
             <div className={s.infSocial}>
               <div className={s.infSocialIcons}>
                 {boxCampaign?.game.facebook && (
-                  <a href={boxCampaign?.game.facebook} target="_blank" rel="noopener noreferrer">
-                    <img src={"/assets/Campaign/Banner/svg/fb.svg"} alt="icon" />
+                  <a
+                    href={boxCampaign?.game.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={"/assets/Campaign/Banner/svg/fb.svg"}
+                      alt="icon"
+                    />
                   </a>
                 )}
 
                 {boxCampaign?.game.discord && (
-                  <a href={boxCampaign?.game.discord} target="_blank" rel="noopener noreferrer">
-                    <img src={"/assets/Campaign/Banner/svg/dis.svg"} alt="icon" />
+                  <a
+                    href={boxCampaign?.game.discord}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={"/assets/Campaign/Banner/svg/dis.svg"}
+                      alt="icon"
+                    />
                   </a>
                 )}
 
                 {boxCampaign?.game.telegram && (
-                  <a href={boxCampaign?.game.telegram} target="_blank" rel="noopener noreferrer">
-                    <img src={"/assets/Campaign/Banner/svg/tele.svg"} alt="icon" />
+                  <a
+                    href={boxCampaign?.game.telegram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={"/assets/Campaign/Banner/svg/tele.svg"}
+                      alt="icon"
+                    />
                   </a>
                 )}
 
                 {boxCampaign?.game.twitter && (
-                  <a href={boxCampaign?.game.twitter} target="_blank" rel="noopener noreferrer">
-                    <img src={"/assets/Campaign/Banner/svg/tw.svg"} alt="icon" />
+                  <a
+                    href={boxCampaign?.game.twitter}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={"/assets/Campaign/Banner/svg/tw.svg"}
+                      alt="icon"
+                    />
                   </a>
                 )}
 
-                <a href="https://lucis.network" target="_blank" rel="noopener noreferrer">
-                  <img src={"/assets/Campaign/Banner/svg/win.svg"} alt="icon" />
-                </a>
+                {boxCampaign?.game.website && (
+                  <a
+                    href={boxCampaign?.game.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={"/assets/Campaign/Banner/svg/win.svg"}
+                      alt="icon"
+                    />
+                  </a>
+                )}
               </div>
 
               {/* <div className={s.infSocialRead}>

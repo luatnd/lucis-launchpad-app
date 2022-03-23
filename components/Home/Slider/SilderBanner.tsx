@@ -12,17 +12,44 @@ type Props = {
   href: string;
   loading: boolean;
   name: Maybe<string> | undefined;
+  facebook: Maybe<string> | undefined;
+  discord: Maybe<string> | undefined;
+  twitter: Maybe<string> | undefined;
+  tele: Maybe<string> | undefined;
+  website: Maybe<string> | undefined;
 };
 
 export default function ItemSliderBanner(props: Props) {
-  const { status, time, logo, desc, href, banner, name } = props;
+  const {
+    status,
+    time,
+    logo,
+    desc,
+    href,
+    banner,
+    name,
+    facebook,
+    website,
+    twitter,
+    tele,
+    discord,
+  } = props;
   const timer = useCountDown(time);
 
   const checkTimeLeft =
-    timer.days <= 0 && timer.hours <= 0 && timer.minutes <= 0 && timer.seconds <= 0 ? false : true;
+    timer.days <= 0 &&
+    timer.hours <= 0 &&
+    timer.minutes <= 0 &&
+    timer.seconds <= 0
+      ? false
+      : true;
 
   const statusStyle =
-    status === "OPENING" ? s.opening : status === "CLOSED" ? s.closed : s.upcoming;
+    status === "OPENING"
+      ? s.opening
+      : status === "CLOSED"
+      ? s.closed
+      : s.upcoming;
 
   return (
     <div className={`${s.contentItemSilder} lucis-container`}>
@@ -47,21 +74,35 @@ export default function ItemSliderBanner(props: Props) {
           {/* text */}
           <div className={s.contentItemBottom}>
             <div className={s.groupLink}>
-              <a href="#">
-                <img src="/assets/Banner/svg/fb.svg" alt="" />
-              </a>
-              <a href="#">
-                <img src="/assets/Banner/svg/dis.svg" alt="" />
-              </a>
-              <a href="#">
-                <img src="/assets/Banner/svg/tele.svg" alt="" />
-              </a>
-              <a href="#">
-                <img src="/assets/Banner/svg/tw.svg" alt="" />
-              </a>
-              <a href="#">
-                <img src="/assets/Banner/svg/win.svg" alt="" />
-              </a>
+              {facebook && (
+                <a href={facebook}>
+                  <img src="/assets/Banner/svg/fb.svg" alt="" />
+                </a>
+              )}
+
+              {discord && (
+                <a href={discord}>
+                  <img src="/assets/Banner/svg/dis.svg" alt="" />
+                </a>
+              )}
+
+              {tele && (
+                <a href={tele}>
+                  <img src="/assets/Banner/svg/tele.svg" alt="" />
+                </a>
+              )}
+
+              {twitter && (
+                <a href={twitter}>
+                  <img src="/assets/Banner/svg/tw.svg" alt="" />
+                </a>
+              )}
+
+              {website && (
+                <a href={website}>
+                  <img src="/assets/Banner/svg/win.svg" alt="" />
+                </a>
+              )}
             </div>
 
             <Link href={href} passHref>

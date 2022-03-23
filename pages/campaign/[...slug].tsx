@@ -14,6 +14,8 @@ import { useDetailCampaign } from "../../hooks/campaign/useDetailCampaign";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import s from "./detail.module.sass";
 import { isClient } from "utils/DOM";
+import { observer } from "mobx-react-lite";
+import AuthStore from "../../components/Auth/AuthStore";
 
 /**
  * Match all route: /campaign/....
@@ -90,7 +92,9 @@ function DetailCampaign() {
                 />
               )}
 
-              {textNow.length > 0 && <CountDown timeCountDown={timeCountDown} textNow={textNow} />}
+              {textNow.length > 0 && (
+                <CountDown timeCountDown={timeCountDown} textNow={textNow} />
+              )}
 
               {!!boxCampaign && (
                 <BoxCard
@@ -100,17 +104,28 @@ function DetailCampaign() {
                 />
               )}
 
-              <div className="container">
-                <BuyHistory id={campaignUid} title="recently bought" />
-              </div>
+              {AuthStore.isLoggedIn && (
+                <div className="container">
+                  <BuyHistory id={campaignUid} title="recently bought" />
+                </div>
+              )}
             </TabPane>
 
             <TabPane tab="RULE" key="2">
               <div className="lucis-container mt-[40px!important]">
-                {boxCampaign?.rules && boxCampaign?.rules.substring(0, 8) !== "https://" ? (
-                  <iframe srcDoc={boxCampaign?.rules} width="100%" height="500px"></iframe>
+                {boxCampaign?.rules &&
+                boxCampaign?.rules.substring(0, 8) !== "https://" ? (
+                  <iframe
+                    srcDoc={boxCampaign?.rules}
+                    width="100%"
+                    height="500px"
+                  ></iframe>
                 ) : (
-                  <iframe src={boxCampaign?.rules} width="100%" height="300px"></iframe>
+                  <iframe
+                    src={boxCampaign?.rules}
+                    width="100%"
+                    height="300px"
+                  ></iframe>
                 )}
               </div>
             </TabPane>
@@ -148,4 +163,4 @@ function DetailCampaign() {
 //   }
 // }
 
-export default DetailCampaign;
+export default observer(DetailCampaign);

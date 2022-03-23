@@ -1,10 +1,8 @@
-import s from './TitleNameSection.module.sass'
+import s from "./TitleNameSection.module.sass";
 
 type Props = {
-    text: string;
+  text: string;
 };
-export default function TitleSection (props:Props) {
-    return(
-        <h1 className={s.styleTitle}>{props.text}</h1>
-    )
+export default function TitleSection(props: Props) {
+  return <h1 className={s.styleTitle}>{props.text}</h1>;
 }

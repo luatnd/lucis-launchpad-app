@@ -27,8 +27,21 @@ type Props = {
 };
 
 export default function CardItem(props: Props) {
-  const { soldOutResult, time, statusTime, title, description, id, srcFb, highlight, chains } =
-    props;
+  const {
+    soldOutResult,
+    time,
+    statusTime,
+    title,
+    description,
+    id,
+    srcFb,
+    srcWeb,
+    srcTele,
+    srcTwitter,
+    srcDiscord,
+    highlight,
+    chains,
+  } = props;
 
   const typeTime =
     statusTime == "UPCOMING"
@@ -42,7 +55,9 @@ export default function CardItem(props: Props) {
   const bg_card = props.styleBg ? s.bg_1 : s.bg_2;
 
   const handleDesc =
-    description && description.length > 120 ? description?.substring(0, 120) + "..." : description;
+    description && description.length > 120
+      ? description?.substring(0, 120) + "..."
+      : description;
 
   const getCampaignDetailUrl = () => {
     return `/campaign/${id}/${slugify(props.title)}`;
@@ -51,7 +66,7 @@ export default function CardItem(props: Props) {
   const timer = useCountDown(time);
 
   return (
-    <div className={`${s.CardContainer} ${bg_card}`}>
+    <div className={`${s.CardContainer} ${bg_card} mt-120px sm:mt-150px`}>
       <div className={s.img_game}>
         <img src={props.srcGame ?? ""} alt="" />
       </div>
@@ -67,22 +82,26 @@ export default function CardItem(props: Props) {
               ? soldOutResult
                 ? "SOLD OUT"
                 : `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
-                    timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
+                    timer.seconds < 10
+                      ? `0${timer.seconds}`
+                      : `${timer.seconds}`
                   }s`
               : "SALE ENDED"}
             {statusTime !== "CLOSED" && (
-              <span className="text-[12px] xl:text-[14px] pl-2">{highlight ?? ""}</span>
+              <span className="text-[12px] xl:text-[14px] pl-2">
+                {highlight ?? ""}
+              </span>
             )}
 
             {/* Highlight for closed campaign */}
-            {statusTime == "CLOSED" && (
+            {statusTime == "CLOSED" && highlight && (
               <p>
                 SOLD OUT <span>{highlight}</span>
               </p>
             )}
           </div>
           <h5>{props.nameGame}</h5>
-          <div className={s.text}>{truncateStr(handleDesc, 0, 20)}</div>
+          <div className={s.text}>{truncateStr(handleDesc, 0, 16)}</div>
         </div>
 
         <div className={s.btnDetail}>
@@ -94,31 +113,42 @@ export default function CardItem(props: Props) {
         </div>
 
         <div className={s.groupIcon}>
-          <img src={chains[0]?.icon ?? "/assets/crypto/ico-chain-bsc.png"} alt="" />
+          <img
+            src={chains[0]?.icon ?? "/assets/crypto/ico-chain-bsc.png"}
+            alt=""
+          />
           <div className={s.block_iconLeft}>
-            <a href="https://lucis.network" target="_blank" rel="noopener noreferrer">
-              <img src="/assets/UpComing/win.svg" alt="" />
-            </a>
-            <a
-              href="https://www.facebook.com/lucistv.news"
+            {srcWeb && (
+              <a href={srcWeb} target="_blank" rel="noopener noreferrer">
+                <img src="/assets/UpComing/win.svg" alt="" />
+              </a>
+            )}
+
+            {srcFb && (
+              <a href={srcFb} target="_blank" rel="noopener noreferrer">
+                <img src="/assets/UpComing/fb.png" alt="" />
+              </a>
+            )}
+
+            {srcDiscord && (
+              <a href={srcDiscord} target="_blank" rel="noopener noreferrer">
+                <img src="/assets/UpComing/dis.svg" alt="" />
+              </a>
+            )}
+
+            {srcTele && (
+              <a href={srcTele} target="_blank" rel="noopener noreferrer">
+                <img src="/assets/UpComing/tele.svg" alt="" />
+              </a>
+            )}
+
+            {/* <a
+              href="https://www.tiktok.com/@lucistvv"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src="/assets/UpComing/fb.png" alt="" />
-            </a>
-            <a
-              href="https://discord.com/channels/911921072830574603/926398655093702666"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img src="/assets/UpComing/dis.svg" alt="" />
-            </a>
-            <a href="https://t.me/sankeonft" target="_blank" rel="noopener noreferrer">
-              <img src="/assets/UpComing/tele.svg" alt="" />
-            </a>
-            <a href="https://www.tiktok.com/@lucistvv" target="_blank" rel="noopener noreferrer">
               <img src="/assets/UpComing/tw.svg" alt="" />
-            </a>
+            </a> */}
           </div>
         </div>
       </div>

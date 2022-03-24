@@ -1,6 +1,7 @@
 @import styles/common
 .containerBanner
     position: relative
+    animation: fadeIn 4s
     a
         margin: 0
 
@@ -195,4 +196,8 @@
     @media screen and (min-width: 1023px)
         font-size: 36px
 
-
+@keyframes fadeIn 
+  0% 
+    opacity:0
+  100% 
+    opacity:1

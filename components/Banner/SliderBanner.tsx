@@ -41,46 +41,37 @@ const SimpleSlider = (props: Props) => {
 
   return (
     <>
-      {loading ? (
-        <div className="lucis-container">
-          <div className={s.skeContainer}>
-            <Skeleton.Image />
-            <Skeleton paragraph={{ rows: 5 }} />
-          </div>
-        </div>
-      ) : (
-        <div className="simple-slider">
-          <Slider {...settings} ref={sliderRef}>
-            {listBanner?.map((e, i) => {
-              const getCampaignDetailUrl = () => {
-                return `/campaign/${e.uid}/${slugify(e.name)}`;
-              };
+      <div className={`${s.mainSlider}`}>
+        <Slider {...settings} ref={sliderRef}>
+          {listBanner?.map((e, i) => {
+            const getCampaignDetailUrl = () => {
+              return `/campaign/${e.uid}/${slugify(e.name)}`;
+            };
 
-              const status = calculateCampaignStatus(e);
-              // console.log(e.game);
+            const status = calculateCampaignStatus(e);
+            // console.log(e.game);
 
-              return (
-                <ItemSliderBanner
-                  key={i}
-                  status={status}
-                  time={e.end}
-                  logo={e.game.logo}
-                  desc={e.desc}
-                  href={getCampaignDetailUrl()}
-                  loading={loading}
-                  banner={e.cover_img}
-                  name={e.name}
-                  facebook={e.game.facebook}
-                  discord={e.game.discord}
-                  twitter={e.game.twitter}
-                  tele={e.game.telegram}
-                  website={e.game.website}
-                />
-              );
-            })}
-          </Slider>
-        </div>
-      )}
+            return (
+              <ItemSliderBanner
+                key={i}
+                status={status}
+                time={e.end}
+                logo={e.game.logo}
+                desc={e.desc}
+                href={getCampaignDetailUrl()}
+                loading={loading}
+                banner={e.cover_img}
+                name={e.name}
+                facebook={e.game.facebook}
+                discord={e.game.discord}
+                twitter={e.game.twitter}
+                tele={e.game.telegram}
+                website={e.game.website}
+              />
+            );
+          })}
+        </Slider>
+      </div>
     </>
   );
 };

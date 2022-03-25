@@ -4,7 +4,7 @@ import {
   CopyOutlined,
   EditOutlined,
 } from "@ant-design/icons";
-import { Col, Row } from "antd";
+import { Col, message, Row } from "antd";
 import Input from "components/Input/Input";
 import { useMutationProfile } from "components/Profile/Hooks/useMutationProfile";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
@@ -56,7 +56,14 @@ export default observer(function Info(props: Props) {
           },
         },
       },
-    });
+    })
+      .then(() => {
+        message.success("Update success");
+      })
+      .catch((err) => {
+        message.error("Fail");
+        console.log(err);
+      });
   };
 
   const inputProps = {

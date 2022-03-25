@@ -28,7 +28,9 @@ export function compareDate(startTime: string, endTime: string) {
   return isBefore ? "before" : isAfter ? "after" : "ontime";
 }
 
-export function useCountDown(timeCountDown: any) {
+export function useCountDown(time: any) {
+  const newDate = new Date();
+
   const [totalTime, setTotalTime] = useState(0);
   const [timer, setTimer] = useState<{ [name: string]: number }>({
     days: 0,
@@ -38,13 +40,38 @@ export function useCountDown(timeCountDown: any) {
   });
 
   useEffect(() => {
-    setTimer((item) => ({
-      ...item,
-      days: Math.floor(totalTime / (60 * 60 * 24)),
-      hours: Math.floor((totalTime / (60 * 60)) % 24),
-      minutes: Math.floor((totalTime / 60) % 60),
-      seconds: Math.floor(totalTime % 60),
-    }));
+    const newTimeStartCampaign = new Date(time);
+
+    const days =
+      (newTimeStartCampaign.getDate() - newDate.getDate() - 1) * 86400;
+    const hours =
+      (24 - newDate.getHours() + newTimeStartCampaign.getHours() - 1) * 3600;
+    const minutes =
+      (60 - newTimeStartCampaign.getMinutes() - newDate.getMinutes()) * 60;
+    const seconds =
+      60 - newTimeStartCampaign.getSeconds() - newDate.getSeconds();
+    const totalSeconds = days + hours + minutes + seconds;
+
+    setTotalTime(totalSeconds);
+  }, []);
+
+  useEffect(() => {
+    if (totalTime < 0) {
+      setTimer({
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+      });
+    } else {
+      setTimer((item) => ({
+        ...item,
+        days: Math.floor(totalTime / (60 * 60 * 24)),
+        hours: Math.floor((totalTime / (60 * 60)) % 24),
+        minutes: Math.floor((totalTime / 60) % 60),
+        seconds: Math.floor(totalTime % 60),
+      }));
+    }
   }, [totalTime]);
 
   useEffect(() => {
@@ -59,35 +86,24 @@ export function useCountDown(timeCountDown: any) {
     return () => clearInterval(interval);
   }, [totalTime]);
 
-  useEffect(() => {
-    setTotalTime(timeCountDown);
-  }, [timeCountDown]);
-
   const countTime = () => {
-    if (
-      totalTime > 0 &&
-      (timer.days !== 0 ||
-        timer.hours !== 0 ||
-        timer.minutes !== 0 ||
-        timer.seconds !== 0)
-    ) {
-      setTimer((item) => ({ ...item, seconds: item.seconds - 1 }));
-      if (timer.minutes >= 0 && timer.seconds - 1 < 0) {
-        setTimer((item) => ({ ...item, seconds: 59 }));
-        setTimer((item) => ({ ...item, minutes: item.minutes - 1 }));
-        if (timer.hours >= 0 && timer.minutes - 1 < 0) {
-          setTimer((item) => ({ ...item, minutes: 59 }));
-          setTimer((item) => ({ ...item, hours: item.hours - 1 }));
-          if (timer.days >= 0 && timer.hours - 1 < 0) {
-            setTimer((item) => ({ ...item, hours: 23 }));
-            if (timer.days - 1 > 0) {
-              setTimer((item) => ({ ...item, days: item.days - 1 }));
-            }
+    setTimer((item) => ({ ...item, seconds: item.seconds - 1 }));
+    if (timer.minutes >= 0 && timer.seconds - 1 < 0) {
+      setTimer((item) => ({ ...item, seconds: 59 }));
+      setTimer((item) => ({ ...item, minutes: item.minutes - 1 }));
+      if (timer.hours >= 0 && timer.minutes - 1 < 0) {
+        setTimer((item) => ({ ...item, minutes: 59 }));
+        setTimer((item) => ({ ...item, hours: item.hours - 1 }));
+        if (timer.days >= 0 && timer.hours - 1 < 0) {
+          setTimer((item) => ({ ...item, hours: 23 }));
+          if (timer.days - 1 > 0) {
+            setTimer((item) => ({ ...item, days: item.days - 1 }));
           }
         }
       }
     }
-    setTotalTime((totalTime) => totalTime - 1);
+
+    setTotalTime((totalTime: any) => totalTime - 1);
   };
 
   return timer;

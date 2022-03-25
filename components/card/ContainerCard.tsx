@@ -64,6 +64,7 @@ export default function CardItem(props: Props) {
   };
 
   const timer = useCountDown(time);
+  // console.log(timer);
 
   return (
     <div

@@ -1,4 +1,4 @@
-import { Col, Row } from "antd";
+import { Col, message, Row } from "antd";
 import Input from "components/Input/Input";
 import { useMutationProfile } from "components/Profile/Hooks/useMutationProfile";
 import { ChangeEvent, useState } from "react";
@@ -34,7 +34,12 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
           },
         },
       },
-    });
+    })
+      .then(() => message.success("Update success"))
+      .catch((err) => {
+        message.error("Fail!");
+        console.log(err);
+      });
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>, field: string) => {
@@ -67,7 +72,11 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                     placeholder={"Facebook address"}
                   />
                 ) : (
-                  <p>{tempSocial.facebook ? tempSocial.facebook : "Not available"}</p>
+                  <p>
+                    {tempSocial.facebook
+                      ? tempSocial.facebook
+                      : "Not available"}
+                  </p>
                 )}
               </a>
 
@@ -81,7 +90,9 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                     placeholder={"Twitter address"}
                   />
                 ) : (
-                  <p>{tempSocial.twitter ? tempSocial.twitter : "Not available"}</p>
+                  <p>
+                    {tempSocial.twitter ? tempSocial.twitter : "Not available"}
+                  </p>
                 )}
               </a>
 
@@ -95,7 +106,9 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                     placeholder={"Discord address"}
                   />
                 ) : (
-                  <p>{tempSocial.discord ? tempSocial.discord : "Not available"}</p>
+                  <p>
+                    {tempSocial.discord ? tempSocial.discord : "Not available"}
+                  </p>
                 )}
               </a>
 
@@ -109,7 +122,11 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                     placeholder={"Telegram address"}
                   />
                 ) : (
-                  <p>{tempSocial.telegram ? tempSocial.telegram : "Not available"}</p>
+                  <p>
+                    {tempSocial.telegram
+                      ? tempSocial.telegram
+                      : "Not available"}
+                  </p>
                 )}
               </a>
             </div>

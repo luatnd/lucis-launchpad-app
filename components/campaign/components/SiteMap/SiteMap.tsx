@@ -55,6 +55,7 @@ export default observer(function SiteMap(props: IRound) {
     const upcomingStart = timeMoment(start).tz(tzid).unix();
     const closeEnd = timeMoment(end).tz(tzid).unix();
     const firstStart = timeMoment(rounds[0]?.start).tz(tzid).unix();
+    console.log(firstStart);
     // const firstStart = 0; // TODO: Fix bug above line
     const time = (firstStart - dateNow) * 1000;
     setIsActiveUpComing(false);

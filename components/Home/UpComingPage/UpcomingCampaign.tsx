@@ -23,7 +23,10 @@ export default function UpComing(props: Props) {
           {resultUpComing?.upcomingBoxCampaign.map(
             (e: GBoxCampaign, index: number) => {
               const statusTime = calculateCampaignStatus(e);
-              // console.log(statusTime);
+
+              const timeCountDown = Math.floor(
+                (new Date(e.opening_at).getTime() - new Date().getTime()) / 1000
+              );
 
               return (
                 <Col key={index} xs={24} md={12} lg={8}>
@@ -45,6 +48,7 @@ export default function UpComing(props: Props) {
                     id={e?.uid}
                     highlight={e?.highlight}
                     chains={e?.chains}
+                    timeCountDown={timeCountDown}
                   />
                 </Col>
               );

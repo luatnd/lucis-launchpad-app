@@ -25,7 +25,6 @@ export default function Opening(props: Props) {
           {resultOpening?.openingBoxCampaign.map(
             (e: GBoxCampaign, index: number) => {
               const statusTime = calculateCampaignStatus(e);
-              // console.log(statusTime);
 
               const soldAmount =
                 e.boxTypes &&
@@ -41,7 +40,10 @@ export default function Opening(props: Props) {
 
               const soldOutResult = soldAmount === totalAmount ? true : false;
 
-              // console.log(e.chains);
+              const timeCountDown = Math.floor(
+                (new Date(e.end).getTime() - new Date().getTime()) / 1000
+              );
+
               return (
                 <Col key={index} xs={24} md={12} lg={8}>
                   <CardItem
@@ -61,6 +63,7 @@ export default function Opening(props: Props) {
                     id={e?.uid}
                     highlight={e?.highlight}
                     chains={e?.chains}
+                    timeCountDown={timeCountDown}
                   />
                 </Col>
               );

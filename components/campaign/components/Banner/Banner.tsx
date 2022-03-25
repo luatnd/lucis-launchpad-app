@@ -14,7 +14,7 @@ const Banner = ({ boxCampaign }: Props) => {
     setIsEnableNotification(!isEnableNotification);
   };
 
-  console.log(boxCampaign?.game);
+  // console.log(boxCampaign?.game);
 
   return (
     <div

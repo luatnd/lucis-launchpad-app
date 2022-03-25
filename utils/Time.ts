@@ -41,10 +41,11 @@ export function useCountDown(time: any) {
 
   useEffect(() => {
     const newTimeStartCampaign = new Date(time);
+
     const days =
       (newTimeStartCampaign.getDate() - newDate.getDate() - 1) * 86400;
     const hours =
-      (24 - newDate.getHours() + newTimeStartCampaign.getHours()) * 3600;
+      (24 - newDate.getHours() + newTimeStartCampaign.getHours() - 1) * 3600;
     const minutes =
       (60 - newTimeStartCampaign.getMinutes() - newDate.getMinutes()) * 60;
     const seconds =
@@ -86,25 +87,17 @@ export function useCountDown(time: any) {
   }, [totalTime]);
 
   const countTime = () => {
-    if (
-      totalTime > 0 &&
-      (timer.days !== 0 ||
-        timer.hours !== 0 ||
-        timer.minutes !== 0 ||
-        timer.seconds !== 0)
-    ) {
-      setTimer((item) => ({ ...item, seconds: item.seconds - 1 }));
-      if (timer.minutes >= 0 && timer.seconds - 1 < 0) {
-        setTimer((item) => ({ ...item, seconds: 59 }));
-        setTimer((item) => ({ ...item, minutes: item.minutes - 1 }));
-        if (timer.hours >= 0 && timer.minutes - 1 < 0) {
-          setTimer((item) => ({ ...item, minutes: 59 }));
-          setTimer((item) => ({ ...item, hours: item.hours - 1 }));
-          if (timer.days >= 0 && timer.hours - 1 < 0) {
-            setTimer((item) => ({ ...item, hours: 23 }));
-            if (timer.days - 1 > 0) {
-              setTimer((item) => ({ ...item, days: item.days - 1 }));
-            }
+    setTimer((item) => ({ ...item, seconds: item.seconds - 1 }));
+    if (timer.minutes >= 0 && timer.seconds - 1 < 0) {
+      setTimer((item) => ({ ...item, seconds: 59 }));
+      setTimer((item) => ({ ...item, minutes: item.minutes - 1 }));
+      if (timer.hours >= 0 && timer.minutes - 1 < 0) {
+        setTimer((item) => ({ ...item, minutes: 59 }));
+        setTimer((item) => ({ ...item, hours: item.hours - 1 }));
+        if (timer.days >= 0 && timer.hours - 1 < 0) {
+          setTimer((item) => ({ ...item, hours: 23 }));
+          if (timer.days - 1 > 0) {
+            setTimer((item) => ({ ...item, days: item.days - 1 }));
           }
         }
       }

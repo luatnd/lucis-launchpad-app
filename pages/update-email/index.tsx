@@ -6,6 +6,9 @@ const UpdateEmail = () => {
     <>
       <DocHead />
       <div className="lucis-container">
+        <h1 className="text-white text-center pt-[150px]  lg:py-[50px] md:text-48px">
+          Update email success
+        </h1>
         <Footer />
       </div>
     </>

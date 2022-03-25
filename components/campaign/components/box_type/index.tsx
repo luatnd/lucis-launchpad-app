@@ -203,11 +203,12 @@ const BoxTypeCard = observer((props: Props) => {
 
           <div className="flex justify-between text-white font-bold text-24px mt-[10px]">
             <span>Chain</span>
-            <div className={s.chainIcoC}>
+            <p className="m-0">{chains[0].symbol}</p>
+            {/* <div className={s.chainIcoC}>
               {supported_chains_avatars.map((i, idx) => (
                 <img key={idx} src={i.url} alt="" title={i.symbol} />
               ))}
-            </div>
+            </div> */}
           </div>
 
           {/*

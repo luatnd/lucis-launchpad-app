@@ -5,6 +5,7 @@ import s from "./Banner.module.sass";
 import SimpleSlider from "./SliderBanner";
 import { useSpotlight } from "./useSpotlight";
 import SubSlider from "./SubSlider";
+import InputSearch from "components/Home/Search/InputSearch";
 
 export default function Banner() {
   const { resultSpotlight, loading, error } = useSpotlight();
@@ -21,9 +22,9 @@ export default function Banner() {
 
   return (
     <section className={s.containerBanner}>
+      {/* <InputSearch /> */}
       <SimpleSlider {...sliderProps} />
-
-      <div className="container md:py-5">
+      <div className="lucis-container md:py-5 mt-[80px] xs:mt-[120px] md:mt-[160px] lg:mt-[100px]">
         <div className={s.thumbContainer}>
           <Link href="/ino" passHref>
             <a className={`${s.btnApplyINO}`}>
@@ -33,6 +34,7 @@ export default function Banner() {
           </Link>
           <SubSlider {...sliderProps} />
         </div>
+        {/* <InputSearch /> */}
       </div>
     </section>
   );

@@ -16,13 +16,17 @@ const ModalContact = (props: Props) => {
       onOk={handleOk}
       onCancel={handleCancel}
       footer={false}
+      centered
     >
       <div>
         <p>
-          Feel free to discuss more with us, just leave your content here and we'll reach you soon.
+          Feel free to discuss more with us, just leave your content here and
+          we'll reach you soon.
         </p>
 
-        <p>Please send us the content in Telegram by clicking the below button.</p>
+        <p>
+          Please send us the content in Telegram by clicking the below button.
+        </p>
         <p>The content might follow this template:</p>
 
         <div
@@ -38,18 +42,21 @@ const ModalContact = (props: Props) => {
           <br />
           Proposal: Apply for INO
           <br />
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non quam id libero pulvinar
-          accumsan at eu est. Nulla faucibus nisi eget mattis cursus.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non
+          quam id libero pulvinar accumsan at eu est. Nulla faucibus nisi eget
+          mattis cursus.
           <br />
         </div>
         <br />
-        <p style={{ color: "#00c4ff" }}>Note: Lucis network will never dm you first.</p>
+        <p style={{ color: "#00c4ff" }}>
+          Note: Lucis network will never dm you first.
+        </p>
       </div>
 
       <div className={s.btnChatContainer}>
         <a
           className={`${s.btnChat} text-[14px] md:text-[18px]`}
-          href="https://t.me/lucis_network_application_form"
+          href="https://t.me/lucislaunchpad_support"
           target="_blank"
           rel="noreferrer"
         >

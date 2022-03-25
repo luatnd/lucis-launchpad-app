@@ -1,22 +1,32 @@
-.contentItemSilder
-  padding-bottom: 40px
-  @media (max-width: 539px)
-    padding-top: 100px
+.mainSlider 
+  // padding-bottom: 15px
+  padding-top: 60px
+  height: 672px
+  @media (max-width: 425px)
+    padding-top: 80px
+    // padding-bottom: 80px
+    height: 715px
   @media (min-width: 540px)
-    padding-top: 100px
+    padding-top: 80px
+    height: 767px
   @media (min-width: 768px)
-    padding-top: 120px
+    padding-top: 90px
+    height: 332px
   @media (min-width: 992px)
     padding-top: 90px
-  @media (min-width: 1025px)
-    padding-top: 60px
+    height: 428px
+  @media (min-width: 1024px)
+    padding-top: 30px
+    height: 388px
   @media (min-width: 1280px)
-    padding-top: 60px
+    // padding-top: 60px
+    height: 499.5px 
   @media (min-width: 1440px)
-    padding-top: 20px
-  
+    height: 580px 
+    // padding-top: 20px
 
-
+.contentItemSilder
+  padding-bottom: 15px
   .contentDetail
     position: relative
     display: flex
@@ -27,7 +37,7 @@
     // @media (max-width: 424px)
     @media (max-width: 767px)
       flex-direction: column
-      gap: 90px
+      // gap: 90px
     @media (min-width: 767px)
       gap: 20px
     @media (min-width: 1024px)
@@ -35,6 +45,7 @@
     @media (min-width: 1024px)
       gap: 60px
     .headingItem
+      animation: fadeIn 5s
       flex: 50% 0 0 
       @media (max-width: 767px)
         order: 1
@@ -85,7 +96,7 @@
       .logoGame
         margin-top: 52px
         img
-          width: 50px
+          width: 80px
         @media screen and (min-width: 767px)
           img
             width: 110px
@@ -97,7 +108,6 @@
         font-size: 18px
         @media (min-width: 992px)
         font-size: 22px
-
       .desc
         font-size: 22px 
         line-height: 32px
@@ -113,7 +123,6 @@
         @media (min-width: 992px)
           font-size: 18px 
           line-height: 28px
-      
       .contentItemBottom
         display: flex
         align-items: center
@@ -156,6 +165,9 @@
           gap: 12px
           a
             width: 24px
+            transition: 0.3s
+            &:hover 
+              transform: scale(1.25)
           @media (min-width: 420px )
             a
               width: 28px
@@ -170,25 +182,7 @@
           @media (min-width: 1279px )
             a
               width: 36px
-          // a
-          //   padding: 0px 8px
-          //   @media (max-width: 991px )
-          //     padding: 0px 4px
-          //     width: 30px
-          //   @media (min-width: 992px )
-          //     padding: 0px 8px
-          //     width: 48px
-          //   @media (min-width: 1439px )
-          //     padding: 0px 12px
-          //     width: 59px
-          // a:first-child
-          //   padding: 0px 8px 0px 0px
-          //   @media (max-width: 991px )
-          //     padding: 0px 4px
-          //   @media (min-width: 992px )
-          //     padding: 0px 8px
-          //   @media (min-width: 1439px )
-          //     padding: 0px 12px
+
   .btnApplyINO
     display: flex
     align-items: center
@@ -284,9 +278,10 @@
 
 
 .skeContainer 
-  padding-top: 100px
+  // padding-top: 100px
   display: flex
   flex-direction: column
+  align-items: center
   
   @media screen and (min-width: 540px)
   @media screen and (min-width: 768px)
@@ -295,13 +290,40 @@
   :global(.ant-skeleton-element)
     width: 100%
   :global(.ant-skeleton-image)
-    width: 100%
-    min-height: 336px
+    width: 450px
+    height: 450px
+    @media screen and (min-width: 540px)
+    @media screen and (min-width: 768px)
 
 .imgGame
-  min-height: 336px
-  width: 100%
+  animation-name: move
+  animation-duration: 1.5s
+  animation-iteration-count: infinite
+  animation-timing-function: ease-in-out
+  animation-direction: alternate
   img
     margin: auto
+    max-width: 100%
+    animation: fadeIn 4s
+  @media screen and (min-width: 768px)
     width: 100%
+    img
+      width: 100%
   
+@keyframes fadeIn 
+  0% 
+    opacity:0
+      
+  100% 
+    opacity:1
+
+@keyframes move 
+  0% 
+    transform: translate3d(0,-4px,0)
+  
+
+  to 
+    transform: translate3d(0,10px,0)
+  
+
+

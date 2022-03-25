@@ -1,10 +1,16 @@
-import type {NextPage} from "next";
+import type { NextPage } from "next";
 import DocHead from "../../components/DocHead";
-import {Col, Row} from "antd";
+import { Col, Row } from "antd";
 import Footer from "../../components/Footer/Footer";
 import React from "react";
 import BoxTypeCard from "../../components/campaign/components/box_type";
-import {ChainSymbol, GBoxCampaign, GBoxPrice, GBoxType, GGame} from "../../src/generated/graphql";
+import {
+  ChainSymbol,
+  GBoxCampaign,
+  GBoxPrice,
+  GBoxType,
+  GGame,
+} from "../../src/generated/graphql";
 
 /**
  * This has no function in project
@@ -57,22 +63,22 @@ const CampaignDebug: NextPage = () => {
       symbol: "BUSD",
       chain_symbol: ChainSymbol.Bsc,
       icon: "https://s2.coinmarketcap.com/static/img/coins/64x64/4687.png",
-      address: '0xA16699880297FF63F331D7136549F01f768ea47E',
+      address: "0xA16699880297FF63F331D7136549F01f768ea47E",
     },
     contract: {
-      uid: '_fake___',
+      uid: "_fake___",
       chain_symbol: ChainSymbol.Bsc,
-      address: '0x5B2447Df55372321A3bBf7eDEAdEA866ff5de95D',
-      created_at: '3456789',
-      updated_at: '3456789',
-    }
+      address: "0x5B2447Df55372321A3bBf7eDEAdEA866ff5de95D",
+      created_at: "3456789",
+      updated_at: "3456789",
+    },
   };
 
   const box1: GBoxType = {
     // _count: {
     //   prices: 0
     // },
-    "uid": "cl02lx5os0005doo0qmjbsdgsy",
+    uid: "cl02lx5os0005doo0qmjbsdgsy",
     // "game_uid": "cl02lx5os0001doo0f3oiu144",
     name: "Axie box 1",
     desc: "Wide variety of game modes: MOBA & Battle Royale, coming with monthly updates and attractive rewards.",
@@ -126,7 +132,7 @@ const CampaignDebug: NextPage = () => {
       <div className="lucis-container mt-[116px]">
         <Row gutter={[24, 50]} className="justify-center">
           <Col xs={24} md={12} lg={8}>
-            <BoxTypeCard
+            {/* <BoxTypeCard
               boxType={box1}
               round={{
                 id: 1,
@@ -137,10 +143,10 @@ const CampaignDebug: NextPage = () => {
                 require_whitelist: false,
               }}
               isInWhitelist={false}
-            />
+            /> */}
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <BoxTypeCard
+            {/* <BoxTypeCard
               boxType={box2}
               round={{
                 id: 1,
@@ -151,10 +157,10 @@ const CampaignDebug: NextPage = () => {
                 require_whitelist: false,
               }}
               isInWhitelist={true}
-            />
+            /> */}
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <BoxTypeCard
+            {/* <BoxTypeCard
               boxType={box3}
               round={{
                 id: 1,
@@ -165,10 +171,10 @@ const CampaignDebug: NextPage = () => {
                 require_whitelist: true,
               }}
               isInWhitelist={false}
-            />
+            /> */}
           </Col>
           <Col xs={24} md={12} lg={8}>
-            <BoxTypeCard
+            {/* <BoxTypeCard
               boxType={box3}
               round={{
                 id: 1,
@@ -179,7 +185,7 @@ const CampaignDebug: NextPage = () => {
                 require_whitelist: true,
               }}
               isInWhitelist={true}
-            />
+            /> */}
           </Col>
         </Row>
       </div>

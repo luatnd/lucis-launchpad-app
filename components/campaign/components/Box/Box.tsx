@@ -1,8 +1,17 @@
 import React from "react";
-import {Button, Col, Form, Input, InputNumber, Modal, Row, Progress} from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+  Progress,
+} from "antd";
 
 import s from "./Box.module.sass";
-import { GBoxCampaign } from "src/generated/graphql";
+import { GBoxCampaign, GBoxType } from "src/generated/graphql";
 import BoxTypeCard from "../box_type";
 import { getOriginCurrentCampaignRound } from "components/campaign/CampaignHelper";
 
@@ -50,7 +59,9 @@ export const Box = () => {
         {listBox.map((e, index) => (
           <Col key={index} xs={24} md={12} lg={8}>
             <div className="flex justify-center">
-              <h3 className="uppercase text-center text-white font-bold text-[24px]">{e.name}</h3>
+              <h3 className="uppercase text-center text-white font-bold text-[24px]">
+                {e.name}
+              </h3>
             </div>
 
             <div className={s.boxContainer}>
@@ -91,24 +102,39 @@ export const Box = () => {
                               alignItems: "flex-end",
                             }}
                           >
-                            <InputNumber min={0} style={{ background: "none", color: "white" }} />
+                            <InputNumber
+                              min={0}
+                              style={{ background: "none", color: "white" }}
+                            />
                             <label>Max 100</label>
                           </div>
                           {/* <span>Max:100</span> */}
                         </div>
                       </Form.Item>
                       <div className="flex justify-between text-white items-center font-bold text-24px mb-2">
-                        <button className={`${s.buyBtn} bg-gradient-1`}>BUY</button>
+                        <button className={`${s.buyBtn} bg-gradient-1`}>
+                          BUY
+                        </button>
                         <span>Whitelist only</span>
                       </div>
                     </Form>
                   )}
 
                   <div className="font-bold text-white mt-[29px]">
-                    <div key={index} className="flex justify-between items-center">
+                    <div
+                      key={index}
+                      className="flex justify-between items-center"
+                    >
                       <span className="text-16px">Price per 1 box:</span>
-                      <div className={`${s.priceContainer} flex items-center gap-1`}>
-                        <img src="/assets/Box/image125.png" width="40px" height="40px" alt="" />
+                      <div
+                        className={`${s.priceContainer} flex items-center gap-1`}
+                      >
+                        <img
+                          src="/assets/Box/image125.png"
+                          width="40px"
+                          height="40px"
+                          alt=""
+                        />
                         <span>16.79 BUSD</span>
                       </div>
                     </div>
@@ -128,24 +154,34 @@ export const Box = () => {
 type BoxCardProps = {
   boxCampaign: GBoxCampaign;
   isInWhitelist?: boolean;
+  purchasedBox?: GBoxType;
 };
 
 export default function BoxCard(props: BoxCardProps) {
   const boxTypes = props.boxCampaign.boxTypes ?? [];
+  const chains = props.boxCampaign.chains ?? [];
+
   const currentRound = getOriginCurrentCampaignRound(props.boxCampaign);
 
   return (
-    <div className="lucis-container mt-[116px]">
+    <div className="lucis-container mt-[60px] md:mt-[100px]">
       <Row gutter={[24, 50]} className="justify-center">
-        {boxTypes.map((e, index) => (
-          <Col key={index} xs={24} md={12} lg={8}>
-            <BoxTypeCard
-              boxType={e}
-              round={currentRound}
-              isInWhitelist={props.isInWhitelist}
-            />
-          </Col>
-        ))}
+        {boxTypes.map((e, index) => {
+          // console.log(e);
+          // const chainSymbol = e.
+
+          return (
+            <Col key={index} xs={24} md={12} lg={8}>
+              <BoxTypeCard
+                boxType={e}
+                chains={chains}
+                round={currentRound}
+                isInWhitelist={props.isInWhitelist}
+                purchasedBox={props.purchasedBox}
+              />
+            </Col>
+          );
+        })}
       </Row>
     </div>
   );

@@ -1,7 +1,7 @@
 import { Skeleton } from "antd";
 import { calculateCampaignStatus } from "components/campaign/CampaignHelper";
 import ItemSliderBanner from "components/Home/Slider/SilderBanner";
-import React, { Component, Dispatch, SetStateAction, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import { GBoxCampaign } from "src/generated/graphql";
 import { slugify } from "utils/String";
@@ -17,11 +17,14 @@ type Props = {
 
 const SimpleSlider = (props: Props) => {
   const { data, loading, sliderRef, setSlideIndex } = props;
+  const [listBanner, setListBanner] = useState<GBoxCampaign[]>();
 
   const settings = {
     dots: false,
     infinite: true,
-    speed: 500,
+    autoplay: true,
+    speed: 1000,
+    autoplaySpeed: 5000,
     slidesToShow: 1,
     slidesToScroll: 1,
     afterChange: (index: number) => {
@@ -29,42 +32,46 @@ const SimpleSlider = (props: Props) => {
     },
   };
 
+  useEffect(() => {
+    data &&
+      setListBanner(
+        [...data].sort((a, b) => a.spotlight_position! - b.spotlight_position!)
+      );
+  }, [data]);
+
   return (
     <>
-      {loading ? (
-        <div className="lucis-container">
-          <div className={s.skeContainer}>
-            <Skeleton.Image />
-            <Skeleton paragraph={{ rows: 5 }} />
-          </div>
-        </div>
-      ) : (
-        <div className="simple-slider">
-          <Slider {...settings} ref={sliderRef}>
-            {data?.map((e, i) => {
-              const getCampaignDetailUrl = () => {
-                return `/campaign/${e.uid}/${slugify(e.name)}`;
-              };
+      <div className={`${s.mainSlider}`}>
+        <Slider {...settings} ref={sliderRef}>
+          {listBanner?.map((e, i) => {
+            const getCampaignDetailUrl = () => {
+              return `/campaign/${e.uid}/${slugify(e.name)}`;
+            };
 
-              const status = calculateCampaignStatus(e);
+            const status = calculateCampaignStatus(e);
+            // console.log(e.game);
 
-              return (
-                <ItemSliderBanner
-                  key={i}
-                  status={status}
-                  time={e.end}
-                  logo={e.game.logo}
-                  desc={e.desc}
-                  href={getCampaignDetailUrl()}
-                  loading={loading}
-                  banner={e.cover_img}
-                  name={e.name}
-                />
-              );
-            })}
-          </Slider>
-        </div>
-      )}
+            return (
+              <ItemSliderBanner
+                key={i}
+                status={status}
+                time={e.end}
+                logo={e.game.logo}
+                desc={e.desc}
+                href={getCampaignDetailUrl()}
+                loading={loading}
+                banner={e.cover_img}
+                name={e.name}
+                facebook={e.game.facebook}
+                discord={e.game.discord}
+                twitter={e.game.twitter}
+                tele={e.game.telegram}
+                website={e.game.website}
+              />
+            );
+          })}
+        </Slider>
+      </div>
     </>
   );
 };

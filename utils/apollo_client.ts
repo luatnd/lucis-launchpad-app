@@ -71,7 +71,7 @@ var splitLink: any;
 if (isClient) {
   const wsLink = new GraphQLWsLink(
     createClient({
-      url: "ws://localhost:13030/graphql",
+      url: process.env.NEXT_PUBLIC_GRAPHQL_SUBSCRIPTION_URL ?? "",
     })
   );
 

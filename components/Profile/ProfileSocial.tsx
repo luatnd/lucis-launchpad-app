@@ -1,27 +1,30 @@
-import { Col, Row } from "antd";
+import { Col, message, Row } from "antd";
 import Input from "components/Input/Input";
 import { useMutationProfile } from "components/Profile/Hooks/useMutationProfile";
 import { ChangeEvent, useState } from "react";
 import s from "../../pages/profile/index.module.sass";
+import AuthStore from "../Auth/AuthStore";
+import { observer } from "mobx-react-lite";
 
 type Props = {
   isEdit: boolean;
   setIsEdit: (value: boolean) => void;
-  profile: any;
 };
 
-const Social = ({ isEdit, setIsEdit, profile }: Props) => {
+const Social = ({ isEdit, setIsEdit }: Props) => {
   const { updateProfile, loading, error, data } = useMutationProfile();
 
+  const { facebook, twitter, tele, discord } = AuthStore;
+
   const [tempSocial, setTempSocial] = useState({
-    facebook: profile?.me.profile.facebook,
-    discord: profile?.me.profile.discord,
-    twitter: profile?.me.profile.twitter,
-    telegram: profile?.me.profile.telegram,
+    facebook: facebook,
+    discord: discord,
+    twitter: twitter,
+    telegram: tele,
   });
 
   const handleBlur = (field: string) => {
-    console.log(field);
+    // console.log(field);
     updateProfile({
       variables: {
         data: {
@@ -31,11 +34,16 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
           },
         },
       },
-    });
+    })
+      .then(() => message.success("Update success"))
+      .catch((err) => {
+        message.error("Fail!");
+        console.log(err);
+      });
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>, field: string) => {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setTempSocial({
       ...tempSocial,
       [field]: e.target.value,
@@ -64,7 +72,11 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                     placeholder={"Facebook address"}
                   />
                 ) : (
-                  <p>{tempSocial.facebook ? tempSocial.facebook : "Not available"}</p>
+                  <p>
+                    {tempSocial.facebook
+                      ? tempSocial.facebook
+                      : "Not available"}
+                  </p>
                 )}
               </a>
 
@@ -78,7 +90,9 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                     placeholder={"Twitter address"}
                   />
                 ) : (
-                  <p>{tempSocial.twitter ? tempSocial.twitter : "Not available"}</p>
+                  <p>
+                    {tempSocial.twitter ? tempSocial.twitter : "Not available"}
+                  </p>
                 )}
               </a>
 
@@ -92,7 +106,9 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                     placeholder={"Discord address"}
                   />
                 ) : (
-                  <p>{tempSocial.discord ? tempSocial.discord : "Not available"}</p>
+                  <p>
+                    {tempSocial.discord ? tempSocial.discord : "Not available"}
+                  </p>
                 )}
               </a>
 
@@ -106,7 +122,11 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
                     placeholder={"Telegram address"}
                   />
                 ) : (
-                  <p>{tempSocial.telegram ? tempSocial.telegram : "Not available"}</p>
+                  <p>
+                    {tempSocial.telegram
+                      ? tempSocial.telegram
+                      : "Not available"}
+                  </p>
                 )}
               </a>
             </div>
@@ -117,4 +137,4 @@ const Social = ({ isEdit, setIsEdit, profile }: Props) => {
   );
 };
 
-export default Social;
+export default observer(Social);

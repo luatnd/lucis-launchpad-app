@@ -1,50 +1,39 @@
-import { Col, Row } from "antd";
+import { Col, message, Row } from "antd";
 import Input from "components/Input/Input";
 import { useMutationProfile } from "components/Profile/Hooks/useMutationProfile";
 import { useMutaionVerifyEmail } from "components/Profile/Hooks/useVerifyEmail";
 import { ChangeEvent, useState } from "react";
 import s from "../../pages/profile/index.module.sass";
 import VerifyModal from "./VerifyModal/VerifyModal";
+import { observer } from "mobx-react-lite";
+import AuthStore from "../Auth/AuthStore";
 
 type Props = {
   isEdit: boolean;
   setIsEdit: (value: boolean) => void;
-  profile: any;
-  refetch: () => void;
 };
 
-function validateEmail(email?: string) {
-  if (email == null) {
-    return;
-  }
-  var re = /\S+@\S+\.\S+/;
-  return re.test(email.toLowerCase());
-}
+// function validateEmail(email?: string) {
+//   if (email == null) {
+//     return;
+//   }
+//   var re = /\S+@\S+\.\S+/;
+//   return re.test(email.toLowerCase());
+// }
 
-const Contact = ({ isEdit, setIsEdit, profile, refetch }: Props) => {
-  const [openVerifyModal, setOpenVerifyModal] = useState(false);
-  const [validEmail, setValidEmail] = useState(true);
+const Contact = ({ isEdit, setIsEdit }: Props) => {
+  // const [validEmail, setValidEmail] = useState(true);
+  const [isVerify, setIsVerify] = useState(false);
+
+  const { phone, email } = AuthStore;
+
   const [tempContact, setTempContact] = useState({
-    phone: profile?.me.profile.phone,
-    email: profile?.me.email,
+    phone: phone ?? "",
+    email: email ?? "",
   });
-  // const [validEmail, setValidEmail] = useState(validateEmail(profile?.me.email));
 
-  const { updateProfile, loading, error, data } = useMutationProfile();
-  const {
-    verifyEmail,
-    loading: verifyLoading,
-    error: verifyError,
-    data: verifyData,
-  } = useMutaionVerifyEmail();
-
-  const handleOpenVerifyModal = () => {
-    setOpenVerifyModal(true);
-  };
-
-  const handleCloseVerifyModal = () => {
-    setOpenVerifyModal(false);
-  };
+  const { updateProfile } = useMutationProfile();
+  const { verifyEmail, verifyResult } = useMutaionVerifyEmail();
 
   const handleBlur = (field: string) => {
     updateProfile({
@@ -56,41 +45,52 @@ const Contact = ({ isEdit, setIsEdit, profile, refetch }: Props) => {
           },
         },
       },
-    });
-  };
-
-  // TODO: Handle logic after
-  const handleBlurEmailInput = () => {
-    verifyEmail({
-      variables: {
-        value: tempContact.email,
-      },
     })
-      .then((res) => {
-        setValidEmail(true);
+      .then(() => {
+        message.success("Update phone success");
       })
       .catch((err) => {
-        setValidEmail(false);
+        message.error("Fail!");
+        console.log("Error update phone: ", err);
+      });
+  };
+
+  const handleVerifyEmail = () => {
+    verifyEmail({ variables: { email: tempContact.email } })
+      .then(() => {
+        setIsVerify(false);
+        message.success(
+          <span>
+            Verify email success <br /> Please check your email to confirm.
+          </span>
+        );
+        AuthStore.phone = tempContact.phone;
+      })
+      .catch((err) => {
+        message.error("Fail!");
+        console.log("Error verify email: ", err);
       });
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>, field: string) => {
-    setTempContact({
-      ...tempContact,
-      [field]: e.target.value,
-    });
-  };
+    setTempContact((prev) => ({ ...prev, [field]: e.target.value }));
 
-  const props = {
-    handleCancel: handleCloseVerifyModal,
-    handleOk: handleOpenVerifyModal,
-    visible: openVerifyModal,
+    if (field === "email") {
+      if (email !== e.target.value) {
+        setIsVerify(true);
+      } else {
+        setIsVerify(false);
+      }
+    }
   };
 
   return (
     <>
       <div className={`${s.contactContainer}`}>
-        <Row gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]} justify="space-between">
+        <Row
+          gutter={[16, { xs: 8, sm: 16, md: 24, lg: 32 }]}
+          justify="space-between"
+        >
           <Col xs={8}>
             <div className={s.title}>
               <img src="/assets/MyProfile/phone.svg" alt="" />
@@ -100,7 +100,7 @@ const Contact = ({ isEdit, setIsEdit, profile, refetch }: Props) => {
           <Col xs={16}>
             {isEdit ? (
               <Input
-                value={tempContact.phone !== "" ? tempContact.phone : ""}
+                value={tempContact.phone}
                 onChange={(e) => handleChange(e, "phone")}
                 onBlur={() => handleBlur("phone")}
                 placeholder={"091xxx0909"}
@@ -117,49 +117,42 @@ const Contact = ({ isEdit, setIsEdit, profile, refetch }: Props) => {
             </div>
           </Col>
           <Col span={16}>
-            {
-              isEdit ? (
-                <>
-                  <Input
-                    value={tempContact.email !== "" ? tempContact.email : ""}
-                    onChange={(e) => handleChange(e, "email")}
-                    onBlur={handleBlurEmailInput}
-                    placeholder={"your.email@example.com"}
-                  />
-                  {!validEmail ? <p className={s.invalid}>Not available</p> : ""}
-                </>
-              ) : tempContact.email ? (
-                validEmail ? (
-                  <p>{tempContact.email}</p>
-                ) : (
-                  <p>{profile.me.email}</p>
-                )
-              ) : (
-                <p>Not available</p>
-              )
-              // <p>{tempContact.email ? tempContact.email : "Invalid email address"}</p>
-            }
-            {/* ----- TODO: Verify button */}
-            {/* {tempContact.email ? (
-              <p>
-                {tempContact.email}
-                <button
-                  className={`${s.verifyBtn} bg-gradient-1 md:ml-4`}
-                  onClick={handleOpenVerifyModal}
-                  disabled
-                >
-                  Verify
-                </button>
-              </p>
+            {isEdit ? (
+              <div className="flex">
+                <Input
+                  value={tempContact.email}
+                  onChange={(e) => handleChange(e, "email")}
+                  placeholder={"your.email@example.com"}
+                />
+
+                {isVerify && (
+                  <button
+                    className={`${s.verifyBtn} bg-gradient-1 md:ml-4 text-16px md:text-24px`}
+                    // onClick={handleOpenVerifyModal}
+                    onClick={handleVerifyEmail}
+                    // disabled
+                  >
+                    Verify
+                  </button>
+                )}
+              </div>
             ) : (
-              <p>Invalid email address</p>
-            )} */}
+              <p>
+                {!email
+                  ? "Not available"
+                  : verifyResult
+                  ? tempContact.email
+                  : email}
+              </p>
+            )}
           </Col>
         </Row>
-        <VerifyModal {...props} />
+        {/* <VerifyModal {...props} /> */}
       </div>
     </>
   );
 };
 
-export default Contact;
+export default observer(Contact);
+
+// verifyResult ? tempContact.email : email

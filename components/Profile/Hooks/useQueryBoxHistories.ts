@@ -26,6 +26,7 @@ const BOX_HISTORIES = gql`
         name
         game {
           name
+          logo
         }
       }
       box_price {
@@ -36,6 +37,7 @@ const BOX_HISTORIES = gql`
         currency_name
         boxType {
           name
+          thumb_img
         }
       }
     }

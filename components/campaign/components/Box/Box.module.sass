@@ -1,58 +1,5 @@
 @use 'styles/common'
 
-// .boxDetail
-//   max-width: 395px
-//   // height: 798px
-//   background: rgba(255,255,255,0.1)
-//   box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
-//   backdrop-filter: blur(40px)
-//   border-radius: 25px
-//   position: relative
-//   &:before
-//     content: ""
-//     position: absolute
-//     top: 0
-//     left: 0
-//     right: 0
-//     bottom: 0
-//     border-radius: 25px
-//     padding: 1px
-//     background: linear-gradient(rgba(255, 255, 255, 0.7),rgba(244, 123, 246, 0.4),rgba(251, 76, 222, 0.4),rgba(210, 0, 215, 0.6))
-//     -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
-//     -webkit-mask-composite: xor
-
-//   .bgImage
-//     max-width: 398px
-//     height: 545.61px
-//     background-image: url("/assets/Box/image111.png")
-
-//   .boxDes
-//     width: 13.37px
-//     height: 13.37px
-//     margin-top: 7px
-//     background: #0BEBD6
-//     box-shadow: 0px 0px 6px #08D7F9
-//     border-radius: 100px
-
-//   .boxMain
-//     top: 360px
-//     left: 20px
-//     right: 20px
-
-//   .submit
-//     width: 132px
-//     height: 59px
-//     background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
-//     border-radius: 8px
-//     font-weight: 500
-//     font-size: 36px
-//     color: white
-
-  // .label
-  //   font-size: 24px !important
-  //   color: white
-  //   font-weight: bold
-
 .boxContainer
   overflow: hidden
   @include common.box-glass
@@ -83,19 +30,15 @@
 
 // NEW
 .boxDetail
-  // overflow: hidden
   @include common.box-glass
   @include common.border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
-  // background-image: url("/assets/Box/image111.png")
-  // background-repeat: no-repeat
-  // background-size: contain
   box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
   backdrop-filter: blur(40px)
   padding: 1px
   .bgImage
     background-image: url("/assets/Box/image111.png")
     background-repeat: no-repeat
-    background-size: contain
+    background-size: cover
     // height: 200px
     img
       width: 100%
@@ -112,20 +55,11 @@
     width: 100%
 
 .buyForm
-  margin-top: 30px
-
-  .inputRow
-    font-size: 24px
-    line-height: 1.3
-    :global(.ant-form-item-control-input-content)
-      @include common.flex-rear-wrap
-      :global(.ant-input-number)
-        background: transparent
-        height: 50px
-        //max-width: 115px
-        max-width: min(50%, 178px)
-        font-size: 28px
-        line-height: 1.7
+  margin-top: 10px
+  .amount 
+    display: flex
+    justify-content: space-between
+    min-height: 95px
     label
       color: white
       font-size: 24px
@@ -133,7 +67,18 @@
       .max
         font-size: 16px
         color: #bbb
-
+    .inputRow
+      font-size: 24px
+      line-height: 1.3
+      width: 115px
+      :global(.ant-form-item-control-input-content)
+        max-width: 115px
+        :global(.ant-input-number)
+          background: transparent
+          height: 50px
+          min-width: 115px
+          font-size: 28px
+          line-height: 1.7
 
   .submit
     width: 132px
@@ -141,7 +86,7 @@
     background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
     border-radius: 8px
     border: none
-    font-weight: 500
+    font-weight: 600
     font-size: 36px
     line-height: 1.5
     color: white

@@ -6,13 +6,19 @@ const data = [
     title: "Chain-agnostic",
     content: "Lucis supports multi-chain, designed to be chain-agnostic.",
   },
-  { title: "Rapid Launches", content: "Launch your INO within days of being approved." },
+  {
+    title: "Rapid Launches",
+    content: "Launch your INO within days of being approved.",
+  },
   {
     title: "Highly customizable",
     content:
       "Chain, number of buying phases, which item was sold in a phase, box types, box quantity,… All are customizable.",
   },
-  { title: "Exposure", content: "Get exposure to the Lucis users around the world." },
+  {
+    title: "Exposure",
+    content: "Get exposure to the Lucis users around the world.",
+  },
   {
     title: "Future Synergy",
     content:

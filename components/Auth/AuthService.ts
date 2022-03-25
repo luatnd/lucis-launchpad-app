@@ -1,55 +1,79 @@
 import { gql } from "@apollo/client";
 
 import AuthStore, { AuthUser } from "./AuthStore";
-import apoloClient, { setAuthToken as ApoloClient_setAuthToken } from 'utils/apollo_client'
+import apoloClient, {
+  setAuthToken as ApoloClient_setAuthToken,
+} from "utils/apollo_client";
 import { to_hex_str, trim_middle } from "../../utils/String";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "./ConnectWalletStore";
 import { Web3ProviderErrorCodes } from "./ConnectWalletHelper";
-import { clearLocalAuthInfo, getLocalAuthInfo, setLocalAuthInfo } from "./AuthLocal";
-
+import {
+  clearLocalAuthInfo,
+  getLocalAuthInfo,
+  setLocalAuthInfo,
+} from "./AuthLocal";
 
 export enum AuthError {
-  Unknown = 'Unknown',
-  UserDeniedMsgSignature = 'UserDeniedMsgSignature',
+  Unknown = "Unknown",
+  UserDeniedMsgSignature = "UserDeniedMsgSignature",
 }
 
 type LoginResponse = {
-  error: AuthError | null,
+  error: AuthError | null;
+};
+
+function delay(time: number) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("");
+    }, time);
+  });
 }
 
 export default class AuthService {
-
   async fetchUserData(): Promise<AuthUser> {
     const res = await apoloClient.mutate({
-      mutation: gql`query {
+      mutation: gql`
+        query {
           me {
-              id
-              address
-              code
-              email
-              profile {
-                  full_name
-              }
+            id
+            address
+            code
+            email
+            profile {
+              full_name
+              twitter
+              facebook
+              discord
+              telegram
+              phone
+              avatar
+            }
           }
-      }`,
-      variables: {}
-    })
+        }
+      `,
+      variables: {},
+    });
 
     // .req({
     //   method: 'GET',
     //   url: '/user/get',
     // })
-    const u = res.data.me
-    const name = u.profile ? u.profile.full_name : '';
+    const u = res.data.me;
+    const name = u.profile ? u.profile.full_name : "";
     const user: AuthUser = {
       id: u.id,
       code: u.code,
       address: u.address,
       email: u.email,
       name: !!name ? name : trim_middle(u.address, 6, 6),
-    }
+      facebook: u.profile.facebook,
+      twitter: u.profile.twitter,
+      tele: u.profile.tele,
+      discord: u.profile.discord,
+    };
 
-    return user
+    return user;
   }
 
   private async loginByAddress(address: string): Promise<AuthUser> {
@@ -62,19 +86,21 @@ export default class AuthService {
     // })
     // const nonce = nonceRes.data.data.nonce
     const nonceRes = await apoloClient.mutate({
-      mutation: gql`mutation ($address: String!) {
+      mutation: gql`
+        mutation ($address: String!) {
           generateNonce(address: $address)
-      }`,
+        }
+      `,
       variables: {
-        address: address
-      }
-    })
-    const nonce = nonceRes.data.generateNonce
+        address: address,
+      },
+    });
+    const nonce = nonceRes.data.generateNonce;
     // console.log('{AuthService.loginByAddress} nonce: ', nonce);
 
     // TODO: Improve to multiline message with explanation and hello thank you
-    const msg = `0x${to_hex_str(`Lucis verification ${nonce}`)}`
-    const params = [msg, address, nonce]
+    const msg = `0x${to_hex_str(`Lucis verification ${nonce}`)}`;
+    const params = [msg, address, nonce];
 
     /**
      * window.ethereum is for web3 injected like metamask only
@@ -94,7 +120,14 @@ export default class AuthService {
     })
     */
     const web3Provider = ConnectWalletStore_NonReactiveData.web3Provider;
-    const signed_hash = await web3Provider?.send('personal_sign', params)
+    const signed_hash = await Promise.any([
+      web3Provider?.send("personal_sign", params),
+      delay(30000),
+    ]);
+    console.log("signed_hash:", signed_hash);
+    if (!signed_hash || typeof signed_hash !== "string" || signed_hash === "") {
+      throw new Error("Request timeout");
+    }
     // console.log('{loginByAddress} signed_hash: ', signed_hash);
 
     // const loginRes = await apiClient.req({
@@ -103,35 +136,39 @@ export default class AuthService {
     //   data: { address: address, sign: signed_hash, referral_code },
     // })
     const loginRes = await apoloClient.mutate({
-      mutation: gql`mutation login($address: String!, $sign: String!) {
+      mutation: gql`
+        mutation login($address: String!, $sign: String!) {
           login(address: $address, sign: $sign) {
-              token
-              user {
-                  id
-                  address
-                  code
-                  email
-                  profile {
-                      full_name
-                  }
+            token
+            user {
+              id
+              address
+              code
+              email
+              profile {
+                full_name
               }
+            }
           }
-      }`,
+        }
+      `,
       variables: {
         address,
-        sign: signed_hash
-      }
-    })
-    console.log('{AuthService.loginByAddress} loginRes: ', loginRes);
+        sign: signed_hash,
+      },
+    });
+    console.log("{AuthService.loginByAddress} loginRes: ", loginRes);
 
     const u = loginRes.data.login.user;
     const token = loginRes.data.login.token;
 
     if (address !== u.address) {
-      throw new Error(`Invalid login address(${address}) vs user address(${u.address})`)
+      throw new Error(
+        `Invalid login address(${address}) vs user address(${u.address})`
+      );
     }
 
-    const name = u.profile ? u.profile.full_name : '';
+    const name = u.profile ? u.profile.full_name : "";
     const user: AuthUser = {
       id: u.id,
       code: u.code,
@@ -139,9 +176,9 @@ export default class AuthService {
       token: token,
       email: u.email,
       name: !!name ? name : trim_middle(u.address, 6, 6),
-    }
+    };
 
-    return user
+    return user;
   }
 
   /**
@@ -157,49 +194,46 @@ export default class AuthService {
 
     try {
       const cachedUser: AuthUser | null = getLocalAuthInfo();
-      const token = cachedUser?.token
+      const token = cachedUser?.token;
 
-      if (
-        address === cachedUser?.address
-        && token
-      ) {
-        ApoloClient_setAuthToken(token)
+      if (address === cachedUser?.address && token) {
+        ApoloClient_setAuthToken(token);
 
         // re-login only if the cache user have token, and correct address
-        const user = await this.fetchUserData()
-        console.log('{AuthService.login} re-login user: ', user);
+        const user = await this.fetchUserData();
+        console.log("{AuthService.login} re-login user: ", user);
 
         user.token = token; // fetchUserData does not have token
 
-        setLocalAuthInfo(user)
+        setLocalAuthInfo(user);
         if (!delay) {
           AuthStore.setAuthUser(user);
         } else {
           setTimeout(() => {
             AuthStore.setAuthUser(user);
-          }, delay)
+          }, delay);
         }
 
-        return res
+        return res;
       } else {
         // new-login
-        const user = await this.loginByAddress(address)
-        console.log('{AuthService.login} new-login user: ', user);
+        const user = await this.loginByAddress(address);
+        console.log("{AuthService.login} new-login user: ", user);
 
-        user.token && ApoloClient_setAuthToken(user.token)
-        setLocalAuthInfo(user)
+        user.token && ApoloClient_setAuthToken(user.token);
+        setLocalAuthInfo(user);
         if (!delay) {
           AuthStore.setAuthUser(user);
         } else {
           setTimeout(() => {
             AuthStore.setAuthUser(user);
-          }, delay)
+          }, delay);
         }
 
-        return res
+        return res;
       }
     } catch (e) {
-      console.error('{login} e: ', e)
+      console.error("{login} e: ", e);
 
       /*
        Metamask error
@@ -208,22 +242,21 @@ export default class AuthService {
       switch (e.code) {
         case Web3ProviderErrorCodes.provider.userRejectedRequest:
           res.error = AuthError.UserDeniedMsgSignature;
-          return res
+          return res;
       }
 
       /*
        Graphql error
        */
 
-
       res.error = AuthError.Unknown;
-      return res
+      return res;
     }
   }
 
   logout() {
-    ApoloClient_setAuthToken('')
-    AuthStore.resetStates()
-    clearLocalAuthInfo()
+    ApoloClient_setAuthToken("");
+    AuthStore.resetStates();
+    clearLocalAuthInfo();
   }
 }

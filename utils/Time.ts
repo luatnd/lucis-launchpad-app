@@ -28,9 +28,7 @@ export function compareDate(startTime: string, endTime: string) {
   return isBefore ? "before" : isAfter ? "after" : "ontime";
 }
 
-export function useCountDown(time: any) {
-  const newDate = new Date();
-
+export function useCountDown(timeCountDown: any) {
   const [totalTime, setTotalTime] = useState(0);
   const [timer, setTimer] = useState<{ [name: string]: number }>({
     days: 0,
@@ -40,37 +38,13 @@ export function useCountDown(time: any) {
   });
 
   useEffect(() => {
-    const newTimeStartCampaign = new Date(time);
-    const days =
-      (newTimeStartCampaign.getDate() - newDate.getDate() - 1) * 86400;
-    const hours =
-      (24 - newDate.getHours() + newTimeStartCampaign.getHours()) * 3600;
-    const minutes =
-      (60 - newTimeStartCampaign.getMinutes() - newDate.getMinutes()) * 60;
-    const seconds =
-      60 - newTimeStartCampaign.getSeconds() - newDate.getSeconds();
-    const totalSeconds = days + hours + minutes + seconds;
-
-    setTotalTime(totalSeconds);
-  }, []);
-
-  useEffect(() => {
-    if (totalTime < 0) {
-      setTimer({
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-      });
-    } else {
-      setTimer((item) => ({
-        ...item,
-        days: Math.floor(totalTime / (60 * 60 * 24)),
-        hours: Math.floor((totalTime / (60 * 60)) % 24),
-        minutes: Math.floor((totalTime / 60) % 60),
-        seconds: Math.floor(totalTime % 60),
-      }));
-    }
+    setTimer((item) => ({
+      ...item,
+      days: Math.floor(totalTime / (60 * 60 * 24)),
+      hours: Math.floor((totalTime / (60 * 60)) % 24),
+      minutes: Math.floor((totalTime / 60) % 60),
+      seconds: Math.floor(totalTime % 60),
+    }));
   }, [totalTime]);
 
   useEffect(() => {
@@ -84,6 +58,10 @@ export function useCountDown(time: any) {
     }, 1000);
     return () => clearInterval(interval);
   }, [totalTime]);
+
+  useEffect(() => {
+    setTotalTime(timeCountDown);
+  }, [timeCountDown]);
 
   const countTime = () => {
     if (
@@ -109,8 +87,7 @@ export function useCountDown(time: any) {
         }
       }
     }
-
-    setTotalTime((totalTime: any) => totalTime - 1);
+    setTotalTime((totalTime) => totalTime - 1);
   };
 
   return timer;

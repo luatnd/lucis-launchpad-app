@@ -1,5 +1,5 @@
 .mainSlider 
-  // padding-bottom: 40px
+  // padding-bottom: 15px
   padding-top: 60px
   height: 672px
   @media (max-width: 425px)
@@ -26,6 +26,7 @@
     // padding-top: 20px
 
 .contentItemSilder
+  padding-bottom: 15px
   .contentDetail
     position: relative
     display: flex
@@ -295,6 +296,11 @@
     @media screen and (min-width: 768px)
 
 .imgGame
+  animation-name: move
+  animation-duration: 1.5s
+  animation-iteration-count: infinite
+  animation-timing-function: ease-in-out
+  animation-direction: alternate
   img
     margin: auto
     max-width: 100%
@@ -307,6 +313,17 @@
 @keyframes fadeIn 
   0% 
     opacity:0
+      
   100% 
     opacity:1
+
+@keyframes move 
+  0% 
+    transform: translate3d(0,-4px,0)
+  
+
+  to 
+    transform: translate3d(0,10px,0)
+  
+
 

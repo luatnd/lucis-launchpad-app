@@ -1,4 +1,4 @@
-import { Col, Row } from "antd";
+import { Col, message, Row } from "antd";
 import Input from "components/Input/Input";
 import { useMutationProfile } from "components/Profile/Hooks/useMutationProfile";
 import { useMutaionVerifyEmail } from "components/Profile/Hooks/useVerifyEmail";
@@ -25,25 +25,18 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
   const [openVerifyModal, setOpenVerifyModal] = useState(false);
   const [validEmail, setValidEmail] = useState(true);
   const [isVerify, setIsVerify] = useState(false);
+  const [isVerifySuccess, setIsVerifySuccess] = useState(false);
 
   const { phone, email } = AuthStore;
+  const temp = { ...AuthStore };
 
   const [tempContact, setTempContact] = useState({
     phone: phone ?? "",
     email: email ?? "",
   });
-  // const [validEmail, setValidEmail] = useState(validateEmail(profile?.me.email));
 
   const { updateProfile } = useMutationProfile();
-  const { verifyEmail } = useMutaionVerifyEmail();
-
-  const handleOpenVerifyModal = () => {
-    setOpenVerifyModal(true);
-  };
-
-  const handleCloseVerifyModal = () => {
-    setOpenVerifyModal(false);
-  };
+  const { verifyEmail, verifyResult } = useMutaionVerifyEmail();
 
   const handleBlur = (field: string) => {
     updateProfile({
@@ -62,14 +55,17 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
     verifyEmail({ variables: { email: tempContact.email } })
       .then(() => {
         setIsVerify(false);
-        console.log("Passs");
+        message.success(
+          <span>
+            Verify email success <br /> Please check your email to confirm.
+          </span>
+        );
+        AuthStore.email = tempContact.email;
       })
       .catch((err) => console.log(err));
   };
 
   const handleChangeEmailValue = (e: ChangeEvent<HTMLInputElement>) => {
-    // console.log(e.target.value);
-    // console.log(email);
     setTempContact({
       ...tempContact,
       email: e.target.value,
@@ -82,38 +78,11 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
     }
   };
 
-  // TODO: Handle logic after
-  // const handleBlurEmailInput = () => {
-  // console.log(email === tempContact.email);
-  // if (email !== tempContact.email) {
-  //   setIsVerify(true);
-  // } else {
-  //   setIsVerify(false);
-  // }
-  // verifyEmail({
-  //   variables: {
-  //     value: tempContact.email,
-  //   },
-  // })
-  //   .then((res) => {
-  //     setValidEmail(true);
-  //   })
-  //   .catch((err) => {
-  //     setValidEmail(false);
-  //   });
-  // };
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>, field: string) => {
     setTempContact({
       ...tempContact,
       [field]: e.target.value,
     });
-  };
-
-  const props = {
-    handleCancel: handleCloseVerifyModal,
-    // handleOk: handleOpenVerifyModal,
-    visible: openVerifyModal,
   };
 
   return (
@@ -132,7 +101,7 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
           <Col xs={16}>
             {isEdit ? (
               <Input
-                value={phone ?? ""}
+                value={tempContact.phone}
                 onChange={(e) => handleChange(e, "phone")}
                 onBlur={() => handleBlur("phone")}
                 placeholder={"091xxx0909"}
@@ -152,10 +121,8 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
             {isEdit ? (
               <div className="flex">
                 <Input
-                  value={tempContact.email !== "" ? tempContact.email : ""}
-                  // onChange={(e) => handleChange(e, "email")}
+                  value={tempContact.email}
                   onChange={(e) => handleChangeEmailValue(e)}
-                  // onBlur={handleBlurEmailInput}
                   placeholder={"your.email@example.com"}
                 />
 
@@ -171,7 +138,7 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
                 )}
               </div>
             ) : (
-              <p>{email}</p>
+              <p>{verifyResult ? tempContact.email : email}</p>
             )}
 
             {/* ==============TEMP LOGIC 1============= */}

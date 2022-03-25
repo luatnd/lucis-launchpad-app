@@ -66,7 +66,9 @@ export default function CardItem(props: Props) {
   const timer = useCountDown(time);
 
   return (
-    <div className={`${s.CardContainer} ${bg_card} mt-120px sm:mt-150px`}>
+    <div
+      className={`${s.CardContainer} ${bg_card} mt-120px sm:mt-150px mb-[50px] sm:mb-[80px]`}
+    >
       <div className={s.img_game}>
         <img src={props.srcGame ?? ""} alt="" />
       </div>
@@ -88,7 +90,7 @@ export default function CardItem(props: Props) {
                   }s`
               : "SALE ENDED"}
             {statusTime !== "CLOSED" && (
-              <span className="text-[12px] xl:text-[14px] pl-2">
+              <span className="text-[12px] md:text-[14px] lg:text-[18px] pl-2">
                 {highlight ?? ""}
               </span>
             )}

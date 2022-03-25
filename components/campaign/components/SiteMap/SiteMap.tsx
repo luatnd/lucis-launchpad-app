@@ -55,7 +55,7 @@ export default observer(function SiteMap(props: IRound) {
     const upcomingStart = timeMoment(start).tz(tzid).unix();
     const closeEnd = timeMoment(end).tz(tzid).unix();
     const firstStart = timeMoment(rounds[0]?.start).tz(tzid).unix();
-    console.log(firstStart);
+    // console.log(firstStart);
     // const firstStart = 0; // TODO: Fix bug above line
     const time = (firstStart - dateNow) * 1000;
     setIsActiveUpComing(false);
@@ -122,7 +122,7 @@ export default observer(function SiteMap(props: IRound) {
   useEffect(() => {
     // @ts-ignore
     swiperRef.current?.swiper.slideTo(keyActiveSlide);
-    console.log("keyActiveSlide", keyActiveSlide);
+    // console.log("keyActiveSlide", keyActiveSlide);
   }, [keyActiveSlide]);
 
   const whitelistDataSource =

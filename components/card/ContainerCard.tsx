@@ -24,6 +24,7 @@ type Props = {
   id: string;
   highlight: Maybe<string> | undefined;
   chains: GChain[];
+  timeCountDown: number;
 };
 
 export default function CardItem(props: Props) {
@@ -41,6 +42,7 @@ export default function CardItem(props: Props) {
     srcDiscord,
     highlight,
     chains,
+    timeCountDown,
   } = props;
 
   const typeTime =
@@ -63,7 +65,7 @@ export default function CardItem(props: Props) {
     return `/campaign/${id}/${slugify(props.title)}`;
   };
 
-  const timer = useCountDown(time);
+  const timer = useCountDown(timeCountDown);
   // console.log(timer);
 
   return (
@@ -104,7 +106,8 @@ export default function CardItem(props: Props) {
             )}
           </div>
           <h5>{props.nameGame}</h5>
-          <div className={s.text}>{truncateStr(handleDesc, 0, 16)}</div>
+          {/* <div className={s.text}>{truncateStr(handleDesc, 0, 16)}</div> */}
+          <div className={s.text}>{handleDesc}</div>
         </div>
 
         <div className={s.btnDetail}>

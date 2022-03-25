@@ -24,7 +24,7 @@ export default function Banner() {
     <section className={s.containerBanner}>
       {/* <InputSearch /> */}
       <SimpleSlider {...sliderProps} />
-      <div className="container md:py-5 mt-[80px] xs:mt-[120px] md:mt-[160px] lg:mt-[100px]">
+      <div className="lucis-container md:py-5 mt-[80px] xs:mt-[120px] md:mt-[160px] lg:mt-[100px]">
         <div className={s.thumbContainer}>
           <Link href="/ino" passHref>
             <a className={`${s.btnApplyINO}`}>

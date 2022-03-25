@@ -76,6 +76,7 @@ const DETAIL_CAMPAIGN = gql`
       banner_img
       chains {
         symbol
+        name
       }
       rounds {
         id

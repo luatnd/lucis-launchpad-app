@@ -42,7 +42,6 @@ function DetailCampaign() {
   const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [widthScreen, height] = useWindowSize();
 
-
   const {
     boxCampaign,
     isInWhitelist,
@@ -53,19 +52,19 @@ function DetailCampaign() {
     box_campaign_uid: campaignUid,
   });
 
-  const clickToAbout = (key: any) =>{
+  const clickToAbout = (key: any) => {
     if (key == 3) {
-      if(widthScreen >= 1280){
-        window.scrollTo(0, 750)
-      }else if(widthScreen >= 767){
-        window.scrollTo(0, 672)
-      }else if(widthScreen >= 540){
-        window.scrollTo(0, 386)
-      }else if(widthScreen > 0){
-        window.scrollTo(0, 430)
+      if (widthScreen >= 1280) {
+        window.scrollTo(0, 750);
+      } else if (widthScreen >= 767) {
+        window.scrollTo(0, 672);
+      } else if (widthScreen >= 540) {
+        window.scrollTo(0, 386);
+      } else if (widthScreen > 0) {
+        window.scrollTo(0, 430);
       }
     }
-  }
+  };
 
   return (
     <>
@@ -74,7 +73,11 @@ function DetailCampaign() {
       <div className="lucis-container">
         <div className={s.containerApp}>
           <Banner boxCampaign={boxCampaign} />
-          <Tabs defaultActiveKey="1" className={s.tabs} onTabClick={clickToAbout}>
+          <Tabs
+            defaultActiveKey="1"
+            className={s.tabs}
+            onTabClick={clickToAbout}
+          >
             <TabPane tab="TIMELINE" key="1">
               {boxCampaign?.rounds != null && (
                 <SiteMap

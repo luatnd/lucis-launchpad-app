@@ -13,22 +13,19 @@ type Props = {
   setIsEdit: (value: boolean) => void;
 };
 
-function validateEmail(email?: string) {
-  if (email == null) {
-    return;
-  }
-  var re = /\S+@\S+\.\S+/;
-  return re.test(email.toLowerCase());
-}
+// function validateEmail(email?: string) {
+//   if (email == null) {
+//     return;
+//   }
+//   var re = /\S+@\S+\.\S+/;
+//   return re.test(email.toLowerCase());
+// }
 
 const Contact = ({ isEdit, setIsEdit }: Props) => {
-  const [openVerifyModal, setOpenVerifyModal] = useState(false);
-  const [validEmail, setValidEmail] = useState(true);
+  // const [validEmail, setValidEmail] = useState(true);
   const [isVerify, setIsVerify] = useState(false);
-  const [isVerifySuccess, setIsVerifySuccess] = useState(false);
 
   const { phone, email } = AuthStore;
-  const temp = { ...AuthStore };
 
   const [tempContact, setTempContact] = useState({
     phone: phone ?? "",
@@ -48,7 +45,14 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
           },
         },
       },
-    });
+    })
+      .then(() => {
+        message.success("Update phone success");
+      })
+      .catch((err) => {
+        message.error("Fail!");
+        console.log("Error update phone: ", err);
+      });
   };
 
   const handleVerifyEmail = () => {
@@ -60,29 +64,24 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
             Verify email success <br /> Please check your email to confirm.
           </span>
         );
-        AuthStore.email = tempContact.email;
+        AuthStore.phone = tempContact.phone;
       })
-      .catch((err) => console.log(err));
-  };
-
-  const handleChangeEmailValue = (e: ChangeEvent<HTMLInputElement>) => {
-    setTempContact({
-      ...tempContact,
-      email: e.target.value,
-    });
-
-    if (email !== e.target.value) {
-      setIsVerify(true);
-    } else {
-      setIsVerify(false);
-    }
+      .catch((err) => {
+        message.error("Fail!");
+        console.log("Error verify email: ", err);
+      });
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>, field: string) => {
-    setTempContact({
-      ...tempContact,
-      [field]: e.target.value,
-    });
+    setTempContact((prev) => ({ ...prev, [field]: e.target.value }));
+
+    if (field === "email") {
+      if (email !== e.target.value) {
+        setIsVerify(true);
+      } else {
+        setIsVerify(false);
+      }
+    }
   };
 
   return (
@@ -122,7 +121,7 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
               <div className="flex">
                 <Input
                   value={tempContact.email}
-                  onChange={(e) => handleChangeEmailValue(e)}
+                  onChange={(e) => handleChange(e, "email")}
                   placeholder={"your.email@example.com"}
                 />
 
@@ -138,46 +137,14 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
                 )}
               </div>
             ) : (
-              <p>{verifyResult ? tempContact.email : email}</p>
-            )}
-
-            {/* ==============TEMP LOGIC 1============= */}
-            {/* {isEdit ? (
-              <>
-                <Input
-                  value={tempContact.email !== "" ? tempContact.email : ""}
-                  onChange={(e) => handleChange(e, "email")}
-                  onBlur={handleBlurEmailInput}
-                  placeholder={"your.email@example.com"}
-                />
-                {!validEmail ? <p className={s.invalid}>Not available</p> : ""}
-              </>
-            ) : tempContact.email ? (
-              validEmail ? (
-                <p>{tempContact.email}</p>
-              ) : (
-                <p>{email}</p>
-              )
-            ) : (
-              <p>Not available</p>
-            )} */}
-
-            {/* ==============TEMP LOGIC 2============= */}
-            {/* ----- TODO: Verify button */}
-            {/* {tempContact.email ? (
               <p>
-                {tempContact.email}
-                <button
-                  className={`${s.verifyBtn} bg-gradient-1 md:ml-4`}
-                  onClick={handleOpenVerifyModal}
-                  disabled
-                >
-                  Verify
-                </button>
+                {!email
+                  ? "Not available"
+                  : verifyResult
+                  ? tempContact.email
+                  : email}
               </p>
-            ) : (
-              <p>Invalid email address</p>
-            )} */}
+            )}
           </Col>
         </Row>
         {/* <VerifyModal {...props} /> */}
@@ -187,3 +154,5 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
 };
 
 export default observer(Contact);
+
+// verifyResult ? tempContact.email : email

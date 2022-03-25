@@ -35,8 +35,8 @@ deploy-trial:
     - echo NEXT_PUBLIC_GRAPHQL_URL=$NEXT_PUBLIC_GRAPHQL_URL_TRIAL >> .env
     - echo NEXT_PUBLIC_GRAPHQL_SUBSCRIPTION_URL=$NEXT_PUBLIC_GRAPHQL_SUBSCRIPTION_URL_TRIAL >> .env
     - docker build -t lucis_launchpad_trial:$CI_COMMIT_SHORT_SHA -f deploy/Dockerfile .
-    - docker stop lucis_launchpad_trial
-    - docker rm lucis_launchpad_trial
+    - docker stop lucis_launchpad_trial || true
+    - docker rm lucis_launchpad_trial || true
     - docker run -p 3001:3000 --restart always --network lucis_network --name lucis_launchpad_trial -d lucis_launchpad_trial:$CI_COMMIT_SHORT_SHA
 
 deploy-prod:

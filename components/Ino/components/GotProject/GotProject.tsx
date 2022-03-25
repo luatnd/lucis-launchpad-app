@@ -46,7 +46,7 @@ const GotProject = () => {
         Follow our official telegram channel below. Please double check if you
         receive any emails
       </p>
-      <div className={`${s.buttonContainer}`}>
+      <div className="text-center py-[6px]">
         <a
           className={`${s.teleBtn}`}
           href="https://t.me/lucislaunchpad_support"

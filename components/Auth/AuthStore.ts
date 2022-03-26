@@ -86,17 +86,17 @@ class AuthStore {
   }
 
   setAuthUser(user: AuthUser) {
-    this._id && (this._id = user.id);
-    this._code && (this._code = user.code);
-    this._address && (this._address = user.address);
-    this._token && (this._token = user.token);
-    this._email && (this._email = user.email);
-    this._name && (this._name = user.name);
-    this._loyalty && (this._loyalty = user.loyalty!);
-    this._facebook && (this._facebook = user.facebook);
-    this._twitter && (this._twitter = user.twitter);
-    this._tele = user.tele && (this._tele = user.tele);
-    this._discord = user.discord && (this._discord = user.discord);
+    this._id = user.id;
+    this._code = user.code;
+    this._address = user.address;
+    this._token = user.token;
+    this._email = user.email;
+    this._name = user.name;
+    this._loyalty = user.loyalty!;
+    this._facebook = user.facebook;
+    this._twitter = user.twitter;
+    this._tele = user.tele;
+    this._discord = user.discord;
   }
 
   /* ============= Getter & Setter ==============*/

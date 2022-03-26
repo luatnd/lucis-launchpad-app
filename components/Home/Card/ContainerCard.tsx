@@ -3,8 +3,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { GChain } from "src/generated/graphql";
 import { useCountDown } from "utils/Time";
-import { slugify, truncateStr } from "../../utils/String";
-import { GradientLinkButton } from "../Button/GradientButton";
+import { slugify, truncateStr } from "../../../utils/String";
+import { GradientLinkButton } from "../../Button/GradientButton";
 import s from "./ContainerCard.module.sass";
 
 type Props = {

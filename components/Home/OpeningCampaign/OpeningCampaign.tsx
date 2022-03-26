@@ -1,4 +1,4 @@
-import CardItem from "components/card/ContainerCard";
+import CardItem from "components/Home/Card/ContainerCard";
 import TitleSection from "components/TitleNameSection";
 import s from "../UpComingPage/UpcomingCampaign.module.sass";
 import { useOpening } from "./useOpening";
@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { GBoxCampaign, GBoxType } from "../../../src/generated/graphql";
 import { Col, Row } from "antd";
 import { calculateCampaignStatus } from "components/campaign/CampaignHelper";
-import BlankState from "components/BlankState/BlankState";
+import BlankState from "components/Home/BlankState/BlankState";
 type Props = {};
 
 export default function Opening(props: Props) {

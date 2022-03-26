@@ -9,10 +9,9 @@ import s from "./ContainerCard.module.sass";
 
 type Props = {
   srcGame: Maybe<string> | undefined;
-  time: any;
   nameGame: Maybe<string> | undefined;
   title: Maybe<string> | undefined;
-  statusTime: string;
+  campaignStatus: string;
   styleBg: boolean;
   srcWeb: Maybe<string> | undefined;
   srcFb: Maybe<string> | undefined;
@@ -30,9 +29,7 @@ type Props = {
 export default function CardItem(props: Props) {
   const {
     soldOutResult,
-    time,
-    statusTime,
-    title,
+    campaignStatus,
     description,
     id,
     srcFb,
@@ -46,11 +43,11 @@ export default function CardItem(props: Props) {
   } = props;
 
   const typeTime =
-    statusTime == "UPCOMING"
+    campaignStatus == "UPCOMING"
       ? s.time
       : soldOutResult
       ? s.sold
-      : statusTime == "CLOSED"
+      : campaignStatus == "CLOSED"
       ? s.sale
       : s.time;
 
@@ -81,13 +78,13 @@ export default function CardItem(props: Props) {
           <div style={{ position: "relative" }}>
             <div className={s.titleCard}>
               <div className={`${s.styleTime} ${typeTime}`}>
-                {statusTime == "UPCOMING"
+                {campaignStatus == "UPCOMING"
                   ? `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
                       timer.seconds < 10
                         ? `0${timer.seconds}`
                         : `${timer.seconds}`
                     }s`
-                  : statusTime == "OPENING"
+                  : campaignStatus == "OPENING"
                   ? soldOutResult
                     ? "SOLD OUT"
                     : `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
@@ -96,14 +93,14 @@ export default function CardItem(props: Props) {
                           : `${timer.seconds}`
                       }s`
                   : "SALE ENDED"}
-                {statusTime !== "CLOSED" && (
+                {campaignStatus !== "CLOSED" && (
                   <span className="text-[12px] md:text-[14px] lg:text-[18px] pl-2">
                     {highlight ?? ""}
                   </span>
                 )}
 
                 {/* Highlight for closed campaign */}
-                {statusTime == "CLOSED" && highlight && (
+                {campaignStatus == "CLOSED" && highlight && (
                   <p>
                     SOLD OUT <span>{highlight}</span>
                   </p>

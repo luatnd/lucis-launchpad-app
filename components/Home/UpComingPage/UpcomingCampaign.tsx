@@ -1,19 +1,15 @@
-import { Col, message, Row } from "antd";
+import { Col, Row } from "antd";
 import BlankState from "components/BlankState/BlankState";
 import { calculateCampaignStatus } from "components/campaign/CampaignHelper";
 import CardItem from "components/card/ContainerCard";
 import TitleSection from "components/TitleNameSection";
-import moment from "moment";
-import { useEffect, useState } from "react";
 import { GBoxCampaign } from "src/generated/graphql";
-import s from "./UpcomingCampaign.module.sass";
 import { useUpComing } from "./useUpComing";
 
 type Props = {};
 
 export default function UpComing(props: Props) {
   const { resultUpComing } = useUpComing();
-  // console.log(resultUpComing);
 
   return (
     <section className="lucis-container">
@@ -22,7 +18,7 @@ export default function UpComing(props: Props) {
         <Row gutter={[30, 30]}>
           {resultUpComing?.upcomingBoxCampaign.map(
             (e: GBoxCampaign, index: number) => {
-              const statusTime = calculateCampaignStatus(e);
+              const campaignStatus = calculateCampaignStatus(e);
 
               const timeCountDown = Math.floor(
                 (new Date(e.opening_at).getTime() - new Date().getTime()) / 1000
@@ -33,9 +29,7 @@ export default function UpComing(props: Props) {
                   <CardItem
                     key={index}
                     srcGame={e.cover_img}
-                    statusTime={statusTime}
-                    time={e.opening_at}
-                    // inTime={e.inTime}
+                    campaignStatus={campaignStatus}
                     nameGame={e?.game.name}
                     styleBg={true}
                     title={e?.name}

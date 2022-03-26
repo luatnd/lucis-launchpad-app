@@ -49,13 +49,26 @@ const SimpleSlider = (props: Props) => {
             };
 
             const status = calculateCampaignStatus(e);
-            // console.log(e.game);
+
+            const timeOpeningCampaign = Math.floor(
+              (new Date(e.end).getTime() - new Date().getTime()) / 1000
+            );
+
+            const timeUpcomingCampaign = Math.floor(
+              (new Date(e.opening_at).getTime() - new Date().getTime()) / 1000
+            );
+
+            const timeCountDown =
+              status === "OPENING"
+                ? timeOpeningCampaign
+                : status === "UPCOMING"
+                ? timeUpcomingCampaign
+                : 0;
 
             return (
               <ItemSliderBanner
                 key={i}
                 status={status}
-                time={e.end}
                 logo={e.game.logo}
                 desc={e.desc}
                 href={getCampaignDetailUrl()}
@@ -67,6 +80,7 @@ const SimpleSlider = (props: Props) => {
                 twitter={e.game.twitter}
                 tele={e.game.telegram}
                 website={e.game.website}
+                timeCountDown={timeCountDown}
               />
             );
           })}

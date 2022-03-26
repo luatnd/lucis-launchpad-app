@@ -9,10 +9,9 @@ import s from "./ContainerCard.module.sass";
 
 type Props = {
   srcGame: Maybe<string> | undefined;
-  time: any;
   nameGame: Maybe<string> | undefined;
   title: Maybe<string> | undefined;
-  statusTime: string;
+  campaignStatus: string;
   styleBg: boolean;
   srcWeb: Maybe<string> | undefined;
   srcFb: Maybe<string> | undefined;
@@ -24,14 +23,13 @@ type Props = {
   id: string;
   highlight: Maybe<string> | undefined;
   chains: GChain[];
+  timeCountDown: number;
 };
 
 export default function CardItem(props: Props) {
   const {
     soldOutResult,
-    time,
-    statusTime,
-    title,
+    campaignStatus,
     description,
     id,
     srcFb,
@@ -41,14 +39,15 @@ export default function CardItem(props: Props) {
     srcDiscord,
     highlight,
     chains,
+    timeCountDown,
   } = props;
 
   const typeTime =
-    statusTime == "UPCOMING"
+    campaignStatus == "UPCOMING"
       ? s.time
       : soldOutResult
       ? s.sold
-      : statusTime == "CLOSED"
+      : campaignStatus == "CLOSED"
       ? s.sale
       : s.time;
 
@@ -63,7 +62,7 @@ export default function CardItem(props: Props) {
     return `/campaign/${id}/${slugify(props.title)}`;
   };
 
-  const timer = useCountDown(time);
+  const timer = useCountDown(timeCountDown);
   // console.log(timer);
 
   return (
@@ -76,43 +75,49 @@ export default function CardItem(props: Props) {
 
       <div className={s.content}>
         <div className={s.headingCard}>
-          <div className={`${s.styleTime} ${typeTime}`}>
-            {statusTime == "UPCOMING"
-              ? `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
-                  timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
-                }s`
-              : statusTime == "OPENING"
-              ? soldOutResult
-                ? "SOLD OUT"
-                : `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
+            <div className={`${s.styleTime} ${typeTime}`}>
+              {campaignStatus == "UPCOMING"
+                ? `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
                     timer.seconds < 10
                       ? `0${timer.seconds}`
                       : `${timer.seconds}`
                   }s`
-              : "SALE ENDED"}
-            {statusTime !== "CLOSED" && (
-              <span className="text-[12px] md:text-[14px] lg:text-[18px] pl-2">
-                {highlight ?? ""}
-              </span>
-            )}
+                : campaignStatus == "OPENING"
+                ? soldOutResult
+                  ? "SOLD OUT"
+                  : `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
+                      timer.seconds < 10
+                        ? `0${timer.seconds}`
+                        : `${timer.seconds}`
+                    }s`
+                : "SALE ENDED"}
+              {campaignStatus !== "CLOSED" && (
+                <span className="text-[12px] md:text-[14px] lg:text-[18px] pl-2">
+                  {highlight ?? ""}
+                </span>
+              )}
 
-            {/* Highlight for closed campaign */}
-            {statusTime == "CLOSED" && highlight && (
-              <p>
-                SOLD OUT <span>{highlight}</span>
-              </p>
-            )}
+              {/* Highlight for closed campaign */}
+              {campaignStatus == "CLOSED" && highlight && (
+                <p>
+                  SOLD OUT <span>{highlight}</span>
+                </p>
+              )}
+            </div>
+          <div style={{ position: "relative" }}>
+            <div className={s.titleCard}>
+              <h5>{props.nameGame}</h5>
+              {/* <div className={s.text}>{truncateStr(handleDesc, 0, 16)}</div> */}
+              <div className={s.text}>{handleDesc}</div>
+            </div>
+            <div className={s.btnDetail}>
+              <Link href={getCampaignDetailUrl()} passHref={true}>
+                <GradientLinkButton type={1} className={s.styleBtn}>
+                  DETAIL
+                </GradientLinkButton>
+              </Link>
+            </div>
           </div>
-          <h5>{props.nameGame}</h5>
-          <div className={s.text}>{truncateStr(handleDesc, 0, 16)}</div>
-        </div>
-
-        <div className={s.btnDetail}>
-          <Link href={getCampaignDetailUrl()} passHref={true}>
-            <GradientLinkButton type={1} className={s.styleBtn}>
-              DETAIL
-            </GradientLinkButton>
-          </Link>
         </div>
 
         <div className={s.groupIcon}>

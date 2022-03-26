@@ -12,11 +12,6 @@ type Props = {};
 export default function Opening(props: Props) {
   const { resultOpening } = useOpening();
 
-  // useEffect(() => {
-  //   return resultOpening;
-  // }, [resultOpening]);
-  // console.log(resultOpening);
-
   return (
     <section className="lucis-container">
       <TitleSection text="Opening campaign" />
@@ -24,8 +19,7 @@ export default function Opening(props: Props) {
         <Row gutter={[30, 30]}>
           {resultOpening?.openingBoxCampaign.map(
             (e: GBoxCampaign, index: number) => {
-              const statusTime = calculateCampaignStatus(e);
-              // console.log(statusTime);
+              const campaignStatus = calculateCampaignStatus(e);
 
               const soldAmount =
                 e.boxTypes &&
@@ -41,14 +35,16 @@ export default function Opening(props: Props) {
 
               const soldOutResult = soldAmount === totalAmount ? true : false;
 
-              // console.log(e.chains);
+              const timeCountDown = Math.floor(
+                (new Date(e.end).getTime() - new Date().getTime()) / 1000
+              );
+
               return (
                 <Col key={index} xs={24} md={12} lg={8}>
                   <CardItem
                     soldOutResult={soldOutResult}
                     srcGame={e.cover_img}
-                    statusTime={statusTime}
-                    time={e.end}
+                    campaignStatus={campaignStatus}
                     nameGame={e?.game?.name}
                     styleBg={true}
                     title={e?.name}
@@ -61,6 +57,7 @@ export default function Opening(props: Props) {
                     id={e?.uid}
                     highlight={e?.highlight}
                     chains={e?.chains}
+                    timeCountDown={timeCountDown}
                   />
                 </Col>
               );

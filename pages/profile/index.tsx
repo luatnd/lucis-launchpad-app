@@ -1,14 +1,13 @@
 import DocHead from "components/DocHead";
 import Footer from "components/Footer/Footer";
 import BuyHistory from "components/HistoryTable/BuyHistory";
-import { useEffect, useState } from "react";
-import { useQueryProfile } from "../../components/Profile/Hooks/useQueryProfile";
+import { observer } from "mobx-react-lite";
+import { useState } from "react";
+import AuthStore from "../../components/Auth/AuthStore";
 import Contact from "../../components/Profile/ProfileContact";
 import Info from "../../components/Profile/ProfileInfo";
 import Box from "../../components/Profile/ProfileSocial";
 import s from "./index.module.sass";
-import AuthStore from "../../components/Auth/AuthStore";
-import { observer } from "mobx-react-lite";
 
 const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
@@ -36,8 +35,8 @@ const MyProfile = () => {
             Please connect your wallet
           </h1>
         )}
-        <Footer />
       </div>
+      <Footer />
     </>
   );
 };

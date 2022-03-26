@@ -1,28 +1,28 @@
 import { Col, message, Row } from "antd";
 import Input from "components/Input/Input";
-import { useMutationProfile } from "components/Profile/Hooks/useMutationProfile";
-import { useMutaionVerifyEmail } from "components/Profile/Hooks/useVerifyEmail";
 import { ChangeEvent, useState } from "react";
 import s from "../../pages/profile/index.module.sass";
 import VerifyModal from "./VerifyModal/VerifyModal";
 import { observer } from "mobx-react-lite";
 import AuthStore from "../Auth/AuthStore";
+import { useMutaionVerifyEmail } from "hooks/profile/useVerifyEmail";
+import { useMutationProfile } from "hooks/profile/useMutationProfile";
 
 type Props = {
   isEdit: boolean;
   setIsEdit: (value: boolean) => void;
 };
 
-// function validateEmail(email?: string) {
-//   if (email == null) {
-//     return;
-//   }
-//   var re = /\S+@\S+\.\S+/;
-//   return re.test(email.toLowerCase());
-// }
+function validateEmail(email?: string) {
+  if (email == null) {
+    return;
+  }
+  var re = /\S+@\S+\.\S+/;
+  return re.test(email.toLowerCase());
+}
 
 const Contact = ({ isEdit, setIsEdit }: Props) => {
-  // const [validEmail, setValidEmail] = useState(true);
+  const [isValidEmail, setIsValidEmail] = useState(true);
   const [isVerify, setIsVerify] = useState(false);
 
   const { phone, email } = AuthStore;
@@ -46,9 +46,9 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
         },
       },
     })
-      .then(() => {
-        message.success("Update phone success");
-      })
+      // .then(() => {
+      //   message.success("Update phone success");
+      // })
       .catch((err) => {
         message.error("Fail!");
         console.log("Error update phone: ", err);
@@ -76,6 +76,10 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
     setTempContact((prev) => ({ ...prev, [field]: e.target.value }));
 
     if (field === "email") {
+      validateEmail(e.target.value)
+        ? setIsValidEmail(true)
+        : setIsValidEmail(false);
+
       if (email !== e.target.value) {
         setIsVerify(true);
       } else {
@@ -104,6 +108,7 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
                 onChange={(e) => handleChange(e, "phone")}
                 onBlur={() => handleBlur("phone")}
                 placeholder={"091xxx0909"}
+                name="phone"
               />
             ) : (
               <p>{tempContact.phone ? tempContact.phone : "Not available"}</p>
@@ -123,6 +128,8 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
                   value={tempContact.email}
                   onChange={(e) => handleChange(e, "email")}
                   placeholder={"your.email@example.com"}
+                  valid={isValidEmail}
+                  name="email"
                 />
 
                 {isVerify && (

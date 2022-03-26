@@ -1,7 +1,7 @@
 import { Col, Row } from "antd";
-import BlankState from "components/BlankState/BlankState";
+import BlankState from "components/Home/BlankState/BlankState";
 import { calculateCampaignStatus } from "components/campaign/CampaignHelper";
-import CardItem from "components/card/ContainerCard";
+import CardItem from "components/Home/Card/ContainerCard";
 import TitleSection from "components/TitleNameSection";
 import { GBoxCampaign } from "src/generated/graphql";
 import { useUpComing } from "./useUpComing";

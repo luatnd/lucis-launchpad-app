@@ -44,7 +44,7 @@
         height: 100%
         border-radius: 16px
         .headingCard
-            padding: 200px 22px 80px 22px
+            padding: 200px 0px 0px 0px
             .styleTime
                 font-size: 28px
                 font-weight: 700
@@ -97,7 +97,6 @@
                 @media (min-width: 1440px)
                     padding: 40px 0px 8px 0px
             .text
-                @include line-camp(3)
                 color: #FFF
                 font-size: 16px
                 font-weight: 300
@@ -132,6 +131,10 @@
 .CardContainer:hover .btnDetail
     opacity: 1
 
+.titleCard
+    @media ( min-width: 0px )
+        padding: 0px 22px 80px 22px
+        
 
 .btnDetail
     background: linear-gradient(284deg, rgba(205, 40, 232, 0.2) 0%, rgba(11, 235, 214, 0.2) 100%)
@@ -139,7 +142,7 @@
     display: flex
     align-items: center
     justify-content: center
-    height: 47%
+    height: 80%
     width: 100%
     position: absolute
     bottom: 0
@@ -149,22 +152,22 @@
     &:hover 
         a 
             color: white
-    @media screen and (min-width: 415px) 
-        height: 39%
-    @media screen and (min-width: 540px) 
-        height: 35%
-    @media screen and (min-width: 640px) 
-        height: 35%
-    @media screen and (min-width: 768px) 
-        height: 45%
-    @media screen and (min-width: 992px) 
-        height: 51%
-    @media screen and (min-width: 1200px) 
-        height: 51%
-    @media screen and (min-width: 1280px) 
-        height: 45%
-    @media screen and (min-width: 1440px) 
-        height: 40%
+    // @media screen and (min-width: 415px) 
+    //     height: 80%
+    // @media screen and (min-width: 540px) 
+    //     height: 35%
+    // @media screen and (min-width: 640px) 
+    //     height: 35%
+    // @media screen and (min-width: 768px) 
+    //     height: 45%
+    // @media screen and (min-width: 992px) 
+    //     height: 51%
+    // @media screen and (min-width: 1200px) 
+    //     height: 51%
+    // @media screen and (min-width: 1280px) 
+    //     height: 45%
+    // @media screen and (min-width: 1440px) 
+    //     height: 40%
 
 .styleBtn
     display: flex
@@ -184,22 +187,22 @@
 @media (min-width: 414px)
     .CardContainer
         .headingCard
-            padding: 270px 22px 80px 22px !important
+            padding: 270px 0px 0px 0px !important
 
 @media (min-width: 520px)
     .CardContainer
         .headingCard
-            padding: 250px 22px 80px 22px !important
+            padding: 250px 0px 0px 0px !important
 
 @media (min-width: 540px)
     .CardContainer
         .headingCard
-            padding: 280px 22px 80px 22px !important
+            padding: 280px 0px 0px 0px !important
 
 @media (min-width: 640px)
     .CardContainer
         .headingCard
-            padding: 280px 22px 80px 22px !important
+            padding: 280px 0px 0px 0px !important
             .styleTime
                 font-size: 24px  !important
             .styleTime::before
@@ -209,7 +212,7 @@
 @media (min-width: 768px)
     .CardContainer
         .headingCard
-            padding: 200px 22px 80px 22px !important
+            padding: 200px 0px 0px 0px !important
             .styleTime
                 font-size: 24px  !important
             .styleTime::before
@@ -218,7 +221,7 @@
 @media (min-width: 992px)
     .CardContainer
         .headingCard
-            padding: 150px 22px 80px 22px !important
+            padding: 150px 0px 0px 0px !important
             .styleTime
                 font-size: 24px  !important
             .styleTime::before
@@ -227,7 +230,7 @@
 @media (min-width: 1279px)
     .CardContainer
         .headingCard
-            padding: 220px 22px 80px 22px !important
+            padding: 220px 0px 0px 0px !important
             .styleTime
                 font-size: 28px  !important
             .styleTime::before
@@ -241,7 +244,7 @@
 @media (min-width: 1439px)
     .CardContainer
         .headingCard
-            padding: 270px 22px 80px 22px !important
+            padding: 270px 0px 0px 0px !important
             .styleTime
                 font-size: 36px  !important
             .styleTime::before

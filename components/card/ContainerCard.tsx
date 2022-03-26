@@ -78,44 +78,49 @@ export default function CardItem(props: Props) {
 
       <div className={s.content}>
         <div className={s.headingCard}>
-          <div className={`${s.styleTime} ${typeTime}`}>
-            {statusTime == "UPCOMING"
-              ? `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
-                  timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
-                }s`
-              : statusTime == "OPENING"
-              ? soldOutResult
-                ? "SOLD OUT"
-                : `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
-                    timer.seconds < 10
-                      ? `0${timer.seconds}`
-                      : `${timer.seconds}`
-                  }s`
-              : "SALE ENDED"}
-            {statusTime !== "CLOSED" && (
-              <span className="text-[12px] md:text-[14px] lg:text-[18px] pl-2">
-                {highlight ?? ""}
-              </span>
-            )}
+          <div style={{ position: "relative" }}>
+            <div className={s.titleCard}>
+              <div className={`${s.styleTime} ${typeTime}`}>
+                {statusTime == "UPCOMING"
+                  ? `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
+                      timer.seconds < 10
+                        ? `0${timer.seconds}`
+                        : `${timer.seconds}`
+                    }s`
+                  : statusTime == "OPENING"
+                  ? soldOutResult
+                    ? "SOLD OUT"
+                    : `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
+                        timer.seconds < 10
+                          ? `0${timer.seconds}`
+                          : `${timer.seconds}`
+                      }s`
+                  : "SALE ENDED"}
+                {statusTime !== "CLOSED" && (
+                  <span className="text-[12px] md:text-[14px] lg:text-[18px] pl-2">
+                    {highlight ?? ""}
+                  </span>
+                )}
 
-            {/* Highlight for closed campaign */}
-            {statusTime == "CLOSED" && highlight && (
-              <p>
-                SOLD OUT <span>{highlight}</span>
-              </p>
-            )}
+                {/* Highlight for closed campaign */}
+                {statusTime == "CLOSED" && highlight && (
+                  <p>
+                    SOLD OUT <span>{highlight}</span>
+                  </p>
+                )}
+              </div>
+              <h5>{props.nameGame}</h5>
+              {/* <div className={s.text}>{truncateStr(handleDesc, 0, 16)}</div> */}
+              <div className={s.text}>{handleDesc}</div>
+            </div>
+            <div className={s.btnDetail}>
+              <Link href={getCampaignDetailUrl()} passHref={true}>
+                <GradientLinkButton type={1} className={s.styleBtn}>
+                  DETAIL
+                </GradientLinkButton>
+              </Link>
+            </div>
           </div>
-          <h5>{props.nameGame}</h5>
-          {/* <div className={s.text}>{truncateStr(handleDesc, 0, 16)}</div> */}
-          <div className={s.text}>{handleDesc}</div>
-        </div>
-
-        <div className={s.btnDetail}>
-          <Link href={getCampaignDetailUrl()} passHref={true}>
-            <GradientLinkButton type={1} className={s.styleBtn}>
-              DETAIL
-            </GradientLinkButton>
-          </Link>
         </div>
 
         <div className={s.groupIcon}>

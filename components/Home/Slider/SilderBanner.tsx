@@ -5,7 +5,6 @@ import { useCountDown } from "utils/Time";
 import s from "./SilderBanner.module.sass";
 type Props = {
   status: string;
-  time: string;
   logo: Maybe<string> | undefined;
   desc: Maybe<string> | undefined;
   banner: Maybe<string> | undefined;
@@ -17,12 +16,12 @@ type Props = {
   twitter: Maybe<string> | undefined;
   tele: Maybe<string> | undefined;
   website: Maybe<string> | undefined;
+  timeCountDown: number;
 };
 
 export default function ItemSliderBanner(props: Props) {
   const {
     status,
-    time,
     logo,
     desc,
     href,
@@ -33,8 +32,9 @@ export default function ItemSliderBanner(props: Props) {
     twitter,
     tele,
     discord,
+    timeCountDown,
   } = props;
-  const timer = useCountDown(time);
+  const timer = useCountDown(timeCountDown);
 
   const checkTimeLeft =
     timer.days <= 0 &&

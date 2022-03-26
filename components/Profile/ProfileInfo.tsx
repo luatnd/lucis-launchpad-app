@@ -6,12 +6,12 @@ import {
 } from "@ant-design/icons";
 import { Col, message, Row } from "antd";
 import Input from "components/Input/Input";
-import { useMutationProfile } from "components/Profile/Hooks/useMutationProfile";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { isClient } from "utils/DOM";
 import s from "../../pages/profile/index.module.sass";
 import AuthStore from "../Auth/AuthStore";
 import { observer } from "mobx-react-lite";
+import { useMutationProfile } from "hooks/profile/useMutationProfile";
 
 type Props = {
   isEdit: boolean;
@@ -23,6 +23,7 @@ export default observer(function Info(props: Props) {
   const { isEdit, setIsEdit } = props;
 
   const [tempName, setTempName] = useState(name);
+  const [field, setField] = useState("");
   const [isCopy, setIsCopy] = useState(false);
 
   const affilateIdRef = useRef<any>(null);
@@ -45,6 +46,7 @@ export default observer(function Info(props: Props) {
 
   const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
     setTempName(e.target.value);
+    setField(e.target.name);
   };
 
   const handleBlur = () => {
@@ -57,12 +59,12 @@ export default observer(function Info(props: Props) {
         },
       },
     })
-      .then(() => {
-        message.success("Update success");
-      })
+      // .then(() => {
+      //   message.success("Update success");
+      // })
       .catch((err) => {
         message.error("Fail");
-        console.log(err);
+        console.log(error?.message);
       });
   };
 
@@ -71,6 +73,7 @@ export default observer(function Info(props: Props) {
     onChange: handleChangeName,
     onBlur: handleBlur,
     className: s.name,
+    setField: setField,
   };
 
   if (isClient) {
@@ -99,7 +102,11 @@ export default observer(function Info(props: Props) {
           <div className={s.info}>
             <div>
               {isEdit ? (
-                <Input {...inputProps} placeholder={"Your name"} />
+                <Input
+                  {...inputProps}
+                  placeholder={"Your name"}
+                  name="full_name"
+                />
               ) : (
                 <p className={s.fullName}>{tempName}</p>
               )}

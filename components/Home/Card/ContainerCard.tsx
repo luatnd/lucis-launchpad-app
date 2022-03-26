@@ -3,8 +3,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { GChain } from "src/generated/graphql";
 import { useCountDown } from "utils/Time";
-import { slugify, truncateStr } from "../../utils/String";
-import { GradientLinkButton } from "../Button/GradientButton";
+import { slugify, truncateStr } from "../../../utils/String";
+import { GradientLinkButton } from "../../Button/GradientButton";
 import s from "./ContainerCard.module.sass";
 
 type Props = {
@@ -75,35 +75,39 @@ export default function CardItem(props: Props) {
 
       <div className={s.content}>
         <div className={s.headingCard}>
-            <div className={`${s.styleTime} ${typeTime}`}>
-              {campaignStatus == "UPCOMING"
-                ? `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
+          <div className={`${s.styleTime} ${typeTime}`}>
+            {campaignStatus == "UPCOMING"
+              ? `${timer.days}d ${timer.hours}h ${
+                  timer.minutes < 10 ? `0${timer.minutes}` : `${timer.minutes}`
+                }m ${
+                  timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`
+                }s`
+              : campaignStatus == "OPENING"
+              ? soldOutResult
+                ? "SOLD OUT"
+                : `${timer.days}d ${timer.hours}h ${
+                    timer.minutes < 10
+                      ? `0${timer.minutes}`
+                      : `${timer.minutes}`
+                  }m ${
                     timer.seconds < 10
                       ? `0${timer.seconds}`
                       : `${timer.seconds}`
                   }s`
-                : campaignStatus == "OPENING"
-                ? soldOutResult
-                  ? "SOLD OUT"
-                  : `${timer.days}d ${timer.hours}h ${timer.minutes}m ${
-                      timer.seconds < 10
-                        ? `0${timer.seconds}`
-                        : `${timer.seconds}`
-                    }s`
-                : "SALE ENDED"}
-              {campaignStatus !== "CLOSED" && (
-                <span className="text-[12px] md:text-[14px] lg:text-[18px] pl-2">
-                  {highlight ?? ""}
-                </span>
-              )}
+              : "SALE ENDED"}
+            {campaignStatus !== "CLOSED" && (
+              <span className="text-[12px] md:text-[14px] lg:text-[18px] pl-2">
+                {highlight ?? ""}
+              </span>
+            )}
 
-              {/* Highlight for closed campaign */}
-              {campaignStatus == "CLOSED" && highlight && (
-                <p>
-                  SOLD OUT <span>{highlight}</span>
-                </p>
-              )}
-            </div>
+            {/* Highlight for closed campaign */}
+            {campaignStatus == "CLOSED" && highlight && (
+              <p>
+                SOLD OUT <span>{highlight}</span>
+              </p>
+            )}
+          </div>
           <div style={{ position: "relative" }}>
             <div className={s.titleCard}>
               <h5>{props.nameGame}</h5>

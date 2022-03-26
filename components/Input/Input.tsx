@@ -8,6 +8,7 @@ type Props = {
   className?: string;
   placeholder?: string;
   valid?: boolean;
+  name: string;
 };
 
 const Input = ({
@@ -17,10 +18,12 @@ const Input = ({
   className,
   placeholder,
   valid = true,
+  name,
 }: Props) => {
   return (
     <div className={`${s.inputC} ${valid ? "" : s.invalid}`}>
       <input
+        name={name}
         value={value !== "" ? value : undefined}
         className={`${className} ${s.input}`}
         placeholder={placeholder}

@@ -59,7 +59,8 @@ export default function ItemSliderBanner(props: Props) {
             <div className={statusStyle}>{status}</div>
             {checkTimeLeft && (
               <div className={s.Time}>
-                {timer.days}d {timer.hours}h {timer.minutes}m{" "}
+                {timer.days}d {timer.hours}h{" "}
+                {timer.minutes < 10 ? `0${timer.minutes}` : `${timer.minutes}`}m{" "}
                 {timer.seconds < 10 ? `0${timer.seconds}` : `${timer.seconds}`}s
               </div>
             )}

@@ -1,10 +1,10 @@
 import { Col, message, Row } from "antd";
 import Input from "components/Input/Input";
-import { useMutationProfile } from "components/Profile/Hooks/useMutationProfile";
 import { ChangeEvent, useState } from "react";
 import s from "../../pages/profile/index.module.sass";
 import AuthStore from "../Auth/AuthStore";
 import { observer } from "mobx-react-lite";
+import { useMutationProfile } from "hooks/profile/useMutationProfile";
 
 type Props = {
   isEdit: boolean;
@@ -13,6 +13,7 @@ type Props = {
 
 const Social = ({ isEdit, setIsEdit }: Props) => {
   const { updateProfile, loading, error, data } = useMutationProfile();
+  // console.log(error);
 
   const { facebook, twitter, tele, discord } = AuthStore;
 
@@ -23,21 +24,20 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
     telegram: tele,
   });
 
-  const handleBlur = (field: string) => {
-    // console.log(field);
+  const handleBlur = (field: any) => {
     updateProfile({
       variables: {
         data: {
-          [field]: {
+          ["afield"]: {
             //@ts-ignore
             set: tempSocial[field],
           },
         },
       },
     })
-      .then(() => message.success("Update success"))
+      // .then(() => message.success("Update success"))
       .catch((err) => {
-        message.error("Fail!");
+        message.error("Failed!");
         console.log(err);
       });
   };
@@ -70,6 +70,7 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                     onChange={(e) => handleChange(e, "facebook")}
                     onBlur={() => handleBlur("facebook")}
                     placeholder={"Facebook address"}
+                    name="facebook"
                   />
                 ) : (
                   <p>
@@ -88,6 +89,7 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                     onChange={(e) => handleChange(e, "twitter")}
                     onBlur={() => handleBlur("twitter")}
                     placeholder={"Twitter address"}
+                    name="twitter"
                   />
                 ) : (
                   <p>
@@ -104,6 +106,7 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                     onChange={(e) => handleChange(e, "discord")}
                     onBlur={() => handleBlur("discord")}
                     placeholder={"Discord address"}
+                    name="discord"
                   />
                 ) : (
                   <p>
@@ -116,10 +119,11 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                 <img src="/assets/footer/tele.svg" alt="" />
                 {isEdit ? (
                   <Input
-                    value={tempSocial.telegram ? tempSocial.telegram : ""}
+                    value={tempSocial.discord ? tempSocial.discord : ""}
                     onChange={(e) => handleChange(e, "telegram")}
                     onBlur={() => handleBlur("telegram")}
                     placeholder={"Telegram address"}
+                    name="telegram"
                   />
                 ) : (
                   <p>

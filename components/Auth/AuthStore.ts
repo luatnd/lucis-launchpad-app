@@ -19,7 +19,7 @@ export type AuthUser = {
   loading?: boolean;
   facebook?: string;
   twitter?: string;
-  tele?: string;
+  telegram?: string;
   discord?: string;
   phone?: string;
   full_name?: string;
@@ -95,7 +95,7 @@ class AuthStore {
     this._loyalty = user.loyalty!;
     this._facebook = user.facebook;
     this._twitter = user.twitter;
-    this._tele = user.tele;
+    this._tele = user.telegram;
     this._discord = user.discord;
   }
 

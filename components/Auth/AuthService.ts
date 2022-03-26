@@ -69,7 +69,7 @@ export default class AuthService {
       name: !!name ? name : trim_middle(u.address, 6, 6),
       facebook: u.profile.facebook,
       twitter: u.profile.twitter,
-      tele: u.profile.tele,
+      telegram: u.profile.telegram,
       discord: u.profile.discord,
     };
 

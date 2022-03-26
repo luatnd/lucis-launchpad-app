@@ -1,9 +1,12 @@
-import { Table } from "antd";
+import { Table, Tooltip } from "antd";
 import moment from "moment";
 import s from "./History.module.sass";
 import { trim_middle } from "utils/String";
-import { GBoxCampaignBase, GBoxCampaignBuyHistory } from "src/generated/graphql";
-import { useQueryBoxHistories } from "components/Profile/Hooks/useQueryBoxHistories";
+import {
+  GBoxCampaignBase,
+  GBoxCampaignBuyHistory,
+} from "src/generated/graphql";
+import { useQueryBoxHistories } from "hooks/profile/useQueryBoxHistories";
 
 type Props = {
   // data: GBoxCampaignBuyHistory[];
@@ -18,7 +21,9 @@ const HistoryTable = (props: Props) => {
   });
 
   const dataHistory = id
-    ? data?.boxCampaignBuyHistories.filter((box: any) => box.box_campaign_uid === id)
+    ? data?.boxCampaignBuyHistories.filter(
+        (box: any) => box.box_campaign_uid === id
+      )
     : data?.boxCampaignBuyHistories;
 
   const columns = [
@@ -38,20 +43,31 @@ const HistoryTable = (props: Props) => {
       key: "box",
       // @ts-ignore
       render: (_, item: GBoxCampaignBuyHistory) => {
-        console.log(item.box.game.logo);
+        // console.log(item.box.game.logo);
 
         return (
           <>
             <p className="descText">
-              {item.box_price?.boxType?.name ? item.box_price?.boxType.name : "Common box"}
+              {item.box_price?.boxType?.name
+                ? item.box_price?.boxType.name
+                : "Common box"}
             </p>
             <p className="descSubText">
-              <img className={s.chainIcon} src={item.box_price?.chain_icon ?? ""} alt="" />
+              <img
+                className={s.chainIcon}
+                src={item.box_price?.chain_icon ?? ""}
+                alt=""
+              />
               {item.box_price?.chain_symbol}
             </p>
             <p className="descGameText pt-3" style={{ whiteSpace: "nowrap" }}>
-              <img className={s.logoGame} src={item.box?.game.logo ?? ""} alt="" />
-              {item.box.game.name} | {item.box.name ? item.box.name : "Box campaign name"}
+              <img
+                className={s.logoGame}
+                src={item.box?.game.logo ?? ""}
+                alt=""
+              />
+              {item.box.game.name} |{" "}
+              {item.box.name ? item.box.name : "Box campaign name"}
             </p>
           </>
         );
@@ -63,7 +79,7 @@ const HistoryTable = (props: Props) => {
       dataIndex: "quantity",
       key: "quantity",
       // @ts-ignore
-      render: (_, item) => {
+      render: (_, item: GBoxCampaignBuyHistory) => {
         return (
           <>
             <p className="descText">{item.quantity}</p>
@@ -80,22 +96,26 @@ const HistoryTable = (props: Props) => {
       dataIndex: "box",
       key: "box",
       // @ts-ignore
-      render: (_, item: any) => {
+      render: (_, item: GBoxCampaignBuyHistory) => {
         return (
           <>
             <p className="descText">
               {`${
+                item.quantity &&
+                item.box_price &&
                 item.quantity * item.box_price.price
-              } ${item.box_price.currency_name.toUpperCase()}`}
+              } ${
+                item.box_price && item.box_price?.currency_name?.toUpperCase()
+              }`}
             </p>
 
             <a
               className="hidden md:block"
               target="_blank"
               href={
-                item.box_price.chain_symbol === "BSC"
+                item.box_price?.chain_symbol === "BSC"
                   ? `https://testnet.bscscan.com/tx/${item.tx_hash}`
-                  : `https://rinkeby.etherscan.io//tx/${item.tx_hash}`
+                  : `https://rinkeby.etherscan.io/tx/${item.tx_hash}`
               }
               style={{ whiteSpace: "nowrap" }}
               rel="noopener noreferrer"
@@ -129,7 +149,9 @@ const HistoryTable = (props: Props) => {
 
         return (
           <>
-            <div className={`${statusClass} ${s.status}`}></div>
+            <Tooltip placement="topRight" title={item.status}>
+              <div className={`${statusClass} ${s.status}`}></div>
+            </Tooltip>
             {item?.tx_hash && item.box_price.chain_symbol === "BSC" && (
               <a
                 className="block md:hidden"

@@ -33,6 +33,7 @@ export default observer(function Info(props: Props) {
     if (affilateIdRef) {
       if (isClient) {
         setIsCopy(true);
+        message.success("Copied to clipboard");
         navigator.clipboard.writeText(
           `${window.location.origin}/?r=${affilateIdRef.current.innerText}`
         );

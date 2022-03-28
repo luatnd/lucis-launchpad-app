@@ -27,6 +27,8 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
 
   const { phone, email } = AuthStore;
 
+  console.log(AuthStore);
+
   const [tempContact, setTempContact] = useState({
     phone: phone ?? "",
     email: email ?? "",

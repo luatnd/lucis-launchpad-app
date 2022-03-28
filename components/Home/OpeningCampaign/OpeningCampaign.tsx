@@ -38,6 +38,7 @@ export default function Opening(props: Props) {
               const timeCountDown = Math.floor(
                 (new Date(e.end).getTime() - new Date().getTime()) / 1000
               );
+              // Close in before countdown
 
               return (
                 <Col key={index} xs={24} md={12} lg={8}>

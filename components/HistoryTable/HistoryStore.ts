@@ -1,8 +1,15 @@
 import { makeAutoObservable } from "mobx";
+import { GBoxCampaignBuyHistory } from "src/generated/graphql";
 
 class HistoryStore {
+  private _histories?: GBoxCampaignBuyHistory[];
+
   constructor() {
     makeAutoObservable(this);
+  }
+
+  addToHistoryList(box: any) {
+    this._histories ? this._histories.push(box) : (this._histories = []);
   }
 }
 

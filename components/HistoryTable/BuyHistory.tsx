@@ -1,4 +1,6 @@
 import HistoryTable from "./HistoryTable";
+import HistoryStore from "./HistoryStore";
+import { useQueryBoxHistories } from "hooks/profile/useQueryBoxHistories";
 
 type Props = {
   id?: string;
@@ -10,6 +12,12 @@ const BuyHistory = ({ id, title }: Props) => {
     id: id,
     title: title,
   };
+
+  const { data } = useQueryBoxHistories({
+    include: { boxTypes: true, game: true },
+  });
+
+  HistoryStore.addToHistoryList(data);
 
   return <HistoryTable {...tableProps} />;
 };

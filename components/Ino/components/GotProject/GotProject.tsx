@@ -54,7 +54,7 @@ const GotProject = () => {
           rel="noreferrer"
         >
           <img className="mr-[4px]" src="/assets/UpComing/tele.svg" alt="" />{" "}
-          t.me/openware
+          t.me/lucislaunchpad_support
         </a>
         {/* <img src="/assets/MyProfile/teleChat.svg" alt="" /> */}
       </div>

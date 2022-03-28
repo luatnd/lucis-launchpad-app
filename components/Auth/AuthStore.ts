@@ -97,6 +97,7 @@ class AuthStore {
     this._twitter = user.twitter;
     this._tele = user.telegram;
     this._discord = user.discord;
+    this._phone = user.phone;
   }
 
   /* ============= Getter & Setter ==============*/

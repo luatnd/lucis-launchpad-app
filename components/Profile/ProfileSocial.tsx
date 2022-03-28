@@ -5,6 +5,7 @@ import s from "../../pages/profile/index.module.sass";
 import AuthStore from "../Auth/AuthStore";
 import { observer } from "mobx-react-lite";
 import { useMutationProfile } from "hooks/profile/useMutationProfile";
+import { vi2en } from "utils/String";
 
 type Props = {
   isEdit: boolean;
@@ -24,13 +25,13 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
     telegram: tele,
   });
 
-  const handleBlur = (field: any) => {
+  const handleBlur = (field: string) => {
     updateProfile({
       variables: {
         data: {
-          ["afield"]: {
+          [field]: {
             //@ts-ignore
-            set: tempSocial[field],
+            set: vi2en(tempSocial[field]),
           },
         },
       },
@@ -119,7 +120,7 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                 <img src="/assets/footer/tele.svg" alt="" />
                 {isEdit ? (
                   <Input
-                    value={tempSocial.discord ? tempSocial.discord : ""}
+                    value={tempSocial.telegram ? tempSocial.telegram : ""}
                     onChange={(e) => handleChange(e, "telegram")}
                     onBlur={() => handleBlur("telegram")}
                     placeholder={"Telegram address"}

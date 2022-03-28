@@ -37,7 +37,7 @@ export default function Header(props: Props) {
           <nav>
             <ul className="flex justify-between items-center m-0">
               {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Home</a></li>*/}
-              <li>
+              {/* <li>
                 <a
                   onClick={(e) => {
                     e.preventDefault();
@@ -47,8 +47,9 @@ export default function Header(props: Props) {
                 >
                   Home
                 </a>
-              </li>
-              <li className={s.groundSubMenu}>
+              </li> */}
+
+              {/* <li className={s.groundSubMenu}>
                 <a
                   href="#"
                   onClick={(e) => e.preventDefault()}
@@ -60,7 +61,8 @@ export default function Header(props: Props) {
                   <li>For Game Publisher</li>
                   <li>For Personal Investor</li>
                 </ul>
-              </li>
+              </li> */}
+
               {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Roadmap</a></li>*/}
               <li>
                 <AuthBox />

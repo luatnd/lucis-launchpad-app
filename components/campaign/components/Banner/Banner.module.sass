@@ -6,9 +6,10 @@
   background-repeat: no-repeat
   background-position: center
   padding: 100px 0px 30px 0
-  @media screen and (min-width: 767px)
-    padding: 140px 0 60px 0
+  @media screen and (min-width: 768px)
+    padding: 130px 0 60px 0
   @media screen and (min-width: 1023px)
+    padding: 170px 0 60px 0
 
 .noti 
   display: flex
@@ -88,6 +89,9 @@
     gap: 30px
     img
       width: 24px
+      transition: 0.3s
+      &:hover 
+        transform: scale(1.2)
   .infSocialRead
     font-size: 14px
     font-weight: 700

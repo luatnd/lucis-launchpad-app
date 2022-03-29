@@ -1,4 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
+import { Button, message } from "antd";
+import {
+  useDisableNotification,
+  useEnableNotification,
+} from "hooks/campaign/useEnableNotification";
 import React, { useState } from "react";
 import { GBoxCampaign } from "src/generated/graphql";
 import s from "./Banner.module.sass";
@@ -8,13 +13,23 @@ type Props = {
 };
 
 const Banner = ({ boxCampaign }: Props) => {
+  // TODO: get data from boxCampaign.enable_notify
   const [isEnableNotification, setIsEnableNotification] = useState(false);
 
-  const handleSubscription = () => {
-    setIsEnableNotification(!isEnableNotification);
-  };
+  const { enableNotification, loadingEnable } = useEnableNotification();
+  const { disableNotification, loadingDisable } = useDisableNotification();
 
-  // console.log(boxCampaign?.game);
+  const handleSubscription = () => {
+    !isEnableNotification
+      ? enableNotification({ variables: { box_campaign_uid: boxCampaign.uid } })
+          .then(() => setIsEnableNotification(true))
+          .catch((err) => message.error(err.message))
+      : disableNotification({
+          variables: { box_campaign_uid: boxCampaign.uid },
+        })
+          .then(() => setIsEnableNotification(false))
+          .catch((err) => message.error(err.message));
+  };
 
   return (
     <div

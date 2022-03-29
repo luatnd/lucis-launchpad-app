@@ -74,6 +74,9 @@ const DETAIL_CAMPAIGN = gql`
       rules
       cover_img
       banner_img
+      subscribeCampaign {
+        enable_notify
+      }
       chains {
         symbol
         name

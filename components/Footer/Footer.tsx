@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import s from "./Footer.module.sass";
 import MailChimpSignUp from "../MailChimpSignUp/MailChimpSignUp";
+import { TrademarkOutlined } from "@ant-design/icons";
 
 type Props = {};
 export default function Footer(props: Props) {
@@ -10,12 +11,26 @@ export default function Footer(props: Props) {
       <div className={`${s.heading_footer} section-content`}>
         <div className={s.logo}>
           <img src="/assets/logo369-np.png" alt="" />
+          <p className="text-14px md:text-18px text-right pt-[4px] m-0">
+            Power by{" "}
+            <a
+              href="https://lucis.network/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              lucis.network{" "}
+            </a>
+          </p>
         </div>
 
         <div className={s.r}>
           <div className={s.group_ic}>
             <div className={s.ic_item}>
-              <a href="https://www.tiktok.com/@lucistvv" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.tiktok.com/@lucistvv"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <img src="/assets/footer/tiktok.svg" alt="" />
               </a>
             </div>
@@ -38,12 +53,20 @@ export default function Footer(props: Props) {
               </a>
             </div>
             <div className={s.ic_item}>
-              <a href="https://t.me/sankeonft" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://t.me/sankeonft"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <img src="/assets/footer/tele.svg" alt="" />
               </a>
             </div>
             <div className={s.ic_item}>
-              <a href="https://twitter.com/Lucis_TV" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://twitter.com/Lucis_TV"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <img src="/assets/footer/tw.svg" alt="" />
               </a>
             </div>

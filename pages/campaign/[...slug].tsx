@@ -55,13 +55,13 @@ function DetailCampaign() {
   const clickToAbout = (key: any) => {
     if (key == 3) {
       if (widthScreen >= 1280) {
-        window.scrollTo(0, 750);
+        window.scrollTo({ top: 750, behavior: "smooth" });
       } else if (widthScreen >= 767) {
-        window.scrollTo(0, 672);
+        window.scrollTo({ top: 672, behavior: "smooth" });
       } else if (widthScreen >= 540) {
-        window.scrollTo(0, 386);
+        window.scrollTo({ top: 386, behavior: "smooth" });
       } else if (widthScreen > 0) {
-        window.scrollTo(0, 430);
+        window.scrollTo({ top: 430, behavior: "smooth" });
       }
     }
   };
@@ -71,7 +71,7 @@ function DetailCampaign() {
       <DocHead />
 
       <div className="lucis-container">
-        <div className={s.containerApp}>
+        <div className={s.containerApp} style={{ scrollBehavior: "smooth" }}>
           <Banner boxCampaign={boxCampaign} />
           <Tabs
             defaultActiveKey="1"
@@ -115,7 +115,7 @@ function DetailCampaign() {
             </TabPane>
 
             <TabPane tab="RULE" key="2">
-              <div className="lucis-container mt-[40px!important]">
+              <div className="lucis-container">
                 {boxCampaign?.rules &&
                 boxCampaign?.rules.substring(0, 8) !== "https://" ? (
                   <iframe
@@ -127,7 +127,7 @@ function DetailCampaign() {
                   <iframe
                     src={boxCampaign?.rules}
                     width="100%"
-                    height="300px"
+                    height="200px"
                   ></iframe>
                 )}
               </div>

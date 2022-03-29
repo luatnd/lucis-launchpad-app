@@ -13,7 +13,7 @@ export default function Opening(props: Props) {
   const { resultOpening } = useOpening();
 
   return (
-    <section className="lucis-container">
+    <section className="lucis-container mt-[80px] lg:mt-[150px] ">
       <TitleSection text="Opening campaign" />
       {resultOpening?.openingBoxCampaign.length > 0 ? (
         <Row gutter={[30, 30]}>

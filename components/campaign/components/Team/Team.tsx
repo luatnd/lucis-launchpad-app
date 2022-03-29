@@ -37,7 +37,7 @@ const Team = (props: ITeam) => {
           id="myFrame"
           srcDoc={game?.desc_team}
           width="100%"
-          height="1500px"
+          height="200px"
         ></iframe>
       ) : (
         <iframe

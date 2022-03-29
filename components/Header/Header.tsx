@@ -22,7 +22,7 @@ export default function Header(props: Props) {
   // if (width > 1024) {
   return (
     <div className={`${s.pcMenu} bg-nav`}>
-      {width > 1024 ? (
+      {width >= 1024 ? (
         <div
           className={`container lucis-container py-20px px-0 flex justify-between items-center relative z-10 ${s.menu_container}`}
         >

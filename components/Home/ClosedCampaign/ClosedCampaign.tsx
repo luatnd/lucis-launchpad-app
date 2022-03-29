@@ -11,7 +11,7 @@ export default function ClosedCampaign(props: Props) {
   const { resultCloseCampaign } = useCloseCampaign();
 
   return (
-    <section className="lucis-container">
+    <section className="lucis-container mt-[80px] lg:mt-[150px]">
       <TitleSection text="Closed campaign" />
       {resultCloseCampaign?.closedBoxCampaign.length > 0 ? (
         <Row gutter={[30, 30]}>

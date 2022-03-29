@@ -76,7 +76,7 @@ export const MenuMobile = (props: any) => {
 
       {/* Header bar */}
       <div
-        className={`${s.mobileMenu} fixed top-0 left-0 right-0 z-[101] bg-nav backdrop-blur-sm`}
+        className={`${s.mobileMenu} fixed top-0 left-0 right-0 z-[101] bg-nav`}
       >
         <div className={`${s.containerMobile} lucis-container`}>
           <div style={{width: 100, padding: 0}}>

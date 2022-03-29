@@ -40,6 +40,7 @@ export type BoxCampaign = {
   highlight?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   opening_at: Scalars['DateTime'];
+  publish_status?: Maybe<PublishStatus>;
   rounds?: Maybe<Scalars['JSON']>;
   rules?: Maybe<Scalars['String']>;
   spotlight_position?: Maybe<Scalars['Int']>;
@@ -235,10 +236,6 @@ export type CurrencyCount = {
   boxPrices: Scalars['Int'];
 };
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: InputMaybe<Scalars['DateTime']>;
-};
-
 export type GBoxCampaign = {
   __typename?: 'GBoxCampaign';
   banner_img?: Maybe<Scalars['String']>;
@@ -254,6 +251,7 @@ export type GBoxCampaign = {
   highlight?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   opening_at: Scalars['DateTime'];
+  publish_status?: Maybe<PublishStatus>;
   rounds: Array<GBoxCampaignRound>;
   rules?: Maybe<Scalars['String']>;
   spotlight_position?: Maybe<Scalars['Int']>;
@@ -276,6 +274,7 @@ export type GBoxCampaignBase = {
   highlight?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   opening_at: Scalars['DateTime'];
+  publish_status?: Maybe<PublishStatus>;
   rounds?: Maybe<Scalars['JSON']>;
   rules?: Maybe<Scalars['String']>;
   spotlight_position?: Maybe<Scalars['Int']>;
@@ -477,6 +476,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   /** Buy box */
   buyBox?: Maybe<Scalars['Boolean']>;
+  disableNotification?: Maybe<Scalars['Boolean']>;
+  enableNotification?: Maybe<Scalars['Boolean']>;
   /** Generate nonce for user login */
   generateNonce: Scalars['String'];
   /** User login */
@@ -491,6 +492,16 @@ export type Mutation = {
 
 export type MutationBuyBoxArgs = {
   input: BuyBoxInput;
+};
+
+
+export type MutationDisableNotificationArgs = {
+  BoxCampaignId: Scalars['String'];
+};
+
+
+export type MutationEnableNotificationArgs = {
+  BoxCampaignId: Scalars['String'];
 };
 
 
@@ -537,15 +548,20 @@ export type NullableStringFieldUpdateOperationsInput = {
 export type ProfileUpdateInput = {
   avatar?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   cover?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  created_at?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
   discord?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   facebook?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   full_name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   phone?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   telegram?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   twitter?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  updated_at?: InputMaybe<DateTimeFieldUpdateOperationsInput>;
 };
+
+export enum PublishStatus {
+  Draft = 'DRAFT',
+  Hidden = 'HIDDEN',
+  Pending = 'PENDING',
+  Publish = 'PUBLISH'
+}
 
 export type Query = {
   __typename?: 'Query';
@@ -594,16 +610,31 @@ export type QueryWhitelistRegisteredArgs = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  /** notify Time before Campaign one */
-  notifyTime: NotificationStatus;
+  boxCampaignOpenAfter15Minutes: NotificationStatus;
+  boxCampaignOpenBeforeOneDay: NotificationStatus;
+  campaignClose: NotificationStatus;
   /** Box type state change when box purchased */
   purchasedBox?: Maybe<GBoxType>;
   recentlyPurchasedBox?: Maybe<GBoxCampaignBuyHistory>;
+  whitelistOpenBefore15Min: NotificationStatus;
+  whitelistOpenBeforeOneDay: NotificationStatus;
+  whitelistRegisterAfter15Minutes: NotificationStatus;
+  whitelistRegisterBeforeOneDay: NotificationStatus;
   whitelistRegisteredRecently?: Maybe<WhitelistStatus>;
 };
 
 
-export type SubscriptionNotifyTimeArgs = {
+export type SubscriptionBoxCampaignOpenAfter15MinutesArgs = {
+  user_id: Scalars['Float'];
+};
+
+
+export type SubscriptionBoxCampaignOpenBeforeOneDayArgs = {
+  user_id: Scalars['Float'];
+};
+
+
+export type SubscriptionCampaignCloseArgs = {
   user_id: Scalars['Float'];
 };
 
@@ -615,6 +646,26 @@ export type SubscriptionPurchasedBoxArgs = {
 
 export type SubscriptionRecentlyPurchasedBoxArgs = {
   box_campaign_uid: Scalars['String'];
+};
+
+
+export type SubscriptionWhitelistOpenBefore15MinArgs = {
+  user_id: Scalars['Float'];
+};
+
+
+export type SubscriptionWhitelistOpenBeforeOneDayArgs = {
+  user_id: Scalars['Float'];
+};
+
+
+export type SubscriptionWhitelistRegisterAfter15MinutesArgs = {
+  user_id: Scalars['Float'];
+};
+
+
+export type SubscriptionWhitelistRegisterBeforeOneDayArgs = {
+  user_id: Scalars['Float'];
 };
 
 

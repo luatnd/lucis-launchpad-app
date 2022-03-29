@@ -342,7 +342,7 @@ body .ant-menu {
   margin-right: auto;
 }
 .lucis-container:nth-child(2) {
-  margin-top: 80px;
+  /* margin-top: 80px; */
 }
 .lucis-container:first-child {
   margin-top: 0;

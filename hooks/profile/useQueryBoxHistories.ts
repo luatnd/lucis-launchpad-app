@@ -2,7 +2,14 @@ import { gql, useQuery } from "@apollo/client";
 
 export function useQueryBoxHistories(includeValue: any) {
   // console.log(includeValue);
-  const { loading, error, data: data } = useQuery(BOX_HISTORIES, { variables: includeValue });
+  const {
+    loading,
+    error,
+    data: data,
+  } = useQuery(BOX_HISTORIES, {
+    variables: includeValue,
+    fetchPolicy: "no-cache",
+  });
 
   return {
     loading,

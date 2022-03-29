@@ -55,13 +55,13 @@ function DetailCampaign() {
   const clickToAbout = (key: any) => {
     if (key == 3) {
       if (widthScreen >= 1280) {
-        window.scrollTo(0, 750);
+        window.scrollTo({ top: 750, behavior: "smooth" });
       } else if (widthScreen >= 767) {
-        window.scrollTo(0, 672);
+        window.scrollTo({ top: 672, behavior: "smooth" });
       } else if (widthScreen >= 540) {
-        window.scrollTo(0, 386);
+        window.scrollTo({ top: 386, behavior: "smooth" });
       } else if (widthScreen > 0) {
-        window.scrollTo(0, 430);
+        window.scrollTo({ top: 430, behavior: "smooth" });
       }
     }
   };
@@ -71,74 +71,81 @@ function DetailCampaign() {
       <DocHead />
 
       <div className="lucis-container">
-        <div className={s.containerApp}>
+        <div className={s.containerApp} style={{ scrollBehavior: "smooth" }}>
           <Banner boxCampaign={boxCampaign} />
-          <Tabs
-            defaultActiveKey="1"
-            className={s.tabs}
-            onTabClick={clickToAbout}
-          >
-            <TabPane tab="TIMELINE" key="1">
-              {boxCampaign?.rounds != null && (
-                <SiteMap
-                  rounds={boxCampaign?.rounds}
-                  start={boxCampaign?.start}
-                  end={boxCampaign?.end}
-                  setTimeCountDown={setTimeCountDown}
-                  setTextNow={setTextNow}
-                  boxCampaignUid={campaignUid}
-                  tzid={tzid}
-                  widthScreen={widthScreen}
-                  isInWhitelist={isInWhitelist}
-                  whitelistRegistered={whitelistRegistered}
-                  whitelistRegisteredRecently={whitelistRegisteredRecently}
-                />
-              )}
+          {boxCampaign && (
+            <div className={s.tabContainer}>
+              <Tabs
+                defaultActiveKey="1"
+                className={s.tabs}
+                onTabClick={clickToAbout}
+              >
+                <TabPane tab="TIMELINE" key="1">
+                  {boxCampaign?.rounds != null && (
+                    <SiteMap
+                      rounds={boxCampaign?.rounds}
+                      start={boxCampaign?.start}
+                      end={boxCampaign?.end}
+                      setTimeCountDown={setTimeCountDown}
+                      setTextNow={setTextNow}
+                      boxCampaignUid={campaignUid}
+                      tzid={tzid}
+                      widthScreen={widthScreen}
+                      isInWhitelist={isInWhitelist}
+                      whitelistRegistered={whitelistRegistered}
+                      whitelistRegisteredRecently={whitelistRegisteredRecently}
+                    />
+                  )}
 
-              {textNow.length > 0 && (
-                <CountDown timeCountDown={timeCountDown} textNow={textNow} />
-              )}
+                  {textNow.length > 0 && (
+                    <CountDown
+                      timeCountDown={timeCountDown}
+                      textNow={textNow}
+                    />
+                  )}
 
-              {!!boxCampaign && (
-                <BoxCard
-                  boxCampaign={boxCampaign}
-                  isInWhitelist={isInWhitelist}
-                  purchasedBox={purchasedBox}
-                />
-              )}
+                  {!!boxCampaign && (
+                    <BoxCard
+                      boxCampaign={boxCampaign}
+                      isInWhitelist={isInWhitelist}
+                      purchasedBox={purchasedBox}
+                    />
+                  )}
 
-              {AuthStore.isLoggedIn && (
-                <div className="container">
-                  <BuyHistory id={campaignUid} title="recently bought" />
-                </div>
-              )}
-            </TabPane>
+                  {AuthStore.isLoggedIn && (
+                    <div className="container">
+                      <BuyHistory id={campaignUid} title="recently bought" />
+                    </div>
+                  )}
+                </TabPane>
 
-            <TabPane tab="RULE" key="2">
-              <div className="lucis-container mt-[40px!important]">
-                {boxCampaign?.rules &&
-                boxCampaign?.rules.substring(0, 8) !== "https://" ? (
-                  <iframe
-                    srcDoc={boxCampaign?.rules}
-                    width="100%"
-                    height="500px"
-                  ></iframe>
-                ) : (
-                  <iframe
-                    src={boxCampaign?.rules}
-                    width="100%"
-                    height="300px"
-                  ></iframe>
-                )}
-              </div>
-            </TabPane>
+                <TabPane tab="RULE" key="2">
+                  <div className="lucis-container mt-[40px]">
+                    {boxCampaign?.rules &&
+                    boxCampaign?.rules.substring(0, 8) !== "https://" ? (
+                      <iframe
+                        srcDoc={boxCampaign?.rules}
+                        width="100%"
+                        height="500px"
+                      ></iframe>
+                    ) : (
+                      <iframe
+                        src={boxCampaign?.rules}
+                        width="100%"
+                        height="200px"
+                      ></iframe>
+                    )}
+                  </div>
+                </TabPane>
 
-            <TabPane tab="ABOUT PROJECT" key="3">
-              {/* <Trailer game={boxCampaign?.game} /> */}
-              <Team game={boxCampaign?.game} />
-            </TabPane>
-          </Tabs>
-          <Footer />
+                <TabPane tab="ABOUT PROJECT" key="3">
+                  {/* <Trailer game={boxCampaign?.game} /> */}
+                  <Team game={boxCampaign?.game} />
+                </TabPane>
+              </Tabs>
+              <Footer />
+            </div>
+          )}
         </div>
       </div>
     </>

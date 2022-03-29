@@ -12,6 +12,7 @@ import s from "../../pages/profile/index.module.sass";
 import AuthStore from "../Auth/AuthStore";
 import { observer } from "mobx-react-lite";
 import { useMutationProfile } from "hooks/profile/useMutationProfile";
+import { vi2en } from "utils/String";
 
 type Props = {
   isEdit: boolean;
@@ -27,7 +28,7 @@ export default observer(function Info(props: Props) {
   const [isCopy, setIsCopy] = useState(false);
 
   const affilateIdRef = useRef<any>(null);
-  const { updateProfile, loading, error, data } = useMutationProfile();
+  const { updateProfile } = useMutationProfile();
 
   const handleCopyAffilateId = () => {
     if (affilateIdRef) {
@@ -64,8 +65,8 @@ export default observer(function Info(props: Props) {
       //   message.success("Update success");
       // })
       .catch((err) => {
-        message.error("Fail");
-        console.log(error?.message);
+        message.error(err.message);
+        // console.log(err.message);
       });
   };
 

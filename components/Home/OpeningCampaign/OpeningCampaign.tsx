@@ -13,7 +13,7 @@ export default function Opening(props: Props) {
   const { resultOpening } = useOpening();
 
   return (
-    <section className="lucis-container">
+    <section className="lucis-container mt-[80px] lg:mt-[150px] ">
       <TitleSection text="Opening campaign" />
       {resultOpening?.openingBoxCampaign.length > 0 ? (
         <Row gutter={[30, 30]}>
@@ -38,6 +38,7 @@ export default function Opening(props: Props) {
               const timeCountDown = Math.floor(
                 (new Date(e.end).getTime() - new Date().getTime()) / 1000
               );
+              // Close in before countdown
 
               return (
                 <Col key={index} xs={24} md={12} lg={8}>

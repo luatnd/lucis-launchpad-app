@@ -6,9 +6,11 @@
   background-repeat: no-repeat
   background-position: center
   padding: 100px 0px 30px 0
-  @media screen and (min-width: 767px)
-    padding: 140px 0 60px 0
+  animation: fadeIn 5s
+  @media screen and (min-width: 768px)
+    padding: 130px 0 60px 0
   @media screen and (min-width: 1023px)
+    padding: 170px 0 60px 0
 
 .noti 
   display: flex
@@ -36,6 +38,7 @@
 
 
 .inf
+  animation: fadeIn 3s
   max-width: 689px
   width: 95%
   padding: 20px
@@ -50,7 +53,9 @@
 
 .infLogo 
   img
+    
     width: 70px
+
   @media screen and (min-width: 767px) 
     img
       width: 135px
@@ -60,6 +65,7 @@
     margin: 0
   .infTitle 
     margin-top: 12px
+
     p 
       font-size: 14px
       // font-weight: 700
@@ -68,6 +74,9 @@
   .infContent
     font-size: 14px
     margin-top: 10px
+
+  .readMore
+    @include line-camp(3)
   @media screen and (min-width: 767px) 
     .infTitle
       p
@@ -83,15 +92,21 @@
   justify-content: space-between
   align-items: center
   margin-top: 30px
+
   .infSocialIcons
     display: flex
-    gap: 30px
+    gap: 10px
     img
       width: 24px
+      transition: 0.3s
+      &:hover 
+        transform: scale(1.2)
   .infSocialRead
     font-size: 14px
     font-weight: 700
   @media screen and (min-width: 767px)
+    .infSocialIcons
+      gap: 20px
     .infSocialRead
       font-size: 24px
       a
@@ -99,3 +114,30 @@
     .infSocialIcons
       img
         width: 36px
+.blank 
+  animation: fadeIn 5s
+  height: 446px
+  @media screen and (min-width: 768px)
+  @media screen and (min-width: 1024px)
+  @media screen and (min-width: 1440px)
+    height: 737px
+
+// .blankInf
+//   @media screen and (min-width: 768px)
+//   @media screen and (min-width: 1024px)
+//   @media screen and (min-width: 1440px)
+//     height: 500px
+
+@keyframes fadeIn 
+  0% 
+    opacity:0
+  100% 
+    opacity:1
+
+// @keyframes mymove 
+//   from 
+//       background-position: 0% 1%
+//   to 
+//       background-position: 100% 
+  
+

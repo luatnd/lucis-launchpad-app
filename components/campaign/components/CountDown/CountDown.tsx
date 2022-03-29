@@ -70,7 +70,7 @@ const CountDown = (props: ICountDown) => {
   };
 
   return (
-    <div className={`lucis-container ${s.countDown}`}>
+    <div className={`lucis-container ${s.countDown} mt-[50px] md:mt-[100px]`}>
       <div className="text-white text-center sm:text-12px md:text-24px lg:text-36px font-bold">
         {textNow.toUpperCase()}
       </div>

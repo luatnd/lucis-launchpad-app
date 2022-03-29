@@ -65,6 +65,9 @@ export default function CardItem(props: Props) {
   const timer = useCountDown(timeCountDown);
   // console.log(timer);
 
+  const closeInStatus =
+    campaignStatus == "OPENING" && !soldOutResult ? "visible" : "hidden";
+
   return (
     <div
       className={`${s.CardContainer} ${bg_card} mt-120px sm:mt-150px mb-[50px] sm:mb-[80px]`}
@@ -75,6 +78,13 @@ export default function CardItem(props: Props) {
 
       <div className={s.content}>
         <div className={s.headingCard}>
+          <span
+            style={{ visibility: closeInStatus }}
+            className={`${typeTime} text-16px xl:text-20px font-[600] pl-[40px]`}
+          >
+            Close in
+          </span>
+
           <div className={`${s.styleTime} ${typeTime}`}>
             {campaignStatus == "UPCOMING"
               ? `${timer.days}d ${timer.hours}h ${
@@ -95,6 +105,7 @@ export default function CardItem(props: Props) {
                       : `${timer.seconds}`
                   }s`
               : "SALE ENDED"}
+
             {campaignStatus !== "CLOSED" && (
               <span className="text-[12px] md:text-[14px] lg:text-[18px] pl-2">
                 {highlight ?? ""}

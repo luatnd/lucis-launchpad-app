@@ -7,7 +7,7 @@ type Props = {
   onBlur?: () => void;
   className?: string;
   placeholder?: string;
-  valid?: boolean;
+  // valid?: boolean;
   name: string;
 };
 
@@ -17,11 +17,11 @@ const Input = ({
   onBlur,
   className,
   placeholder,
-  valid = true,
+  // valid = true,
   name,
 }: Props) => {
   return (
-    <div className={`${s.inputC} ${valid ? "" : s.invalid}`}>
+    <div className={`${s.inputC}`}>
       <input
         name={name}
         value={value !== "" ? value : undefined}
@@ -35,3 +35,5 @@ const Input = ({
 };
 
 export default Input;
+
+// ${valid ? "" : s.invalid}

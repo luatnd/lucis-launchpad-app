@@ -59,6 +59,7 @@ export default observer(function SiteMap(props: IRound) {
     // const firstStart = 0; // TODO: Fix bug above line
     const time = (firstStart - dateNow) * 1000;
     setIsActiveUpComing(false);
+
     if (upcomingStart <= dateNow && dateNow <= firstStart) {
       setTextNow(`${rounds[0]?.name} will start in`);
       setIsActiveUpComing(true);
@@ -68,10 +69,12 @@ export default observer(function SiteMap(props: IRound) {
       }, time);
       setTimeCountDown(Math.floor(time / 1000));
     }
+
     const lastStart = timeMoment(rounds[rounds?.length - 1]?.start)
       .tz(tzid)
       .unix();
     const timeLast = (closeEnd - dateNow) * 1000;
+
     if (lastStart <= dateNow && dateNow <= closeEnd) {
       setTextNow("The campaign will end in");
       setTimeout(() => {
@@ -79,10 +82,12 @@ export default observer(function SiteMap(props: IRound) {
       }, timeLast);
       setTimeCountDown(Math.floor(timeLast / 1000));
     }
+
     if (dateNow > closeEnd) {
       setKeyActiveSlide(rounds.length + 1);
       setTextNow("");
     }
+
     const x = rounds?.map((e, index) => {
       const endDate = timeMoment(e.end).tz(tzid).unix();
       const startDate = timeMoment(e.start).tz(tzid).unix();

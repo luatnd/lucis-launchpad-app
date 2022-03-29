@@ -7,6 +7,7 @@ import {
   GBoxCampaignBuyHistory,
 } from "src/generated/graphql";
 import { useQueryBoxHistories } from "hooks/profile/useQueryBoxHistories";
+import { observer } from "mobx-react-lite";
 
 type Props = {
   // data: GBoxCampaignBuyHistory[];
@@ -202,4 +203,4 @@ const HistoryTable = (props: Props) => {
   );
 };
 
-export default HistoryTable;
+export default observer(HistoryTable);

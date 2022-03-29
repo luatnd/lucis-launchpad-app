@@ -17,17 +17,27 @@ function validateEmail(email?: string) {
   if (email == null) {
     return;
   }
-  var re = /\S+@\S+\.\S+/;
+  const re = /\S+@\S+\.\S+/;
   return re.test(email.toLowerCase());
 }
 
+function validatePhone(phone?: string) {
+  if (phone == null) {
+    return;
+  }
+  const re = /^\d{10}$/;
+  return re.test(phone);
+}
+
 const Contact = ({ isEdit, setIsEdit }: Props) => {
-  const [isValidEmail, setIsValidEmail] = useState(true);
+  const [isValidInfo, setIsValidInfo] = useState({
+    phone: true,
+    email: true,
+  });
+
   const [isVerify, setIsVerify] = useState(false);
 
   const { phone, email } = AuthStore;
-
-  console.log(AuthStore);
 
   const [tempContact, setTempContact] = useState({
     phone: phone ?? "",
@@ -38,23 +48,21 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
   const { verifyEmail, verifyResult } = useMutaionVerifyEmail();
 
   const handleBlur = (field: string) => {
-    updateProfile({
-      variables: {
-        data: {
-          [field]: {
-            //@ts-ignore
-            set: tempContact[field],
+    //@ts-ignore
+    if (isValidInfo[field]) {
+      updateProfile({
+        variables: {
+          data: {
+            [field]: {
+              //@ts-ignore
+              set: tempContact[field],
+            },
           },
         },
-      },
-    })
-      // .then(() => {
-      //   message.success("Update phone success");
-      // })
-      .catch((err) => {
-        message.error("Fail!");
-        console.log("Error update phone: ", err);
+      }).catch((err) => {
+        message.error(err.message);
       });
+    }
   };
 
   const handleVerifyEmail = () => {
@@ -79,14 +87,20 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
 
     if (field === "email") {
       validateEmail(e.target.value)
-        ? setIsValidEmail(true)
-        : setIsValidEmail(false);
+        ? setIsValidInfo({ ...isValidInfo, email: true })
+        : setIsValidInfo({ ...isValidInfo, email: false });
 
       if (email !== e.target.value) {
         setIsVerify(true);
       } else {
         setIsVerify(false);
       }
+    }
+
+    if (field === "phone") {
+      validatePhone(e.target.value)
+        ? setIsValidInfo({ ...isValidInfo, phone: true })
+        : setIsValidInfo({ ...isValidInfo, phone: false });
     }
   };
 
@@ -105,13 +119,18 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
           </Col>
           <Col xs={16}>
             {isEdit ? (
-              <Input
-                value={tempContact.phone}
-                onChange={(e) => handleChange(e, "phone")}
-                onBlur={() => handleBlur("phone")}
-                placeholder={"091xxx0909"}
-                name="phone"
-              />
+              <>
+                <Input
+                  value={tempContact.phone}
+                  onChange={(e) => handleChange(e, "phone")}
+                  onBlur={() => handleBlur("phone")}
+                  placeholder={"091xxx0909"}
+                  name="phone"
+                />
+                {!isValidInfo.phone && (
+                  <p className={`${s.invalid}`}>Invalid Phone</p>
+                )}
+              </>
             ) : (
               <p>{tempContact.phone ? tempContact.phone : "Not available"}</p>
             )}
@@ -125,26 +144,31 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
           </Col>
           <Col span={16}>
             {isEdit ? (
-              <div className="flex">
-                <Input
-                  value={tempContact.email}
-                  onChange={(e) => handleChange(e, "email")}
-                  placeholder={"your.email@example.com"}
-                  valid={isValidEmail}
-                  name="email"
-                />
+              <>
+                <div className="flex ">
+                  <Input
+                    value={tempContact.email}
+                    onChange={(e) => handleChange(e, "email")}
+                    placeholder={"your.email@example.com"}
+                    // valid={isValidEmail}
+                    name="email"
+                  />
 
-                {isVerify && (
-                  <button
-                    className={`${s.verifyBtn} bg-gradient-1 md:ml-4 text-16px md:text-24px`}
-                    // onClick={handleOpenVerifyModal}
-                    onClick={handleVerifyEmail}
-                    // disabled
-                  >
-                    Verify
-                  </button>
+                  {isVerify && (
+                    <button
+                      className={`${s.verifyBtn} bg-gradient-1 md:ml-4 text-16px md:text-24px`}
+                      // onClick={handleOpenVerifyModal}
+                      onClick={handleVerifyEmail}
+                      disabled={!isValidInfo.email}
+                    >
+                      Verify
+                    </button>
+                  )}
+                </div>
+                {!isValidInfo.email && (
+                  <p className={s.invalid}>Invalid Email</p>
                 )}
-              </div>
+              </>
             ) : (
               <p>
                 {!email

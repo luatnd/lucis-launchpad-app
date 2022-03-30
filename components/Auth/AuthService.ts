@@ -120,11 +120,8 @@ export default class AuthService {
       params: params,
     })
     */
-    const web3Provider = ConnectWalletStore_NonReactiveData.web3Provider;
-    const signed_hash = await Promise.any([
-      web3Provider?.send("personal_sign", params),
-      delay(30000),
-    ]);
+
+    const signed_hash = await this.sign(params);
     console.log("signed_hash:", signed_hash);
     if (!signed_hash || typeof signed_hash !== "string" || signed_hash === "") {
       throw new Error("Request timeout");
@@ -163,7 +160,9 @@ export default class AuthService {
     const u = loginRes.data.login.user;
     const token = loginRes.data.login.token;
 
-    if (address !== u.address) {
+    if (address.toLowerCase() !== u.address.toLowerCase()) {
+      console.log(typeof address);
+      console.log(typeof u.address);
       throw new Error(
         `Invalid login address(${address}) vs user address(${u.address})`
       );
@@ -180,6 +179,21 @@ export default class AuthService {
     };
 
     return user;
+  }
+
+  sign(params: any) {
+    return new Promise<string | undefined>(async (resolve, reject) => {
+      try {
+        const web3Provider = ConnectWalletStore_NonReactiveData.web3Provider;
+        let timer = setTimeout(() => {
+          reject("Request timeout");
+        }, 30000);
+        const signed_hash = await web3Provider!.send("personal_sign", params);
+        resolve(signed_hash);
+      } catch (err) {
+        reject(err);
+      }
+    });
   }
 
   /**

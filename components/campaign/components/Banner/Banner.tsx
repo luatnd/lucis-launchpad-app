@@ -4,7 +4,8 @@ import {
   useDisableNotification,
   useEnableNotification,
 } from "hooks/campaign/useEnableNotification";
-import React, { useState } from "react";
+import { useWindowSize } from "hooks/useWindowSize";
+import React, { useEffect, useState } from "react";
 import { GBoxCampaign } from "src/generated/graphql";
 import s from "./Banner.module.sass";
 
@@ -15,7 +16,8 @@ type Props = {
 const Banner = ({ boxCampaign }: Props) => {
   // TODO: get data from boxCampaign.enable_notify
   const [isEnableNotification, setIsEnableNotification] = useState(false);
-  const [isReadMore, setIsReadMore] = useState(false);
+  const [isReadMore, setIsReadMore] = useState(true);
+  const [widthScreen, height] = useWindowSize();
 
   const { enableNotification } = useEnableNotification();
   const { disableNotification } = useDisableNotification();
@@ -35,6 +37,22 @@ const Banner = ({ boxCampaign }: Props) => {
   const handleReadMore = () => {
     setIsReadMore(true);
   };
+
+  // Handle read more button follow width screen
+  // - Dectect height
+  useEffect(() => {
+    const descEle = document.querySelector("#desc")?.clientHeight;
+
+    if (widthScreen >= 1280) {
+      descEle && descEle < 120 ? setIsReadMore(true) : setIsReadMore(false);
+    } else if (widthScreen >= 767) {
+      descEle && descEle < 90 ? setIsReadMore(true) : setIsReadMore(false);
+    } else if (widthScreen >= 540) {
+      descEle && descEle < 50 ? setIsReadMore(true) : setIsReadMore(false);
+    } else if (widthScreen > 0) {
+      descEle && descEle ? setIsReadMore(true) : setIsReadMore(false);
+    }
+  }, [widthScreen]);
 
   return (
     <div
@@ -58,37 +76,21 @@ const Banner = ({ boxCampaign }: Props) => {
           <div className={`${s.inf}`}>
             <div className={`${s.infContainer}`}>
               <div className={s.infLogo}>
-                {/* {boxCampaign ? (
-                <img src={boxCampaign.game.logo ?? ""} alt="" />
-              ) : (
-                <Skeleton.Image />
-              )} */}
                 <img src={boxCampaign?.game.logo ?? ""} alt="" />
               </div>
 
               <div className={s.infTitle}>
                 <p className="font-[700]">
                   {boxCampaign?.game.name?.toUpperCase()}
-                  {/* {boxCampaign ? (
-                  boxCampaign.game.name?.toUpperCase()
-                ) : (
-                  <Skeleton paragraph={{ rows: 0 }} />
-                )} */}
                 </p>
-                <p className="font-[600]">
-                  {boxCampaign?.name?.toUpperCase()}
-                  {/* {boxCampaign ? (
-                  boxCampaign.name?.toUpperCase()
-                ) : (
-                  <Skeleton paragraph={{ rows: 4 }} />
-                )} */}
-                </p>
+                <p className="font-[600]">{boxCampaign?.name?.toUpperCase()}</p>
               </div>
 
               <div
                 className={`${s.infContent} ${isReadMore ? "" : s.readMore}`}
+                id="desc"
               >
-                {boxCampaign?.game.desc}
+                {boxCampaign?.desc}
               </div>
 
               <div className={s.infSocial}>
@@ -162,7 +164,7 @@ const Banner = ({ boxCampaign }: Props) => {
                 {!isReadMore && (
                   <div className={s.infSocialRead}>
                     <button onClick={handleReadMore}>
-                      Read more &gt;&gt;{" "}
+                      read more &gt;&gt;{" "}
                     </button>
                   </div>
                 )}

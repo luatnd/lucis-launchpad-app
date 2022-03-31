@@ -77,8 +77,8 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
         AuthStore.phone = tempContact.phone;
       })
       .catch((err) => {
-        message.error("Fail!");
-        console.log("Error verify email: ", err);
+        message.error(err.message);
+        // console.log("Error verify email: ", err);
       });
   };
 
@@ -128,7 +128,7 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
                   name="phone"
                 />
                 {!isValidInfo.phone && (
-                  <p className={`${s.invalid}`}>Invalid Phone</p>
+                  <p className={`${s.invalid}`}>Invalid phone number</p>
                 )}
               </>
             ) : (

@@ -61,12 +61,11 @@ export default observer(function Info(props: Props) {
         },
       },
     })
-      // .then(() => {
-      //   message.success("Update success");
-      // })
+      .then(() => {
+        AuthStore.name = tempName;
+      })
       .catch((err) => {
         message.error(err.message);
-        // console.log(err.message);
       });
   };
 

@@ -18,7 +18,7 @@ export function useEnableNotification() {
 
 const ENABLE_NOTIFICATION = gql`
   mutation EnableNotification($box_campaign_uid: String!) {
-    enableNotification(BoxCampaignId: $box_campaign_uid)
+    enableNotification(box_campaign_id: $box_campaign_uid)
   }
 `;
 
@@ -37,6 +37,6 @@ export function useDisableNotification() {
 
 const DISEABLE_NOTIFICATION = gql`
   mutation DisableNotification($box_campaign_uid: String!) {
-    disableNotification(BoxCampaignId: $box_campaign_uid)
+    disableNotification(box_campaign_id: $box_campaign_uid)
   }
 `;

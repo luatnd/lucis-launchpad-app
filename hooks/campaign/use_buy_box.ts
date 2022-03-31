@@ -318,7 +318,7 @@ export function useBuyBox(
           message.success(
             // '<span>Successfully buy the box (TODO: INFO) | tx hash: (TODO: txhash)</span>',
             "Success!",
-            15
+            5
           );
         } else {
           message.error("Buy box failed");

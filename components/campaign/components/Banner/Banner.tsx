@@ -4,7 +4,7 @@ import {
   useDisableNotification,
   useEnableNotification,
 } from "hooks/campaign/useEnableNotification";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GBoxCampaign } from "src/generated/graphql";
 import s from "./Banner.module.sass";
 
@@ -36,6 +36,16 @@ const Banner = ({ boxCampaign }: Props) => {
     setIsReadMore(true);
   };
 
+  useEffect(() => {
+    const descEle = document.querySelector("#desc")?.clientHeight;
+    console.log(descEle);
+    if (descEle && descEle < 100) {
+      setIsReadMore(true);
+    } else {
+      setIsReadMore(false);
+    }
+  }, []);
+
   return (
     <div
       className={`${s.backgroundBanner} ${!boxCampaign && s.blank}`}
@@ -58,37 +68,21 @@ const Banner = ({ boxCampaign }: Props) => {
           <div className={`${s.inf}`}>
             <div className={`${s.infContainer}`}>
               <div className={s.infLogo}>
-                {/* {boxCampaign ? (
-                <img src={boxCampaign.game.logo ?? ""} alt="" />
-              ) : (
-                <Skeleton.Image />
-              )} */}
                 <img src={boxCampaign?.game.logo ?? ""} alt="" />
               </div>
 
               <div className={s.infTitle}>
                 <p className="font-[700]">
                   {boxCampaign?.game.name?.toUpperCase()}
-                  {/* {boxCampaign ? (
-                  boxCampaign.game.name?.toUpperCase()
-                ) : (
-                  <Skeleton paragraph={{ rows: 0 }} />
-                )} */}
                 </p>
-                <p className="font-[600]">
-                  {boxCampaign?.name?.toUpperCase()}
-                  {/* {boxCampaign ? (
-                  boxCampaign.name?.toUpperCase()
-                ) : (
-                  <Skeleton paragraph={{ rows: 4 }} />
-                )} */}
-                </p>
+                <p className="font-[600]">{boxCampaign?.name?.toUpperCase()}</p>
               </div>
 
               <div
                 className={`${s.infContent} ${isReadMore ? "" : s.readMore}`}
+                id="desc"
               >
-                {boxCampaign?.game.desc}
+                {boxCampaign?.desc}
               </div>
 
               <div className={s.infSocial}>

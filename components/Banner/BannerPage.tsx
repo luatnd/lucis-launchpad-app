@@ -26,7 +26,7 @@ export default function Banner() {
     >
       {/* <InputSearch /> */}
       <SimpleSlider {...sliderProps} />
-      <div className="lucis-container my-[30px]">
+      <div className="lucis-container sm:mt-[30px] lg:mt-[50px]">
         <div className={s.thumbContainer}>
           <Link href="/ino" passHref>
             <a className={`${s.btnApplyINO}`}>

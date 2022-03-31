@@ -116,7 +116,7 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                 </a>
                 {!isValidSocials.facebook && (
                   <p className={`${s.inValid} pl-[30px] sm:pl-[50px]`}>
-                    Invalid Facebook url
+                    Invalid facebook URL
                   </p>
                 )}
               </div>
@@ -142,7 +142,7 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                 </a>
                 {!isValidSocials.twitter && (
                   <p className={`${s.inValid} pl-[30px] sm:pl-[50px]`}>
-                    Invalid Twitter url
+                    Invalid twitter URL
                   </p>
                 )}
               </div>
@@ -165,13 +165,10 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                         : "Not available"}
                     </p>
                   )}
-                  {!isValidSocials.discord && (
-                    <p className={s.inValid}>Invalid Discord url</p>
-                  )}
                 </a>
                 {!isValidSocials.discord && (
                   <p className={`${s.inValid} pl-[30px] sm:pl-[50px]`}>
-                    Invalid Discord url
+                    Invalid discord URL
                   </p>
                 )}
               </div>
@@ -194,13 +191,10 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                         : "Not available"}
                     </p>
                   )}
-                  {!isValidSocials.telegram && (
-                    <p className={s.invalid}>Invalid Telegram url</p>
-                  )}
                 </a>
                 {!isValidSocials.telegram && (
                   <p className={`${s.inValid} pl-[30px] sm:pl-[50px]`}>
-                    Invalid Telegram url
+                    Invalid telegram URL
                   </p>
                 )}
               </div>

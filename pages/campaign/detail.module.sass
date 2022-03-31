@@ -4,6 +4,7 @@
   left: 0
   width: 100%
 .tabs
+  animation: fadeIn 5s
   margin-bottom: 140px
   & :global(.ant-tabs-nav-wrap)
     justify-content: center
@@ -45,3 +46,9 @@
   font-size: 24px
   @media (min-width: 0px) and (max-width: 639px)
     font-size: 16px
+
+@keyframes fadeIn 
+  0% 
+    opacity:0
+  100% 
+    opacity:1

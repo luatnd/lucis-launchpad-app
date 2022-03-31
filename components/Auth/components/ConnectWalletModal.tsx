@@ -74,6 +74,14 @@ export default observer(function ConnectWalletModal(props: Props) {
      * If user change the chain, we don't need to do anything
      * TODO: Just ensure target chain is active before sending the request => Check if we need to ensure, or metamask will do it?
      */
+    console.log(
+      "getChainNetworkFromChainId(_hexChainId):",
+      getChainNetworkFromChainId(_hexChainId)
+    );
+    setNetwork(getChainNetworkFromChainId(_hexChainId));
+    setTimeout(() => {
+      changeWallet(activeWallet!);
+    }, 1000);
   };
   const handleDisconnect = (error: { code: number; message: string }) => {
     console.log("{handleDisconnect} error: ", error.code, error.message);
@@ -247,17 +255,15 @@ export default observer(function ConnectWalletModal(props: Props) {
       setWallet(connectedWallet);
       return;
     }
+    console.log("isModalVisible", isModalVisible);
+    console.log("address", address);
+    console.log("connected_network", connected_network);
     if (isModalVisible && address && !connected_network) {
       reUpdateWalletIfNeeded(...connectWalletHelper.fetchConnectionSetting());
     }
   }, [isModalVisible, address, connected_network, connectedWallet]);
 
   useEffect(() => {
-    console.log("connectedChain:", connectedChain);
-    if (!!connectedChain) {
-      return;
-    }
-    return;
     /**
      * ------- Try to restore
      * TODO: This effect was run 2 time, plz check, this must be run once
@@ -275,6 +281,7 @@ export default observer(function ConnectWalletModal(props: Props) {
     if (!w || !network) {
       return;
     }
+    console.log("continue");
 
     // connect to cache provider
     const opt: ConnectWalletOption = {
@@ -294,7 +301,7 @@ export default observer(function ConnectWalletModal(props: Props) {
       })
       .then(async (provider) =>
         handleConnectThen(provider, w, () => {
-          DEBUG && console.log("{handleConnectThen} setWallet:  : ", w);
+          DEBUG && console.log("{handleConnectThen} wallet:  : ", w);
           setWallet(w);
           connectWalletHelper.cacheConnectionSetting(w, network);
 
@@ -317,7 +324,7 @@ export default observer(function ConnectWalletModal(props: Props) {
       .catch((e) => handleConnectCatch(e));
     // }
     // }
-  }, [loginWithLucis, connectedChain]);
+  }, []);
 
   const handleConnectThen = async (
     provider: any,

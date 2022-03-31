@@ -66,8 +66,10 @@ class AuthStore {
 
   constructor() {
     makeAutoObservable(this);
-    const u = getLocalAuthInfo();
-    this.token = u?.token;
+    // const u = getLocalAuthInfo();
+    // if (!!u) {
+    //   this.setAuthUser(u);
+    // }
   }
 
   resetStates() {

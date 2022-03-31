@@ -1,6 +1,6 @@
-import { ethers } from 'ethers'
-import AnimTokenErc20Abi from './abi/AnimTokenErc20Abi.json'
-import Erc721Abi from './abi/Erc721Abi.json'
+import { ethers } from "ethers";
+import AnimTokenErc20Abi from "./abi/AnimTokenErc20Abi.json";
+import Erc721Abi from "./abi/Erc721Abi.json";
 import { makeError } from "../../utils/Error";
 
 /*
@@ -18,8 +18,8 @@ const address = await ethersService.getMyAddress();
  */
 export default class EtherContract {
   static ErrorCode = {
-    NotInitialized: 'NotInitialized',
-  }
+    NotInitialized: "NotInitialized",
+  };
 
   private _web3Provider?: ethers.providers.Web3Provider;
 
@@ -37,27 +37,41 @@ export default class EtherContract {
 
   private getSigner(): ethers.providers.JsonRpcSigner {
     if (!this._web3Provider) {
-      throw makeError(EtherContract.ErrorCode.NotInitialized, "Contract._web3Provider was not set");
+      throw makeError(
+        EtherContract.ErrorCode.NotInitialized,
+        "Contract._web3Provider was not set"
+      );
     }
 
-    return this._web3Provider.getSigner()
+    return this._web3Provider.getSigner();
   }
 
   private getContractWithSignerErc20(contractAddress: string): ethers.Contract {
-    return new ethers.Contract(contractAddress, AnimTokenErc20Abi.abi, this.getSigner())
+    return new ethers.Contract(
+      contractAddress,
+      AnimTokenErc20Abi.abi,
+      this.getSigner()
+    );
   }
 
-  private getContractWithSignerErc721(contractAddress: string): ethers.Contract {
-    return new ethers.Contract(contractAddress, Erc721Abi, this.getSigner())
+  private getContractWithSignerErc721(
+    contractAddress: string
+  ): ethers.Contract {
+    return new ethers.Contract(contractAddress, Erc721Abi, this.getSigner());
   }
 
-  async getBalanceOf(address: string, erc20ContractAddress: string): Promise<number> {
-    const contract = await this.getContractWithSignerErc20(erc20ContractAddress)
-    return contract.balanceOf(address)
+  async getBalanceOf(
+    address: string,
+    erc20ContractAddress: string
+  ): Promise<number> {
+    const contract = await this.getContractWithSignerErc20(
+      erc20ContractAddress
+    );
+    return contract.balanceOf(address);
   }
 
   async getMyAddress() {
-    return this.getSigner().getAddress()
+    return this.getSigner().getAddress();
   }
 
   /**
@@ -73,16 +87,15 @@ export default class EtherContract {
     erc20Address: string
   ): Promise<number | null> {
     const myAddress = await this.getMyAddress();
-    const contract = await this.getContractWithSignerErc20(erc20Address)
+    const contract = await this.getContractWithSignerErc20(erc20Address);
 
     const res = await contract.allowance(myAddress, address).catch((e: any) => {
-      console.error('{getAllowance} catch e: ', e)
-      return null
-    })
+      console.error("{getAllowance} catch e: ", e);
+      return null;
+    });
 
-    return res === null ? res : ethers.utils.formatEther(res)
+    return res === null ? res : ethers.utils.formatEther(res);
   }
-
 
   /**
    * erc20 contract give permission for the address/contract to spend money from
@@ -94,22 +107,18 @@ export default class EtherContract {
     address: string,
     erc20Address: string
   ): Promise<boolean> {
-    const contract = await this.getContractWithSignerErc20(erc20Address)
+    const contract = await this.getContractWithSignerErc20(erc20Address);
     return contract
       .approve(address, ethers.constants.MaxUint256)
       .then((r: any) => {
-        console.log('{EtherContract.requestApproval} r: ', r);
+        console.log("{EtherContract.requestApproval} r: ", r);
         if (r.hash) {
-          console.log('{EtherContract.requestApproval} r.hash', r.hash);
-          return true
+          console.log("{EtherContract.requestApproval} r.hash", r.hash);
+          return true;
         } else {
-          return true
+          return true;
         }
-      })
-      .catch((e: any) => {
-        console.error('{requestApproval} catch e: ', e)
-        return false
-      })
+      });
   }
 
   async transferNft(
@@ -130,17 +139,19 @@ export default class EtherContract {
       // })
 
       const myAddress = await this.getMyAddress();
-      const boxContractSigner = this.getContractWithSignerErc721(nftBoxContractAddress)
+      const boxContractSigner = this.getContractWithSignerErc721(
+        nftBoxContractAddress
+      );
 
       const transaction = await boxContractSigner.transferFrom(
         myAddress,
         toAddress,
         nftTokenId
-      )
-      return transaction.wait()
+      );
+      return transaction.wait();
     } catch (error) {
-      console.log('{EtherContract.transferNft} error: ', error)
-      return false
+      console.log("{EtherContract.transferNft} error: ", error);
+      return false;
     }
   }
 }

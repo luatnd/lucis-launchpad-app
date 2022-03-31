@@ -276,9 +276,9 @@ body .ant-menu {
   /*.nav-list li:first-child {*/
   /*  margin-bottom: 12px;*/
   /*}*/
-  .nav-list li:last-child {
+  /* .nav-list li:last-child {
     margin-top: 12px;
-  }
+  } */
 
   .icon-placeholder {
     width: 40px;

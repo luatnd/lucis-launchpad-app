@@ -4,6 +4,7 @@ import {
   useDisableNotification,
   useEnableNotification,
 } from "hooks/campaign/useEnableNotification";
+import { useWindowSize } from "hooks/useWindowSize";
 import React, { useEffect, useState } from "react";
 import { GBoxCampaign } from "src/generated/graphql";
 import s from "./Banner.module.sass";
@@ -15,7 +16,8 @@ type Props = {
 const Banner = ({ boxCampaign }: Props) => {
   // TODO: get data from boxCampaign.enable_notify
   const [isEnableNotification, setIsEnableNotification] = useState(false);
-  const [isReadMore, setIsReadMore] = useState(false);
+  const [isReadMore, setIsReadMore] = useState(true);
+  const [widthScreen, height] = useWindowSize();
 
   const { enableNotification } = useEnableNotification();
   const { disableNotification } = useDisableNotification();
@@ -36,15 +38,21 @@ const Banner = ({ boxCampaign }: Props) => {
     setIsReadMore(true);
   };
 
+  // Handle read more button follow width screen
+  // - Dectect height
   useEffect(() => {
     const descEle = document.querySelector("#desc")?.clientHeight;
-    console.log(descEle);
-    if (descEle && descEle < 100) {
-      setIsReadMore(true);
-    } else {
-      setIsReadMore(false);
+
+    if (widthScreen >= 1280) {
+      descEle && descEle < 120 ? setIsReadMore(true) : setIsReadMore(false);
+    } else if (widthScreen >= 767) {
+      descEle && descEle < 90 ? setIsReadMore(true) : setIsReadMore(false);
+    } else if (widthScreen >= 540) {
+      descEle && descEle < 50 ? setIsReadMore(true) : setIsReadMore(false);
+    } else if (widthScreen > 0) {
+      descEle && descEle ? setIsReadMore(true) : setIsReadMore(false);
     }
-  }, []);
+  }, [widthScreen]);
 
   return (
     <div
@@ -156,7 +164,7 @@ const Banner = ({ boxCampaign }: Props) => {
                 {!isReadMore && (
                   <div className={s.infSocialRead}>
                     <button onClick={handleReadMore}>
-                      Read more &gt;&gt;{" "}
+                      read more &gt;&gt;{" "}
                     </button>
                   </div>
                 )}

@@ -154,7 +154,16 @@ const BoxTypeCard = observer((props: Props) => {
     chains: chains,
   };
 
-  // console.log(isSaleRound);
+  // console.log(boxType.total_amount);
+  console.log(
+    boxType.name,
+    Math.floor(
+      ((purchasedBox?.sold_amount ?? boxType.sold_amount) /
+        (purchasedBox?.total_amount ?? boxType.total_amount)) *
+        100
+      // (boxType.sold_amount / boxType.total_amount) * 100
+    )
+  );
 
   return (
     <div>
@@ -375,7 +384,10 @@ const BoxTypeCard = observer((props: Props) => {
             </div>
             <Progress
               percent={Math.floor(
-                (boxType.sold_amount / boxType.total_amount) * 100
+                ((purchasedBox?.sold_amount ?? boxType.sold_amount) /
+                  (purchasedBox?.total_amount ?? boxType.total_amount)) *
+                  100
+                // (boxType.sold_amount / boxType.total_amount) * 100
               )}
               showInfo={false}
               // status="active"

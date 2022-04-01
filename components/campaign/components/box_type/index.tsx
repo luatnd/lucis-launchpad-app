@@ -154,17 +154,6 @@ const BoxTypeCard = observer((props: Props) => {
     chains: chains,
   };
 
-  // console.log(boxType.total_amount);
-  console.log(
-    boxType.name,
-    Math.floor(
-      ((purchasedBox?.sold_amount ?? boxType.sold_amount) /
-        (purchasedBox?.total_amount ?? boxType.total_amount)) *
-        100
-      // (boxType.sold_amount / boxType.total_amount) * 100
-    )
-  );
-
   return (
     <div>
       <div className="flex justify-center">

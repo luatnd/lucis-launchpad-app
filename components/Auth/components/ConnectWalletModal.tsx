@@ -66,7 +66,9 @@ export default observer(function ConnectWalletModal(props: Props) {
      * If user change the account
      * Need to re-connect the wallet and verify their new address also
      */
-    // return loginWithLucis(currentAccount, true);
+    if (currentAccount !== address) {
+      return loginWithLucis(currentAccount, true);
+    }
   };
   const handleChainChanged = (_hexChainId: string) => {
     console.log("{handleChainChanged} _hexChainId: ", _hexChainId);

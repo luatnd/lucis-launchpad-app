@@ -24,6 +24,7 @@ import {
 import AuthService, { AuthError } from "../AuthService";
 import AuthBoxStore from "./AuthBoxStore";
 import { AppEmitter } from "../../../services/emitter";
+import EthersService from "services/blockchain/Ethers";
 
 type Props = {};
 export default observer(function ConnectWalletModal(props: Props) {
@@ -112,6 +113,21 @@ export default observer(function ConnectWalletModal(props: Props) {
         AuthStore.loading = true;
         const authService = new AuthService();
         const r = await authService.login(address!, 0);
+
+        if (!ConnectWalletStore_NonReactiveData.web3Provider) {
+          throw message.error("Need to connect your wallet first");
+        }
+
+        const ethersService = new EthersService(
+          ConnectWalletStore_NonReactiveData.web3Provider
+        );
+        const balance = await ethersService.getNativeBalance(address);
+        AuthStore.balance = balance;
+        //@ts-ignore
+        // window.tmp = ConnectWalletStore_NonReactiveData;
+        // const balance = await provider.getBalance(address);
+        // console.log(balance);
+
         AuthStore.loading = false;
         console.log("{loginWithLucis.} r: ", r);
 

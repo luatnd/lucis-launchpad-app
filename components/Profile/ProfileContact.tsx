@@ -145,7 +145,7 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
           <Col span={16}>
             {isEdit ? (
               <>
-                <div className="flex ">
+                <div className="flex items-center">
                   <Input
                     value={tempContact.email}
                     onChange={(e) => handleChange(e, "email")}

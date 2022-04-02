@@ -69,8 +69,9 @@ function DetailCampaign() {
     }
   };
 
-  // console.log("recentlyPurchasedBox :", recentlyPurchasedBox);
-  // console.log("purchasedBox :", purchasedBox);
+  // const temp = JSON.parse(JSON.stringify(historiesBox));
+  // // recentlyPurchasedBox && temp.push(recentlyPurchasedBox);
+  // console.log(temp.push(recentlyPurchasedBox));
 
   return (
     <>
@@ -124,7 +125,10 @@ function DetailCampaign() {
                     //   <BuyHistory id={campaignUid} title="recently bought" />
                     // </div>
                     historiesBox && (
-                      <RecentlyBought historiesBox={historiesBox} />
+                      <RecentlyBought
+                        historiesBox={historiesBox}
+                        recentlyPurchasedBox={recentlyPurchasedBox}
+                      />
                     )}
                 </TabPane>
 

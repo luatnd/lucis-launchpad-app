@@ -20,6 +20,7 @@ export default function BoxCard(props: BoxCardProps) {
   const chains = props.boxCampaign.chains ?? [];
 
   const currentRound = getOriginCurrentCampaignRound(props.boxCampaign);
+  // console.log(props.recentlyPurchasedBox);
 
   return (
     <div className="lucis-container mt-[60px] md:mt-[100px]">

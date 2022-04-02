@@ -70,6 +70,24 @@ export default class EtherContract {
     return contract.balanceOf(address);
   }
 
+  /**
+   * If connect with ETH will get BUSD
+   * BSC get BNB
+   * Poligon get Matic
+   * ...
+   */
+  async getNativeBalance(address: string) {
+    const r = await this._web3Provider?.getBalance(address);
+    // const balance = ethers.utils.formatEther(r)
+
+    let balance;
+    if (r) {
+      balance = ethers.utils.formatEther(r);
+    }
+
+    return balance;
+  }
+
   async getMyAddress() {
     return this.getSigner().getAddress();
   }

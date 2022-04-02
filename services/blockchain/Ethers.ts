@@ -136,10 +136,6 @@ export default class EtherContract {
         } else {
           return true;
         }
-      })
-      .catch((e: any) => {
-        console.error("{requestApproval} catch e: ", e);
-        return false;
       });
   }
 

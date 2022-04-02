@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import { makeAutoObservable } from "mobx";
 import { to_hex_str } from "utils/String";
 import { isClient } from "../../utils/DOM";
+import { getLocalAuthInfo } from "./AuthLocal";
 
 type TLoyalty = {
   level: number;
@@ -66,6 +67,10 @@ class AuthStore {
 
   constructor() {
     makeAutoObservable(this);
+    // const u = getLocalAuthInfo();
+    // if (!!u) {
+    //   this.setAuthUser(u);
+    // }
   }
 
   resetStates() {

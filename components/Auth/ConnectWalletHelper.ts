@@ -1,18 +1,17 @@
-import { providers } from 'ethers'
+import { providers } from "ethers";
 
 import { ensureTargetChain, initWeb3 } from "./Web3Modal";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "./ConnectWalletStore";
 import { ChainNetwork, Wallet } from "../../utils/blockchain/BlockChain";
 import { makeError } from "utils/Error";
 
-
 export enum ConnectWalletError {
-  MetamaskNotInstalled = 'MetamaskNotInstalled',
-  UserRejected = 'UserRejected',
-  AddNetworkProfileNotSupported = 'AddNetworkProfileNotSupported',
-  SwitchChainNotSupported = 'SwitchChainNotSupported',
-  ChainNotSupportedByWallet = 'ChainNotSupportedByWallet',
-  TestNetChainNotSupportedByWallet = 'TestNetChainNotSupportedByWallet',
+  MetamaskNotInstalled = "MetamaskNotInstalled",
+  UserRejected = "UserRejected",
+  AddNetworkProfileNotSupported = "AddNetworkProfileNotSupported",
+  SwitchChainNotSupported = "SwitchChainNotSupported",
+  ChainNotSupportedByWallet = "ChainNotSupportedByWallet",
+  TestNetChainNotSupportedByWallet = "TestNetChainNotSupportedByWallet",
 }
 
 /**
@@ -39,25 +38,25 @@ export const Web3ProviderErrorCodes = {
     disconnected: 4900,
     chainDisconnected: 4901,
   },
-}
-
+};
 
 export type ConnectWalletOption = {
-  onWalletEvent_AccountsChanged: (accounts: string[]) => void
-  onWalletEvent_ChainChanged: (_hexChainId: string) => void
-  onWalletEvent_Disconnect: (error: { code: number; message: string }) => void
-}
+  onWalletEvent_AccountsChanged: (accounts: string[]) => void;
+  onWalletEvent_ChainChanged: (_hexChainId: string) => void;
+  onWalletEvent_Disconnect: (error: { code: number; message: string }) => void;
+};
 
 class ConnectWalletHelper {
   // The data was store at ConnectWalletStore with reactive
 
-  public onWalletEvent_AccountsChanged = (accounts: string[]) => {}
-  public onWalletEvent_ChainChanged = (_hexChainId: string) => {}
-  public onWalletEvent_Disconnect = (error: { code: number; message: string }) => {}
+  public onWalletEvent_AccountsChanged = (accounts: string[]) => {};
+  public onWalletEvent_ChainChanged = (_hexChainId: string) => {};
+  public onWalletEvent_Disconnect = (error: {
+    code: number;
+    message: string;
+  }) => {};
 
-  constructor() {
-
-  }
+  constructor() {}
 
   /**
    * Try to init the sdk to make user connect to his wallet
@@ -88,7 +87,11 @@ class ConnectWalletHelper {
    * Additional for Mobile:
    *
    */
-  async connectWallet(wallet: Wallet, network: ChainNetwork, option: ConnectWalletOption): Promise<any> {
+  async connectWallet(
+    wallet: Wallet,
+    network: ChainNetwork,
+    option: ConnectWalletOption
+  ): Promise<any> {
     switch (wallet) {
       case Wallet.metamask:
         return this.connectMetamask(network, option);
@@ -98,13 +101,16 @@ class ConnectWalletHelper {
         return this.connectBinanceWallet(network, option);
       default:
         return new Promise<any>((resolve, reject) => {
-          reject("initFor: Unhandled wallet: " + wallet)
+          reject("initFor: Unhandled wallet: " + wallet);
           return;
-        })
+        });
     }
   }
 
-  public web3_ensureActiveTargetChain(wallet: Wallet, network: ChainNetwork): Promise<boolean> {
+  public web3_ensureActiveTargetChain(
+    wallet: Wallet,
+    network: ChainNetwork
+  ): Promise<boolean> {
     switch (wallet) {
       case Wallet.metamask:
         const chainId = this.getConfiguredChainId(network);
@@ -112,14 +118,19 @@ class ConnectWalletHelper {
 
       case Wallet.wc:
         return new Promise<boolean>((resolve, reject) => {
-          resolve(true)
-        })
+          resolve(true);
+        });
 
       default:
         return new Promise<boolean>((resolve, reject) => {
-          reject(this.makeError(ConnectWalletError.SwitchChainNotSupported, ConnectWalletError.SwitchChainNotSupported))
+          reject(
+            this.makeError(
+              ConnectWalletError.SwitchChainNotSupported,
+              ConnectWalletError.SwitchChainNotSupported
+            )
+          );
           return;
-        })
+        });
     }
   }
 
@@ -133,9 +144,9 @@ class ConnectWalletHelper {
         return this.disconnectBinanceWallet(network);
       default:
         return new Promise<any>((resolve, reject) => {
-          reject("disconnectWallet: Unhandled wallet: " + wallet)
+          reject("disconnectWallet: Unhandled wallet: " + wallet);
           return;
-        })
+        });
     }
   }
 
@@ -149,9 +160,7 @@ class ConnectWalletHelper {
   /**
    * connect* funtion must fire this event on failed
    */
-  onConnectFailed() {
-
-  }
+  onConnectFailed() {}
 
   //
   // private initNear() {
@@ -159,13 +168,16 @@ class ConnectWalletHelper {
   // }
 
   private makeError(code: string | number, msg: string): Error {
-    return makeError(code, msg)
+    return makeError(code, msg);
   }
 
-  private connectEthVariant(provider_id: string, network: ChainNetwork, option: ConnectWalletOption) {
+  private connectEthVariant(
+    provider_id: string,
+    network: ChainNetwork,
+    option: ConnectWalletOption
+  ) {
     return new Promise<any>((resolve, reject) => {
-
-      const requiredChainId = this.getConfiguredChainId(network)
+      const requiredChainId = this.getConfiguredChainId(network);
 
       /**
        * See the: components/Auth/Web3Modal.ts::_getProviderOptions
@@ -176,17 +188,26 @@ class ConnectWalletHelper {
       //   return;
       // }
 
-      const web3Modal = initWeb3(requiredChainId)! // this was ensured to run only on client
-
-      web3Modal.connectTo(provider_id)
-        .then(provider => {
-          const web3Provider = new providers.Web3Provider(provider, 'any')
+      const web3Modal = initWeb3(requiredChainId)!; // this was ensured to run only on client
+      web3Modal
+        .connectTo(provider_id)
+        .then((provider) => {
+          const web3Provider = new providers.Web3Provider(provider, "any");
 
           // unregister old listener
           if (provider.removeListener) {
-            provider.removeListener('accountsChanged', this.onWalletEvent_AccountsChanged)
-            provider.removeListener('chainChanged', this.onWalletEvent_ChainChanged)
-            provider.removeListener('disconnect', this.onWalletEvent_Disconnect)
+            provider.removeListener(
+              "accountsChanged",
+              this.onWalletEvent_AccountsChanged
+            );
+            provider.removeListener(
+              "chainChanged",
+              this.onWalletEvent_ChainChanged
+            );
+            provider.removeListener(
+              "disconnect",
+              this.onWalletEvent_Disconnect
+            );
           }
 
           // new provider
@@ -196,122 +217,141 @@ class ConnectWalletHelper {
 
           // add new listener
           if (provider?.on) {
-            this.onWalletEvent_AccountsChanged = option.onWalletEvent_AccountsChanged
-            this.onWalletEvent_ChainChanged = option.onWalletEvent_ChainChanged
-            this.onWalletEvent_Disconnect = option.onWalletEvent_Disconnect
-            provider.on('accountsChanged', this.onWalletEvent_AccountsChanged)
-            provider.on('chainChanged', this.onWalletEvent_ChainChanged)
-            provider.on('disconnect', this.onWalletEvent_Disconnect)
+            this.onWalletEvent_AccountsChanged =
+              option.onWalletEvent_AccountsChanged;
+            this.onWalletEvent_ChainChanged = option.onWalletEvent_ChainChanged;
+            this.onWalletEvent_Disconnect = option.onWalletEvent_Disconnect;
+            provider.on("accountsChanged", this.onWalletEvent_AccountsChanged);
+            provider.on("chainChanged", this.onWalletEvent_ChainChanged);
+            provider.on("disconnect", this.onWalletEvent_Disconnect);
           }
 
-          resolve(provider)
+          resolve(provider);
         })
-        .catch(e => {
+        .catch((e) => {
+          console.log("connect_err: ", e);
           // console.log('{ConnectWalletHelper.connectTo} e: ', e);
           /**
            * NOTE: Web3Modal does not retain the error.code from metamask
            * It's all consider "User Rejected" error
            */
           if (e.message === "User Rejected") {
-            reject(this.makeError(ConnectWalletError.UserRejected, `Rejected with error code: ${Web3ProviderErrorCodes.provider.userRejectedRequest}`))
+            reject(
+              this.makeError(
+                ConnectWalletError.UserRejected,
+                `Rejected with error code: ${Web3ProviderErrorCodes.provider.userRejectedRequest}`
+              )
+            );
             return;
           }
-        })
-    })
+        });
+    });
   }
 
   private connectMetamask(network: ChainNetwork, option: ConnectWalletOption) {
+    const isMetamask = window.ethereum && window.ethereum.isMetaMask;
+    if (!isMetamask) {
+      throw this.makeError(
+        ConnectWalletError.MetamaskNotInstalled,
+        ConnectWalletError.MetamaskNotInstalled
+      );
+    }
+
+    return this.connectEthVariant("injected", network, option);
+  }
+
+  private connectC98Wallet(
+    network: ChainNetwork,
+    option: ConnectWalletOption
+  ) {}
+
+  private connectWalletConnect(
+    network: ChainNetwork,
+    option: ConnectWalletOption
+  ) {
+    return this.connectEthVariant("walletconnect", network, option);
+  }
+
+  private connectBinanceWallet(
+    network: ChainNetwork,
+    option: ConnectWalletOption
+  ) {
     return new Promise<any>((resolve, reject) => {
-      const isMetamask = window.ethereum && window.ethereum.isMetaMask;
-      if (!isMetamask) {
-        reject(this.makeError(ConnectWalletError.MetamaskNotInstalled, ConnectWalletError.MetamaskNotInstalled))
-        return;
-      }
-
-      resolve(this.connectEthVariant("injected", network, option))
-    })
-  }
-
-  private connectC98Wallet(network: ChainNetwork, option: ConnectWalletOption) {
-
-  }
-
-  private connectWalletConnect(network: ChainNetwork, option: ConnectWalletOption) {
-    return this.connectEthVariant("walletconnect", network, option)
-  }
-
-  private connectBinanceWallet(network: ChainNetwork, option: ConnectWalletOption) {
-    return new Promise<any>((resolve, reject) => {
-      reject("TODO")
+      reject("TODO");
       return;
-    })
+    });
   }
 
   private disconnectMetamask(network: ChainNetwork) {
     return new Promise<any>((resolve, reject) => {
-      reject("TODO")
+      reject("TODO");
       return;
-    })
+    });
   }
 
   private disconnectWalletConnect(network: ChainNetwork) {
     return new Promise<any>((resolve, reject) => {
-      reject("TODO")
+      reject("TODO");
       return;
-    })
+    });
   }
 
   private disconnectBinanceWallet(network: ChainNetwork) {
     return new Promise<any>((resolve, reject) => {
-      reject("TODO")
+      reject("TODO");
       return;
-    })
+    });
   }
-
 
   private getConfiguredChainId(network: ChainNetwork): number {
     let requiredChainId: number;
     switch (network) {
       case ChainNetwork.eth:
-        requiredChainId = parseInt('' + process.env.NEXT_PUBLIC_CHAIN_ID__ETH);
+        requiredChainId = parseInt("" + process.env.NEXT_PUBLIC_CHAIN_ID__ETH);
         break;
       case ChainNetwork.polygon:
-        requiredChainId = parseInt('' + process.env.NEXT_PUBLIC_CHAIN_ID__POLYGON);
+        requiredChainId = parseInt(
+          "" + process.env.NEXT_PUBLIC_CHAIN_ID__POLYGON
+        );
         break;
       case ChainNetwork.bsc:
-        requiredChainId = parseInt('' + process.env.NEXT_PUBLIC_CHAIN_ID__BSC);
+        requiredChainId = parseInt("" + process.env.NEXT_PUBLIC_CHAIN_ID__BSC);
         // console.log('{ConnectWalletHelper.getConfiguredChainId} process.env.NEXT_PUBLIC_CHAIN_ID__BSC: ', process.env.NEXT_PUBLIC_CHAIN_ID__BSC, requiredChainId);
         break;
       default:
         // @ts-ignore
-        throw new Error(`requiredChainId was not handled for network ${network}, please add new case`)
+        throw new Error(
+          `requiredChainId was not handled for network ${network}, please add new case`
+        );
     }
 
     if (!requiredChainId) {
-      throw new Error(`requiredChainId was not configured for network ${network}, please check .env`)
+      throw new Error(
+        `requiredChainId was not configured for network ${network}, please check .env`
+      );
     }
 
     return requiredChainId;
   }
 
   cacheConnectionSetting(wallet?: Wallet, network?: ChainNetwork) {
-    localStorage.setItem('wallet_connect', JSON.stringify([wallet, network]))
+    localStorage.setItem("wallet_connect", JSON.stringify([wallet, network]));
   }
 
   fetchConnectionSetting(): [Wallet?, ChainNetwork?] {
-    const a_str = localStorage.getItem('wallet_connect')
+    const a_str = localStorage.getItem("wallet_connect");
     if (!a_str) {
-      return [undefined, undefined]
+      return [undefined, undefined];
     }
 
     try {
-      const a = JSON.parse(a_str)
+      const a = JSON.parse(a_str);
       const w: Wallet = a[0] as Wallet;
       const n: ChainNetwork = a[1] as ChainNetwork;
 
-      return [w, n]
+      return [w, n];
     } catch (e) {
-      return [undefined, undefined]
+      return [undefined, undefined];
     }
   }
 }

@@ -14,6 +14,8 @@ const MyProfile = () => {
 
   const props = { isEdit, setIsEdit };
 
+  console.log(AuthStore.isLoggedIn);
+
   return (
     <>
       <DocHead title="My Profile" />

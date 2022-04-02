@@ -17,6 +17,7 @@ import {
   GBoxCampaignRound,
   ChainSymbol,
   GChain,
+  GBoxCampaignBuyHistory,
 } from "src/generated/graphql";
 import { useInput } from "hooks/common/use_input";
 import { BuyDisabledReason, useBuyBox } from "hooks/campaign/use_buy_box";
@@ -42,6 +43,7 @@ type Props = {
   round?: GBoxCampaignRound;
   isInWhitelist?: boolean;
   purchasedBox?: GBoxType;
+  recentlyPurchasedBox?: GBoxCampaignBuyHistory;
 };
 
 type ChainProps = {

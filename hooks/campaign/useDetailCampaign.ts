@@ -70,7 +70,7 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
       dataWhitelistRegisteredRecently?.whitelistRegisteredRecently,
     purchasedBox: purchasedBox?.purchasedBox,
 
-    recentlyPurchasedBox: recentlyPurchasedBox,
+    recentlyPurchasedBox: recentlyPurchasedBox?.recentlyPurchasedBox,
     historiesBox: historiesBox?.boxCampaignBuyHistories.filter(
       (box: any) => box.box_campaign_uid === box_campaign_uid
     ),

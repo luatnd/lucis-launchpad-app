@@ -1,11 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import { Button, message, Skeleton } from "antd";
-import {
-  useDisableNotification,
-  useEnableNotification,
-} from "hooks/campaign/useEnableNotification";
+import useNotification from "hooks/campaign/useEnableNotification";
 import { useWindowSize } from "hooks/useWindowSize";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { GBoxCampaign } from "src/generated/graphql";
 import s from "./Banner.module.sass";
 
@@ -14,15 +11,19 @@ type Props = {
 };
 
 const Banner = ({ boxCampaign }: Props) => {
-  // TODO: get data from boxCampaign.enable_notify
   const [isEnableNotification, setIsEnableNotification] = useState(false);
-  const [isReadMore, setIsReadMore] = useState(true);
-  const [widthScreen, height] = useWindowSize();
+  // const [isReadMore, setIsReadMore] = useState(false);
+  // const [widthScreen, height] = useWindowSize();
+  const descRef = useRef<any>(null);
 
-  const { enableNotification } = useEnableNotification();
-  const { disableNotification } = useDisableNotification();
+  const { enableNotification, disableNotification } = useNotification();
 
   const handleSubscription = () => {
+    // console.log(typeof Notification !== "undefined");
+    // Notification.requestPermission().then(function (permission) {
+    //   console.log(permission !== "granted");
+    // });
+
     !isEnableNotification
       ? enableNotification({ variables: { box_campaign_uid: boxCampaign.uid } })
           .then(() => setIsEnableNotification(true))
@@ -34,29 +35,35 @@ const Banner = ({ boxCampaign }: Props) => {
           .catch((err) => message.error(err.message));
   };
 
-  const handleReadMore = () => {
-    setIsReadMore(true);
-  };
+  // const handleReadMore = () => {
+  //   setIsReadMore(true);
+  // };
 
   // Handle read more button follow width screen
   // - Dectect height
-  useEffect(() => {
-    const descEle = document.querySelector("#desc")?.clientHeight;
+  // console.log(descRef);
 
-    if (widthScreen >= 1280) {
-      descEle && descEle < 120 ? setIsReadMore(true) : setIsReadMore(false);
-    } else if (widthScreen >= 767) {
-      descEle && descEle < 90 ? setIsReadMore(true) : setIsReadMore(false);
-    } else if (widthScreen >= 540) {
-      descEle && descEle < 50 ? setIsReadMore(true) : setIsReadMore(false);
-    } else if (widthScreen > 0) {
-      descEle && descEle ? setIsReadMore(true) : setIsReadMore(false);
-    }
-  }, [widthScreen]);
+  // useEffect(() => {
+  //   // const descEle = document.querySelector("#desc");
+  //   console.log(descRef);
+
+  //   if (widthScreen >= 1280) {
+  //     console.log("1280px");
+  //   } else if (widthScreen >= 768) {
+  //     console.log("768px");
+  //   } else if (widthScreen >= 540) {
+  //     console.log("540px");
+  //   } else if (widthScreen >= 0) {
+  //     console.log("0px");
+  //   } else {
+  //     console.log("End");
+  //   }
+  // }, [widthScreen, descRef]);
 
   return (
     <div
-      className={`${s.backgroundBanner} ${!boxCampaign && s.blank}`}
+      // ${!boxCampaign && s.blank}
+      className={`${s.backgroundBanner}`}
       style={{ backgroundImage: `url(${boxCampaign?.banner_img ?? ""})` }}
     >
       <div className="container">
@@ -86,10 +93,7 @@ const Banner = ({ boxCampaign }: Props) => {
                 <p className="font-[600]">{boxCampaign?.name?.toUpperCase()}</p>
               </div>
 
-              <div
-                className={`${s.infContent} ${isReadMore ? "" : s.readMore}`}
-                id="desc"
-              >
+              <div className={`${s.infContent}`} id="desc" ref={descRef}>
                 {boxCampaign?.desc}
               </div>
 
@@ -161,13 +165,13 @@ const Banner = ({ boxCampaign }: Props) => {
                   )}
                 </div>
 
-                {!isReadMore && (
+                {/* {isReadMore && (
                   <div className={s.infSocialRead}>
-                    <button onClick={handleReadMore}>
+                    <button onClick={() => setIsReadMore(true)}>
                       read more &gt;&gt;{" "}
                     </button>
                   </div>
-                )}
+                )} */}
               </div>
             </div>
           </div>

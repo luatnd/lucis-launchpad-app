@@ -16,6 +16,7 @@ import s from "./detail.module.sass";
 import { isClient } from "utils/DOM";
 import { observer } from "mobx-react-lite";
 import AuthStore from "../../components/Auth/AuthStore";
+import RecentlyBought from "components/campaign/components/RecentlyBought/RecentlyBought";
 
 /**
  * Match all route: /campaign/....
@@ -46,8 +47,10 @@ function DetailCampaign() {
     boxCampaign,
     isInWhitelist,
     purchasedBox,
+    recentlyPurchasedBox,
     whitelistRegistered,
     whitelistRegisteredRecently,
+    historiesBox,
   } = useDetailCampaign({
     box_campaign_uid: campaignUid,
   });
@@ -65,6 +68,10 @@ function DetailCampaign() {
       }
     }
   };
+
+  // const temp = JSON.parse(JSON.stringify(historiesBox));
+  // // recentlyPurchasedBox && temp.push(recentlyPurchasedBox);
+  // console.log(temp.push(recentlyPurchasedBox));
 
   return (
     <>
@@ -109,14 +116,20 @@ function DetailCampaign() {
                       boxCampaign={boxCampaign}
                       isInWhitelist={isInWhitelist}
                       purchasedBox={purchasedBox}
+                      recentlyPurchasedBox={recentlyPurchasedBox}
                     />
                   )}
 
-                  {AuthStore.isLoggedIn && (
-                    <div className="container">
-                      <BuyHistory id={campaignUid} title="recently bought" />
-                    </div>
-                  )}
+                  {AuthStore.isLoggedIn &&
+                    // <div className="container">
+                    //   <BuyHistory id={campaignUid} title="recently bought" />
+                    // </div>
+                    historiesBox && (
+                      <RecentlyBought
+                        historiesBox={historiesBox}
+                        recentlyPurchasedBox={recentlyPurchasedBox}
+                      />
+                    )}
                 </TabPane>
 
                 <TabPane tab="RULE" key="2">

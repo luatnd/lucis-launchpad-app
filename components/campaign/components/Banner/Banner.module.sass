@@ -1,11 +1,9 @@
 @import styles/common
 
 .backgroundBanner
-  // background-image: url("/assets/image103.png")
   background-size: cover
   background-repeat: no-repeat
-  // background-position: center
-  // background-position: 50% 100%
+  background-position: center
   padding: 100px 0px 30px 0
   animation: fadeIn 5s
   @media screen and (min-width: 768px)
@@ -78,7 +76,7 @@
     margin-top: 10px
 
   .readMore
-    @include line-camp(3)
+    // @include line-camp(3)
   @media screen and (min-width: 767px) 
     .infTitle
       p
@@ -119,13 +117,14 @@
     .infSocialIcons
       img
         width: 36px
-.blank 
-  // animation: fadeIn 5s
-  height: 446px
-  @media screen and (min-width: 768px)
-  @media screen and (min-width: 1024px)
-  @media screen and (min-width: 1440px)
-    height: 737px
+
+// .blank 
+//   // animation: fadeIn 5s
+//   height: 446px
+//   @media screen and (min-width: 768px)
+//   @media screen and (min-width: 1024px)
+//   @media screen and (min-width: 1440px)
+//     height: 737px
 
 // .blankInf
 //   @media screen and (min-width: 768px)
@@ -136,13 +135,10 @@
 @keyframes fadeIn 
   0% 
     opacity:0
+
   100% 
     opacity:1
 
-// @keyframes mymove 
-//   from 
-//       background-position: 0% 1%
-//   to 
-//       background-position: 100% 
+
   
 

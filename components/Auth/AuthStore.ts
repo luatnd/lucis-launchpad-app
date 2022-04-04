@@ -50,6 +50,7 @@ class AuthStore {
     level: 0,
     totalVolume: 0,
   };
+  private _balance?: string;
   private _loading: boolean = false;
 
   /**
@@ -87,6 +88,7 @@ class AuthStore {
       level: 0,
       totalVolume: 0,
     };
+    this._balance = undefined;
     this._loading = false;
   }
 
@@ -209,6 +211,14 @@ class AuthStore {
 
   set discord(value: string | undefined) {
     this._discord = value;
+  }
+
+  get balance(): string | undefined {
+    return this._balance;
+  }
+
+  set balance(value: string | undefined) {
+    this._balance = value;
   }
 }
 

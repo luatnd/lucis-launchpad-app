@@ -40,6 +40,23 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
     variables: { box_campaign_uid },
   });
 
+  const { data: historiesBox } = useQuery(BUY_BOX_HISTORIES, {
+    variables: {
+      include: {
+        boxTypes: true,
+        game: true,
+      },
+    },
+    fetchPolicy: "no-cache",
+  });
+
+  const { data: recentlyPurchasedBox } = useSubscription(
+    PURCHASED_RECENTLY_BOX_SUBSCRIPTION,
+    {
+      variables: { box_campaign_uid },
+    }
+  );
+
   return {
     loading,
     error,
@@ -52,6 +69,11 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
     whitelistRegisteredRecently:
       dataWhitelistRegisteredRecently?.whitelistRegisteredRecently,
     purchasedBox: purchasedBox?.purchasedBox,
+
+    recentlyPurchasedBox: recentlyPurchasedBox?.recentlyPurchasedBox,
+    historiesBox: historiesBox?.boxCampaignBuyHistories.filter(
+      (box: any) => box.box_campaign_uid === box_campaign_uid
+    ),
   };
 }
 
@@ -161,6 +183,72 @@ const PURCHASED_BOX_SUBSCRIPTION = gql`
       total_amount
       sold_amount
       box_campaign_uid
+    }
+  }
+`;
+
+const BUY_BOX_HISTORIES = gql`
+  query historyBox($include: GBoxCampaignInclude) {
+    boxCampaignBuyHistories(include: $include) {
+      id
+      box_campaign_uid
+      quantity
+      created_at
+      updated_at
+      status
+      tx_hash
+      box {
+        cover_img
+        name
+        game {
+          name
+          logo
+        }
+      }
+      box_price {
+        price
+        chain_symbol
+        chain_icon
+        chain_name
+        currency_name
+        boxType {
+          name
+          thumb_img
+        }
+      }
+    }
+  }
+`;
+
+const PURCHASED_RECENTLY_BOX_SUBSCRIPTION = gql`
+  subscription ($box_campaign_uid: String!) {
+    recentlyPurchasedBox(box_campaign_uid: $box_campaign_uid) {
+      id
+      box_campaign_uid
+      quantity
+      created_at
+      updated_at
+      status
+      tx_hash
+      box {
+        cover_img
+        name
+        game {
+          name
+          logo
+        }
+      }
+      box_price {
+        price
+        chain_symbol
+        chain_icon
+        chain_name
+        currency_name
+        boxType {
+          name
+          thumb_img
+        }
+      }
     }
   }
 `;

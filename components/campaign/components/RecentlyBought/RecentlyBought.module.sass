@@ -1,73 +1,193 @@
-.image
-  width: 50px
-  height: 50px
+$font48: 48px
+$font36: 36px
+$font24: 24px
+$font20: 20px
+$font14: 14px
+$font9: 9px
+$height: 76px
+$height: 56px
+$height: 36px
+$width35: 35px
+$width30: 30px
+$width25: 25px
+$width15: 15px
+$backgroundColor: linear-gradient(#000031,#000031) padding-box, linear-gradient(to right, rgba(255, 255, 255, 0.7), rgba(210, 0, 215, 0.6), rgba(251, 76, 222, 0.4), rgba(244, 123, 246, 0.4) ) border-box
 
-.table
-  & :global(.ant-table-pagination.ant-pagination)
-    display: none
-  & :global(.ant-table-cell)
-    vertical-align: top
-    font-family: Saira
-    font-style: normal
-    font-weight: bold
-    font-size: 24px
-    line-height: 38px
-    color: #FFFFFF
-  // & :global(.ant-table-tbody > tr > td)
-  & :global(.ant-table)
-    background: linear-gradient(126.08deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%)
-    border: 1px solid #D7D7D7
-    box-sizing: border-box
-    box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
-    backdrop-filter: blur(40px)
-    border-radius: 10px
-  & :global(.ant-table-thead > tr > th)
-    background: none
-  & :global(.ant-table-cell-row-hover)
-    background: none !important
-  & :global(.ant-table-content)
-    overflow-x: auto
+.history 
+    color: white
+    margin: auto
+    h1
+        color: white
+        font-weight: 700
+        font-size: $font14
+        margin: 20px 0
+    .status 
+        width: 8px
+        height: 8px
+        margin: 5px 0 15px 0
+        border-radius: 50px
+    .succeed
+        background: #0BEBD6 
+        box-shadow: 0px 0px 6px #08D7F9
 
-.boxName
-  p
-    margin-bottom: 45px !important
-  span
-    margin-left: 10px
-    font-family: Saira
-    font-style: normal
-    font-weight: normal
-    font-size: 20px
-    line-height: 31px
-    color: #D2D2D2
+    .confirming
+        background: #FF8A00 
+        box-shadow: 0px 0px 6px #FF8A00
 
-.amount
-  p
-    margin-bottom: 45px !important
-  span
-    font-family: Saira
-    font-style: normal
-    font-weight: normal
-    font-size: 20px
-    line-height: 31px
-    color: #D2D2D2
+    .pending
+        background: #CD28E8 
+        box-shadow: 0px 0px 6px #CD28E8
 
-.icon
-  width: 13.37px
-  height: 13.37px
-  margin-top: 7px
-  background: #0BEBD6
-  box-shadow: 0px 0px 6px #08d7f9
-  border-radius: 100px
+    .processing
+        background: #CDD101 
+        box-shadow: 0px 0px 6px #CDD101
 
-.status
-  p
-    margin-bottom: 50px !important
-  span
-    font-family: Saira
-    font-style: normal
-    font-weight: normal
-    font-size: 20px
-    line-height: 31px
-    text-decoration-line: underline
-    color: #3EC1D7
-    cursor: pointer
+    .failed
+        background: #e82828 
+        box-shadow: 0px 0px 6px #e82828
+
+    :global
+        .ant-table-wrapper
+            border-radius: 10px
+        .ant-table 
+            background: none
+        .ant-table-wrapper
+            border: 1px solid #D7D7D7
+            border-radius: 10px
+            overflow: hidden
+            p
+                margin: 0
+        .ant-table-thead 
+            font-size: 12px
+            font-weight: 400
+            tr
+                & > :first-child
+                    padding-left: 5px
+                // & > :not(:last-child)
+                    // padding: 10px 0
+                & > :last-child
+                    padding-right: 5px
+                th
+                    font-weight: 700
+                    background: none
+                    padding: 10px 0 10px 0px
+                    // padding: 32px 55px 18px
+        .ant-table-cell
+            color: white
+            vertical-align: top
+            padding: 23px 0
+            & ::before
+                content: none
+            .descText
+                font-size: 12px
+                font-weight: 700
+                margin-bottom: 15px
+            .descSubText, .descGameText
+                display: flex
+                font-size: $font9
+                align-items: center
+                flex-shrink: 0
+                img
+                    width: 15px
+                    // height: 15px
+                    margin: 3px 4px 0 0
+            .descGameText
+                img
+                    width: 25px
+                     
+            img
+                width: 36px
+                margin-left: 2px
+            a 
+                font-size: 9px
+                text-decoration: underline
+        .ant-table-tbody
+            tr
+                td 
+                    padding: 20px 0px
+        .ant-table-cell-row-hover 
+            background: none !important
+        .ant-table-footer
+            margin: 30px 0
+            background: none
+        @media screen and ( min-width: 540px )
+            .ant-table-cell
+                .descSubText, .descGameText
+                    font-size: 11px
+        @media screen and ( min-width: 767px )
+            .ant-table-thead 
+                font-size: 24px
+                font-weight: 700
+                tr
+                    & > :first-child
+                        padding: 25px 10px 18px 25px
+                    th 
+                        font-size: 16px
+                        padding: 25px 10px 18px 5px
+            .ant-table-cell
+                padding: 35px 10px 
+                .descText
+                    font-size: 16px
+                    margin-bottom: 15px
+                .descSubText, .descGameText
+                    font-size: 12px
+                    font-weight: 300
+                    margin-bottom: 5px
+                    align-items: center
+                    img
+                        width: 15px
+                        margin: 0 10px 0 0 
+                .descGameText
+                    img
+                        width: 35px
+                img
+                    width: 70px
+                a 
+                    font-size: 12px
+        @media screen and ( min-width: 1023px )
+            .ant-table-thead 
+                font-size: 24px
+                font-weight: 700
+                tr
+                    & > :first-child
+                        padding: 35px 10px 18px 20px
+                    th 
+                        font-size: $font24
+                        padding: 35px 10px 18px 5px
+            .ant-table-body
+                .ant-table-cell
+                    padding: 35px 20px 35px 5px
+                    .descText
+                        font-size: $font24
+                    .descSubText, .descGameText
+                        font-size: $font20
+                        font-weight: 300
+                        img
+                            width: 25px
+                            margin: 0 14px 0 0 
+                    .descGameText
+                        img
+                            width: 50px
+                    img
+                        width: 100px
+                    a 
+                        font-size: 20px
+@media screen and ( min-width: 767px )
+    .history
+        // margin: 50px 0px 200px 0
+        h1 
+            margin-bottom: 35px !important
+            font-size: 24px
+        .status 
+            width: 20px
+            height: 20px
+            margin-bottom: 25px
+@media screen and ( min-width: 1023px )
+    .history
+        h1 
+            font-size: 36px
+        .status 
+            width: 22px
+            height: 22px
+
+

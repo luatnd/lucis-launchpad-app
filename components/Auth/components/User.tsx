@@ -20,10 +20,12 @@ import { trim_middle } from "utils/String";
 
 import s from "./User.module.sass";
 import { AppEmitter } from "../../../services/emitter";
+import { useWindowSize } from "hooks/useWindowSize";
 
 type Props = {};
 export default observer(function User(props: Props) {
   const router = useRouter();
+  const [width] = useWindowSize();
   const [isVisible, setIsVisible] = useState(false);
 
   const { address, network: connected_network } = ConnectWalletStore;
@@ -99,7 +101,7 @@ export default observer(function User(props: Props) {
         placement="bottomRight"
         content={profileModal}
         // trigger="hover"
-        trigger="click"
+        trigger={width < 1024 ? "click" : "hover"}
         visible={isVisible}
         onVisibleChange={handleVisibleChange}
       >

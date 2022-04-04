@@ -273,9 +273,10 @@ export default observer(function ConnectWalletModal(props: Props) {
       setWallet(connectedWallet);
       return;
     }
-    console.log("isModalVisible", isModalVisible);
-    console.log("address", address);
-    console.log("connected_network", connected_network);
+    // console.log("isModalVisible", isModalVisible);
+    // console.log("address", address);
+    // console.log("connected_network", connected_network);
+
     if (isModalVisible && address && !connected_network) {
       reUpdateWalletIfNeeded(...connectWalletHelper.fetchConnectionSetting());
     }

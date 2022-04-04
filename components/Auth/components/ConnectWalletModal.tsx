@@ -28,14 +28,9 @@ import { isMobile } from "web3modal";
 
 type Props = {};
 export default observer(function ConnectWalletModal(props: Props) {
-  const DEBUG = false;
+  const DEBUG = true;
   DEBUG && console.log("{ConnectWalletModal} render: ");
 
-  const [network, setNetwork] = useState<ChainNetwork | undefined>();
-  const [wallet, setWallet] = useState<Wallet | undefined>();
-
-  const isModalVisible = AuthBoxStore.connectModalVisible,
-    setIsModalVisible = (v: boolean) => (AuthBoxStore.connectModalVisible = v);
   const {
     address,
     network: connected_network,
@@ -44,6 +39,15 @@ export default observer(function ConnectWalletModal(props: Props) {
   } = ConnectWalletStore;
 
   const { isLoggedIn: logged_in_with_lucis, loading: authing } = AuthStore;
+  console.log("connectedChain: ", connectedChain);
+  const [network, setNetwork] = useState<ChainNetwork | undefined>(
+    connectedChain
+  );
+  console.log("Init_network: ", network);
+  const [wallet, setWallet] = useState<Wallet | undefined>(connectedWallet);
+
+  const isModalVisible = AuthBoxStore.connectModalVisible,
+    setIsModalVisible = (v: boolean) => (AuthBoxStore.connectModalVisible = v);
 
   const activeWallet = useMemo(() => {
     if (!connectedChain || connectedChain != network) {
@@ -66,8 +70,12 @@ export default observer(function ConnectWalletModal(props: Props) {
      * If user change the account
      * Need to re-connect the wallet and verify their new address also
      */
+    console.log("address: ", address);
+    console.log("network: ", network);
     if (currentAccount !== address) {
-      return loginWithLucis(currentAccount, true);
+      ConnectWalletStore.address = currentAccount;
+      loginWithLucis(currentAccount, false);
+      // changeWallet(activeWallet!);
     }
   };
   const handleChainChanged = (_hexChainId: string) => {
@@ -201,8 +209,8 @@ export default observer(function ConnectWalletModal(props: Props) {
       //   return;
       // }
       // check connect metamask mobile when use wallet connect
+
       if (isMobile()) {
-        console.log("isMobile");
         w = Wallet.wc;
       }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import s from "./RecentlyBought.module.sass";
 import { Table, Tag, Space, Tooltip } from "antd";
 import { trim_middle } from "utils/String";
@@ -11,7 +11,8 @@ type Props = {
 };
 
 const RecentlyBought = ({ historiesBox, recentlyPurchasedBox }: Props) => {
-  const [tempHistories, setTempHistories] = useState(historiesBox);
+  // const [tempHistories, setTempHistories] = useState(historiesBox);
+
   const columns = [
     {
       title: "Item",
@@ -156,14 +157,22 @@ const RecentlyBought = ({ historiesBox, recentlyPurchasedBox }: Props) => {
     },
   ];
 
-  useEffect(() => {
-    //@ts-ignore
-    const temp = structuredClone(historiesBox);
-    recentlyPurchasedBox && temp.push(recentlyPurchasedBox);
-    setTempHistories(temp);
-  }, [recentlyPurchasedBox]);
+  const temp = useMemo(
+    () =>
+      recentlyPurchasedBox
+        ? [...historiesBox, recentlyPurchasedBox]
+        : historiesBox,
+    [recentlyPurchasedBox]
+  );
 
-  return tempHistories.length > 0 ? (
+  // useEffect(() => {
+  //   //@ts-ignore
+  //   const temp = structuredClone(historiesBox);
+  //   recentlyPurchasedBox && temp.push(recentlyPurchasedBox);
+  //   setTempHistories(temp);
+  // }, [recentlyPurchasedBox]);
+
+  return temp.length > 0 ? (
     <div className={`${s.history} lucis-container `}>
       <h1 className="text-center">RECENTLY BOUGHT</h1>
 
@@ -178,7 +187,7 @@ const RecentlyBought = ({ historiesBox, recentlyPurchasedBox }: Props) => {
         ></div>
         <Table
           columns={columns}
-          dataSource={[...tempHistories].reverse()}
+          dataSource={[...temp].reverse()}
           pagination={false}
           footer={() => <></>}
           scroll={{ y: 1000 }}

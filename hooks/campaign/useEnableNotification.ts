@@ -4,36 +4,46 @@ type Props = {
   box_campaign_uid: string;
 };
 
-export function useEnableNotification() {
-  const [enableNotification, { loading, error, data }] =
-    useMutation(ENABLE_NOTIFICATION);
+export default function useNotification() {
+  const [
+    enableNotification,
+    { loading: loadingEnable, error: errorEnable, data },
+  ] = useMutation(ENABLE_NOTIFICATION);
+
+  const [
+    disableNotification,
+    { loading: loadingDisable, error: errorDisable },
+  ] = useMutation(DISEABLE_NOTIFICATION);
 
   return {
     enableNotification,
-    loadingEnable: loading,
-    errorEnable: error,
+    disableNotification,
+    loadingEnable,
+    errorEnable,
+    loadingDisable,
+    errorDisable,
     dataEnable: data,
   };
 }
+
+// export function useDisableNotification() {
+//   const [disableNotification, { loading, error, data }] = useMutation(
+//     DISEABLE_NOTIFICATION
+//   );
+
+//   return {
+//     disableNotification,
+//     loadingDisable: loading,
+//     errorDisable: error,
+//     dataDisbale: data,
+//   };
+// }
 
 const ENABLE_NOTIFICATION = gql`
   mutation EnableNotification($box_campaign_uid: String!) {
     enableNotification(box_campaign_id: $box_campaign_uid)
   }
 `;
-
-export function useDisableNotification() {
-  const [disableNotification, { loading, error, data }] = useMutation(
-    DISEABLE_NOTIFICATION
-  );
-
-  return {
-    disableNotification,
-    loadingDisable: loading,
-    errorDisable: error,
-    dataDisbale: data,
-  };
-}
 
 const DISEABLE_NOTIFICATION = gql`
   mutation DisableNotification($box_campaign_uid: String!) {

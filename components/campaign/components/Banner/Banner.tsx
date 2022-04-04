@@ -1,9 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Button, message, Skeleton } from "antd";
-import {
-  useDisableNotification,
-  useEnableNotification,
-} from "hooks/campaign/useEnableNotification";
+import useNotification from "hooks/campaign/useEnableNotification";
 import { useWindowSize } from "hooks/useWindowSize";
 import React, { useEffect, useRef, useState } from "react";
 import { GBoxCampaign } from "src/generated/graphql";
@@ -19,24 +16,23 @@ const Banner = ({ boxCampaign }: Props) => {
   // const [widthScreen, height] = useWindowSize();
   const descRef = useRef<any>(null);
 
-  const { enableNotification } = useEnableNotification();
-  const { disableNotification } = useDisableNotification();
+  const { enableNotification, disableNotification } = useNotification();
 
   const handleSubscription = () => {
     // console.log(typeof Notification !== "undefined");
-    Notification.requestPermission().then(function (permission) {
-      console.log(permission !== "granted");
-    });
+    // Notification.requestPermission().then(function (permission) {
+    //   console.log(permission !== "granted");
+    // });
 
-    // !isEnableNotification
-    //   ? enableNotification({ variables: { box_campaign_uid: boxCampaign.uid } })
-    //       .then(() => setIsEnableNotification(true))
-    //       .catch((err) => message.error(err.message))
-    //   : disableNotification({
-    //       variables: { box_campaign_uid: boxCampaign.uid },
-    //     })
-    //       .then(() => setIsEnableNotification(false))
-    //       .catch((err) => message.error(err.message));
+    !isEnableNotification
+      ? enableNotification({ variables: { box_campaign_uid: boxCampaign.uid } })
+          .then(() => setIsEnableNotification(true))
+          .catch((err) => message.error(err.message))
+      : disableNotification({
+          variables: { box_campaign_uid: boxCampaign.uid },
+        })
+          .then(() => setIsEnableNotification(false))
+          .catch((err) => message.error(err.message));
   };
 
   // const handleReadMore = () => {

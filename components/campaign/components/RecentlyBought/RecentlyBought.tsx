@@ -1,14 +1,18 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import s from "./RecentlyBought.module.sass";
 import { Table, Tag, Space, Tooltip } from "antd";
 import { trim_middle } from "utils/String";
 import moment from "moment";
+import { GBoxCampaignBuyHistory } from "src/generated/graphql";
 
 type Props = {
-  historiesBox: any[];
+  historiesBox: GBoxCampaignBuyHistory[];
+  recentlyPurchasedBox: GBoxCampaignBuyHistory;
 };
 
-const RecentlyBought = ({ historiesBox }: Props) => {
+const RecentlyBought = ({ historiesBox, recentlyPurchasedBox }: Props) => {
+  // const [tempHistories, setTempHistories] = useState(historiesBox);
+
   const columns = [
     {
       title: "Item",
@@ -49,7 +53,7 @@ const RecentlyBought = ({ historiesBox }: Props) => {
                 src={item.box?.game.logo ?? ""}
                 alt=""
               />
-              {item.box.game.name} |{" "}
+              {item.box?.game.name} |{" "}
               {item.box.name ? item.box.name : "Box campaign name"}
             </p>
           </>
@@ -153,46 +157,46 @@ const RecentlyBought = ({ historiesBox }: Props) => {
     },
   ];
 
-  return (
-    // <div className="lucis-container mt-[116px] mb-[200px]">
-    //   <h2 className="flex justify-center text-white text-center text-48px font-bold">
-    //     RECENTLY BOUGHT
-    //   </h2>
-    //   <Table
-    //     columns={columns}
-    //     dataSource={[...historiesBox].reverse()}
-    //     pagination={false}
-    //     footer={() => <></>}
-    //     scroll={{ y: 1000 }}
-    //     rowKey="id"
-    //   />
-    // </div>
-    historiesBox.length > 0 ? (
-      <div className={`${s.history} lucis-container `}>
-        <h1 className="text-center">RECENTLY BOUGHT</h1>
+  const temp = useMemo(
+    () =>
+      recentlyPurchasedBox
+        ? [...historiesBox, recentlyPurchasedBox]
+        : historiesBox,
+    [recentlyPurchasedBox]
+  );
 
-        <div style={{ position: "relative" }}>
-          <div
-            style={{
-              borderRadius: "10px",
-              position: "absolute",
-              inset: 0,
-              background: `linear-gradient(126.08deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%) `,
-            }}
-          ></div>
-          <Table
-            columns={columns}
-            dataSource={[...historiesBox].reverse()}
-            pagination={false}
-            footer={() => <></>}
-            scroll={{ y: 1000 }}
-            rowKey="id"
-          />
-        </div>
+  // useEffect(() => {
+  //   //@ts-ignore
+  //   const temp = structuredClone(historiesBox);
+  //   recentlyPurchasedBox && temp.push(recentlyPurchasedBox);
+  //   setTempHistories(temp);
+  // }, [recentlyPurchasedBox]);
+
+  return temp.length > 0 ? (
+    <div className={`${s.history} lucis-container `}>
+      <h1 className="text-center">RECENTLY BOUGHT</h1>
+
+      <div style={{ position: "relative" }}>
+        <div
+          style={{
+            borderRadius: "10px",
+            position: "absolute",
+            inset: 0,
+            background: `linear-gradient(126.08deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%) `,
+          }}
+        ></div>
+        <Table
+          columns={columns}
+          dataSource={[...temp].reverse()}
+          pagination={false}
+          footer={() => <></>}
+          scroll={{ y: 1000 }}
+          rowKey="id"
+        />
       </div>
-    ) : (
-      <></>
-    )
+    </div>
+  ) : (
+    <></>
   );
 };
 

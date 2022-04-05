@@ -230,7 +230,6 @@ export default observer(function ConnectWalletModal(props: Props) {
 
   const changeWallet = useCallback(
     async (w: Wallet, network?: ChainNetwork) => {
-      console.log("changeWallet: ", network);
       /**
        * This will try to popup the wallet, then make a connection to your wallet
        * If success, it will set auth info to AuthStore

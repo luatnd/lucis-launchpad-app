@@ -102,16 +102,13 @@ export default class AuthService {
     // console.log('{AuthService.loginByAddress} nonce: ', nonce);
     // create hmac and login
     const salt = parseInt(nonce) + new Date().getUTCHours();
-    console.log("salt:", salt);
     const prefix = process.env.NEXT_PUBLIC_VERIFY_MESSAGE ?? "";
     const secretKey = `${prefix}${salt}`;
-    console.log("secretKey:", secretKey);
     const payload = address + prefix;
-    console.log("payload:", payload);
     let signed_hash = CryptoJS.HmacSHA512(payload, secretKey).toString(
       CryptoJS.enc.Hex
     );
-    console.log("signed_hash:", signed_hash);
+    // console.log("signed_hash:", signed_hash);
 
     // TODO: Improve to multiline message with explanation and hello thank you
     // const msg = `0x${to_hex_str(`Lucis verification ${nonce}`)}`;
@@ -169,7 +166,7 @@ export default class AuthService {
         sign: signed_hash,
       },
     });
-    console.log("{AuthService.loginByAddress} loginRes: ", loginRes);
+    // console.log("{AuthService.loginByAddress} loginRes: ", loginRes);
 
     const u = loginRes.data.login.user;
     const token = loginRes.data.login.token;
@@ -247,7 +244,7 @@ export default class AuthService {
       } else {
         // new-login
         const user = await this.loginByAddress(address);
-        console.log("{AuthService.login} new-login user: ", user);
+        // console.log("{AuthService.login} new-login user: ", user);
 
         user.token && ApoloClient_setAuthToken(user.token);
         setLocalAuthInfo(user);

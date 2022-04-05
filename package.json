@@ -24,6 +24,7 @@
     "@types/swiper": "^6.0.0",
     "@walletconnect/web3-provider": "^1.7.1",
     "antd": "^4.17.3",
+    "crypto-js": "^4.1.1",
     "enquire-js": "^0.2.1",
     "ethers": "^5.5.4",
     "fbemitter": "^3.0.0",

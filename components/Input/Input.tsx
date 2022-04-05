@@ -1,5 +1,7 @@
 import { ChangeEvent } from "react";
 import s from "./Input.module.sass";
+import PhoneInputReact from "react-phone-input-2";
+import "react-phone-input-2/lib/material.css";
 
 type Props = {
   value: string;
@@ -36,4 +38,30 @@ const Input = ({
 
 export default Input;
 
-// ${valid ? "" : s.invalid}
+export const PhoneInput = () => {
+  return (
+    <div className={`${s.inputC}`}>
+      <PhoneInputReact
+        // country={this.state.countryCode}
+        specialLabel=""
+        enableSearch
+        searchPlaceholder="Search"
+        enableTerritories
+        // value={this.state.phoneNumber}
+        // onChange={this.handleChangePhoneNumber}
+        // onEnterKeyPress={this.handleSendEnterPress}
+        inputProps={{
+          style: {
+            background: "none",
+            border: 0,
+            boxShadow: "none",
+            color: "white",
+          },
+        }}
+        // containerStyle={{
+        //   maxWidth: "calc(100% - 150px)",
+        // }}
+      />
+    </div>
+  );
+};

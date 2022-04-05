@@ -1,3 +1,5 @@
+@import styles/common
+
 .inputC
     // background: linear-gradient(#000031,#000031) padding-box, linear-gradient(to right, rgba(255, 255, 255, 0.7), rgba(210, 0, 215, 0.6), rgba(251, 76, 222, 0.4), rgba(244, 123, 246, 0.4) ) border-box
     color: white
@@ -14,8 +16,60 @@
         padding: 0 12px
         &:focus-visible
             outline: none
-        @media screen and ( min-width:767px )
+        @media screen and ( min-width:768px )
             padding: 8px 16px
+    :global(.react-tel-input) 
+        width: 100%
+        background: linear-gradient(126.08deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%)
+        position: static
+    
+    :global(.react-tel-input .form-control)
+        width: 100%
+        padding: 0 12px 0 50px
+        font-size: 14px
+        @media screen and ( min-width:768px )
+            font-size: 24px
+            padding: 8px 16px 8px 60px
+    :global(.react-tel-input .selected-flag .flag)
+        margin-top: -15px
+
+    :global(.react-tel-input .selected-flag .arrow)
+        border-top: 4px solid #fff
+        @media screen and ( min-width:768px )
+            border-top: 8px solid #fff
+            border-left: 6px solid transparent
+            border-right: 6px solid transparent
+
+    :global(.react-tel-input .country-list )
+        // @include box-glass 
+        // background: linear-gradient(151deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%)
+        background: rgba(123, 123, 123, 0.2)
+        box-shadow: 0px 4px 20px 1px rgb(0 0 0 / 20%)
+        width: 200px
+        @media screen and ( min-width:768px )
+            width: 350px
+        
+    :global(.react-tel-input .country-list .country:hover)
+        background: #030466
+    :global(.react-tel-input .country-list .country.highlight)
+        background: #030466
+
+    :global(.react-tel-input .country-list .flag)
+        top: 13px
+        @media screen and ( min-width:768px )
+            top: 16px
+
+    :global(.react-tel-input .country-list .search)
+        padding: 12px
+
+    :global(.react-tel-input .country-list .search-box)
+        margin: 0
+        width: 100%
+        color: black
+    :global(.react-tel-input .country-list .country .dial-code)
+        color: white
+
+  
 .invalid 
     border: 2px solid red
 

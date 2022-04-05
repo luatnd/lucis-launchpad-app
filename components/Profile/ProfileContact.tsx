@@ -1,5 +1,5 @@
 import { Col, message, Row } from "antd";
-import Input from "components/Input/Input";
+import Input, { PhoneInput } from "components/Input/Input";
 import { ChangeEvent, useState } from "react";
 import s from "../../pages/profile/index.module.sass";
 import VerifyModal from "./VerifyModal/VerifyModal";
@@ -7,6 +7,8 @@ import { observer } from "mobx-react-lite";
 import AuthStore from "../Auth/AuthStore";
 import { useMutaionVerifyEmail } from "hooks/profile/useVerifyEmail";
 import { useMutationProfile } from "hooks/profile/useMutationProfile";
+// import PhoneInput from "react-phone-input-2";
+// import "react-phone-input-2/lib/material.css";
 
 type Props = {
   isEdit: boolean;
@@ -82,7 +84,7 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
       });
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>, field: string) => {
+  const handleChange = (e: any, field: string) => {
     setTempContact((prev) => ({ ...prev, [field]: e.target.value }));
 
     if (field === "email") {
@@ -120,13 +122,15 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
           <Col xs={16}>
             {isEdit ? (
               <>
-                <Input
+                {/* <Input
                   value={tempContact.phone}
                   onChange={(e) => handleChange(e, "phone")}
                   onBlur={() => handleBlur("phone")}
                   placeholder={"091xxx0909"}
                   name="phone"
-                />
+                /> */}
+                <PhoneInput />
+
                 {!isValidInfo.phone && (
                   <p className={`${s.invalid}`}>Invalid phone number</p>
                 )}

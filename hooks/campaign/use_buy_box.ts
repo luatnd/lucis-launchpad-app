@@ -94,7 +94,7 @@ export function useBuyBox(
 
     if (!ConnectWalletStore_NonReactiveData.web3Provider) {
       message.error(
-        "[Critical] This is unexpected behavior occur in our app, please reconnect your wallet to ensure the app run correctly",
+        "This is unexpected behavior occur in our app, please reconnect your wallet to ensure the app run correctly",
         6
       );
       return 0;

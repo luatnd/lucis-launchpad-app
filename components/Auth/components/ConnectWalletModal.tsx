@@ -78,13 +78,12 @@ export default observer(function ConnectWalletModal(props: Props) {
   };
 
   const handleAccountsChanged = (accounts: string[]) => {
+    // console.log("{handleAccountsChanged} accounts: ", accounts);
+    if (!AuthStore.isLoggedIn) {
+      return;
+    }
     const currentAccount = accounts[0];
-    console.log("{handleAccountsChanged} account: ", currentAccount);
-
-    /**
-     * If user change the account
-     * Need to re-connect the wallet and verify their new address also
-     */
+    // console.log("{handleAccountsChanged} address: ", address);
     if (currentAccount !== address) {
       ConnectWalletStore.address = currentAccount;
       loginWithLucis(currentAccount, false);
@@ -536,6 +535,7 @@ export default observer(function ConnectWalletModal(props: Props) {
     setTimeout(() => {
       ConnectWalletStore.resetStates();
       ConnectWalletStore_NonReactiveData.resetStates();
+      AuthStore.resetStates();
       // AuthStore.resetStates();
     }, 200);
   }, [DEBUG]);
@@ -674,43 +674,6 @@ export default observer(function ConnectWalletModal(props: Props) {
       <p className={s.title}>2. Choose wallet</p>
       <div className={s.items}>
         {supported_wallets.map((i) => predefined_wallets[i])}
-      </div>
-
-      <p className={s.title}>3. Verify address</p>
-      <div
-        className={`${s.items} ${s.verifyC}`}
-        style={{ display: "block", paddingLeft: 16 }}
-      >
-        {!!activeWallet && (
-          <>
-            <p>Address: {!address ? "" : trim_middle(address, 10, 10)}</p>
-            <p>Network: {getAppNetworkFriendlyName(connected_network)}</p>
-            {/* {address && logged_in_with_lucis ? (
-              <Button type="primary" size="large" disabled>
-                <img
-                  src="/assets/UpComing/tick-done-2.svg"
-                  alt=""
-                  style={{ padding: "0 6px 4px 0" }}
-                />
-                Verified
-              </Button>
-            ) : (
-              <>
-                <Button
-                  type="primary"
-                  size="large"
-                  onClick={loginWithLucisCb}
-                  loading={authing}
-                >
-                  Verify
-                </Button>
-                {authing && (
-                  <p className={s.note}>Please do confirm on your wallet</p>
-                )}
-              </>
-            )} */}
-          </>
-        )}
       </div>
     </Modal>
   );

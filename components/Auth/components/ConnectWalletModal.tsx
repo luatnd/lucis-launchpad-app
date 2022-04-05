@@ -29,8 +29,24 @@ import { isMobile } from "web3modal";
 
 type Props = {};
 export default observer(function ConnectWalletModal(props: Props) {
-  const DEBUG = true;
+  const DEBUG = false;
   DEBUG && console.log("{ConnectWalletModal} render: ");
+
+  // // init
+  // - choose chain
+  // - choose wallet
+  // - open modal connect
+  // + connected: login -> success -> cache chain + wallet. If login faild then notify and clear
+  // + cancel: clear cache
+
+  // // connected
+  // - check change account
+  // + not change then keep session
+  // + change -> reconnect
+
+  // // State
+  // connected
+  // selected (chain + wallet)
 
   const {
     address,
@@ -40,11 +56,9 @@ export default observer(function ConnectWalletModal(props: Props) {
   } = ConnectWalletStore;
 
   const { isLoggedIn: logged_in_with_lucis, loading: authing } = AuthStore;
-  console.log("connectedChain: ", connectedChain);
   const [network, setNetwork] = useState<ChainNetwork | undefined>(
     connectedChain
   );
-  console.log("Init_network: ", network);
   const [wallet, setWallet] = useState<Wallet | undefined>(connectedWallet);
 
   const isModalVisible = AuthBoxStore.connectModalVisible,
@@ -71,28 +85,36 @@ export default observer(function ConnectWalletModal(props: Props) {
      * If user change the account
      * Need to re-connect the wallet and verify their new address also
      */
-    console.log("address: ", address);
-    console.log("network: ", network);
     if (currentAccount !== address) {
       ConnectWalletStore.address = currentAccount;
       loginWithLucis(currentAccount, false);
       // changeWallet(activeWallet!);
     }
   };
-  const handleChainChanged = (_hexChainId: string) => {
-    console.log("{handleChainChanged} _hexChainId: ", _hexChainId);
+  const handleChainChanged = async (_hexChainId: string) => {
+    const _chainId = parseInt(_hexChainId);
+    console.log("{handleChainChanged} _hexChainId: ", _chainId);
+
     /**
      * If user change the chain, we don't need to do anything
      * TODO: Just ensure target chain is active before sending the request => Check if we need to ensure, or metamask will do it?
      */
-    console.log(
-      "getChainNetworkFromChainId(_hexChainId):",
-      getChainNetworkFromChainId(_hexChainId)
-    );
-    setNetwork(getChainNetworkFromChainId(_hexChainId));
-    setTimeout(() => {
-      changeWallet(activeWallet!);
-    }, 1000);
+    let newChainNetwork = getChainNetworkFromChainId(_chainId);
+    let newNetwork =
+      await ConnectWalletStore_NonReactiveData.web3Provider?.getNetwork();
+    if (!newNetwork) {
+      return;
+    }
+    setNetwork(newChainNetwork);
+    ConnectWalletStore.setState({
+      network: newNetwork,
+      address: address,
+      chainNetwork: newChainNetwork,
+      wallet: wallet,
+    });
+    // ConnectWalletStore.chainNetwork = newChainNetwork;
+    // ConnectWalletStore.network = newNetwork;
+    // changeWallet(activeWallet!, newChainNetwork);
   };
   const handleDisconnect = (error: { code: number; message: string }) => {
     console.log("{handleDisconnect} error: ", error.code, error.message);
@@ -149,7 +171,7 @@ export default observer(function ConnectWalletModal(props: Props) {
         // console.log(balance);
 
         AuthStore.loading = false;
-        console.log("{loginWithLucis.} r: ", r);
+        DEBUG && console.log("{loginWithLucis.} r: ", r);
 
         switch (r.error) {
           case null:
@@ -207,7 +229,8 @@ export default observer(function ConnectWalletModal(props: Props) {
   );
 
   const changeWallet = useCallback(
-    async (w: Wallet) => {
+    async (w: Wallet, network?: ChainNetwork) => {
+      console.log("changeWallet: ", network);
       /**
        * This will try to popup the wallet, then make a connection to your wallet
        * If success, it will set auth info to AuthStore
@@ -253,13 +276,24 @@ export default observer(function ConnectWalletModal(props: Props) {
         .then(async (provider) =>
           handleConnectThen(provider, w, () => {
             DEBUG && console.log("{handleConnectThen} setWallet:  : ", w);
+
             setWallet(w);
             connectWalletHelper.cacheConnectionSetting(w, network);
+
+            if (!ConnectWalletStore.address) {
+              DEBUG && console.log("{} Address is null => SKIP login: ");
+              return null;
+            } else {
+              /**
+               * This is memoization, so if address changed, loginWithLucis is another function
+               */
+              return loginWithLucis(ConnectWalletStore.address, false);
+            }
           })
         )
         .catch((e) => handleConnectCatch(e));
     },
-    [network, connectedChain, address, logged_in_with_lucis, DEBUG]
+    [connectedChain, address, logged_in_with_lucis, DEBUG]
   );
 
   const reUpdateWalletIfNeeded = (
@@ -281,9 +315,6 @@ export default observer(function ConnectWalletModal(props: Props) {
       setWallet(connectedWallet);
       return;
     }
-    console.log("isModalVisible", isModalVisible);
-    console.log("address", address);
-    console.log("connected_network", connected_network);
     if (isModalVisible && address && !connected_network) {
       reUpdateWalletIfNeeded(...connectWalletHelper.fetchConnectionSetting());
     }
@@ -307,7 +338,6 @@ export default observer(function ConnectWalletModal(props: Props) {
     if (!w || !network) {
       return;
     }
-    console.log("continue");
 
     // connect to cache provider
     const opt: ConnectWalletOption = {
@@ -368,7 +398,6 @@ export default observer(function ConnectWalletModal(props: Props) {
     const signer = web3Provider.getSigner();
     const address = await signer.getAddress();
     const connected_network = await web3Provider.getNetwork();
-
     /**
      * In case of user connected to BSC network before
      * Then user choose ETH network => Cancel to switch to network => Still on BSC
@@ -544,7 +573,7 @@ export default observer(function ConnectWalletModal(props: Props) {
     [Wallet.metamask]: (
       <div
         key="metamask"
-        onClick={() => changeWallet(Wallet.metamask)}
+        onClick={() => changeWallet(Wallet.metamask, network)}
         className={`${s.item} ${
           activeWallet === Wallet.metamask ? s.active : ""
         }`}
@@ -556,7 +585,7 @@ export default observer(function ConnectWalletModal(props: Props) {
     [Wallet.wc]: (
       <div
         key="wc"
-        onClick={() => changeWallet(Wallet.wc)}
+        onClick={() => changeWallet(Wallet.wc, network)}
         className={`${s.item} ${activeWallet === Wallet.wc ? s.active : ""}`}
       >
         <img src="/assets/crypto/ico-wallet-wc.png" alt="" />
@@ -657,7 +686,7 @@ export default observer(function ConnectWalletModal(props: Props) {
           <>
             <p>Address: {!address ? "" : trim_middle(address, 10, 10)}</p>
             <p>Network: {getAppNetworkFriendlyName(connected_network)}</p>
-            {address && logged_in_with_lucis ? (
+            {/* {address && logged_in_with_lucis ? (
               <Button type="primary" size="large" disabled>
                 <img
                   src="/assets/UpComing/tick-done-2.svg"
@@ -680,7 +709,7 @@ export default observer(function ConnectWalletModal(props: Props) {
                   <p className={s.note}>Please do confirm on your wallet</p>
                 )}
               </>
-            )}
+            )} */}
           </>
         )}
       </div>

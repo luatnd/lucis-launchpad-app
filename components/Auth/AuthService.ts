@@ -12,6 +12,7 @@ import {
   getLocalAuthInfo,
   setLocalAuthInfo,
 } from "./AuthLocal";
+import CryptoJS from "crypto-js";
 
 export enum AuthError {
   Unknown = "Unknown",
@@ -98,10 +99,22 @@ export default class AuthService {
     });
     const nonce = nonceRes.data.generateNonce;
     // console.log('{AuthService.loginByAddress} nonce: ', nonce);
+    // create hmac and login
+    const salt = parseInt(nonce) + new Date().getUTCHours();
+    console.log("salt:", salt);
+    const prefix = process.env.NEXT_PUBLIC_VERIFY_MESSAGE ?? "";
+    const secretKey = `${prefix}${salt}`;
+    console.log("secretKey:", secretKey);
+    const payload = address + prefix;
+    console.log("payload:", payload);
+    let signed_hash = CryptoJS.HmacSHA512(payload, secretKey).toString(
+      CryptoJS.enc.Hex
+    );
+    console.log("signed_hash:", signed_hash);
 
     // TODO: Improve to multiline message with explanation and hello thank you
-    const msg = `0x${to_hex_str(`Lucis verification ${nonce}`)}`;
-    const params = [msg, address, nonce];
+    // const msg = `0x${to_hex_str(`Lucis verification ${nonce}`)}`;
+    // const params = [msg, address, nonce];
 
     /**
      * window.ethereum is for web3 injected like metamask only
@@ -121,11 +134,11 @@ export default class AuthService {
     })
     */
 
-    const signed_hash = await this.sign(params);
-    console.log("signed_hash:", signed_hash);
-    if (!signed_hash || typeof signed_hash !== "string" || signed_hash === "") {
-      throw new Error("Request timeout");
-    }
+    // const signed_hash = await this.sign(params);
+    // console.log("signed_hash:", signed_hash);
+    // if (!signed_hash || typeof signed_hash !== "string" || signed_hash === "") {
+    //   throw new Error("Request timeout");
+    // }
     // console.log('{loginByAddress} signed_hash: ', signed_hash);
 
     // const loginRes = await apiClient.req({
@@ -216,7 +229,7 @@ export default class AuthService {
 
         // re-login only if the cache user have token, and correct address
         const user = await this.fetchUserData();
-        console.log("{AuthService.login} re-login user: ", user);
+        // console.log("{AuthService.login} re-login user: ", user);
 
         user.token = token; // fetchUserData does not have token
 

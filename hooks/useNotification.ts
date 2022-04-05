@@ -2,7 +2,7 @@ import { gql, useSubscription } from "@apollo/client";
 import { notification } from "antd";
 
 type Props = {
-  user_id: number | undefined;
+  user_id: number;
 };
 
 const useNotification = ({ user_id }: Props) => {

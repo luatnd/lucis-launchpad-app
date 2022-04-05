@@ -2,16 +2,24 @@
 import { Button, message, Skeleton } from "antd";
 import useNotification from "hooks/campaign/useEnableNotification";
 import { useWindowSize } from "hooks/useWindowSize";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { GBoxCampaign } from "src/generated/graphql";
 import s from "./Banner.module.sass";
 
 type Props = {
   boxCampaign: GBoxCampaign;
+  isSubcribed: boolean;
 };
 
-const Banner = ({ boxCampaign }: Props) => {
-  const [isEnableNotification, setIsEnableNotification] = useState(false);
+const Banner = ({ boxCampaign, isSubcribed }: Props) => {
+  const [isEnableNotification, setIsEnableNotification] = useState(isSubcribed);
+
   // const [isReadMore, setIsReadMore] = useState(false);
   // const [widthScreen, height] = useWindowSize();
   const descRef = useRef<any>(null);
@@ -19,11 +27,6 @@ const Banner = ({ boxCampaign }: Props) => {
   const { enableNotification, disableNotification } = useNotification();
 
   const handleSubscription = () => {
-    // console.log(typeof Notification !== "undefined");
-    // Notification.requestPermission().then(function (permission) {
-    //   console.log(permission !== "granted");
-    // });
-
     !isEnableNotification
       ? enableNotification({ variables: { box_campaign_uid: boxCampaign.uid } })
           .then(() => setIsEnableNotification(true))
@@ -34,6 +37,10 @@ const Banner = ({ boxCampaign }: Props) => {
           .then(() => setIsEnableNotification(false))
           .catch((err) => message.error(err.message));
   };
+
+  useEffect(() => {
+    setIsEnableNotification(isSubcribed);
+  }, [isSubcribed]);
 
   // const handleReadMore = () => {
   //   setIsReadMore(true);

@@ -3,6 +3,7 @@ import AuthStore from "../Auth/AuthStore";
 import InfiniteList from "./InfiniteNoti";
 import { observer } from "mobx-react";
 import useNotification from "hooks/useNotification";
+import { useMemo } from "react";
 
 type iconProps = {
   height: string;
@@ -32,7 +33,12 @@ const Notification = () => {
   const { id } = AuthStore;
 
   const { notificationData } = useNotification({ user_id: 32 });
-  // console.log(notificationData);
+  const temp = useMemo(() => {
+    // console.log(notificationData);
+    // return notificationData;
+  }, [notificationData]);
+
+  // console.log(temp);
 
   return (
     <>

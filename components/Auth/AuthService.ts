@@ -12,6 +12,7 @@ import {
   getLocalAuthInfo,
   setLocalAuthInfo,
 } from "./AuthLocal";
+//@ts-ignore
 import CryptoJS from "crypto-js";
 
 export enum AuthError {

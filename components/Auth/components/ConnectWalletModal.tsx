@@ -82,6 +82,11 @@ export default observer(function ConnectWalletModal(props: Props) {
     if (!AuthStore.isLoggedIn) {
       return;
     }
+    if (accounts.length === 0) {
+      // disconnect all account
+      disconnectWallet();
+      return;
+    }
     const currentAccount = accounts[0];
     // console.log("{handleAccountsChanged} address: ", address);
     if (currentAccount !== address) {

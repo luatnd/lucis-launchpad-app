@@ -2,6 +2,8 @@ import { Badge, Popover } from "antd";
 import AuthStore from "../Auth/AuthStore";
 import InfiniteList from "./InfiniteNoti";
 import { observer } from "mobx-react";
+import useNotification from "hooks/useNotification";
+import { useMemo } from "react";
 
 type iconProps = {
   height: string;
@@ -28,6 +30,16 @@ const NotificationIcon = ({ height, color }: iconProps): any => {
 };
 
 const Notification = () => {
+  const { id } = AuthStore;
+
+  const { notificationData } = useNotification({ user_id: 32 });
+  const temp = useMemo(() => {
+    // console.log(notificationData);
+    // return notificationData;
+  }, [notificationData]);
+
+  // console.log(temp);
+
   return (
     <>
       {AuthStore.isLoggedIn ? (

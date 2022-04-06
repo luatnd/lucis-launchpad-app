@@ -1,11 +1,10 @@
 import { Col, message, Row } from "antd";
 import Input from "components/Input/Input";
+import { useMutationProfile } from "hooks/profile/useMutationProfile";
+import { observer } from "mobx-react-lite";
 import { ChangeEvent, useState } from "react";
 import s from "../../pages/profile/index.module.sass";
 import AuthStore from "../Auth/AuthStore";
-import { observer } from "mobx-react-lite";
-import { useMutationProfile } from "hooks/profile/useMutationProfile";
-import { vi2en } from "utils/String";
 
 type Props = {
   isEdit: boolean;
@@ -108,13 +107,15 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                     />
                   ) : (
                     <p>
-                      {tempSocial.facebook
+                      {tempSocial.facebook && isValidSocials.facebook
                         ? tempSocial.facebook
+                        : !isValidSocials.facebook
+                        ? facebook
                         : "Not available"}
                     </p>
                   )}
                 </a>
-                {!isValidSocials.facebook && (
+                {!isValidSocials.facebook && isEdit && (
                   <p className={`${s.inValid} pl-[30px] sm:pl-[50px]`}>
                     Invalid facebook URL
                   </p>
@@ -134,13 +135,15 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                     />
                   ) : (
                     <p>
-                      {tempSocial.twitter
+                      {tempSocial.twitter && isValidSocials.twitter
                         ? tempSocial.twitter
+                        : !isValidSocials.twitter
+                        ? twitter
                         : "Not available"}
                     </p>
                   )}
                 </a>
-                {!isValidSocials.twitter && (
+                {!isValidSocials.twitter && isEdit && (
                   <p className={`${s.inValid} pl-[30px] sm:pl-[50px]`}>
                     Invalid twitter URL
                   </p>
@@ -160,13 +163,15 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                     />
                   ) : (
                     <p>
-                      {tempSocial.discord
+                      {tempSocial.discord && isValidSocials.discord
                         ? tempSocial.discord
+                        : !isValidSocials.discord
+                        ? discord
                         : "Not available"}
                     </p>
                   )}
                 </a>
-                {!isValidSocials.discord && (
+                {!isValidSocials.discord && isEdit && (
                   <p className={`${s.inValid} pl-[30px] sm:pl-[50px]`}>
                     Invalid discord URL
                   </p>
@@ -186,13 +191,15 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                     />
                   ) : (
                     <p>
-                      {tempSocial.telegram
+                      {tempSocial.telegram && isValidSocials.telegram
                         ? tempSocial.telegram
+                        : !isValidSocials.telegram
+                        ? tele
                         : "Not available"}
                     </p>
                   )}
                 </a>
-                {!isValidSocials.telegram && (
+                {!isValidSocials.telegram && isEdit && (
                   <p className={`${s.inValid} pl-[30px] sm:pl-[50px]`}>
                     Invalid telegram URL
                   </p>

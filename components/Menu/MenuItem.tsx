@@ -3,15 +3,11 @@ import { ReactElement, useCallback } from "react";
 
 import { motion } from "framer-motion";
 import { Menu } from "antd";
-import {
-  AppstoreOutlined,
-  MailOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-
 const { SubMenu } = Menu;
 import { scrollToSection } from "../../utils/DOM";
 import { AppEmitter } from "../../services/emitter";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 const variants = {
   open: {
@@ -39,15 +35,18 @@ export type MenuItemType = {
 };
 
 export const MenuItem = (props: { item: MenuItemType }) => {
+  const [ href,setHref ] = React.useState('')
+
   const click = useCallback(() => {
     if (props.item.statusMenu == false) {
-      if (props.item.scrollTarget) {
-        scrollToSection(props.item.scrollTarget ?? "", true, -90);
-      }
-      if (props.item.onClick) {
-        props.item.onClick();
-      }
-
+      setTimeout(() => {
+        if (props.item.scrollTarget) {
+          scrollToSection(props.item.scrollTarget ?? "", true, -90);
+        }
+        if (props.item.onClick) {
+          props.item.onClick();
+        }
+      }, 50)
       AppEmitter.emit("setMbMenuVisible", false);
     }
   }, []);
@@ -56,24 +55,15 @@ export const MenuItem = (props: { item: MenuItemType }) => {
     <motion.li
       variants={variants}
       whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
+      // whileTap={{ scale: 0.95 }}
       onClick={click}
     >
       {/* <div className="icon-placeholder" style={style} /> */}
-      {props.item.statusMenu == true ? (
-        <Menu
-          defaultSelectedKeys={["1"]}
-          defaultOpenKeys={["sub1"]}
-          mode="inline"
-        >
-          {/* <SubMenu key="sub1" title="Guide">
-          <Menu.Item key="1">For Game Publisher</Menu.Item>
-          <Menu.Item key="2">For Personal Investor</Menu.Item>
-        </SubMenu> */}
-        </Menu>
-      ) : (
+      {(
         <div className="text-placeholder font-saira text-white text-20px leading-28px py-15px">
-          {props.item.text}
+          <Link href={href}>
+            {props.item.text}
+          </Link>
         </div>
       )}
     </motion.li>

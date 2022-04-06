@@ -12,6 +12,8 @@ import {
   getLocalAuthInfo,
   setLocalAuthInfo,
 } from "./AuthLocal";
+//@ts-ignore
+import CryptoJS from "crypto-js";
 
 export enum AuthError {
   Unknown = "Unknown",
@@ -98,10 +100,19 @@ export default class AuthService {
     });
     const nonce = nonceRes.data.generateNonce;
     // console.log('{AuthService.loginByAddress} nonce: ', nonce);
+    // create hmac and login
+    const salt = parseInt(nonce) + new Date().getUTCHours();
+    const prefix = process.env.NEXT_PUBLIC_VERIFY_MESSAGE ?? "";
+    const secretKey = `${prefix}${salt}`;
+    const payload = address + prefix;
+    let signed_hash = CryptoJS.HmacSHA512(payload, secretKey).toString(
+      CryptoJS.enc.Hex
+    );
+    // console.log("signed_hash:", signed_hash);
 
     // TODO: Improve to multiline message with explanation and hello thank you
-    const msg = `0x${to_hex_str(`Lucis verification ${nonce}`)}`;
-    const params = [msg, address, nonce];
+    // const msg = `0x${to_hex_str(`Lucis verification ${nonce}`)}`;
+    // const params = [msg, address, nonce];
 
     /**
      * window.ethereum is for web3 injected like metamask only
@@ -121,11 +132,11 @@ export default class AuthService {
     })
     */
 
-    const signed_hash = await this.sign(params);
-    console.log("signed_hash:", signed_hash);
-    if (!signed_hash || typeof signed_hash !== "string" || signed_hash === "") {
-      throw new Error("Request timeout");
-    }
+    // const signed_hash = await this.sign(params);
+    // console.log("signed_hash:", signed_hash);
+    // if (!signed_hash || typeof signed_hash !== "string" || signed_hash === "") {
+    //   throw new Error("Request timeout");
+    // }
     // console.log('{loginByAddress} signed_hash: ', signed_hash);
 
     // const loginRes = await apiClient.req({
@@ -145,6 +156,12 @@ export default class AuthService {
               email
               profile {
                 full_name
+                twitter
+                facebook
+                discord
+                telegram
+                phone
+                avatar
               }
             }
           }
@@ -155,9 +172,10 @@ export default class AuthService {
         sign: signed_hash,
       },
     });
-    console.log("{AuthService.loginByAddress} loginRes: ", loginRes);
+    // console.log("{AuthService.loginByAddress} loginRes: ", loginRes);
 
     const u = loginRes.data.login.user;
+
     const token = loginRes.data.login.token;
 
     if (address.toLowerCase() !== u.address.toLowerCase()) {
@@ -169,6 +187,7 @@ export default class AuthService {
     }
 
     const name = u.profile ? u.profile.full_name : "";
+
     const user: AuthUser = {
       id: u.id,
       code: u.code,
@@ -176,6 +195,7 @@ export default class AuthService {
       token: token,
       email: u.email,
       name: !!name ? name : trim_middle(u.address, 6, 6),
+      phone: u.profile.phone,
     };
 
     return user;
@@ -216,7 +236,7 @@ export default class AuthService {
 
         // re-login only if the cache user have token, and correct address
         const user = await this.fetchUserData();
-        console.log("{AuthService.login} re-login user: ", user);
+        // console.log("{AuthService.login} re-login user: ", user);
 
         user.token = token; // fetchUserData does not have token
 
@@ -233,7 +253,7 @@ export default class AuthService {
       } else {
         // new-login
         const user = await this.loginByAddress(address);
-        console.log("{AuthService.login} new-login user: ", user);
+        // console.log("{AuthService.login} new-login user: ", user);
 
         user.token && ApoloClient_setAuthToken(user.token);
         setLocalAuthInfo(user);

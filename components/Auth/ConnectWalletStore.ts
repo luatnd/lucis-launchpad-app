@@ -62,7 +62,6 @@ class ConnectWalletStore implements IConnectWalletStore {
 
   constructor() {
     makeAutoObservable(this);
-    // fetchConnectionSetting()
   }
 
   /**

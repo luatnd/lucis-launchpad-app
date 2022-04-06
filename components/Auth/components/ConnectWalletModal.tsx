@@ -32,11 +32,22 @@ export default observer(function ConnectWalletModal(props: Props) {
   const DEBUG = false;
   DEBUG && console.log("{ConnectWalletModal} render: ");
 
-  const [network, setNetwork] = useState<ChainNetwork | undefined>();
-  const [wallet, setWallet] = useState<Wallet | undefined>();
+  // // init
+  // - choose chain
+  // - choose wallet
+  // - open modal connect
+  // + connected: login -> success -> cache chain + wallet. If login faild then notify and clear
+  // + cancel: clear cache
 
-  const isModalVisible = AuthBoxStore.connectModalVisible,
-    setIsModalVisible = (v: boolean) => (AuthBoxStore.connectModalVisible = v);
+  // // connected
+  // - check change account
+  // + not change then keep session
+  // + change -> reconnect
+
+  // // State
+  // connected
+  // selected (chain + wallet)
+
   const {
     address,
     network: connected_network,
@@ -45,6 +56,13 @@ export default observer(function ConnectWalletModal(props: Props) {
   } = ConnectWalletStore;
 
   const { isLoggedIn: logged_in_with_lucis, loading: authing } = AuthStore;
+  const [network, setNetwork] = useState<ChainNetwork | undefined>(
+    connectedChain
+  );
+  const [wallet, setWallet] = useState<Wallet | undefined>(connectedWallet);
+
+  const isModalVisible = AuthBoxStore.connectModalVisible,
+    setIsModalVisible = (v: boolean) => (AuthBoxStore.connectModalVisible = v);
 
   const activeWallet = useMemo(() => {
     if (!connectedChain || connectedChain != network) {
@@ -60,31 +78,47 @@ export default observer(function ConnectWalletModal(props: Props) {
   };
 
   const handleAccountsChanged = (accounts: string[]) => {
+    // console.log("{handleAccountsChanged} accounts: ", accounts);
+    if (!AuthStore.isLoggedIn) {
+      return;
+    }
+    if (accounts.length === 0) {
+      // disconnect all account
+      disconnectWallet();
+      return;
+    }
     const currentAccount = accounts[0];
-    console.log("{handleAccountsChanged} account: ", currentAccount);
-
-    /**
-     * If user change the account
-     * Need to re-connect the wallet and verify their new address also
-     */
+    // console.log("{handleAccountsChanged} address: ", address);
     if (currentAccount !== address) {
-      return loginWithLucis(currentAccount, true);
+      ConnectWalletStore.address = currentAccount;
+      loginWithLucis(currentAccount, false);
+      // changeWallet(activeWallet!);
     }
   };
-  const handleChainChanged = (_hexChainId: string) => {
-    console.log("{handleChainChanged} _hexChainId: ", _hexChainId);
+  const handleChainChanged = async (_hexChainId: string) => {
+    const _chainId = parseInt(_hexChainId);
+    console.log("{handleChainChanged} _hexChainId: ", _chainId);
+
     /**
      * If user change the chain, we don't need to do anything
      * TODO: Just ensure target chain is active before sending the request => Check if we need to ensure, or metamask will do it?
      */
-    console.log(
-      "getChainNetworkFromChainId(_hexChainId):",
-      getChainNetworkFromChainId(_hexChainId)
-    );
-    setNetwork(getChainNetworkFromChainId(_hexChainId));
-    setTimeout(() => {
-      changeWallet(activeWallet!);
-    }, 1000);
+    let newChainNetwork = getChainNetworkFromChainId(_chainId);
+    let newNetwork =
+      await ConnectWalletStore_NonReactiveData.web3Provider?.getNetwork();
+    if (!newNetwork) {
+      return;
+    }
+    setNetwork(newChainNetwork);
+    ConnectWalletStore.setState({
+      network: newNetwork,
+      address: address,
+      chainNetwork: newChainNetwork,
+      wallet: wallet,
+    });
+    // ConnectWalletStore.chainNetwork = newChainNetwork;
+    // ConnectWalletStore.network = newNetwork;
+    // changeWallet(activeWallet!, newChainNetwork);
   };
   const handleDisconnect = (error: { code: number; message: string }) => {
     console.log("{handleDisconnect} error: ", error.code, error.message);
@@ -141,7 +175,7 @@ export default observer(function ConnectWalletModal(props: Props) {
         // console.log(balance);
 
         AuthStore.loading = false;
-        console.log("{loginWithLucis.} r: ", r);
+        DEBUG && console.log("{loginWithLucis.} r: ", r);
 
         switch (r.error) {
           case null:
@@ -199,7 +233,7 @@ export default observer(function ConnectWalletModal(props: Props) {
   );
 
   const changeWallet = useCallback(
-    async (w: Wallet) => {
+    async (w: Wallet, network?: ChainNetwork) => {
       /**
        * This will try to popup the wallet, then make a connection to your wallet
        * If success, it will set auth info to AuthStore
@@ -217,8 +251,8 @@ export default observer(function ConnectWalletModal(props: Props) {
       //   return;
       // }
       // check connect metamask mobile when use wallet connect
+
       if (isMobile()) {
-        console.log("isMobile");
         w = Wallet.wc;
       }
 
@@ -245,13 +279,24 @@ export default observer(function ConnectWalletModal(props: Props) {
         .then(async (provider) =>
           handleConnectThen(provider, w, () => {
             DEBUG && console.log("{handleConnectThen} setWallet:  : ", w);
+
             setWallet(w);
             connectWalletHelper.cacheConnectionSetting(w, network);
+
+            if (!ConnectWalletStore.address) {
+              DEBUG && console.log("{} Address is null => SKIP login: ");
+              return null;
+            } else {
+              /**
+               * This is memoization, so if address changed, loginWithLucis is another function
+               */
+              return loginWithLucis(ConnectWalletStore.address, false);
+            }
           })
         )
         .catch((e) => handleConnectCatch(e));
     },
-    [network, connectedChain, address, logged_in_with_lucis, DEBUG]
+    [connectedChain, address, logged_in_with_lucis, DEBUG]
   );
 
   const reUpdateWalletIfNeeded = (
@@ -273,9 +318,6 @@ export default observer(function ConnectWalletModal(props: Props) {
       setWallet(connectedWallet);
       return;
     }
-    console.log("isModalVisible", isModalVisible);
-    console.log("address", address);
-    console.log("connected_network", connected_network);
     if (isModalVisible && address && !connected_network) {
       reUpdateWalletIfNeeded(...connectWalletHelper.fetchConnectionSetting());
     }
@@ -299,7 +341,6 @@ export default observer(function ConnectWalletModal(props: Props) {
     if (!w || !network) {
       return;
     }
-    console.log("continue");
 
     // connect to cache provider
     const opt: ConnectWalletOption = {
@@ -360,7 +401,6 @@ export default observer(function ConnectWalletModal(props: Props) {
     const signer = web3Provider.getSigner();
     const address = await signer.getAddress();
     const connected_network = await web3Provider.getNetwork();
-
     /**
      * In case of user connected to BSC network before
      * Then user choose ETH network => Cancel to switch to network => Still on BSC
@@ -369,8 +409,8 @@ export default observer(function ConnectWalletModal(props: Props) {
     const n: ChainNetwork | undefined = getChainNetworkFromChainId(
       connected_network.chainId
     );
+    DEBUG && console.log("{handleConnectThen} network: ", n);
     if (n && n !== network) {
-      DEBUG && console.log("{handleConnectThen} setNetwork: ", n);
       setNetwork(n);
     }
 
@@ -500,6 +540,7 @@ export default observer(function ConnectWalletModal(props: Props) {
     setTimeout(() => {
       ConnectWalletStore.resetStates();
       ConnectWalletStore_NonReactiveData.resetStates();
+      AuthStore.resetStates();
       // AuthStore.resetStates();
     }, 200);
   }, [DEBUG]);
@@ -536,7 +577,7 @@ export default observer(function ConnectWalletModal(props: Props) {
     [Wallet.metamask]: (
       <div
         key="metamask"
-        onClick={() => changeWallet(Wallet.metamask)}
+        onClick={() => changeWallet(Wallet.metamask, network)}
         className={`${s.item} ${
           activeWallet === Wallet.metamask ? s.active : ""
         }`}
@@ -548,7 +589,7 @@ export default observer(function ConnectWalletModal(props: Props) {
     [Wallet.wc]: (
       <div
         key="wc"
-        onClick={() => changeWallet(Wallet.wc)}
+        onClick={() => changeWallet(Wallet.wc, network)}
         className={`${s.item} ${activeWallet === Wallet.wc ? s.active : ""}`}
       >
         <img src="/assets/crypto/ico-wallet-wc.png" alt="" />
@@ -638,43 +679,6 @@ export default observer(function ConnectWalletModal(props: Props) {
       <p className={s.title}>2. Choose wallet</p>
       <div className={s.items}>
         {supported_wallets.map((i) => predefined_wallets[i])}
-      </div>
-
-      <p className={s.title}>3. Verify address</p>
-      <div
-        className={`${s.items} ${s.verifyC}`}
-        style={{ display: "block", paddingLeft: 16 }}
-      >
-        {!!activeWallet && (
-          <>
-            <p>Address: {!address ? "" : trim_middle(address, 10, 10)}</p>
-            <p>Network: {getAppNetworkFriendlyName(connected_network)}</p>
-            {address && logged_in_with_lucis ? (
-              <Button type="primary" size="large" disabled>
-                <img
-                  src="/assets/UpComing/tick-done-2.svg"
-                  alt=""
-                  style={{ padding: "0 6px 4px 0" }}
-                />
-                Verified
-              </Button>
-            ) : (
-              <>
-                <Button
-                  type="primary"
-                  size="large"
-                  onClick={loginWithLucisCb}
-                  loading={authing}
-                >
-                  Verify
-                </Button>
-                {authing && (
-                  <p className={s.note}>Please do confirm on your wallet</p>
-                )}
-              </>
-            )}
-          </>
-        )}
       </div>
     </Modal>
   );

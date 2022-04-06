@@ -57,7 +57,7 @@ const BoxTypeCard = observer((props: Props) => {
   const purchasedBox =
     props.purchasedBox?.uid == boxType.uid ? props.purchasedBox : undefined;
   const { chainNetwork } = ConnectWalletStore;
-  const { isLoggedIn } = AuthStore;
+  // const { isLoggedIn } = AuthStore;
 
   // TODO: Fetch refetch whitelist info after logged in status
   // change from false to true
@@ -88,7 +88,7 @@ const BoxTypeCard = observer((props: Props) => {
     round,
     isInWhitelist,
     chainNetwork,
-    isLoggedIn,
+    // isLoggedIn,
     purchasedBox
   );
 
@@ -291,7 +291,7 @@ const BoxTypeCard = observer((props: Props) => {
                       </Button>
                     </div>
                   </Tooltip>
-                ) : !isLoggedIn ? (
+                ) : !AuthStore.isLoggedIn ? (
                   // if wallet was not connected => popconfirm
                   <Popconfirm
                     title={

@@ -57,6 +57,15 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
     }
   );
 
+  const { data: boxCampaignDetailSubcription } = useQuery(
+    BOX_CAMPAIGN_SUBSCRIPTION_DETAIL,
+    {
+      variables: {
+        box_campaign_uid,
+      },
+    }
+  );
+
   return {
     loading,
     error,
@@ -69,6 +78,8 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
     whitelistRegisteredRecently:
       dataWhitelistRegisteredRecently?.whitelistRegisteredRecently,
     purchasedBox: purchasedBox?.purchasedBox,
+    boxCampaignDetailSubcription:
+      boxCampaignDetailSubcription?.boxCampaignSubscriptionDetail,
 
     recentlyPurchasedBox: recentlyPurchasedBox?.recentlyPurchasedBox,
     historiesBox: historiesBox?.boxCampaignBuyHistories.filter(
@@ -249,6 +260,14 @@ const PURCHASED_RECENTLY_BOX_SUBSCRIPTION = gql`
           thumb_img
         }
       }
+    }
+  }
+`;
+
+const BOX_CAMPAIGN_SUBSCRIPTION_DETAIL = gql`
+  query ($box_campaign_uid: String!) {
+    boxCampaignSubscriptionDetail(box_campaign_uid: $box_campaign_uid) {
+      enable_notify
     }
   }
 `;

@@ -51,6 +51,7 @@ function DetailCampaign() {
     whitelistRegistered,
     whitelistRegisteredRecently,
     historiesBox,
+    boxCampaignDetailSubcription,
   } = useDetailCampaign({
     box_campaign_uid: campaignUid,
   });
@@ -79,7 +80,10 @@ function DetailCampaign() {
 
       <div className="lucis-container">
         <div className={s.containerApp} style={{ scrollBehavior: "smooth" }}>
-          <Banner boxCampaign={boxCampaign} />
+          <Banner
+            boxCampaign={boxCampaign}
+            isSubcribed={boxCampaignDetailSubcription?.enable_notify}
+          />
           {boxCampaign && (
             <div className={s.tabContainer}>
               <Tabs

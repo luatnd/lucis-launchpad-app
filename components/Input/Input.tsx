@@ -1,5 +1,7 @@
 import { ChangeEvent } from "react";
 import s from "./Input.module.sass";
+import PhoneInputReact from "react-phone-input-2";
+import "react-phone-input-2/lib/material.css";
 
 type Props = {
   value: string;
@@ -7,7 +9,6 @@ type Props = {
   onBlur?: () => void;
   className?: string;
   placeholder?: string;
-  // valid?: boolean;
   name: string;
 };
 
@@ -17,14 +18,13 @@ const Input = ({
   onBlur,
   className,
   placeholder,
-  // valid = true,
   name,
 }: Props) => {
   return (
     <div className={`${s.inputC}`}>
       <input
         name={name}
-        value={value !== "" ? value : undefined}
+        value={value !== "" ? value : ""}
         className={`${className} ${s.input}`}
         placeholder={placeholder}
         onBlur={onBlur}
@@ -36,4 +36,28 @@ const Input = ({
 
 export default Input;
 
-// ${valid ? "" : s.invalid}
+export const PhoneInput = ({ value, onChange, onBlur, countryCode }: any) => {
+  return (
+    <div className={`${s.inputC}`}>
+      <PhoneInputReact
+        country={countryCode.toLowerCase()}
+        onlyCountries={[countryCode.toLowerCase()]}
+        specialLabel=""
+        // enableSearch
+        // searchPlaceholder="Search"
+        enableTerritories
+        value={value !== "" ? value : ""}
+        onChange={onChange}
+        onBlur={onBlur}
+        inputProps={{
+          style: {
+            background: "none",
+            border: 0,
+            boxShadow: "none",
+            color: "white",
+          },
+        }}
+      />
+    </div>
+  );
+};

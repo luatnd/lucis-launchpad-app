@@ -29,7 +29,7 @@ export const Navigation = () => {
     {
       color: "#FF008C",
       text: "Home",
-      scrollTarget: "#Homepage",
+      scrollTarget: "#Home",
       statusMenu: false,
     },
     {

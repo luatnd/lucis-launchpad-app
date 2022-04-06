@@ -22,7 +22,7 @@ body {
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif,
     cursive !important;
   line-height: 1.6;
-  /* scroll-behavior: smooth; */
+  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   /* background: linear-gradient(28deg, #18004A, black); */
 }

@@ -48,7 +48,7 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
   });
 
   const { updateProfile } = useMutationProfile();
-  const { verifyEmail, verifyResult } = useMutaionVerifyEmail();
+  const { verifyEmail } = useMutaionVerifyEmail();
 
   const handleUpdate = (field: string) => {
     //@ts-ignore
@@ -106,7 +106,7 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
   const handleChangePhone = (e: string) => {
     setTempContact({
       ...tempContact,
-      phone: e,
+      phone: `+${e}`,
     });
   };
 
@@ -153,14 +153,7 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
                 )}
               </>
             ) : (
-              // <p>{tempContact.phone ? tempContact.phone : "Not available"}</p>
-              <p>
-                {/* {isUpdatePhoneSuccess
-                  ? tempContact.phone
-                  : tempContact.phone
-                  ? phone
-                  : "Not available"} */}
-              </p>
+              <p>{tempContact.phone ? tempContact.phone : "Not available"}</p>
             )}
           </Col>
 

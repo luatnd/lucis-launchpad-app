@@ -195,6 +195,7 @@ export default class AuthService {
       token: token,
       email: u.email,
       name: !!name ? name : trim_middle(u.address, 6, 6),
+      phone: u.profile.phone,
     };
 
     return user;

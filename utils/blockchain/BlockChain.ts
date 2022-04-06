@@ -1,4 +1,4 @@
-import { IChainData } from "./ChainConfig";
+import { chainProfilesIndexed, IChainData } from "./ChainConfig";
 import { ChainSymbol } from "../../src/generated/graphql";
 
 /**
@@ -121,4 +121,8 @@ export function getChainNetworkFromChainId(
     );
   }
   return a ?? undefined;
+}
+
+export function getCurrencyFromChainId(chainId: number) {
+  return chainProfilesIndexed[chainId].native_currency.name;
 }

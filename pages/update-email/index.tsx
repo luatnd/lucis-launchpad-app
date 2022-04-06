@@ -5,8 +5,15 @@ const UpdateEmail = () => {
   return (
     <>
       <DocHead />
-      <div className="lucis-container">
-        <h1 className="text-white text-center pt-[150px]  lg:py-[50px] md:text-48px">
+
+      <div>
+        <img
+          className="md:mt-[-50px]"
+          style={{ width: "100%" }}
+          src="/assets/MyProfile/banner.png"
+          alt=""
+        />
+        <h1 className="text-white text-center text-[24px] md:text-[36px] py-[50px] md:py-[200px]">
           Update email success
         </h1>
         <Footer />

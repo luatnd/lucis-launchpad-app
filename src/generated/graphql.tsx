@@ -92,7 +92,9 @@ export type BoxCampaignSubscribes = {
   box_campaign_uid: Scalars['String'];
   created_at: Scalars['DateTime'];
   enable_notify: Scalars['Boolean'];
+  finish: Scalars['Boolean'];
   id: Scalars['ID'];
+  round?: Maybe<Scalars['JSON']>;
   updated_at: Scalars['DateTime'];
   user: User;
   user_id: Scalars['Int'];
@@ -257,7 +259,6 @@ export type GBoxCampaign = {
   spotlight_position?: Maybe<Scalars['Int']>;
   start: Scalars['DateTime'];
   status?: Maybe<BoxCampaignsStatus>;
-  subscribeCampaign?: Maybe<Array<BoxCampaignSubscribes>>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
 };
@@ -324,6 +325,18 @@ export type GBoxCampaignRound = {
   participant_limit?: Maybe<Scalars['Int']>;
   require_whitelist?: Maybe<Scalars['Boolean']>;
   start: Scalars['String'];
+};
+
+export type GBoxCampaignSubscribes = {
+  __typename?: 'GBoxCampaignSubscribes';
+  box_campaign: BoxCampaign;
+  box_campaign_uid: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  enable_notify: Scalars['Boolean'];
+  id: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  user: User;
+  user_id: Scalars['Int'];
 };
 
 export type GBoxContract = {
@@ -496,12 +509,12 @@ export type MutationBuyBoxArgs = {
 
 
 export type MutationDisableNotificationArgs = {
-  BoxCampaignId: Scalars['String'];
+  box_campaign_id: Scalars['String'];
 };
 
 
 export type MutationEnableNotificationArgs = {
-  BoxCampaignId: Scalars['String'];
+  box_campaign_id: Scalars['String'];
 };
 
 
@@ -567,6 +580,8 @@ export type Query = {
   __typename?: 'Query';
   /** Box campaign transaction */
   boxCampaignBuyHistories?: Maybe<Array<GBoxCampaignBuyHistory>>;
+  /** box_campaign_subscribes information */
+  boxCampaignSubscriptionDetail?: Maybe<GBoxCampaignSubscribes>;
   /** Box campaign transaction */
   campaignDetail?: Maybe<GBoxCampaign>;
   closedBoxCampaign?: Maybe<Array<GBoxCampaign>>;
@@ -584,6 +599,11 @@ export type Query = {
 
 export type QueryBoxCampaignBuyHistoriesArgs = {
   include?: InputMaybe<GBoxCampaignInclude>;
+};
+
+
+export type QueryBoxCampaignSubscriptionDetailArgs = {
+  box_campaign_uid: Scalars['String'];
 };
 
 
@@ -610,32 +630,11 @@ export type QueryWhitelistRegisteredArgs = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  boxCampaignOpenAfter15Minutes: NotificationStatus;
-  boxCampaignOpenBeforeOneDay: NotificationStatus;
-  campaignClose: NotificationStatus;
   /** Box type state change when box purchased */
   purchasedBox?: Maybe<GBoxType>;
+  pushNotification: NotificationStatus;
   recentlyPurchasedBox?: Maybe<GBoxCampaignBuyHistory>;
-  whitelistOpenBefore15Min: NotificationStatus;
-  whitelistOpenBeforeOneDay: NotificationStatus;
-  whitelistRegisterAfter15Minutes: NotificationStatus;
-  whitelistRegisterBeforeOneDay: NotificationStatus;
   whitelistRegisteredRecently?: Maybe<WhitelistStatus>;
-};
-
-
-export type SubscriptionBoxCampaignOpenAfter15MinutesArgs = {
-  user_id: Scalars['Float'];
-};
-
-
-export type SubscriptionBoxCampaignOpenBeforeOneDayArgs = {
-  user_id: Scalars['Float'];
-};
-
-
-export type SubscriptionCampaignCloseArgs = {
-  user_id: Scalars['Float'];
 };
 
 
@@ -644,28 +643,13 @@ export type SubscriptionPurchasedBoxArgs = {
 };
 
 
+export type SubscriptionPushNotificationArgs = {
+  user_id: Scalars['Float'];
+};
+
+
 export type SubscriptionRecentlyPurchasedBoxArgs = {
   box_campaign_uid: Scalars['String'];
-};
-
-
-export type SubscriptionWhitelistOpenBefore15MinArgs = {
-  user_id: Scalars['Float'];
-};
-
-
-export type SubscriptionWhitelistOpenBeforeOneDayArgs = {
-  user_id: Scalars['Float'];
-};
-
-
-export type SubscriptionWhitelistRegisterAfter15MinutesArgs = {
-  user_id: Scalars['Float'];
-};
-
-
-export type SubscriptionWhitelistRegisterBeforeOneDayArgs = {
-  user_id: Scalars['Float'];
 };
 
 

@@ -11,8 +11,6 @@ type Props = {
 };
 
 const RecentlyBought = ({ historiesBox, recentlyPurchasedBox }: Props) => {
-  // const [tempHistories, setTempHistories] = useState(historiesBox);
-
   const columns = [
     {
       title: "Item",
@@ -165,15 +163,8 @@ const RecentlyBought = ({ historiesBox, recentlyPurchasedBox }: Props) => {
     [recentlyPurchasedBox]
   );
 
-  // useEffect(() => {
-  //   //@ts-ignore
-  //   const temp = structuredClone(historiesBox);
-  //   recentlyPurchasedBox && temp.push(recentlyPurchasedBox);
-  //   setTempHistories(temp);
-  // }, [recentlyPurchasedBox]);
-
   return temp.length > 0 ? (
-    <div className={`${s.history} lucis-container `}>
+    <div className={`${s.history} lucis-container mt-[50px] md:mt-[100px]`}>
       <h1 className="text-center">RECENTLY BOUGHT</h1>
 
       <div style={{ position: "relative" }}>

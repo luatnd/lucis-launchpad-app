@@ -29,7 +29,7 @@ export const Navigation = () => {
     {
       color: "#FF008C",
       text: "Home",
-      scrollTarget: "#Homepage",
+      scrollTarget: "#Home",
       statusMenu: false,
     },
     {
@@ -49,12 +49,6 @@ export const Navigation = () => {
       text: "Closed",
       scrollTarget: "#Closed",
       statusMenu: false,
-    },
-    {
-      color: "#FF008C",
-      text: "Investors",
-      scrollTarget: "#Investors",
-      statusMenu: true,
     },
     // {
     //   color: "#FF008C",

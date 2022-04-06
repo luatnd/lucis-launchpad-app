@@ -21,12 +21,12 @@ export default function Banner() {
   };
 
   return (
-    <section
-      className={`${s.containerBanner} pt-[80px] md:pt-[70px] lg:pt-[0px]`}
-    >
-      {/* <InputSearch /> */}
+    <section className={`${s.containerBanner} pt-[80px] md:pt-[70px] lg:pt-[0px]`}>
+      <div className={`lucis-container ${s.search}`}>
+        <InputSearch />
+      </div>
       <SimpleSlider {...sliderProps} />
-      <div className="lucis-container my-[30px]">
+      <div className="lucis-container sm:mt-[30px] lg:mt-[50px]">
         <div className={s.thumbContainer}>
           <Link href="/ino" passHref>
             <a className={`${s.btnApplyINO}`}>

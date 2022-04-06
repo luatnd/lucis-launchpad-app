@@ -153,7 +153,7 @@ function _getProviderOptions(chainIdNumeric: number) {
           mobileLinks: [
             "metamask", // TODO: Enable metamask if it's work, currently it's have connection bugs
             "trust",
-            "houbi",
+            "huobi",
             "coin98",
             "rainbow",
             "argent",
@@ -161,6 +161,9 @@ function _getProviderOptions(chainIdNumeric: number) {
             "pillar",
             "bitpay",
             "safepal",
+            "coinomi",
+            "safepal",
+
             // "kyberswap",
             // "orange",
             // "krystal",

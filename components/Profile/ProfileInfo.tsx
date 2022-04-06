@@ -10,9 +10,16 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { isClient } from "utils/DOM";
 import s from "../../pages/profile/index.module.sass";
 import AuthStore from "../Auth/AuthStore";
+import ConnectWalletStore from "../Auth/ConnectWalletStore";
 import { observer } from "mobx-react-lite";
 import { useMutationProfile } from "hooks/profile/useMutationProfile";
 import { vi2en } from "utils/String";
+import {
+  ChainNetwork,
+  ChainNetworkAvatar,
+  getChainNetworkFromChainId,
+} from "utils/blockchain/BlockChain";
+import { getAppNetworkFriendlyName } from "utils/blockchain/ChainConfig";
 
 type Props = {
   isEdit: boolean;
@@ -20,7 +27,8 @@ type Props = {
 };
 
 export default observer(function Info(props: Props) {
-  const { name, address, code } = AuthStore;
+  const { name, address, code, balance } = AuthStore;
+  const { network } = ConnectWalletStore;
   const { isEdit, setIsEdit } = props;
 
   const [tempName, setTempName] = useState(name);
@@ -61,12 +69,11 @@ export default observer(function Info(props: Props) {
         },
       },
     })
-      // .then(() => {
-      //   message.success("Update success");
-      // })
+      .then(() => {
+        AuthStore.name = tempName;
+      })
       .catch((err) => {
         message.error(err.message);
-        // console.log(err.message);
       });
   };
 
@@ -124,7 +131,8 @@ export default observer(function Info(props: Props) {
           <div className={s.info}>
             <p className={s.balance}>
               {/* Balance: {profile?.me.balance ? profile.me.balance : "0"} BNB */}
-              Balance:
+              Balance: {Number(balance).toFixed(2)}{" "}
+              {getAppNetworkFriendlyName(network)}
             </p>
           </div>
 

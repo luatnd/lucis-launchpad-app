@@ -1,7 +1,6 @@
 @import styles/common
 
 .backgroundBanner
-  // background-image: url("/assets/image103.png")
   background-size: cover
   background-repeat: no-repeat
   background-position: center
@@ -20,6 +19,8 @@
   gap: 20px 10px
   color: white
   margin-bottom: 20px
+  // animation: fadeIn 5s
+
   @include box-glass
   @include border-grad-3(linear-gradient(290.92deg,#0bebd6,#cd28e8))
   background: linear-gradient(126.08deg, rgba(0, 0, 0, 0.3) 13.84%, rgba(0, 0, 0, 0.1) 74.14%)
@@ -53,7 +54,6 @@
 
 .infLogo 
   img
-    
     width: 70px
 
   @media screen and (min-width: 767px) 
@@ -76,7 +76,7 @@
     margin-top: 10px
 
   .readMore
-    @include line-camp(3)
+    // @include line-camp(3)
   @media screen and (min-width: 767px) 
     .infTitle
       p
@@ -104,6 +104,9 @@
   .infSocialRead
     font-size: 14px
     font-weight: 700
+    color: rgba(8, 215, 249, 1)
+    button 
+      text-decoration: underline
   @media screen and (min-width: 767px)
     .infSocialIcons
       gap: 20px
@@ -114,13 +117,14 @@
     .infSocialIcons
       img
         width: 36px
-.blank 
-  animation: fadeIn 5s
-  height: 446px
-  @media screen and (min-width: 768px)
-  @media screen and (min-width: 1024px)
-  @media screen and (min-width: 1440px)
-    height: 737px
+
+// .blank 
+//   // animation: fadeIn 5s
+//   height: 446px
+//   @media screen and (min-width: 768px)
+//   @media screen and (min-width: 1024px)
+//   @media screen and (min-width: 1440px)
+//     height: 737px
 
 // .blankInf
 //   @media screen and (min-width: 768px)
@@ -131,13 +135,10 @@
 @keyframes fadeIn 
   0% 
     opacity:0
+
   100% 
     opacity:1
 
-// @keyframes mymove 
-//   from 
-//       background-position: 0% 1%
-//   to 
-//       background-position: 100% 
+
   
 

@@ -1,4 +1,4 @@
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 
 export function useQueryProfile() {
   const { loading, error, data, refetch } = useQuery(PROFILE);

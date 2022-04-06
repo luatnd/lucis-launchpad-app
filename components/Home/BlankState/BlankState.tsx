@@ -6,7 +6,7 @@ type Props = {
 const BlankState = (props: Props) => {
   const { title } = props;
   return (
-    <div>
+    <div style={{ position: "relative", zIndex:'0' }}>
       <img
         className={`${s.circleTopLeft} `}
         src="/assets/BlankState/Ellipse3.svg"

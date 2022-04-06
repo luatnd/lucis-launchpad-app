@@ -17,6 +17,7 @@ import {
   GBoxCampaignRound,
   ChainSymbol,
   GChain,
+  GBoxCampaignBuyHistory,
 } from "src/generated/graphql";
 import { useInput } from "hooks/common/use_input";
 import { BuyDisabledReason, useBuyBox } from "hooks/campaign/use_buy_box";
@@ -42,6 +43,7 @@ type Props = {
   round?: GBoxCampaignRound;
   isInWhitelist?: boolean;
   purchasedBox?: GBoxType;
+  recentlyPurchasedBox?: GBoxCampaignBuyHistory;
 };
 
 type ChainProps = {
@@ -153,8 +155,6 @@ const BoxTypeCard = observer((props: Props) => {
     boxImg: boxType.thumb_img,
     chains: chains,
   };
-
-  // console.log(isSaleRound);
 
   return (
     <div>
@@ -375,7 +375,10 @@ const BoxTypeCard = observer((props: Props) => {
             </div>
             <Progress
               percent={Math.floor(
-                (boxType.sold_amount / boxType.total_amount) * 100
+                ((purchasedBox?.sold_amount ?? boxType.sold_amount) /
+                  (purchasedBox?.total_amount ?? boxType.total_amount)) *
+                  100
+                // (boxType.sold_amount / boxType.total_amount) * 100
               )}
               showInfo={false}
               // status="active"

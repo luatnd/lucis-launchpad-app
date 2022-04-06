@@ -15,6 +15,7 @@ import ApprovalStore, {
   ETHER_MIN_ALLOWANCE,
 } from "../../components/Auth/Blockchain/ApprovalStore";
 import { Transaction } from "ethers";
+import { Web3ProviderErrorCodes } from "components/Auth/ConnectWalletHelper";
 
 export enum BuyDisabledReason {
   WalletNotConnected,
@@ -93,7 +94,7 @@ export function useBuyBox(
 
     if (!ConnectWalletStore_NonReactiveData.web3Provider) {
       message.error(
-        "[Critical] This is unexpected behavior occur in our app, please reconnect your wallet to ensure the app run correctly",
+        "This is unexpected behavior occur in our app, please reconnect your wallet to ensure the app run correctly",
         6
       );
       return 0;
@@ -149,6 +150,7 @@ export function useBuyBox(
 
       switch (currency_symbol) {
         case GQL_Currency.BUSD:
+        case GQL_Currency.USDT:
           ApprovalStore.setState({
             busd_allowance: await checkAllowanceForBoxPrice(),
           });
@@ -372,17 +374,23 @@ export function useBuyBox(
     );
 
     // Request approval
-    const success = await ethersService.requestApproval(
-      nft_contract_address,
-      currency_address
-    );
-    if (success) {
-      ApprovalStore.setCurrencyEnabled(
-        (boxPrice?.currency.symbol as GQL_Currency) ?? false
+    try {
+      const success = await ethersService.requestApproval(
+        nft_contract_address,
+        currency_address
       );
-    }
+      if (success) {
+        ApprovalStore.setCurrencyEnabled(
+          (boxPrice?.currency.symbol as GQL_Currency) ?? false
+        );
+      }
 
-    return success;
+      return success;
+    } catch (error: any) {
+      if (error.code === Web3ProviderErrorCodes.provider.userRejectedRequest) {
+        message.error("User denied", 5);
+      }
+    }
   };
 
   return {

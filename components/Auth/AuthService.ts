@@ -12,6 +12,8 @@ import {
   getLocalAuthInfo,
   setLocalAuthInfo,
 } from "./AuthLocal";
+//@ts-ignore
+import CryptoJS from "crypto-js";
 
 export enum AuthError {
   Unknown = "Unknown",
@@ -98,10 +100,19 @@ export default class AuthService {
     });
     const nonce = nonceRes.data.generateNonce;
     // console.log('{AuthService.loginByAddress} nonce: ', nonce);
+    // create hmac and login
+    const salt = parseInt(nonce) + new Date().getUTCHours();
+    const prefix = process.env.NEXT_PUBLIC_VERIFY_MESSAGE ?? "";
+    const secretKey = `${prefix}${salt}`;
+    const payload = address + prefix;
+    let signed_hash = CryptoJS.HmacSHA512(payload, secretKey).toString(
+      CryptoJS.enc.Hex
+    );
+    // console.log("signed_hash:", signed_hash);
 
     // TODO: Improve to multiline message with explanation and hello thank you
-    const msg = `0x${to_hex_str(`Lucis verification ${nonce}`)}`;
-    const params = [msg, address, nonce];
+    // const msg = `0x${to_hex_str(`Lucis verification ${nonce}`)}`;
+    // const params = [msg, address, nonce];
 
     /**
      * window.ethereum is for web3 injected like metamask only
@@ -120,15 +131,12 @@ export default class AuthService {
       params: params,
     })
     */
-    const web3Provider = ConnectWalletStore_NonReactiveData.web3Provider;
-    const signed_hash = await Promise.any([
-      web3Provider?.send("personal_sign", params),
-      delay(30000),
-    ]);
-    console.log("signed_hash:", signed_hash);
-    if (!signed_hash || typeof signed_hash !== "string" || signed_hash === "") {
-      throw new Error("Request timeout");
-    }
+
+    // const signed_hash = await this.sign(params);
+    // console.log("signed_hash:", signed_hash);
+    // if (!signed_hash || typeof signed_hash !== "string" || signed_hash === "") {
+    //   throw new Error("Request timeout");
+    // }
     // console.log('{loginByAddress} signed_hash: ', signed_hash);
 
     // const loginRes = await apiClient.req({
@@ -158,12 +166,14 @@ export default class AuthService {
         sign: signed_hash,
       },
     });
-    console.log("{AuthService.loginByAddress} loginRes: ", loginRes);
+    // console.log("{AuthService.loginByAddress} loginRes: ", loginRes);
 
     const u = loginRes.data.login.user;
     const token = loginRes.data.login.token;
 
-    if (address !== u.address) {
+    if (address.toLowerCase() !== u.address.toLowerCase()) {
+      console.log(typeof address);
+      console.log(typeof u.address);
       throw new Error(
         `Invalid login address(${address}) vs user address(${u.address})`
       );
@@ -180,6 +190,21 @@ export default class AuthService {
     };
 
     return user;
+  }
+
+  sign(params: any) {
+    return new Promise<string | undefined>(async (resolve, reject) => {
+      try {
+        const web3Provider = ConnectWalletStore_NonReactiveData.web3Provider;
+        let timer = setTimeout(() => {
+          reject("Request timeout");
+        }, 30000);
+        const signed_hash = await web3Provider!.send("personal_sign", params);
+        resolve(signed_hash);
+      } catch (err) {
+        reject(err);
+      }
+    });
   }
 
   /**
@@ -202,7 +227,7 @@ export default class AuthService {
 
         // re-login only if the cache user have token, and correct address
         const user = await this.fetchUserData();
-        console.log("{AuthService.login} re-login user: ", user);
+        // console.log("{AuthService.login} re-login user: ", user);
 
         user.token = token; // fetchUserData does not have token
 
@@ -219,7 +244,7 @@ export default class AuthService {
       } else {
         // new-login
         const user = await this.loginByAddress(address);
-        console.log("{AuthService.login} new-login user: ", user);
+        // console.log("{AuthService.login} new-login user: ", user);
 
         user.token && ApoloClient_setAuthToken(user.token);
         setLocalAuthInfo(user);

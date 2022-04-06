@@ -22,7 +22,7 @@ body {
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif,
     cursive !important;
   line-height: 1.6;
-  /* scroll-behavior: smooth; */
+  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   /* background: linear-gradient(28deg, #18004A, black); */
 }
@@ -276,9 +276,9 @@ body .ant-menu {
   /*.nav-list li:first-child {*/
   /*  margin-bottom: 12px;*/
   /*}*/
-  .nav-list li:last-child {
+  /* .nav-list li:last-child {
     margin-top: 12px;
-  }
+  } */
 
   .icon-placeholder {
     width: 40px;
@@ -590,6 +590,12 @@ body .ant-btn-primary {
   border-color: none;
   border: none;
 }
+body .ant-btn-primary:hover {
+  background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%);
+  border-color: none;
+  border: none;
+  /* transform: scale(1.1); */
+}
 
 body .ant-btn-default {
   /* background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%); */
@@ -620,4 +626,27 @@ input::-webkit-inner-spin-button {
 
 body .ant-col {
   z-index: 1;
+}
+
+
+body .ant-input{
+  background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
+  backdrop-filter: blur(42px);
+  transition: 0.3s;
+  border: 1px solid #d9d9d933;
+  border-radius: 8px 0px 0px 8px; 
+  color: #FFF;
+  padding: 8px 12px
+}
+body .ant-input-group-addon{
+  width: 60px;
+  border-radius: 0px 8px 8px 0px;
+  background: linear-gradient(35deg, #CD28E8 3.41%, #0BEBD6 106.98%);
+  border: 1px solid #d9d9d933;
+}
+body .ant-btn{
+  border: none;
+}
+body .anticon svg{
+  color: #FFFFFF;
 }

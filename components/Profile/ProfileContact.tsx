@@ -1,6 +1,6 @@
 import { Col, message, Row } from "antd";
 import Input, { PhoneInput } from "components/Input/Input";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import s from "../../pages/profile/index.module.sass";
 import VerifyModal from "./VerifyModal/VerifyModal";
 import { observer } from "mobx-react-lite";
@@ -23,23 +23,24 @@ function validateEmail(email?: string) {
   return re.test(email.toLowerCase());
 }
 
-function validatePhone(phone?: string) {
-  if (phone == null) {
-    return;
-  }
-  const re = /^\d{10}$/;
-  return re.test(phone);
-}
+// function validatePhone(phone?: string) {
+//   if (phone == null) {
+//     return;
+//   }
+//   const re = /^\d{10}$/;
+//   return re.test(phone);
+// }
 
 const Contact = ({ isEdit, setIsEdit }: Props) => {
   const [isValidInfo, setIsValidInfo] = useState({
     phone: true,
     email: true,
   });
-
+  // const [isUpdatePhoneSuccess, setIsUpdatePhoneSuccess] = useState(false);
   const [isVerify, setIsVerify] = useState(false);
-
+  const [disableVerify, setDisableVerify] = useState(false);
   const { phone, email } = AuthStore;
+  const [countryCode, setCountryCode] = useState("");
 
   const [tempContact, setTempContact] = useState({
     phone: phone ?? "",
@@ -49,7 +50,7 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
   const { updateProfile } = useMutationProfile();
   const { verifyEmail, verifyResult } = useMutaionVerifyEmail();
 
-  const handleBlur = (field: string) => {
+  const handleUpdate = (field: string) => {
     //@ts-ignore
     if (isValidInfo[field]) {
       updateProfile({
@@ -70,41 +71,50 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
   const handleVerifyEmail = () => {
     verifyEmail({ variables: { email: tempContact.email } })
       .then(() => {
-        setIsVerify(false);
-        message.success(
-          <span>
-            Verify email success <br /> Please check your email to confirm.
-          </span>
-        );
-        AuthStore.phone = tempContact.phone;
+        setDisableVerify(true);
+        setTimeout(() => setDisableVerify(false), 300000);
+        message.success(<span>Please check your email to confirm.</span>);
+        AuthStore.email = tempContact.email;
       })
       .catch((err) => {
         message.error(err.message);
-        // console.log("Error verify email: ", err);
       });
   };
 
-  const handleChange = (e: any, field: string) => {
-    setTempContact((prev) => ({ ...prev, [field]: e.target.value }));
+  const handleChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
+    setTempContact({ ...tempContact, email: e.target.value });
 
-    if (field === "email") {
-      validateEmail(e.target.value)
-        ? setIsValidInfo({ ...isValidInfo, email: true })
-        : setIsValidInfo({ ...isValidInfo, email: false });
+    email !== e.target.value ? setIsVerify(true) : setIsVerify(false);
 
-      if (email !== e.target.value) {
-        setIsVerify(true);
-      } else {
-        setIsVerify(false);
-      }
-    }
+    validateEmail(e.target.value)
+      ? setIsValidInfo({ ...isValidInfo, email: true })
+      : setIsValidInfo({ ...isValidInfo, email: false });
 
-    if (field === "phone") {
-      validatePhone(e.target.value)
-        ? setIsValidInfo({ ...isValidInfo, phone: true })
-        : setIsValidInfo({ ...isValidInfo, phone: false });
-    }
+    // if (email !== e.target.value) {
+    //   setIsVerify(true);
+    // } else {
+    //   setIsVerify(false);
+    // }
+
+    // if (field === "email") {
+    //   validateEmail(e.target.value)
+    //     ? setIsValidInfo({ ...isValidInfo, email: true })
+    //     : setIsValidInfo({ ...isValidInfo, email: false });
+    // }
   };
+
+  const handleChangePhone = (e: string) => {
+    setTempContact({
+      ...tempContact,
+      phone: e,
+    });
+  };
+
+  useEffect(() => {
+    fetch("http://ip-api.com/json")
+      .then((res) => res.json())
+      .then((data) => setCountryCode(data.countryCode));
+  }, []);
 
   return (
     <>
@@ -129,14 +139,28 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
                   placeholder={"091xxx0909"}
                   name="phone"
                 /> */}
-                <PhoneInput />
+                <PhoneInput
+                  countryCode={countryCode}
+                  value={tempContact.phone}
+                  onChange={handleChangePhone}
+                  onBlur={() => handleUpdate("phone")}
+                  placeholder={"091xxx0909"}
+                  name="phone"
+                />
 
                 {!isValidInfo.phone && (
                   <p className={`${s.invalid}`}>Invalid phone number</p>
                 )}
               </>
             ) : (
-              <p>{tempContact.phone ? tempContact.phone : "Not available"}</p>
+              // <p>{tempContact.phone ? tempContact.phone : "Not available"}</p>
+              <p>
+                {/* {isUpdatePhoneSuccess
+                  ? tempContact.phone
+                  : tempContact.phone
+                  ? phone
+                  : "Not available"} */}
+              </p>
             )}
           </Col>
 
@@ -152,18 +176,21 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
                 <div className="flex items-center">
                   <Input
                     value={tempContact.email}
-                    onChange={(e) => handleChange(e, "email")}
+                    onChange={handleChangeEmail}
                     placeholder={"your.email@example.com"}
-                    // valid={isValidEmail}
                     name="email"
+                    // onChange={(e) => handleChangeEmail(e, "email")}
+                    // onBlur={() => handleBlur("phone")}
+                    // valid={isValidEmail}
                   />
 
                   {isVerify && (
                     <button
                       className={`${s.verifyBtn} bg-gradient-1 md:ml-4 text-16px md:text-24px`}
-                      // onClick={handleOpenVerifyModal}
                       onClick={handleVerifyEmail}
-                      disabled={!isValidInfo.email}
+                      disabled={disableVerify}
+                      // onClick={handleOpenVerifyModal}
+                      // disabled={!isValidInfo.email}
                     >
                       Verify
                     </button>
@@ -175,11 +202,11 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
               </>
             ) : (
               <p>
-                {!email
-                  ? "Not available"
-                  : verifyResult
+                {tempContact.email && isValidInfo.email
                   ? tempContact.email
-                  : email}
+                  : !isValidInfo.email
+                  ? email
+                  : "Not available"}
               </p>
             )}
           </Col>
@@ -191,5 +218,3 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
 };
 
 export default observer(Contact);
-
-// verifyResult ? tempContact.email : email

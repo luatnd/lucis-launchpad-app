@@ -9,7 +9,6 @@ type Props = {
   onBlur?: () => void;
   className?: string;
   placeholder?: string;
-  // valid?: boolean;
   name: string;
 };
 
@@ -19,14 +18,13 @@ const Input = ({
   onBlur,
   className,
   placeholder,
-  // valid = true,
   name,
 }: Props) => {
   return (
     <div className={`${s.inputC}`}>
       <input
         name={name}
-        value={value !== "" ? value : undefined}
+        value={value !== "" ? value : ""}
         className={`${className} ${s.input}`}
         placeholder={placeholder}
         onBlur={onBlur}
@@ -38,18 +36,19 @@ const Input = ({
 
 export default Input;
 
-export const PhoneInput = () => {
+export const PhoneInput = ({ value, onChange, onBlur, countryCode }: any) => {
   return (
     <div className={`${s.inputC}`}>
       <PhoneInputReact
-        // country={this.state.countryCode}
+        country={countryCode.toLowerCase()}
+        onlyCountries={[countryCode.toLowerCase()]}
         specialLabel=""
-        enableSearch
-        searchPlaceholder="Search"
+        // enableSearch
+        // searchPlaceholder="Search"
         enableTerritories
-        // value={this.state.phoneNumber}
-        // onChange={this.handleChangePhoneNumber}
-        // onEnterKeyPress={this.handleSendEnterPress}
+        value={value !== "" ? value : ""}
+        onChange={onChange}
+        onBlur={onBlur}
         inputProps={{
           style: {
             background: "none",
@@ -58,9 +57,6 @@ export const PhoneInput = () => {
             color: "white",
           },
         }}
-        // containerStyle={{
-        //   maxWidth: "calc(100% - 150px)",
-        // }}
       />
     </div>
   );

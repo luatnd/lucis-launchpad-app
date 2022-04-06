@@ -27,6 +27,7 @@
         width: 100%
         padding: 0 12px 0 50px
         font-size: 14px
+        font-family: Saira
         @media screen and ( min-width:768px )
             font-size: 24px
             padding: 8px 16px 8px 60px
@@ -41,11 +42,11 @@
             border-right: 6px solid transparent
 
     :global(.react-tel-input .country-list )
-        // @include box-glass 
+        @include box-glass(10px)
         // background: linear-gradient(151deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%)
-        background: rgba(123, 123, 123, 0.2)
-        box-shadow: 0px 4px 20px 1px rgb(0 0 0 / 20%)
+        // background: white
         width: 200px
+        max-height: 350px
         @media screen and ( min-width:768px )
             width: 350px
         
@@ -61,6 +62,7 @@
 
     :global(.react-tel-input .country-list .search)
         padding: 12px
+        // @include box-glass(30px)
 
     :global(.react-tel-input .country-list .search-box)
         margin: 0
@@ -69,7 +71,12 @@
     :global(.react-tel-input .country-list .country .dial-code)
         color: white
 
-  
+    :global(.country-name)
+        font-weight: 400
+    :global(.dial-code)
+        font-weight: 400
+        
+
 .invalid 
     border: 2px solid red
 

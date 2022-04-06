@@ -10,11 +10,15 @@ import AuthStore from "../AuthStore";
 import AuthBoxStore from "./AuthBoxStore";
 
 import AuthService from "../AuthService";
-import { getAppNetworkFriendlyName } from "utils/blockchain/ChainConfig";
+import {
+  chainProfilesIndexed,
+  getAppNetworkFriendlyName,
+} from "utils/blockchain/ChainConfig";
 import {
   ChainNetwork,
   ChainNetworkAvatar,
   getChainNetworkFromChainId,
+  getCurrencyFromChainId,
 } from "utils/blockchain/BlockChain";
 import { trim_middle } from "utils/String";
 
@@ -30,7 +34,9 @@ export default observer(function User(props: Props) {
 
   const { address, network: connected_network } = ConnectWalletStore;
 
-  const { name } = AuthStore;
+  const { name, balance } = AuthStore;
+  const chainId = ConnectWalletStore?.network?.chainId;
+  const currency = chainId && getCurrencyFromChainId(chainId);
 
   const changeWallet = () => {
     AuthBoxStore.connectModalVisible = true;
@@ -73,9 +79,13 @@ export default observer(function User(props: Props) {
       </Col>
       <Col span={16} style={{ borderLeft: "1px solid #fff", paddingLeft: 20 }}>
         <p className={s.addr}>{trim_middle(address ?? "", 7, 8)}</p>
-        <p className={s.chainBtn}>
+        {/* <p className={s.chainBtn}>
           <img src={chainNetIcoUrl} alt="" />
           <i>{getAppNetworkFriendlyName(connected_network)}</i>
+        </p> */}
+        <p className={`${s.balance} text-14px md:text-18px`}>
+          {/* Balance: {profile?.me.balance ? profile.me.balance : "0"} BNB */}
+          Balance: {Number(balance).toFixed(2)} {currency}
         </p>
 
         <div className={s.btns}>

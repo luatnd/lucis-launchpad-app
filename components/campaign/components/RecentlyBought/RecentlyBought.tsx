@@ -164,7 +164,7 @@ const RecentlyBought = ({ historiesBox, recentlyPurchasedBox }: Props) => {
   );
 
   return temp.length > 0 ? (
-    <div className={`${s.history} lucis-container `}>
+    <div className={`${s.history} lucis-container mt-[50px] md:mt-[100px]`}>
       <h1 className="text-center">RECENTLY BOUGHT</h1>
 
       <div style={{ position: "relative" }}>

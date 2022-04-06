@@ -6,15 +6,12 @@ import { useState } from "react";
 import AuthStore from "../../components/Auth/AuthStore";
 import Contact from "../../components/Profile/ProfileContact";
 import Info from "../../components/Profile/ProfileInfo";
-import Box from "../../components/Profile/ProfileSocial";
+import Social from "../../components/Profile/ProfileSocial";
 import s from "./index.module.sass";
 
 const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
-
   const props = { isEdit, setIsEdit };
-
-  console.log(AuthStore.isLoggedIn);
 
   return (
     <>
@@ -26,7 +23,7 @@ const MyProfile = () => {
           <div className={`${s.profileContainer} container`}>
             <Info {...props} />
             <Contact {...props} />
-            <Box {...props} />
+            <Social {...props} />
             <BuyHistory title="History" />{" "}
           </div>
         ) : (

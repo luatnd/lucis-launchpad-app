@@ -291,7 +291,7 @@ const BoxTypeCard = observer((props: Props) => {
                       </Button>
                     </div>
                   </Tooltip>
-                ) : !isLoggedIn ? (
+                ) : !AuthStore.isLoggedIn ? (
                   // if wallet was not connected => popconfirm
                   <Popconfirm
                     title={

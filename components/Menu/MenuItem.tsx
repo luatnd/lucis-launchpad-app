@@ -3,12 +3,6 @@ import { ReactElement, useCallback } from "react";
 
 import { motion } from "framer-motion";
 import { Menu } from "antd";
-import {
-  AppstoreOutlined,
-  MailOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-
 const { SubMenu } = Menu;
 import { scrollToSection } from "../../utils/DOM";
 import { AppEmitter } from "../../services/emitter";
@@ -41,9 +35,9 @@ export type MenuItemType = {
 };
 
 export const MenuItem = (props: { item: MenuItemType }) => {
-  const [ href,setHref ] = React.useState('/')
+  const [ href,setHref ] = React.useState('')
+
   const click = useCallback(() => {
-    setHref('/')
     if (props.item.statusMenu == false) {
       setTimeout(() => {
         if (props.item.scrollTarget) {

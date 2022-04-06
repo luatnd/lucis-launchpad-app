@@ -50,12 +50,6 @@ export const Navigation = () => {
       scrollTarget: "#Closed",
       statusMenu: false,
     },
-    {
-      color: "#FF008C",
-      text: "Investors",
-      scrollTarget: "#Investors",
-      statusMenu: true,
-    },
     // {
     //   color: "#FF008C",
     //   statusMenu: false,

@@ -409,8 +409,8 @@ export default observer(function ConnectWalletModal(props: Props) {
     const n: ChainNetwork | undefined = getChainNetworkFromChainId(
       connected_network.chainId
     );
+    DEBUG && console.log("{handleConnectThen} network: ", n);
     if (n && n !== network) {
-      DEBUG && console.log("{handleConnectThen} setNetwork: ", n);
       setNetwork(n);
     }
 

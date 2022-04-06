@@ -31,6 +31,7 @@ export function initWeb3(chainIdNumeric: number): Web3Modal | undefined {
 }
 
 export async function ensureTargetChain(chain_id: number): Promise<boolean> {
+  console.log("ensureTargetChain chain_id:", chain_id);
   const provider = ConnectWalletStore_NonReactiveData.provider;
   if (!provider) {
     throw makeError(
@@ -40,7 +41,7 @@ export async function ensureTargetChain(chain_id: number): Promise<boolean> {
   }
 
   const chainIdHex = "0x" + chain_id.toString(16);
-
+  console.log("ensureTargetChain chainIdHex:", chainIdHex);
   // Metamask chainId is heximal
   if (provider.chainId === chainIdHex) {
     return true;
@@ -49,10 +50,12 @@ export async function ensureTargetChain(chain_id: number): Promise<boolean> {
   if (provider.chainId === chain_id) {
     return true;
   }
-
+  console.log("ensureTargetChain provider:", provider);
+  console.log("provider.isMetaMask:", provider.isMetaMask);
   if (provider.isMetaMask) {
     return _switchNetwork(provider, chain_id);
   } else {
+    return _switchNetwork(provider, chain_id);
     // TODO: support other web3 wallet that's compatible with wallet_switchEthereumChain: Okex, blockto, ...
     // on the Ethereum/BSC/Polygon/Avalanche injected at window.ethereum, follows eip-3326.
   }

@@ -17,13 +17,19 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
     loading: loadingOpening,
     error: errorOpening,
     data: dataIsInWhiteList,
-  } = useQuery(IS_IN_WHITE_LIST, { variables: { box_campaign_uid } });
+  } = useQuery(IS_IN_WHITE_LIST, {
+    variables: { box_campaign_uid },
+    fetchPolicy: "no-cache",
+  });
 
   const {
     loading: loadingOfRegisteredWhitelist,
     error: errorOfRegisteredWhitelist,
     data: dataWhitelistRegistered,
-  } = useQuery(WHITELIST_REGISTERED, { variables: { box_campaign_uid } });
+  } = useQuery(WHITELIST_REGISTERED, {
+    variables: { box_campaign_uid },
+    fetchPolicy: "no-cache",
+  });
 
   const {
     loading: loadingWhiteListRegistered,
@@ -31,6 +37,7 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
     data: dataWhitelistRegisteredRecently,
   } = useSubscription(WHITELIST_REGISTERED_RECENTLY_SUB, {
     variables: { box_campaign_uid },
+    fetchPolicy: "cache-only",
   });
 
   const {

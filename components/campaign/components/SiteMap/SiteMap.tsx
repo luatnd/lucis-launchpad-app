@@ -43,6 +43,7 @@ export default observer(function SiteMap(props: IRound) {
     whitelistRegistered,
     whitelistRegisteredRecently,
   } = props;
+
   const [listRounds, setListRounds] = useState([] as any);
   const [isActiveUpComing, setIsActiveUpComing] = useState(false);
   const { registerWhitelist, error, loading, data } =

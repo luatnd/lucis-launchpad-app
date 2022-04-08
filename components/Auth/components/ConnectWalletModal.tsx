@@ -615,13 +615,14 @@ export default observer(function ConnectWalletModal(props: Props) {
 
   return (
     <Modal
-      title="Connect wallet"
+      // title="Connect wallet"
+      title={<span className="font-[600]">Connect wallet</span>}
       visible={isModalVisible}
       onCancel={handleCancel}
       footer={null}
       wrapClassName={s.mdl}
     >
-      <p className={s.title}>1. Choose network</p>
+      <p className={`${s.title} font-[600]`}>1. Choose network</p>
       <div className={s.items}>
         <div
           onClick={() => changeNetwork(ChainNetwork.eth)}
@@ -676,7 +677,7 @@ export default observer(function ConnectWalletModal(props: Props) {
         </div>
       </div>
 
-      <p className={s.title}>2. Choose wallet</p>
+      <p className={`${s.title} font-[600]`}>2. Choose wallet</p>
       <div className={s.items}>
         {supported_wallets.map((i) => predefined_wallets[i])}
       </div>

@@ -2,6 +2,7 @@ import { ChangeEvent } from "react";
 import s from "./Input.module.sass";
 import PhoneInputReact from "react-phone-input-2";
 import "react-phone-input-2/lib/material.css";
+import { Input as InputAnt } from "antd";
 
 type Props = {
   value: string;
@@ -10,6 +11,7 @@ type Props = {
   className?: string;
   placeholder?: string;
   name: string;
+  maxLength?: number;
 };
 
 const Input = ({
@@ -19,16 +21,18 @@ const Input = ({
   className,
   placeholder,
   name,
+  maxLength,
 }: Props) => {
   return (
     <div className={`${s.inputC}`}>
-      <input
+      <InputAnt
         name={name}
         value={value !== "" ? value : ""}
         className={`${className} ${s.input}`}
         placeholder={placeholder}
         onBlur={onBlur}
         onChange={onChange}
+        maxLength={maxLength}
       />
     </div>
   );
@@ -40,11 +44,11 @@ export const PhoneInput = ({ value, onChange, onBlur, countryCode }: any) => {
   return (
     <div className={`${s.inputC}`}>
       <PhoneInputReact
-        country={countryCode.toLowerCase()}
-        onlyCountries={[countryCode.toLowerCase()]}
+        // country={countryCode.toLowerCase()}
+        // onlyCountries={[countryCode.toLowerCase()]}
         specialLabel=""
-        // enableSearch
-        // searchPlaceholder="Search"
+        enableSearch
+        searchPlaceholder="Search"
         enableTerritories
         value={value !== "" ? value : ""}
         onChange={onChange}

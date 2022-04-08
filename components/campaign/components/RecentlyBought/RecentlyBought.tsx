@@ -8,9 +8,16 @@ import { GBoxCampaignBuyHistory } from "src/generated/graphql";
 type Props = {
   historiesBox: GBoxCampaignBuyHistory[];
   recentlyPurchasedBox: GBoxCampaignBuyHistory;
+  token: string | undefined;
+  refetch: any;
 };
 
-const RecentlyBought = ({ historiesBox, recentlyPurchasedBox }: Props) => {
+const RecentlyBought = ({
+  historiesBox,
+  recentlyPurchasedBox,
+  token,
+  refetch,
+}: Props) => {
   const columns = [
     {
       title: "Item",
@@ -160,8 +167,12 @@ const RecentlyBought = ({ historiesBox, recentlyPurchasedBox }: Props) => {
       recentlyPurchasedBox
         ? [...historiesBox, recentlyPurchasedBox]
         : historiesBox,
-    [recentlyPurchasedBox]
+    [recentlyPurchasedBox, historiesBox]
   );
+
+  useEffect(() => {
+    refetch();
+  }, [token]);
 
   return temp.length > 0 ? (
     <div className={`${s.history} lucis-container mt-[50px] md:mt-[100px]`}>

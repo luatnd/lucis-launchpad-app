@@ -165,7 +165,7 @@ function _getProviderOptions(chainIdNumeric: number) {
             "bitpay",
             "safepal",
             "coinomi",
-            "safepal",
+            "kyberswap",
 
             // "kyberswap",
             // "orange",

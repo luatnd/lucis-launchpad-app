@@ -43,7 +43,7 @@ type Props = {
   round?: GBoxCampaignRound;
   isInWhitelist?: boolean;
   purchasedBox?: GBoxType;
-  recentlyPurchasedBox?: GBoxCampaignBuyHistory;
+  // recentlyPurchasedBox?: GBoxCampaignBuyHistory;
 };
 
 type ChainProps = {

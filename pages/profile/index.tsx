@@ -11,7 +11,37 @@ import s from "./index.module.sass";
 
 const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
-  const props = { isEdit, setIsEdit };
+  const {
+    name,
+    address,
+    balance,
+    phone,
+    email,
+    discord,
+    facebook,
+    twitter,
+    tele,
+    code,
+    token,
+  } = AuthStore;
+
+  const props = {
+    isEdit,
+    setIsEdit,
+    name,
+    address,
+    balance,
+    code,
+    phone,
+    email,
+    discord,
+    facebook,
+    twitter,
+    tele,
+    token,
+  };
+
+  // console.log("Page", AuthStore);
 
   return (
     <>
@@ -24,7 +54,7 @@ const MyProfile = () => {
             <Info {...props} />
             <Contact {...props} />
             <Social {...props} />
-            <BuyHistory title="History" />{" "}
+            <BuyHistory title="History" {...props} />
           </div>
         ) : (
           <h1
@@ -35,6 +65,7 @@ const MyProfile = () => {
           </h1>
         )}
       </div>
+
       <Footer />
     </>
   );

@@ -24,6 +24,8 @@ import RecentlyBought from "components/campaign/components/RecentlyBought/Recent
 function DetailCampaign() {
   const router = useRouter();
 
+  const { token, id } = AuthStore;
+
   const campaignUid = useMemo(() => {
     const { slug } = router.query;
     if (slug) {
@@ -52,8 +54,13 @@ function DetailCampaign() {
     whitelistRegisteredRecently,
     historiesBox,
     boxCampaignDetailSubcription,
+
+    refetchBoxCampaignDetailSubcription,
+    refetchBoxHistory,
+    refetchIsInWhiteList,
   } = useDetailCampaign({
     box_campaign_uid: campaignUid,
+    user_id: id,
   });
 
   const clickToAbout = (key: any) => {
@@ -82,7 +89,9 @@ function DetailCampaign() {
         <div className={s.containerApp} style={{ scrollBehavior: "smooth" }}>
           <Banner
             boxCampaign={boxCampaign}
-            isSubcribed={boxCampaignDetailSubcription?.enable_notify}
+            isSubcribed={boxCampaignDetailSubcription}
+            refetch={refetchBoxCampaignDetailSubcription}
+            token={token}
           />
           {boxCampaign && (
             <div className={s.tabContainer}>
@@ -105,6 +114,8 @@ function DetailCampaign() {
                       isInWhitelist={isInWhitelist}
                       whitelistRegistered={whitelistRegistered}
                       whitelistRegisteredRecently={whitelistRegisteredRecently}
+                      refetch={refetchIsInWhiteList}
+                      token={token}
                     />
                   )}
 
@@ -120,7 +131,7 @@ function DetailCampaign() {
                       boxCampaign={boxCampaign}
                       isInWhitelist={isInWhitelist}
                       purchasedBox={purchasedBox}
-                      recentlyPurchasedBox={recentlyPurchasedBox}
+                      // recentlyPurchasedBox={recentlyPurchasedBox}
                     />
                   )}
 
@@ -132,6 +143,8 @@ function DetailCampaign() {
                       <RecentlyBought
                         historiesBox={historiesBox}
                         recentlyPurchasedBox={recentlyPurchasedBox}
+                        token={token}
+                        refetch={refetchBoxHistory}
                       />
                     )}
                 </TabPane>

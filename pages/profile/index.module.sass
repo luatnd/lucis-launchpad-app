@@ -111,7 +111,7 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
     p, span
         margin: 0
         color: white
-        font-size: $font14
+        // font-size: $font14
     span 
         font-weight: 600
     input 
@@ -129,15 +129,31 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
         padding: 4px 10px 
         border-radius: 8px
         width: 100px
+        border: none
+        background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+        font-size: 24px
+        width: 150px
+        height: 50px
+        &:hover,
+        &:active,
+        &:focus
+            background: linear-gradient(99.92deg, #d439ee 0%, #2cfce7 100%)
         
         &:disabled
             opacity: 0.7
             background: #C4C4C4
-            
+    :global(.ant-btn)
+        border: none
+        background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+        border-radius: 8px
+        &:hover,
+        &:active,
+        &:focus
+            background: linear-gradient(99.92deg, #d439ee 0%, #2cfce7 100%)
     @media screen and ( min-width:767px )
         padding: 20px 10px 20px 78px
-        p, span 
-            font-size: $font24
+        // p, span 
+        //     font-size: $font24
         input 
             font-size: $font24
         .invalid
@@ -154,7 +170,6 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
 // // Box component
 .box 
     background: linear-gradient(151deg, rgba(255, 255, 255, 0.3) 13.84%, rgba(255, 255, 255, 0.1) 74.14%)
-
     @include border-grad-3(linear-gradient(0deg,rgba(255, 255, 255, 0.7),rgba(244, 123, 246, 0.4),rgba(251, 76, 222, 0.4),rgba(210, 0, 215, 0.6)))
 
     color: white
@@ -163,11 +178,10 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
     overflow: hidden
     word-wrap: break-word
     word-break: break-word
-    font-size: 14px
+    // font-size: 14px
     padding: 20px
     p,span
         margin: 0
-        font-size: $font14
     span 
         font-weight: 600
     .title 
@@ -188,8 +202,8 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
                 width: $width15
     @media screen and ( min-width:767px )
         padding: 30px 10px 30px 78px
-        p,span 
-            font-size: $font24
+        // p,span 
+        //     font-size: $font24
         .title
             img
                 width: $width25

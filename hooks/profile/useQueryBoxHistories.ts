@@ -6,6 +6,7 @@ export function useQueryBoxHistories(includeValue: any) {
     loading,
     error,
     data: data,
+    refetch,
   } = useQuery(BOX_HISTORIES, {
     variables: includeValue,
     fetchPolicy: "no-cache",
@@ -15,6 +16,7 @@ export function useQueryBoxHistories(includeValue: any) {
     loading,
     error,
     data: data,
+    refetch,
   };
 }
 

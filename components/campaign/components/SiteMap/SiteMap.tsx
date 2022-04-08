@@ -1,19 +1,15 @@
-import { Progress, Modal, Popconfirm, Button, Tooltip } from "antd";
-import moment from "moment";
+import { Popconfirm, Progress, Tooltip } from "antd";
+import AuthStore from "components/Auth/AuthStore";
+import { observer } from "mobx-react";
 import timeMoment from "moment-timezone";
 import React, { useEffect, useRef, useState } from "react";
+import { GBoxCampaignRound, WhitelistStatus } from "src/generated/graphql";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
-import s from "./SiteMap.module.sass";
-import { useDetailCampaign } from "../../../../hooks/campaign/useDetailCampaign";
-import ConnectWalletBtn from "../../../Auth/components/ConnectWalletBtn";
 import { useMutationRegisterWhiteList } from "../../../../hooks/campaign/useRegisterWhiteList";
-import AuthStore from "components/Auth/AuthStore";
-import { observer } from "mobx-react";
-import { useWindowSize } from "../../../../hooks/useWindowSize";
-import { CheckOutlined } from "@ant-design/icons";
-import { GBoxCampaignRound, WhitelistStatus } from "src/generated/graphql";
+import ConnectWalletBtn from "../../../Auth/components/ConnectWalletBtn";
+import s from "./SiteMap.module.sass";
 
 interface IRound {
   rounds: GBoxCampaignRound[];
@@ -27,6 +23,8 @@ interface IRound {
   isInWhitelist: boolean;
   whitelistRegistered: WhitelistStatus;
   whitelistRegisteredRecently: WhitelistStatus;
+  refetch: any;
+  token: string | undefined;
 }
 
 export default observer(function SiteMap(props: IRound) {
@@ -42,6 +40,8 @@ export default observer(function SiteMap(props: IRound) {
     isInWhitelist,
     whitelistRegistered,
     whitelistRegisteredRecently,
+    refetch,
+    token,
   } = props;
 
   const [listRounds, setListRounds] = useState([] as any);
@@ -130,6 +130,10 @@ export default observer(function SiteMap(props: IRound) {
     swiperRef.current?.swiper.slideTo(keyActiveSlide);
     // console.log("keyActiveSlide", keyActiveSlide);
   }, [keyActiveSlide]);
+
+  useEffect(() => {
+    refetch();
+  }, [token]);
 
   const whitelistDataSource =
     whitelistRegisteredRecently ?? whitelistRegistered;

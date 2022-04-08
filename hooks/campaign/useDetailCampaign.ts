@@ -96,7 +96,7 @@ export function useDetailCampaign({ box_campaign_uid, user_id }: Props) {
     purchasedBox: purchasedBox?.purchasedBox,
     boxCampaignDetailSubcription:
       boxCampaignDetailSubcription?.boxCampaignSubscriptionDetail
-        .enable_notify ?? false,
+        ?.enable_notify ?? false,
 
     recentlyPurchasedBox: recentlyPurchasedBox?.recentlyPurchasedBox,
     historiesBox: historiesBox?.boxCampaignBuyHistories.filter(

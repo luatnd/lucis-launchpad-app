@@ -18,7 +18,7 @@ const GotProject = () => {
   const modalProps = { handleOk, handleCancel, isModalVisible };
 
   return (
-    <div className={s.projectContainer}>
+    <div className={`${s.projectContainer} mt-[80px]`}>
       <p className="text-center text-[16px] md:text-[26px] lg:text-[36px] font-[600]">
         Got a Project?
       </p>

@@ -1,29 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
-import { Button, message, Skeleton } from "antd";
+import { message } from "antd";
 import useNotification from "hooks/campaign/useEnableNotification";
-import { useWindowSize } from "hooks/useWindowSize";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import { GBoxCampaign } from "src/generated/graphql";
 import s from "./Banner.module.sass";
 
 type Props = {
   boxCampaign: GBoxCampaign;
   isSubcribed: boolean;
+  token: string | undefined;
+  refetch: any;
 };
 
-const Banner = ({ boxCampaign, isSubcribed }: Props) => {
+const Banner = ({ boxCampaign, isSubcribed, token, refetch }: Props) => {
   const [isEnableNotification, setIsEnableNotification] = useState(isSubcribed);
-
-  // const [isReadMore, setIsReadMore] = useState(false);
-  // const [widthScreen, height] = useWindowSize();
-  const descRef = useRef<any>(null);
-
   const { enableNotification, disableNotification } = useNotification();
 
   const handleSubscription = () => {
@@ -38,38 +28,19 @@ const Banner = ({ boxCampaign, isSubcribed }: Props) => {
           .catch((err) => message.error(err.message));
   };
 
-  useEffect(() => {
-    setIsEnableNotification(isSubcribed);
-  }, [isSubcribed]);
-
-  // const handleReadMore = () => {
-  //   setIsReadMore(true);
-  // };
-
-  // Handle read more button follow width screen
-  // - Dectect height
-  // console.log(descRef);
-
   // useEffect(() => {
-  //   // const descEle = document.querySelector("#desc");
-  //   console.log(descRef);
+  //   setIsEnableNotification(isSubcribed);
+  // }, [isSubcribed]);
 
-  //   if (widthScreen >= 1280) {
-  //     console.log("1280px");
-  //   } else if (widthScreen >= 768) {
-  //     console.log("768px");
-  //   } else if (widthScreen >= 540) {
-  //     console.log("540px");
-  //   } else if (widthScreen >= 0) {
-  //     console.log("0px");
-  //   } else {
-  //     console.log("End");
-  //   }
-  // }, [widthScreen, descRef]);
+  useEffect(() => {
+    // console.log(isSubcribed);
+
+    refetch();
+    setIsEnableNotification(isSubcribed);
+  }, [token]);
 
   return (
     <div
-      // ${!boxCampaign && s.blank}
       className={`${s.backgroundBanner}`}
       style={{ backgroundImage: `url(${boxCampaign?.banner_img ?? ""})` }}
     >
@@ -100,7 +71,7 @@ const Banner = ({ boxCampaign, isSubcribed }: Props) => {
                 <p className="font-[600]">{boxCampaign?.name?.toUpperCase()}</p>
               </div>
 
-              <div className={`${s.infContent}`} id="desc" ref={descRef}>
+              <div className={`${s.infContent}`} id="desc">
                 {boxCampaign?.desc}
               </div>
 

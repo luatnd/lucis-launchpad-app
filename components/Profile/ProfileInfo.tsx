@@ -14,11 +14,14 @@ import ConnectWalletStore from "../Auth/ConnectWalletStore";
 type Props = {
   isEdit: boolean;
   setIsEdit: (value: boolean) => void;
+  name: string | undefined;
+  address: string | undefined;
+  code: string | undefined;
+  balance: string | undefined;
 };
 
-export default observer(function Info(props: Props) {
-  const { name, address, code, balance } = AuthStore;
-  const { isEdit, setIsEdit } = props;
+export default function Info(props: Props) {
+  const { isEdit, setIsEdit, name, balance, code, address } = props;
 
   const [tempName, setTempName] = useState(name);
   const [field, setField] = useState("");
@@ -107,9 +110,10 @@ export default observer(function Info(props: Props) {
                   {...inputProps}
                   placeholder={"Your name"}
                   name="full_name"
+                  maxLength={45}
                 />
               ) : (
-                <p className={s.fullName}>{tempName}</p>
+                <p className={s.fullName}>{name}</p>
               )}
               <p className={s.id}>{address}</p>
             </div>
@@ -144,4 +148,4 @@ export default observer(function Info(props: Props) {
       </Row>
     </div>
   );
-});
+}

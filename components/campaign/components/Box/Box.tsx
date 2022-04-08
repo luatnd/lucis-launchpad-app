@@ -12,7 +12,7 @@ type BoxCardProps = {
   boxCampaign: GBoxCampaign;
   isInWhitelist?: boolean;
   purchasedBox?: GBoxType;
-  recentlyPurchasedBox?: GBoxCampaignBuyHistory;
+  // recentlyPurchasedBox?: GBoxCampaignBuyHistory;
 };
 
 export default function BoxCard(props: BoxCardProps) {
@@ -37,7 +37,7 @@ export default function BoxCard(props: BoxCardProps) {
                 round={currentRound}
                 isInWhitelist={props.isInWhitelist}
                 purchasedBox={props.purchasedBox}
-                recentlyPurchasedBox={props.recentlyPurchasedBox}
+                // recentlyPurchasedBox={props.recentlyPurchasedBox}
               />
             </Col>
           );

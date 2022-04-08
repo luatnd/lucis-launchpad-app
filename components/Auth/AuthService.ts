@@ -196,6 +196,10 @@ export default class AuthService {
       email: u.email,
       name: !!name ? name : trim_middle(u.address, 6, 6),
       phone: u.profile.phone,
+      facebook: u.profile.facebook,
+      twitter: u.profile.twitter,
+      telegram: u.profile.telegram,
+      discord: u.profile.discord,
     };
 
     return user;
@@ -253,7 +257,7 @@ export default class AuthService {
       } else {
         // new-login
         const user = await this.loginByAddress(address);
-        // console.log("{AuthService.login} new-login user: ", user);
+        console.log("{AuthService.login} new-login user: ", user);
 
         user.token && ApoloClient_setAuthToken(user.token);
         setLocalAuthInfo(user);

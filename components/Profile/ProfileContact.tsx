@@ -1,4 +1,4 @@
-import { Col, message, Row } from "antd";
+import { Button, Col, message, Row } from "antd";
 import Input, { PhoneInput } from "components/Input/Input";
 import { ChangeEvent, useEffect, useState } from "react";
 import s from "../../pages/profile/index.module.sass";
@@ -13,6 +13,8 @@ import { useMutationProfile } from "hooks/profile/useMutationProfile";
 type Props = {
   isEdit: boolean;
   setIsEdit: (value: boolean) => void;
+  phone: string | undefined;
+  email: string | undefined;
 };
 
 function validateEmail(email?: string) {
@@ -31,7 +33,7 @@ function validateEmail(email?: string) {
 //   return re.test(phone);
 // }
 
-const Contact = ({ isEdit, setIsEdit }: Props) => {
+const Contact = ({ isEdit, email, phone }: Props) => {
   const [isValidInfo, setIsValidInfo] = useState({
     phone: true,
     email: true,
@@ -39,11 +41,12 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
   // const [isUpdatePhoneSuccess, setIsUpdatePhoneSuccess] = useState(false);
   const [isVerify, setIsVerify] = useState(false);
   const [disableVerify, setDisableVerify] = useState(false);
-  const { phone, email } = AuthStore;
+  const [loadingVerify, setLoadingVerify] = useState(false);
+  // const { phone, email } = AuthStore;
   const [countryCode, setCountryCode] = useState("");
 
   const [tempContact, setTempContact] = useState({
-    phone: phone ?? "",
+    phone: phone ?? null,
     email: email ?? "",
   });
 
@@ -71,8 +74,10 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
   const handleVerifyEmail = () => {
     verifyEmail({ variables: { email: tempContact.email } })
       .then(() => {
-        setDisableVerify(true);
-        setTimeout(() => setDisableVerify(false), 300000);
+        // setDisableVerify(true);
+        // setTimeout(() => setDisableVerify(false), 300000);
+        setLoadingVerify(true);
+        setTimeout(() => setLoadingVerify(false), 300000);
         message.success(<span>Please check your email to confirm.</span>);
         AuthStore.email = tempContact.email;
       })
@@ -106,7 +111,7 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
   const handleChangePhone = (e: string) => {
     setTempContact({
       ...tempContact,
-      phone: `+${e}`,
+      phone: e === "" ? null : `+${e}`,
     });
   };
 
@@ -126,7 +131,9 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
           <Col xs={8}>
             <div className={s.title}>
               <img src="/assets/MyProfile/phone.svg" alt="" />
-              <span className="pl-0 md:pl-3">Phone</span>
+              <span className="pl-0 md:pl-3 text-14px sm:text-16px md:text-18px lg:text-24px">
+                Phone
+              </span>
             </div>
           </Col>
           <Col xs={16}>
@@ -153,49 +160,66 @@ const Contact = ({ isEdit, setIsEdit }: Props) => {
                 )}
               </>
             ) : (
-              <p>{tempContact.phone ? tempContact.phone : "Not available"}</p>
+              <p className="text-14px sm:text-16px md:text-18px lg:text-24px">
+                {phone ? phone : "Not available"}
+              </p>
             )}
           </Col>
 
           <Col span={8}>
             <div className={s.title}>
               <img src="/assets/MyProfile/mail.svg" alt="" />
-              <span className="pl-0 md:pl-3 ">Email</span>
+              <span className="pl-0 md:pl-3 text-14px sm:text-16px md:text-18px lg:text-24px ">
+                Email
+              </span>
             </div>
           </Col>
           <Col span={16}>
             {isEdit ? (
               <>
-                <div className="flex items-center">
+                <div className="flex gap-3 items-center">
                   <Input
                     value={tempContact.email}
                     onChange={handleChangeEmail}
                     placeholder={"your.email@example.com"}
                     name="email"
+                    maxLength={45}
                     // onChange={(e) => handleChangeEmail(e, "email")}
                     // onBlur={() => handleBlur("phone")}
                     // valid={isValidEmail}
                   />
 
                   {isVerify && (
-                    <button
-                      className={`${s.verifyBtn} bg-gradient-1 md:ml-4 text-16px md:text-24px`}
+                    // <button
+                    //   className={`${s.verifyBtn} bg-gradient-1 md:ml-4 text-16px md:text-24px`}
+                    //   onClick={handleVerifyEmail}
+                    //   disabled={disableVerify}
+                    //   // onClick={handleOpenVerifyModal}
+                    //   // disabled={!isValidInfo.email}
+                    // >
+                    //   Verify
+                    // </button>
+                    <Button
+                      // className={`${s.verifyBtn}`}
+                      loading={loadingVerify}
                       onClick={handleVerifyEmail}
-                      disabled={disableVerify}
-                      // onClick={handleOpenVerifyModal}
-                      // disabled={!isValidInfo.email}
+                      size="large"
                     >
                       Verify
-                    </button>
+                    </Button>
                   )}
                 </div>
                 {!isValidInfo.email && (
-                  <p className={s.invalid}>Invalid Email</p>
+                  <p
+                    className={`${s.invalid} text-14px sm:text-16px md:text-18px lg:text-24px`}
+                  >
+                    Invalid Email
+                  </p>
                 )}
               </>
             ) : (
-              <p>
-                {tempContact.email && isValidInfo.email
+              <p className="text-14px sm:text-16px md:text-18px lg:text-24px">
+                {email && isValidInfo.email
                   ? tempContact.email
                   : !isValidInfo.email
                   ? email

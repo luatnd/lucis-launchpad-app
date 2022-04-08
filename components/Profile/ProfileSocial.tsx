@@ -9,6 +9,10 @@ import AuthStore from "../Auth/AuthStore";
 type Props = {
   isEdit: boolean;
   setIsEdit: (value: boolean) => void;
+  facebook: string | undefined;
+  twitter: string | undefined;
+  tele: string | undefined;
+  discord: string | undefined;
 };
 
 const validateLink = (url: string) => {
@@ -19,9 +23,8 @@ const validateLink = (url: string) => {
   return re.test(url);
 };
 
-const Social = ({ isEdit, setIsEdit }: Props) => {
+const Social = ({ isEdit, facebook, twitter, tele, discord }: Props) => {
   const { updateProfile } = useMutationProfile();
-  const { facebook, twitter, tele, discord } = AuthStore;
 
   const [tempSocial, setTempSocial] = useState({
     facebook: facebook,
@@ -89,7 +92,9 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
           <Col xs={7} lg={7}>
             <div className={s.title}>
               <img src="/assets/MyProfile/social.svg" alt="" />
-              <span className="pl-0 md:pl-3">Social</span>
+              <span className="pl-0 md:pl-3 text-14px sm:text-16px md:text-18px lg:text-24px">
+                Social
+              </span>
             </div>
           </Col>
           <Col xs={16}>
@@ -106,12 +111,13 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                       name="facebook"
                     />
                   ) : (
-                    <p>
-                      {tempSocial.facebook && isValidSocials.facebook
+                    <p className="text-14px sm:text-16px md:text-18px lg:text-24px">
+                      {/* {facebook && isValidSocials.facebook
                         ? tempSocial.facebook
                         : !isValidSocials.facebook
                         ? facebook
-                        : "Not available"}
+                        : "Not available"} */}
+                      {facebook ? facebook : "Not available"}
                     </p>
                   )}
                 </a>
@@ -134,12 +140,13 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                       name="twitter"
                     />
                   ) : (
-                    <p>
-                      {tempSocial.twitter && isValidSocials.twitter
+                    <p className="text-14px sm:text-16px md:text-18px lg:text-24px">
+                      {/* {twitter && isValidSocials.twitter
                         ? tempSocial.twitter
                         : !isValidSocials.twitter
                         ? twitter
-                        : "Not available"}
+                        : "Not available"} */}
+                      {twitter ? twitter : "Not available"}
                     </p>
                   )}
                 </a>
@@ -162,12 +169,13 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                       name="discord"
                     />
                   ) : (
-                    <p>
-                      {tempSocial.discord && isValidSocials.discord
+                    <p className="text-14px sm:text-16px md:text-18px lg:text-24px">
+                      {/* {discord && isValidSocials.discord
                         ? tempSocial.discord
                         : !isValidSocials.discord
                         ? discord
-                        : "Not available"}
+                        : "Not available"} */}
+                      {discord ? discord : "Not available"}
                     </p>
                   )}
                 </a>
@@ -190,12 +198,13 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
                       name="telegram"
                     />
                   ) : (
-                    <p>
-                      {tempSocial.telegram && isValidSocials.telegram
+                    <p className="text-14px sm:text-16px md:text-18px lg:text-24px">
+                      {/* {tele && isValidSocials.telegram
                         ? tempSocial.telegram
                         : !isValidSocials.telegram
                         ? tele
-                        : "Not available"}
+                        : "Not available"} */}
+                      {tele ? tele : "Not available"}
                     </p>
                   )}
                 </a>
@@ -213,4 +222,4 @@ const Social = ({ isEdit, setIsEdit }: Props) => {
   );
 };
 
-export default observer(Social);
+export default Social;

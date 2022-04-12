@@ -35,8 +35,6 @@ export type MenuItemType = {
 };
 
 export const MenuItem = (props: { item: MenuItemType }) => {
-  const [ href,setHref ] = React.useState('')
-
   const click = useCallback(() => {
     if (props.item.statusMenu == false) {
       setTimeout(() => {
@@ -58,10 +56,9 @@ export const MenuItem = (props: { item: MenuItemType }) => {
       // whileTap={{ scale: 0.95 }}
       onClick={click}
     >
-      {/* <div className="icon-placeholder" style={style} /> */}
       {(
         <div className="text-placeholder font-saira text-white text-20px leading-28px py-15px">
-          <Link href={href}>
+          <Link href="/">
             {props.item.text}
           </Link>
         </div>

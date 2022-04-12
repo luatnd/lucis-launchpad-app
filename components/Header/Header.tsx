@@ -37,9 +37,6 @@ export default function Header(props: Props) {
             </div>
             <nav>
               <ul className="flex gap-4 justify-between items-center m-0">
-                <li style={{ cursor: "pointer" }}>
-                  <Notification />
-                </li>
                 {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Home</a></li>*/}
                 {/* <li>
                 <a
@@ -67,6 +64,10 @@ export default function Header(props: Props) {
                   <li>For Game Publisher</li>
                   <li>For Personal Investor</li>
                 </ul> */}
+                </li>
+
+                <li style={{ cursor: "pointer" }}>
+                  <Notification />
                 </li>
 
                 {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Roadmap</a></li>*/}

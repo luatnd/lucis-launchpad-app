@@ -4,6 +4,7 @@ import InfiniteList from "./InfiniteNoti";
 import { observer } from "mobx-react";
 import useNotification from "hooks/useNotification";
 import { useMemo } from "react";
+import s from "./Header.module.sass";
 
 type iconProps = {
   height: string;
@@ -45,7 +46,12 @@ const Notification = () => {
       {AuthStore.isLoggedIn ? (
         <Popover placement="bottom" content={<InfiniteList />} trigger="click">
           <Badge>
-            <NotificationIcon height={"h-[28px] w-[28px]"} color={"white"} />
+            {/* <NotificationIcon height={"h-[28px] w-[28px]"} color={"white"} /> */}
+            <img
+              className={s.notification}
+              src="/assets/notification-icon.svg"
+              alt=""
+            />
           </Badge>
         </Popover>
       ) : (

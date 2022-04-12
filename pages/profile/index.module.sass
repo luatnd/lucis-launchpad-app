@@ -50,8 +50,6 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
     p 
         margin: 0
     .name
-        font-size: $font14
-        font-weight: 400
         display: flex
         gap: 10px
         align-items: center
@@ -61,25 +59,14 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
                 top: -4px
             img 
                 width: 18px
-    .id, .balance  
-        font-size: $font9
-        font-weight: 300
-    .balance 
-        font-weight: 400
     @media (min-width: 425px) and (max-width: 767px)
         button
             font-size: 20px
-        .fullName
-            font-size: 20px
-        .id, .balance 
-            font-size: 12px
+
     @media screen and ( min-width: 767px ) 
         button 
             font-size: $font24
-        .fullName
-            font-size: $font36
         .name
-            font-size: $font24
             button
                 font-size: $font24
                 right: 10px
@@ -88,23 +75,23 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
                     top: -4px
                 img 
                     width: $width25
-        .id, .balance  
-            font-size: $font14
-        .balance
-            font-weight: 400
+        // .id, .balance  
+        //     font-size: $font14
+        // .balance
+        //     font-weight: 400
     @media screen and ( min-width: 1023px )
         button  
             font-size: $font36 
         .name, .fullName
-            font-size: $font36
+            // font-size: $font36
             button
                 img 
                     width: $width35
-        .balance, .id
-            font-size: $font24
-            font-weight: 300
-        .id
-            font-size: $font24
+        // .balance, .id
+        //     font-size: $font24
+        //     font-weight: 300
+        // .id
+        //     font-size: $font24
 // Contact container 
 .contactContainer 
     padding: 20px 10px 20px 20px
@@ -124,7 +111,7 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
         display: flex
         gap: 10px
         img
-            width: $width15
+            width: 18px
     .verifyBtn 
         padding: 4px 10px 
         border-radius: 8px
@@ -161,7 +148,7 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
             font-size: $font24
         .title
             img
-                width: $width25
+                width: 20px
     @media screen and ( min-width:1023px )
         padding: 62px 10px 62px 100px
         .title
@@ -189,7 +176,7 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
         align-items: center
         gap: 10px
         img 
-            width: $width15
+            width: 18px
     .social
         a
             color: white
@@ -199,21 +186,21 @@ $gradientBorder: linear Gradient(to right,rgba(255, 255, 255, 0.7),rgba(244, 123
             img 
                 // background: #fff
                 border-radius: 50%
-                width: $width15
+                width: 18px
     @media screen and ( min-width:767px )
         padding: 30px 10px 30px 78px
         // p,span 
         //     font-size: $font24
         .title
             img
-                width: $width25
+                width: 20px
         .social
             a
                 gap: 20px
                 input
                     font-size: $font24
                 img 
-                    width: $width25
+                    width: 20px
     @media screen and ( min-width:1023px )
         // p,span 
         //     font-size: $font36

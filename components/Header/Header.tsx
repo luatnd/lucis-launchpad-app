@@ -53,19 +53,21 @@ export default function Header(props: Props) {
                 </a>
               </li> */}
 
-                {/* <li className={s.groundSubMenu}>
-                <a
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
-                  className="text-white text-24px leading-28px p-15px"
-                >
-                  Guide
-                </a>
-                <ul className={s.subMenu}>
+                <li className={s.groundSubMenu}>
+                  <a
+                    href="https://launchpad-lucis.gitbook.io/lucis-lauchpad-docs/"
+                    // onClick={(e) => e.preventDefault()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white text-24px leading-28px p-15px"
+                  >
+                    Guide
+                  </a>
+                  {/* <ul className={s.subMenu}>
                   <li>For Game Publisher</li>
                   <li>For Personal Investor</li>
-                </ul>
-              </li> */}
+                </ul> */}
+                </li>
 
                 {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Roadmap</a></li>*/}
                 <li>

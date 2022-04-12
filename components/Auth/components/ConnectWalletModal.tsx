@@ -630,7 +630,7 @@ export default observer(function ConnectWalletModal(props: Props) {
             network === ChainNetwork.eth ? s.active : ""
           }`}
         >
-          <img src="/assets/crypto/ico-chain-eth.svg" alt="" />
+          <img src="/assets/crypto/ico-chain-eth.png" alt="" />
           <p>Ethereum</p>
         </div>
         <div

@@ -113,9 +113,15 @@ export default function Info(props: Props) {
                   maxLength={45}
                 />
               ) : (
-                <p className={s.fullName}>{name}</p>
+                <p
+                  className={`${s.fullName} text-[20px] md:text-[28px] lg:text-[36px]`}
+                >
+                  {name}
+                </p>
               )}
-              <p className={s.id}>{address}</p>
+              <p className={`${s.id} text-[9px] sm:text-[14px] md:text-[18px]`}>
+                {address}
+              </p>
             </div>
             {/* <p>Exit</p> */}
             <button onClick={toggleEdit}>
@@ -125,14 +131,18 @@ export default function Info(props: Props) {
 
           {/* TODO: Need get balance from wallet  */}
           <div className={s.info}>
-            <p className={s.balance}>
+            <p
+              className={`font-[300] text-[9px] sm:text-[14px] md:text-[18px]`}
+            >
               {/* Balance: {profile?.me.balance ? profile.me.balance : "0"} BNB */}
               Balance: {Number(balance).toFixed(2)} {currency}
             </p>
           </div>
 
-          <div className={`${s.info} sm:mt-2 lg:mt-5`}>
-            <p className={s.name}>
+          <div className={`${s.info} sm:mt-2 lg:mt-5 `}>
+            <p
+              className={`${s.name} font-[400] text-[14px] sm:text-[18px] md:text-[24px]`}
+            >
               Affiliate ID:
               <span ref={affilateIdRef}>{code}</span>
               <button onClick={handleCopyAffilateId} disabled={isCopy}>

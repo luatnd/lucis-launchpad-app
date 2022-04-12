@@ -32,6 +32,7 @@ export type MenuItemType = {
   scrollTarget?: string; // CSS selector of target scroll
   statusMenu: boolean;
   onClick?: () => void;
+  href?: string;
 };
 
 export const MenuItem = (props: { item: MenuItemType }) => {
@@ -44,7 +45,7 @@ export const MenuItem = (props: { item: MenuItemType }) => {
         if (props.item.onClick) {
           props.item.onClick();
         }
-      }, 50)
+      }, 50);
       AppEmitter.emit("setMbMenuVisible", false);
     }
   }, []);
@@ -56,13 +57,11 @@ export const MenuItem = (props: { item: MenuItemType }) => {
       // whileTap={{ scale: 0.95 }}
       onClick={click}
     >
-      {(
+      {
         <div className="text-placeholder font-saira text-white text-20px leading-28px py-15px">
-          <Link href="/">
-            {props.item.text}
-          </Link>
+          <Link href={props.item.href ?? "/"}>{props.item.text}</Link>
         </div>
-      )}
+      }
     </motion.li>
   );
 };

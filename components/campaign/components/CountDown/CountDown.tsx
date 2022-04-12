@@ -71,10 +71,10 @@ const CountDown = (props: ICountDown) => {
 
   return (
     <div className={`lucis-container ${s.countDown} mt-[50px] md:mt-[100px]`}>
-      <div className="text-white text-center sm:text-12px md:text-24px lg:text-36px font-bold">
+      <div className="text-white text-center text-20px sm:text-24px lg:text-36px font-bold">
         {textNow.toUpperCase()}
       </div>
-      <div className="flex text-white  md:gap-10 justify-between md:justify-center  mt-8">
+      <div className="flex text-white  md:gap-10 justify-between md:justify-center mt-8">
         {Object.keys(timer).map((item, key) => {
           return (
             <div className="flex flex-col" key={key}>

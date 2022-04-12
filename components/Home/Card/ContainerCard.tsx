@@ -69,9 +69,7 @@ export default function CardItem(props: Props) {
     campaignStatus == "OPENING" && !soldOutResult ? "visible" : "hidden";
 
   return (
-    <div
-      className={`${s.CardContainer} ${bg_card} mt-120px sm:mt-150px mb-[50px] sm:mb-[80px]`}
-    >
+    <div className={`${s.CardContainer} ${bg_card} mt-120px sm:mt-150px`}>
       <div className={s.img_game}>
         <img src={props.srcGame ?? ""} alt="" />
       </div>

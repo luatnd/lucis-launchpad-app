@@ -16,6 +16,7 @@ import ApprovalStore, {
 } from "../../components/Auth/Blockchain/ApprovalStore";
 import { Transaction } from "ethers";
 import { Web3ProviderErrorCodes } from "components/Auth/ConnectWalletHelper";
+import AuthStore from "../../components/Auth/AuthStore";
 
 export enum BuyDisabledReason {
   WalletNotConnected,
@@ -37,7 +38,7 @@ export function useBuyBox(
   round: GBoxCampaignRound | undefined,
   isInWhitelist: boolean | undefined,
   connectedChainNetwork: ChainNetwork | undefined,
-  isLoggedIn: boolean,
+  // isLoggedIn: boolean,
   purchasedBox?: GBoxType
 ) {
   // Lib Bug: loading is always true after mutate with error, so plz use promise approach instead
@@ -87,7 +88,7 @@ export function useBuyBox(
    */
 
   const checkAllowanceForBoxPrice = useCallback(async (): Promise<number> => {
-    if (!isLoggedIn) {
+    if (!AuthStore.isLoggedIn) {
       message.warn("Please connect wallet and verify your address first!");
       return 0;
     }
@@ -129,10 +130,10 @@ export function useBuyBox(
     }
 
     return allowanceWei;
-  }, [isLoggedIn, boxPrice, isSupportedConnectedChain]);
+  }, [AuthStore.token, boxPrice, isSupportedConnectedChain]);
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!AuthStore.isLoggedIn) {
       // only check allowance if user connected the wallet and logged-in
       return;
     }
@@ -170,7 +171,7 @@ export function useBuyBox(
       }
     });
   }, [
-    isLoggedIn,
+    AuthStore.token,
     boxPrice?.currency.symbol,
     boxPrice,
     checkAllowanceForBoxPrice,
@@ -250,7 +251,7 @@ export function useBuyBox(
   };
 
   const doBuyBox = async function () {
-    if (!isLoggedIn) {
+    if (!AuthStore.isLoggedIn) {
       message.error("Failed - You've not complete the verification!");
       return;
     }
@@ -353,8 +354,7 @@ export function useBuyBox(
   };
 
   const requestAllowanceForBoxPrice = async () => {
-    console.log("requestAllowanceForBoxPrice:");
-    if (!isLoggedIn) {
+    if (!AuthStore.isLoggedIn) {
       message.warn("Please connect wallet and verify your address first!");
       return false;
     }

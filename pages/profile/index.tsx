@@ -6,15 +6,42 @@ import { useState } from "react";
 import AuthStore from "../../components/Auth/AuthStore";
 import Contact from "../../components/Profile/ProfileContact";
 import Info from "../../components/Profile/ProfileInfo";
-import Box from "../../components/Profile/ProfileSocial";
+import Social from "../../components/Profile/ProfileSocial";
 import s from "./index.module.sass";
 
 const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
+  const {
+    name,
+    address,
+    balance,
+    phone,
+    email,
+    discord,
+    facebook,
+    twitter,
+    tele,
+    code,
+    token,
+  } = AuthStore;
 
-  const props = { isEdit, setIsEdit };
+  const props = {
+    isEdit,
+    setIsEdit,
+    name,
+    address,
+    balance,
+    code,
+    phone,
+    email,
+    discord,
+    facebook,
+    twitter,
+    tele,
+    token,
+  };
 
-  console.log(AuthStore.isLoggedIn);
+  // console.log("Page", AuthStore);
 
   return (
     <>
@@ -26,8 +53,8 @@ const MyProfile = () => {
           <div className={`${s.profileContainer} container`}>
             <Info {...props} />
             <Contact {...props} />
-            <Box {...props} />
-            <BuyHistory title="History" />{" "}
+            <Social {...props} />
+            <BuyHistory title="History" {...props} />
           </div>
         ) : (
           <h1
@@ -38,6 +65,7 @@ const MyProfile = () => {
           </h1>
         )}
       </div>
+
       <Footer />
     </>
   );

@@ -1,35 +1,27 @@
-import {
-  CheckOutlined,
-  CloseOutlined,
-  CopyOutlined,
-  EditOutlined,
-} from "@ant-design/icons";
+import { CheckOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
 import { Col, message, Row } from "antd";
 import Input from "components/Input/Input";
+import { useMutationProfile } from "hooks/profile/useMutationProfile";
+import { observer } from "mobx-react-lite";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { getCurrencyFromChainId } from "utils/blockchain/BlockChain";
+import { chainProfilesIndexed } from "utils/blockchain/ChainConfig";
 import { isClient } from "utils/DOM";
 import s from "../../pages/profile/index.module.sass";
 import AuthStore from "../Auth/AuthStore";
 import ConnectWalletStore from "../Auth/ConnectWalletStore";
-import { observer } from "mobx-react-lite";
-import { useMutationProfile } from "hooks/profile/useMutationProfile";
-import { vi2en } from "utils/String";
-import {
-  ChainNetwork,
-  ChainNetworkAvatar,
-  getChainNetworkFromChainId,
-} from "utils/blockchain/BlockChain";
-import { getAppNetworkFriendlyName } from "utils/blockchain/ChainConfig";
 
 type Props = {
   isEdit: boolean;
   setIsEdit: (value: boolean) => void;
+  name: string | undefined;
+  address: string | undefined;
+  code: string | undefined;
+  balance: string | undefined;
 };
 
-export default observer(function Info(props: Props) {
-  const { name, address, code, balance } = AuthStore;
-  const { network } = ConnectWalletStore;
-  const { isEdit, setIsEdit } = props;
+export default function Info(props: Props) {
+  const { isEdit, setIsEdit, name, balance, code, address } = props;
 
   const [tempName, setTempName] = useState(name);
   const [field, setField] = useState("");
@@ -37,6 +29,9 @@ export default observer(function Info(props: Props) {
 
   const affilateIdRef = useRef<any>(null);
   const { updateProfile } = useMutationProfile();
+
+  const chainId = ConnectWalletStore?.network?.chainId;
+  const currency = chainId && getCurrencyFromChainId(chainId);
 
   const handleCopyAffilateId = () => {
     if (affilateIdRef) {
@@ -115,9 +110,10 @@ export default observer(function Info(props: Props) {
                   {...inputProps}
                   placeholder={"Your name"}
                   name="full_name"
+                  maxLength={45}
                 />
               ) : (
-                <p className={s.fullName}>{tempName}</p>
+                <p className={s.fullName}>{name}</p>
               )}
               <p className={s.id}>{address}</p>
             </div>
@@ -131,8 +127,7 @@ export default observer(function Info(props: Props) {
           <div className={s.info}>
             <p className={s.balance}>
               {/* Balance: {profile?.me.balance ? profile.me.balance : "0"} BNB */}
-              Balance: {Number(balance).toFixed(2)}{" "}
-              {getAppNetworkFriendlyName(network)}
+              Balance: {Number(balance).toFixed(2)} {currency}
             </p>
           </div>
 
@@ -153,4 +148,4 @@ export default observer(function Info(props: Props) {
       </Row>
     </div>
   );
-});
+}

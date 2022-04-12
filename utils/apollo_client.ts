@@ -93,7 +93,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message, locations, path, extensions }) => {
       console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path},  extensions: ${extensions.message}`
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path},  extensions: ${extensions?.message}`
       );
       if (message === "Unauthorized") {
         // Clean auth info in case of auth error

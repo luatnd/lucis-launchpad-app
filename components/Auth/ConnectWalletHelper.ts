@@ -117,9 +117,11 @@ class ConnectWalletHelper {
         return ensureTargetChain(chainId);
 
       case Wallet.wc:
-        return new Promise<boolean>((resolve, reject) => {
-          resolve(true);
-        });
+        const chainId1 = this.getConfiguredChainId(network);
+        return ensureTargetChain(chainId1);
+      // return new Promise<boolean>((resolve, reject) => {
+      //   resolve(true);
+      // });
 
       default:
         return new Promise<boolean>((resolve, reject) => {

@@ -3,9 +3,10 @@ import { useEffect } from "react";
 
 type Props = {
   box_campaign_uid: string;
+  user_id: number | undefined;
 };
 
-export function useDetailCampaign({ box_campaign_uid }: Props) {
+export function useDetailCampaign({ box_campaign_uid, user_id }: Props) {
   const { loading, error, data } = useQuery(DETAIL_CAMPAIGN, {
     variables: {
       box_campaign_uid,
@@ -17,13 +18,20 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
     loading: loadingOpening,
     error: errorOpening,
     data: dataIsInWhiteList,
-  } = useQuery(IS_IN_WHITE_LIST, { variables: { box_campaign_uid } });
+    refetch: refetchIsInWhiteList,
+  } = useQuery(IS_IN_WHITE_LIST, {
+    variables: { box_campaign_uid },
+    fetchPolicy: "no-cache",
+  });
 
   const {
     loading: loadingOfRegisteredWhitelist,
     error: errorOfRegisteredWhitelist,
     data: dataWhitelistRegistered,
-  } = useQuery(WHITELIST_REGISTERED, { variables: { box_campaign_uid } });
+  } = useQuery(WHITELIST_REGISTERED, {
+    variables: { box_campaign_uid },
+    fetchPolicy: "no-cache",
+  });
 
   const {
     loading: loadingWhiteListRegistered,
@@ -31,6 +39,7 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
     data: dataWhitelistRegisteredRecently,
   } = useSubscription(WHITELIST_REGISTERED_RECENTLY_SUB, {
     variables: { box_campaign_uid },
+    fetchPolicy: "cache-only",
   });
 
   const {
@@ -40,26 +49,42 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
     variables: { box_campaign_uid },
   });
 
-  const { data: historiesBox } = useQuery(BUY_BOX_HISTORIES, {
-    variables: {
-      include: {
-        boxTypes: true,
-        game: true,
+  const { data: historiesBox, refetch: refetchBoxHistory } = useQuery(
+    BUY_BOX_HISTORIES,
+    {
+      variables: {
+        include: {
+          boxTypes: true,
+          game: true,
+        },
       },
-    },
-    fetchPolicy: "no-cache",
-  });
+      fetchPolicy: "no-cache",
+    }
+  );
 
   const { data: recentlyPurchasedBox } = useSubscription(
     PURCHASED_RECENTLY_BOX_SUBSCRIPTION,
     {
-      variables: { box_campaign_uid },
+      variables: { box_campaign_uid, user_id },
     }
   );
+
+  const {
+    data: boxCampaignDetailSubcription,
+    refetch: refetchBoxCampaignDetailSubcription,
+  } = useQuery(BOX_CAMPAIGN_SUBSCRIPTION_DETAIL, {
+    variables: {
+      box_campaign_uid,
+    },
+  });
 
   return {
     loading,
     error,
+    refetchBoxCampaignDetailSubcription,
+    refetchBoxHistory,
+    refetchIsInWhiteList,
+
     boxCampaign: data?.campaignDetail,
     isInWhitelist: dataIsInWhiteList?.isInWhitelist ?? false,
     whitelistRegistered: dataWhitelistRegistered?.whitelistRegistered,
@@ -69,6 +94,9 @@ export function useDetailCampaign({ box_campaign_uid }: Props) {
     whitelistRegisteredRecently:
       dataWhitelistRegisteredRecently?.whitelistRegisteredRecently,
     purchasedBox: purchasedBox?.purchasedBox,
+    boxCampaignDetailSubcription:
+      boxCampaignDetailSubcription?.boxCampaignSubscriptionDetail
+        ?.enable_notify ?? false,
 
     recentlyPurchasedBox: recentlyPurchasedBox?.recentlyPurchasedBox,
     historiesBox: historiesBox?.boxCampaignBuyHistories.filter(
@@ -221,8 +249,11 @@ const BUY_BOX_HISTORIES = gql`
 `;
 
 const PURCHASED_RECENTLY_BOX_SUBSCRIPTION = gql`
-  subscription ($box_campaign_uid: String!) {
-    recentlyPurchasedBox(box_campaign_uid: $box_campaign_uid) {
+  subscription ($box_campaign_uid: String!, $user_id: Float!) {
+    recentlyPurchasedBox(
+      box_campaign_uid: $box_campaign_uid
+      user_id: $user_id
+    ) {
       id
       box_campaign_uid
       quantity
@@ -249,6 +280,14 @@ const PURCHASED_RECENTLY_BOX_SUBSCRIPTION = gql`
           thumb_img
         }
       }
+    }
+  }
+`;
+
+const BOX_CAMPAIGN_SUBSCRIPTION_DETAIL = gql`
+  query ($box_campaign_uid: String!) {
+    boxCampaignSubscriptionDetail(box_campaign_uid: $box_campaign_uid) {
+      enable_notify
     }
   }
 `;

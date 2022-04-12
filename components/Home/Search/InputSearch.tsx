@@ -7,7 +7,7 @@ const InputSearch = () => {
     <div className="lucis-container">
       <div className="flex justify-end">
         <AutoComplete style={{ width: "400px" }}>
-          <Search />
+          <Search placeholder="Search" />
         </AutoComplete>
       </div>
     </div>

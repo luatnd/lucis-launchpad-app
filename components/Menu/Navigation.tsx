@@ -50,6 +50,13 @@ export const Navigation = () => {
       scrollTarget: "#Closed",
       statusMenu: false,
     },
+    {
+      color: "#FF008C",
+      text: "Guide",
+      // scrollTarget: "#Closed",
+      href: "https://launchpad-lucis.gitbook.io/lucis-lauchpad-docs/",
+      statusMenu: false,
+    },
     // {
     //   color: "#FF008C",
     //   statusMenu: false,
@@ -69,13 +76,16 @@ export const Navigation = () => {
   ];
 
   useEffect(() => {
-    const subscription = AppEmitter.addListener('setJoinUsVisible', (visible: boolean) => {
-      setIsModalVisible(visible)
-    });
+    const subscription = AppEmitter.addListener(
+      "setJoinUsVisible",
+      (visible: boolean) => {
+        setIsModalVisible(visible);
+      }
+    );
     return () => {
       subscription.remove();
-    }
-  }, [])
+    };
+  }, []);
 
   return (
     <div>

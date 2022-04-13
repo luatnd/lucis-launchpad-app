@@ -114,12 +114,14 @@ export default function Info(props: Props) {
                 />
               ) : (
                 <p
-                  className={`${s.fullName} text-[20px] md:text-[28px] lg:text-[36px]`}
+                  className={`${s.fullName} text-[18px] md:text-[28px] lg:text-[36px] font-[500]`}
                 >
                   {name}
                 </p>
               )}
-              <p className={`${s.id} text-[9px] sm:text-[14px] md:text-[18px]`}>
+              <p
+                className={`${s.id} text-[12px] sm:text-[14px] md:text-[18px]`}
+              >
                 {address}
               </p>
             </div>
@@ -132,7 +134,7 @@ export default function Info(props: Props) {
           {/* TODO: Need get balance from wallet  */}
           <div className={s.info}>
             <p
-              className={`font-[300] text-[9px] sm:text-[14px] md:text-[18px]`}
+              className={`font-[300] text-[12px] sm:text-[14px] md:text-[18px]`}
             >
               {/* Balance: {profile?.me.balance ? profile.me.balance : "0"} BNB */}
               Balance: {Number(balance).toFixed(2)} {currency}

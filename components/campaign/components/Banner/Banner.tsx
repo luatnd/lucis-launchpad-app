@@ -65,13 +65,18 @@ const Banner = ({ boxCampaign, isSubcribed, token, refetch }: Props) => {
               </div>
 
               <div className={s.infTitle}>
-                <p className="font-[700]">
+                <p className="font-[700] text-[16px] sm:text-[20px] md:text-[28px]">
                   {boxCampaign?.game.name?.toUpperCase()}
                 </p>
-                <p className="font-[600]">{boxCampaign?.name?.toUpperCase()}</p>
+                <p className="font-[600] text-[14px] sm:text-[18px] md:text-[24px]">
+                  {boxCampaign?.name?.toUpperCase()}
+                </p>
               </div>
 
-              <div className={`${s.infContent}`} id="desc">
+              <div
+                className={`${s.infContent} text-[14px] sm:text-[18px] md:text-[24px] mt-[16px]`}
+                id="desc"
+              >
                 {boxCampaign?.desc}
               </div>
 

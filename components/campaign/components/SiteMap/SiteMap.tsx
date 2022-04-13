@@ -173,21 +173,21 @@ export default observer(function SiteMap(props: IRound) {
               className={`flex flex-col justify-center select-none px-2 ${s.SiteMapLineCircleTitleBox}`}
             >
               <div className={`${s.hSlide} flex flex-col justify-end w-full`}>
-                <div
-                  className={`text-white font-bold ${
+                <p
+                  className={`text-white font-bold m-0 ${
                     s.SiteMapLineCircleTitle
                   } ${isActiveUpComing ? s.active : ""}`}
                 >
                   Upcoming
-                </div>
+                </p>
 
-                <div
+                <p
                   className={`text-white pb-2 mb-10 ${
                     s.SiteMapLineCircleTime
                   } ${isActiveUpComing ? s.active : ""}`}
                 >
                   {timeMoment(start).tz(tzid).format("HH:mm, MMMM DD")}
-                </div>
+                </p>
               </div>
 
               <div style={{ width: "100%" }}>

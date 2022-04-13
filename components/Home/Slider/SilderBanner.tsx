@@ -112,11 +112,11 @@ export default function ItemSliderBanner(props: Props) {
           </div>
         </div>
 
-        <Link href={href} passHref>
-          <a className={s.imgGame}>
-            <img src={banner ?? ""} alt="" />
-          </a>
-        </Link>
+        {/* <Link href={href} passHref> */}
+        <a className={s.imgGame}>
+          <img src={banner ?? ""} alt="" />
+        </a>
+        {/* </Link> */}
       </div>
     </div>
   );

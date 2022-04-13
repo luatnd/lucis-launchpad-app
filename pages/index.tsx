@@ -13,6 +13,7 @@ import { useHome } from "hooks/home/useHome";
 import UpComing from "components/Home/UpComingPage/UpcomingCampaign";
 import Opening from "components/Home/OpeningCampaign/OpeningCampaign";
 import ClosedCampaign from "components/Home/ClosedCampaign/ClosedCampaign";
+import InputSearch from "components/Home/Search/InputSearch";
 
 const Home: NextPage = () => {
   const {} = useHome();
@@ -39,6 +40,7 @@ const Home: NextPage = () => {
   return (
     <div className={styles.pageContainer}>
       <DocHead />
+      {/* <InputSearch /> */}
 
       <Banner />
       <UpComing />

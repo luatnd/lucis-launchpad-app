@@ -56,7 +56,7 @@ export default function Header(props: Props) {
                     // onClick={(e) => e.preventDefault()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-white text-24px leading-28px p-15px"
+                    className="text-white text-24px leading-28px "
                   >
                     Guide
                   </a>

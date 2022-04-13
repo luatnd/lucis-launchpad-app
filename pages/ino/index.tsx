@@ -9,7 +9,7 @@ import s from "./index.module.sass";
 const LucisDebugPage: NextPage = () => {
   return (
     <>
-      <DocHead title="My Profile" />
+      <DocHead title="Apply for INO" />
       <Banner />
       <div className="container">
         <div className={s.containerApp}>

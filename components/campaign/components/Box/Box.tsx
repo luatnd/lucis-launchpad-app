@@ -30,7 +30,7 @@ export default function BoxCard(props: BoxCardProps) {
           // const chainSymbol = e.
 
           return (
-            <Col key={index} xs={24} md={12} lg={8}>
+            <Col key={index} xs={24} sm={18} md={12} lg={8}>
               <BoxTypeCard
                 boxType={e}
                 chains={chains}

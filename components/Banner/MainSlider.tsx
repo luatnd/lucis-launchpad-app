@@ -15,7 +15,7 @@ type Props = {
   setSlideIndex: any;
 };
 
-const SimpleSlider = (props: Props) => {
+const MainSlider = (props: Props) => {
   const { data, loading, sliderRef, setSlideIndex } = props;
   const [listBanner, setListBanner] = useState<GBoxCampaign[]>();
 
@@ -90,4 +90,4 @@ const SimpleSlider = (props: Props) => {
   );
 };
 
-export default SimpleSlider;
+export default MainSlider;

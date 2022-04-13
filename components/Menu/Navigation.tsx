@@ -34,20 +34,21 @@ export const Navigation = () => {
     },
     {
       color: "#FF008C",
-      text: "Opening",
-      scrollTarget: "#Opening",
+      text: "Upcoming",
+      scrollTarget: "#Upcoming campaign",
       statusMenu: false,
     },
     {
       color: "#FF008C",
-      text: "Upcoming",
-      scrollTarget: "#Upcoming",
+      text: "Opening",
+      scrollTarget: "#Opening campaign",
       statusMenu: false,
     },
+
     {
       color: "#FF008C",
       text: "Closed",
-      scrollTarget: "#Closed",
+      scrollTarget: "#Closed campaign",
       statusMenu: false,
     },
     {

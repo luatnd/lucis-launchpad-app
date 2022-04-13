@@ -201,7 +201,7 @@ const BoxTypeCard = observer((props: Props) => {
             dangerouslySetInnerHTML={{ __html: boxType.series_content ?? "" }}
           />
 
-          <div className="flex justify-between text-white font-bold text-24px mt-[10px]">
+          <div className="flex justify-between text-white font-bold text-[18px] md:text-[24px] mt-[10px]">
             <span>Chain</span>
             {/* <p className="m-0">{chains[0].symbol}</p> */}
             <div className={s.chainIcoC}>
@@ -224,7 +224,7 @@ const BoxTypeCard = observer((props: Props) => {
             >
               <div className={`${s.amount} font-bold`}>
                 <label className={s.label}>
-                  <span>Amount: </span>
+                  <span className="text-[18px] md:text-[24px=">Amount: </span>
                   <br />
                   {boxType.limit_per_user != null && (
                     <span className={s.max}>Max: {boxType.limit_per_user}</span>

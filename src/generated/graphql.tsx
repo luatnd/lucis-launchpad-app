@@ -39,6 +39,7 @@ export type BoxCampaign = {
   game_uid: Scalars['String'];
   highlight?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  notification?: Maybe<Array<Notification>>;
   opening_at: Scalars['DateTime'];
   publish_status?: Maybe<PublishStatus>;
   rounds?: Maybe<Scalars['JSON']>;
@@ -82,6 +83,7 @@ export type BoxCampaignCount = {
   __typename?: 'BoxCampaignCount';
   boxTypes: Scalars['Int'];
   buyHistory: Scalars['Int'];
+  notification: Scalars['Int'];
   subscribeCampaign: Scalars['Int'];
   whitelists: Scalars['Int'];
 };
@@ -252,6 +254,7 @@ export type GBoxCampaign = {
   game_uid: Scalars['String'];
   highlight?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  notification?: Maybe<Array<Notification>>;
   opening_at: Scalars['DateTime'];
   publish_status?: Maybe<PublishStatus>;
   rounds: Array<GBoxCampaignRound>;
@@ -274,6 +277,7 @@ export type GBoxCampaignBase = {
   game_uid: Scalars['String'];
   highlight?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  notification?: Maybe<Array<Notification>>;
   opening_at: Scalars['DateTime'];
   publish_status?: Maybe<PublishStatus>;
   rounds?: Maybe<Scalars['JSON']>;
@@ -493,6 +497,7 @@ export type Mutation = {
   enableNotification?: Maybe<Scalars['Boolean']>;
   /** Generate nonce for user login */
   generateNonce: Scalars['String'];
+  getNotifications?: Maybe<Array<Notification>>;
   /** User login */
   login: AuthGraphql;
   /** Register whitelist */
@@ -548,11 +553,35 @@ export type MutationVerifyEmailArgs = {
   email: Scalars['String'];
 };
 
+export type Notification = {
+  __typename?: 'Notification';
+  box: BoxCampaign;
+  box_campaign_uid: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  id: Scalars['ID'];
+  is_Seen: Scalars['Boolean'];
+  notification: NotificationType;
+  updated_at: Scalars['DateTime'];
+  user: User;
+  user_id: Scalars['Int'];
+};
+
 export type NotificationStatus = {
   __typename?: 'NotificationStatus';
   content: Scalars['String'];
   user_id: Scalars['Float'];
 };
+
+export enum NotificationType {
+  BuyBox = 'BuyBox',
+  CampaignClosed = 'CampaignClosed',
+  CampaignOpenAfter15Minutes = 'CampaignOpenAfter15Minutes',
+  CampaignOpenAfterOneDay = 'CampaignOpenAfterOneDay',
+  RegisterWhitelist = 'RegisterWhitelist',
+  SoldOut = 'SoldOut',
+  WhitelistRegistrationOpen = 'WhitelistRegistrationOpen',
+  WhitelistRegistrationOpenAfterOneDay = 'WhitelistRegistrationOpenAfterOneDay'
+}
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: InputMaybe<Scalars['String']>;
@@ -582,14 +611,16 @@ export type Query = {
   boxCampaignBuyHistories?: Maybe<Array<GBoxCampaignBuyHistory>>;
   /** box_campaign_subscribes information */
   boxCampaignSubscriptionDetail?: Maybe<GBoxCampaignSubscribes>;
-  /** Box campaign transaction */
+  /** Box campaign detail */
   campaignDetail?: Maybe<GBoxCampaign>;
   closedBoxCampaign?: Maybe<Array<GBoxCampaign>>;
+  countUnreadNotifications?: Maybe<Scalars['Int']>;
   getAllowanceAmount: Scalars['Float'];
   /** Check current user joined whitelist */
   isInWhitelist?: Maybe<Scalars['Boolean']>;
   me?: Maybe<UserGraphql>;
   openingBoxCampaign?: Maybe<Array<GBoxCampaign>>;
+  searchCampaign?: Maybe<Array<GBoxCampaign>>;
   spotlightBoxCampaign?: Maybe<Array<GBoxCampaign>>;
   upcomingBoxCampaign?: Maybe<Array<GBoxCampaign>>;
   /** Check registered whitelist status */
@@ -624,6 +655,11 @@ export type QueryIsInWhitelistArgs = {
 };
 
 
+export type QuerySearchCampaignArgs = {
+  search: Scalars['String'];
+};
+
+
 export type QueryWhitelistRegisteredArgs = {
   box_campaign_uid: Scalars['String'];
 };
@@ -650,6 +686,7 @@ export type SubscriptionPushNotificationArgs = {
 
 export type SubscriptionRecentlyPurchasedBoxArgs = {
   box_campaign_uid: Scalars['String'];
+  user_id: Scalars['Float'];
 };
 
 
@@ -667,6 +704,7 @@ export type User = {
   enable_notify?: Maybe<Array<BoxCampaignSubscribes>>;
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
+  notification?: Maybe<Array<Notification>>;
   password?: Maybe<Scalars['String']>;
   profile?: Maybe<UserProfile>;
   ref_code?: Maybe<Scalars['String']>;
@@ -678,6 +716,7 @@ export type User = {
 export type UserCount = {
   __typename?: 'UserCount';
   enable_notify: Scalars['Int'];
+  notification: Scalars['Int'];
 };
 
 export type UserGraphql = {
@@ -690,6 +729,7 @@ export type UserGraphql = {
   enable_notify?: Maybe<Array<BoxCampaignSubscribes>>;
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
+  notification?: Maybe<Array<Notification>>;
   profile?: Maybe<UserProfile>;
   ref_code?: Maybe<Scalars['String']>;
   role: UserRole;

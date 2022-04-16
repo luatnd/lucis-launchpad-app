@@ -20,6 +20,10 @@
   color: white
   margin-bottom: 20px
   animation: fadeIn 2s
+  &:disabled
+    background: #c4c4c4
+    &:before
+      background: none
 
   @include box-glass
   @include border-grad-3(linear-gradient(290.92deg,#0bebd6,#cd28e8))
@@ -28,12 +32,14 @@
   backdrop-filter: blur(40px)
   min-width: 180px
   img
-    width: 25px
+    width: 16px
   p 
     margin: 0
     font-weight: 700
   @media screen and (min-width: 767px)
     padding: 10px 20px
+    img
+      width: 25px
     p
       font-size: 24px
 
@@ -97,6 +103,10 @@
     .infSocialIcons
       img
         width: 36px
+
+.modalContainer 
+  :global(.anticon)
+    color: red
 
 
 

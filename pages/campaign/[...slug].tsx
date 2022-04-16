@@ -1,10 +1,13 @@
 import { Tabs } from "antd";
+import RecentlyBought from "components/campaign/components/RecentlyBought/RecentlyBought";
 import SiteMap from "components/campaign/components/SiteMap/SiteMap";
 import Footer from "components/Footer/Footer";
-import BuyHistory from "components/HistoryTable/BuyHistory";
+import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { TabPane } from "rc-tabs";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
+import { isClient } from "utils/DOM";
+import AuthStore from "../../components/Auth/AuthStore";
 import Banner from "../../components/campaign/components/Banner/Banner";
 import BoxCard from "../../components/campaign/components/Box/Box";
 import CountDown from "../../components/campaign/components/CountDown/CountDown";
@@ -13,10 +16,6 @@ import DocHead from "../../components/DocHead";
 import { useDetailCampaign } from "../../hooks/campaign/useDetailCampaign";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import s from "./detail.module.sass";
-import { isClient } from "utils/DOM";
-import { observer } from "mobx-react-lite";
-import AuthStore from "../../components/Auth/AuthStore";
-import RecentlyBought from "components/campaign/components/RecentlyBought/RecentlyBought";
 
 /**
  * Match all route: /campaign/....
@@ -60,7 +59,7 @@ function DetailCampaign() {
     refetchIsInWhiteList,
   } = useDetailCampaign({
     box_campaign_uid: campaignUid,
-    user_id: id,
+    user_id: Number(id),
   });
 
   const clickToAbout = (key: any) => {

@@ -1,6 +1,7 @@
 import Modal from "antd/lib/modal/Modal";
 import { Maybe } from "graphql/jsutils/Maybe";
 import { ChainSymbol, GChain } from "src/generated/graphql";
+import s from "../Box/Box.module.sass";
 
 type ChainProps = {
   url: string;
@@ -36,6 +37,7 @@ const ModalConfirm = (props: Props) => {
 
   return (
     <Modal
+      className={s.modalContainer}
       title={<strong>Buy order confirmation</strong>}
       visible={isModalVisible}
       onOk={handleOk}

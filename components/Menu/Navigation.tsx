@@ -89,8 +89,8 @@ export const Navigation = () => {
       text: (
         <div>
           {
-            !AuthStore.isLoggedIn 
-            ? <div>
+            AuthStore.isLoggedIn ? 
+            <div>
                 <p>{trim_middle(address ?? "", 7, 8)}</p>
                 <div onClick={disconnectWallet}>
                   Disconnect

@@ -1,69 +1,53 @@
+import { List } from "antd";
+import moment from "moment";
 import { useEffect, useState } from "react";
+import { Notification } from "src/generated/graphql";
 import s from "./Header.module.sass";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { Avatar, Divider, List } from "antd";
 
-const InfiniteList = (props: any) => {
+type Props = {
+  notificationData: Notification[];
+  getNotification: any;
+  notificationSubscription: any;
+};
+
+const InfiniteList = ({
+  notificationData,
+  getNotification,
+  notificationSubscription,
+}: Props) => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<any[]>([]);
-
-  const loadMoreData = () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-    fetch(
-      "https://randomuser.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo"
-    )
-      .then((res) => res.json())
-      .then((body) => {
-        setData([...data, ...body.results]);
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-      });
-  };
+  const [data, setData] = useState<Notification[]>([]);
 
   useEffect(() => {
-    loadMoreData();
-  }, []);
+    notificationData ? setData([...notificationData].reverse()) : setData([]);
+  }, [notificationData]);
 
   return (
     <div className={s.infinite}>
       <div className={s.infiniteContainer} id="list">
-        <InfiniteScroll
-          dataLength={data.length}
-          next={loadMoreData}
-          hasMore={data.length < 100}
-          loader={
-            <Divider style={{ color: "white" }} plain>
-              Loading...
-            </Divider>
-          }
-          endMessage={
-            <Divider style={{ color: "white" }} plain>
-              It is all, nothing more 🤐
-            </Divider>
-          }
-          scrollableTarget="list"
-        >
-          <List
-            dataSource={data}
-            renderItem={(item) => (
+        <List
+          dataSource={data}
+          renderItem={(item: Notification, idx: number) => {
+            return (
               <List.Item key={item.id}>
-                <List.Item.Meta
-                  avatar={<Avatar src={item.picture.large} />}
-                  title={<a href="https://ant.design">{item.name.last}</a>}
-                  description={
-                    <p style={{ color: "white", margin: 0 }}>{item.email}</p>
-                  }
-                />
-                <div>Content</div>
+                <div className={s.notificationItem}>
+                  <img
+                    // className="w-[30px] h-[30px]"
+                    src={item.box.cover_img ?? ""}
+                    alt=""
+                  />
+                  <div>
+                    <p className="font-[600] m-0">{item.notification}</p>
+                    <p>{item.box.desc}</p>
+                  </div>
+                  <p className={s.notificationTime}>
+                    {moment(item.created_at).fromNow()}
+                  </p>
+                </div>
               </List.Item>
-            )}
-          />
-        </InfiniteScroll>
+            );
+          }}
+        />
       </div>
     </div>
   );

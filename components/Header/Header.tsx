@@ -11,12 +11,13 @@ import { Badge, Popover } from "antd";
 import InfiniteList from "./InfiniteNoti";
 import AuthStore from "../Auth/AuthStore";
 import Notification from "./Notification";
+import { observer } from "mobx-react-lite";
 
 type Props = {
   handleMenuOpen: Function;
 };
 
-export default function Header(props: Props) {
+const Header = (props: Props) => {
   const router = useRouter();
   const [width] = useWindowSize();
 
@@ -52,23 +53,45 @@ export default function Header(props: Props) {
 
                 <li className={s.groundSubMenu}>
                   <a
-                    href="https://launchpad-lucis.gitbook.io/lucis-lauchpad-docs/"
+                    href="/"
                     // onClick={(e) => e.preventDefault()}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    // target="_blank"
+                    // rel="noopener noreferrer"
                     className="text-white text-24px leading-28px "
                   >
                     Guide
                   </a>
-                  {/* <ul className={s.subMenu}>
-                  <li>For Game Publisher</li>
-                  <li>For Personal Investor</li>
-                </ul> */}
+                  <ul className={s.subMenu}>
+                    <li>
+                      <a
+                        href="https://launchpad-lucis.gitbook.io/lucis-lauchpad-docs/"
+                        // onClick={(e) => e.preventDefault()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-white text-24px leading-28px "
+                      >
+                        For Game Publisher
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="https://launchpad-lucis.gitbook.io/lucis-lauchpad-docs/"
+                        // onClick={(e) => e.preventDefault()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-white text-24px leading-28px "
+                      >
+                        For Personal Investor
+                      </a>
+                    </li>
+                  </ul>
                 </li>
 
-                <li style={{ cursor: "pointer" }}>
-                  <Notification />
-                </li>
+                {AuthStore.isLoggedIn && (
+                  <li style={{ cursor: "pointer" }}>
+                    <Notification />
+                  </li>
+                )}
 
                 {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Roadmap</a></li>*/}
                 <li>
@@ -88,4 +111,6 @@ export default function Header(props: Props) {
       )}
     </div>
   );
-}
+};
+
+export default observer(Header);

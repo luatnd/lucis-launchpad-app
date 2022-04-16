@@ -60,7 +60,7 @@ function DetailCampaign() {
     refetchIsInWhiteList,
   } = useDetailCampaign({
     box_campaign_uid: campaignUid,
-    user_id: id,
+    user_id: Number(id),
   });
 
   const clickToAbout = (key: any) => {

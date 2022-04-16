@@ -321,6 +321,7 @@ export function useBuyBox(
             "Success!",
             5
           );
+          txtAmount.setValue("");
         } else {
           message.error("Buy box failed");
         }

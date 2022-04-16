@@ -189,7 +189,7 @@ export default observer(function ConnectWalletModal(props: Props) {
             AuthBoxStore.verified = true;
             setTimeout(() => {
               setIsModalVisible(false);
-            }, 2000);
+            }, 300);
             break;
 
           case AuthError.UserDeniedMsgSignature:

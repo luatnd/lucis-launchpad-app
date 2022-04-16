@@ -148,6 +148,8 @@ const RecentlyBought = ({
               <a
                 className="block md:hidden"
                 href={`https://testnet.bscscan.com/tx/${item.tx_hash}`}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <img
                   style={{ width: "15px", margin: "5px 0 0 0" }}
@@ -191,7 +193,7 @@ const RecentlyBought = ({
           columns={columns}
           dataSource={[...temp].reverse()}
           pagination={false}
-          footer={() => <></>}
+          // footer={false}
           scroll={{ y: 1000 }}
           rowKey="id"
         />

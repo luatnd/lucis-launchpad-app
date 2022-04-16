@@ -30,7 +30,7 @@ export type MenuItemType = {
   color: string;
   text: string | ReactElement;
   scrollTarget?: string; // CSS selector of target scroll
-  statusMenu: boolean;
+  statusMenu?: boolean;
   onClick?: () => void;
   href?: string;
 };

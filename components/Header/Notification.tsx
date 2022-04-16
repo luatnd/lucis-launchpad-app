@@ -19,6 +19,7 @@ const Notification = () => {
   } = useNotification({ user_id: Number(id) });
 
   const [isSeen, setIsSeen] = useState(false);
+  const [countNoti, setCountNoti] = useState(0);
 
   const notificationList = {
     notificationData: getNotificationData,
@@ -31,6 +32,13 @@ const Notification = () => {
     setIsSeen(true);
   };
 
+  useEffect(() => {
+    notificationSubscription && countUnreadNotifications
+      ? setCountNoti(countUnreadNotifications + 1)
+      : setCountNoti(countUnreadNotifications);
+  }, [notificationSubscription, countUnreadNotifications]);
+
+  console.log("notificationSubscription: ", notificationSubscription);
   return (
     <>
       <Popover
@@ -39,7 +47,7 @@ const Notification = () => {
         // trigger={width < 1024 ? "click" : "hover"}
         trigger="click"
       >
-        <Badge count={isSeen ? 0 : countUnreadNotifications} size="small">
+        <Badge count={isSeen ? 0 : countNoti} size="small">
           <img
             className={s.notificationIcon}
             src="/assets/notification-icon.svg"

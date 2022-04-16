@@ -8,6 +8,7 @@ type Props = {
 const useNotification = ({ user_id }: Props) => {
   const { data: notificationData } = useSubscription(PUSH_NOTIFICATION, {
     variables: { user_id },
+    fetchPolicy: "no-cache",
   });
 
   const [getNotification, { data: getNotificationData }] = useMutation(
@@ -20,7 +21,7 @@ const useNotification = ({ user_id }: Props) => {
   );
 
   return {
-    notificationSubscription: notificationData?.content,
+    notificationSubscription: notificationData?.pushNotification,
     countUnreadNotifications:
       countUnreadNotifications?.countUnreadNotifications,
     getNotification,

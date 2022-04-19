@@ -53,6 +53,22 @@ const Header = (props: Props) => {
 
                 <li className={s.groundSubMenu}>
                   <a
+                    href="https://launchpad-lucis.gitbook.io/lucis-lauchpad-docs/"
+                    // onClick={(e) => e.preventDefault()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white text-24px leading-28px "
+                  >
+                    Guide
+                  </a>
+                  <ul className={s.subMenu}>
+                    <li>For Game Publisher</li>
+                    <li>For Personal Investor</li>
+                  </ul>
+                </li>
+
+                {/* <li className={s.groundSubMenu}>
+                  <a
                     href="/"
                     // onClick={(e) => e.preventDefault()}
                     // target="_blank"
@@ -85,7 +101,7 @@ const Header = (props: Props) => {
                       </a>
                     </li>
                   </ul>
-                </li>
+                </li> */}
 
                 {AuthStore.isLoggedIn && (
                   <li style={{ cursor: "pointer" }}>

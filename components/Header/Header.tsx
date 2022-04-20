@@ -38,6 +38,41 @@ const Header = (props: Props) => {
             </div>
             <nav>
               <ul className="flex gap-4 justify-between items-center m-0">
+                <li className="text-24px">
+                  <Popover
+                    placement="bottomRight"
+                    // trigger={width < 1024 ? "click" : "hover"}
+                    trigger="hover"
+                    content={
+                      <ul className={s.subMenu}>
+                        <li>
+                          <a
+                            href="https://launchpad-lucis.gitbook.io/lucis-lauchpad-docs/"
+                            // onClick={(e) => e.preventDefault()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-white text-24px leading-28px "
+                          >
+                            For Game Publisher
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            href="https://launchpad-lucis.gitbook.io/lucis-lauchpad-docs/"
+                            // onClick={(e) => e.preventDefault()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-white text-24px leading-28px "
+                          >
+                            For Personal Investor
+                          </a>
+                        </li>
+                      </ul>
+                    }
+                  >
+                    Guide
+                  </Popover>
+                </li>
                 {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Home</a></li>*/}
                 {/* <li>
                 <a
@@ -51,76 +86,19 @@ const Header = (props: Props) => {
                 </a>
               </li> */}
 
-                <li className={s.groundSubMenu}>
-                  <a
-                    href="https://launchpad-lucis.gitbook.io/lucis-lauchpad-docs/"
-                    // onClick={(e) => e.preventDefault()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-white text-24px leading-28px "
-                  >
-                    Guide
-                  </a>
-                  <ul className={s.subMenu}>
-                    <li>For Game Publisher</li>
-                    <li>For Personal Investor</li>
-                  </ul>
-                </li>
-
-                {/* <li className={s.groundSubMenu}>
-                  <a
-                    href="/"
-                    // onClick={(e) => e.preventDefault()}
-                    // target="_blank"
-                    // rel="noopener noreferrer"
-                    className="text-white text-24px leading-28px "
-                  >
-                    Guide
-                  </a>
-                  <ul className={s.subMenu}>
-                    <li>
-                      <a
-                        href="https://launchpad-lucis.gitbook.io/lucis-lauchpad-docs/"
-                        // onClick={(e) => e.preventDefault()}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-white text-24px leading-28px "
-                      >
-                        For Game Publisher
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="https://launchpad-lucis.gitbook.io/lucis-lauchpad-docs/"
-                        // onClick={(e) => e.preventDefault()}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-white text-24px leading-28px "
-                      >
-                        For Personal Investor
-                      </a>
-                    </li>
-                  </ul>
-                </li> */}
-
-                {AuthStore.isLoggedIn && (
+                {/* {AuthStore.isLoggedIn && (
                   <li style={{ cursor: "pointer" }}>
                     <Notification />
                   </li>
-                )}
+                )} */}
 
                 {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Roadmap</a></li>*/}
                 <li>
                   <AuthBox />
                 </li>
-                {/* TODO: Notification infinite scroll */}
-                {/* <li>
-                <Notification />
-              </li> */}
               </ul>
             </nav>
           </div>
-          {/* <InfiniteList /> */}
         </div>
       ) : (
         <MenuMobile />

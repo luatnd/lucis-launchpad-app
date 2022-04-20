@@ -19,6 +19,7 @@ const InfiniteList = ({
   const [data, setData] = useState<Notification[]>([]);
 
   useEffect(() => {
+    // console.log(notificationData);
     notificationData ? setData([...notificationData].reverse()) : setData([]);
   }, [notificationData]);
 

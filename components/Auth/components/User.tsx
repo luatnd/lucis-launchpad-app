@@ -19,12 +19,14 @@ import {
   ChainNetworkAvatar,
   getChainNetworkFromChainId,
   getCurrencyFromChainId,
+  getCurrencySymbolFromChainId,
 } from "utils/blockchain/BlockChain";
 import { trim_middle } from "utils/String";
 
 import s from "./User.module.sass";
 import { AppEmitter } from "../../../services/emitter";
 import { useWindowSize } from "hooks/useWindowSize";
+import Notification from "components/Header/Notification";
 
 type Props = {};
 export default observer(function User(props: Props) {
@@ -36,7 +38,7 @@ export default observer(function User(props: Props) {
 
   const { name, balance } = AuthStore;
   const chainId = ConnectWalletStore?.network?.chainId;
-  const currency = chainId && getCurrencyFromChainId(chainId);
+  const currency = chainId && getCurrencySymbolFromChainId(chainId);
 
   const changeWallet = () => {
     AuthBoxStore.connectModalVisible = true;
@@ -77,6 +79,7 @@ export default observer(function User(props: Props) {
         </div>
         <p>{name}</p>
       </Col>
+
       <Col span={16} style={{ borderLeft: "1px solid #fff", paddingLeft: 20 }}>
         <p className={s.addr}>{trim_middle(address ?? "", 7, 8)}</p>
         {/* <p className={s.chainBtn}>
@@ -102,23 +105,27 @@ export default observer(function User(props: Props) {
 
   return (
     <div className={s.container}>
+      <Notification />
+
       <Button onClick={changeWallet} className={s.chainBtn}>
         <img src={chainNetIcoUrl} alt="" />
         {getAppNetworkFriendlyName(connected_network)}
       </Button>
 
-      <Popover
-        placement="bottomRight"
-        content={profileModal}
-        // trigger="hover"
-        trigger={width < 1024 ? "click" : "hover"}
-        visible={isVisible}
-        onVisibleChange={handleVisibleChange}
-      >
-        <div className={s.avatar} style={{ marginLeft: 20 }}>
-          <img src="/assets/MyProfile/defaultAvatar.png" alt="" />
-        </div>
-      </Popover>
+      {width >= 1024 && (
+        <Popover
+          placement="bottomRight"
+          content={profileModal}
+          // trigger="hover"
+          trigger={width < 1024 ? "click" : "hover"}
+          visible={isVisible}
+          onVisibleChange={handleVisibleChange}
+        >
+          <div className={s.avatar}>
+            <img src="/assets/MyProfile/defaultAvatar.png" alt="" />
+          </div>
+        </Popover>
+      )}
     </div>
   );
 });

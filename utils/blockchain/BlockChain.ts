@@ -126,3 +126,6 @@ export function getChainNetworkFromChainId(
 export function getCurrencyFromChainId(chainId: number) {
   return chainProfilesIndexed[chainId].native_currency.name;
 }
+export function getCurrencySymbolFromChainId(chainId: number) {
+  return chainProfilesIndexed[chainId].native_currency.symbol;
+}

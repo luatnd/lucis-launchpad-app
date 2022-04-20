@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { AppEmitter } from "../../services/emitter";
 import { useRouter } from "next/router";
 
-import SubMenu from "./SubMenu"
+import SubMenu from "./SubMenu";
 
 import AuthService from "../Auth/AuthService";
 import ConnectWalletStore, {
@@ -15,7 +15,6 @@ import ConnectWalletStore, {
 import { Button } from "antd/lib/radio";
 import AuthStore from "../Auth/AuthStore";
 import { trim_middle } from "utils/String";
-
 
 const variants = {
   open: {
@@ -70,34 +69,26 @@ export const Navigation = () => {
     },
     {
       color: "#FF008C",
-      text: (
-        <SubMenu />
-      ),
+      text: <SubMenu />,
       statusMenu: true,
     },
     {
       color: "#FF008C",
-      text: (
-        <div onClick={onClickProfile}>
-          My Profile
-        </div>
-      ),
+      text: <div onClick={onClickProfile}>My Profile</div>,
       statusMenu: false,
     },
     {
       color: "#FF008C",
       text: (
         <div>
-          {
-            AuthStore.isLoggedIn ? 
+          {AuthStore.isLoggedIn ? (
             <div>
-                <p>{trim_middle(address ?? "", 7, 8)}</p>
-                <div onClick={disconnectWallet}>
-                  Disconnect
-                </div> 
+              <p>{trim_middle(address ?? "", 7, 8)}</p>
+              <div onClick={disconnectWallet}>Disconnect Wallet</div>
             </div>
-            : ''
-          }
+          ) : (
+            ""
+          )}
         </div>
       ),
       statusMenu: false,

@@ -76,6 +76,7 @@ export function useDetailCampaign({ box_campaign_uid, user_id }: Props) {
     variables: {
       box_campaign_uid,
     },
+    fetchPolicy: "no-cache",
   });
 
   return {

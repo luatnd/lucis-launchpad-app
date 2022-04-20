@@ -121,6 +121,13 @@ const Contact = ({ isEdit, email, phone }: Props) => {
       .then((data) => setCountryCode(data.countryCode));
   }, []);
 
+  useEffect(() => {
+    setTempContact({
+      email: email ?? "",
+      phone: phone ?? "",
+    });
+  }, [email, phone]);
+
   return (
     <>
       <div className={`${s.contactContainer}`}>

@@ -28,6 +28,7 @@ module.exports = withAntdLess({
    * Custom webpack config
    * https://nextjs.org/docs/api-reference/next.config.js/custom-webpack-config
    */
+
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     /**
      * Inject git commit id into debug page
@@ -61,6 +62,7 @@ module.exports = withAntdLess({
         replace: (git_branch === "ref: refs/heads/trial").toString(),
       },
     });
+    console.log("gitBranch", git_branch);
     rules.push({
       test: /components\/Menu\/MenuMobile\.tsx$/,
       loader: "string-replace-loader",

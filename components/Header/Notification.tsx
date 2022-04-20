@@ -27,6 +27,8 @@ const Notification = () => {
     getNotification,
   };
 
+  // getNotification().catch((err) => console.log(err));
+
   const handleClick = () => {
     getNotification().catch((err) => console.log(err));
     setIsSeen(true);
@@ -38,25 +40,25 @@ const Notification = () => {
       : setCountNoti(countUnreadNotifications);
   }, [notificationSubscription, countUnreadNotifications]);
 
-  console.log("notificationSubscription: ", notificationSubscription);
+  // console.log("notificationSubscription: ", notificationSubscription);
+  // console.log("getNotificationData: ", getNotificationData);
   return (
-    <>
-      <Popover
-        placement="bottom"
-        content={<InfiniteList {...notificationList} />}
-        // trigger={width < 1024 ? "click" : "hover"}
-        trigger="click"
-      >
-        <Badge count={isSeen ? 0 : countNoti} size="small">
-          <img
-            className={s.notificationIcon}
-            src="/assets/notification-icon.svg"
-            alt=""
-            onClick={handleClick}
-          />
-        </Badge>
-      </Popover>
-    </>
+    <Popover
+      // placement={width < 1024 ? "bottom" : "bottomRight"}
+      // trigger={width < 1024 ? "click" : "hover"}
+      placement="bottom"
+      content={<InfiniteList {...notificationList} />}
+      trigger="click"
+    >
+      <Badge count={isSeen ? 0 : countNoti} size="small">
+        <img
+          className={s.notificationIcon}
+          src="/assets/notification-icon.svg"
+          alt=""
+          onClick={handleClick}
+        />
+      </Badge>
+    </Popover>
   );
 };
 

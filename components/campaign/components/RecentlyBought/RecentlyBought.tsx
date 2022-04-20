@@ -52,7 +52,7 @@ const RecentlyBought = ({
               />
               {item.box_price?.chain_symbol}
             </p>
-            <p className="descGameText pt-3" style={{ whiteSpace: "nowrap" }}>
+            {/* <p className="descGameText pt-3" style={{ whiteSpace: "nowrap" }}>
               <img
                 className={s.logoGame}
                 src={item.box?.game.logo ?? ""}
@@ -60,7 +60,7 @@ const RecentlyBought = ({
               />
               {item.box?.game.name} |{" "}
               {item.box.name ? item.box.name : "Box campaign name"}
-            </p>
+            </p> */}
           </>
         );
       },

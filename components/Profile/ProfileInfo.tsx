@@ -4,7 +4,10 @@ import Input from "components/Input/Input";
 import { useMutationProfile } from "hooks/profile/useMutationProfile";
 import { observer } from "mobx-react-lite";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { getCurrencyFromChainId } from "utils/blockchain/BlockChain";
+import {
+  getCurrencyFromChainId,
+  getCurrencySymbolFromChainId,
+} from "utils/blockchain/BlockChain";
 import { chainProfilesIndexed } from "utils/blockchain/ChainConfig";
 import { isClient } from "utils/DOM";
 import s from "../../pages/profile/index.module.sass";
@@ -31,7 +34,7 @@ export default function Info(props: Props) {
   const { updateProfile } = useMutationProfile();
 
   const chainId = ConnectWalletStore?.network?.chainId;
-  const currency = chainId && getCurrencyFromChainId(chainId);
+  const currency = chainId && getCurrencySymbolFromChainId(chainId);
 
   const handleCopyAffilateId = () => {
     if (affilateIdRef) {
@@ -93,6 +96,10 @@ export default function Info(props: Props) {
     let timer = setTimeout(() => setIsCopy(false), 2000);
     return () => clearTimeout(timer);
   }, [isCopy]);
+
+  useEffect(() => {
+    setTempName(name);
+  }, [name]);
 
   return (
     <div className="mt-6">

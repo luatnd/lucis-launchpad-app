@@ -24,6 +24,22 @@ const variants = {
     transition: { staggerChildren: 0.05, staggerDirection: -1 },
   },
 };
+const variantsLi = {
+  open: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      y: { stiffness: 1000, velocity: -100 },
+    },
+  },
+  closed: {
+    y: 50,
+    opacity: 0,
+    transition: {
+      y: { stiffness: 1000 },
+    },
+  },
+};
 export const Navigation = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -31,9 +47,12 @@ export const Navigation = () => {
   const { address, network: connected_network } = ConnectWalletStore;
 
   const onClickProfile = () => {
-    router.push("/profile");
-    setIsVisible(false);
+    setTimeout(() => {
+      router.push("/profile");
+      setIsVisible(false);
+    }, 100);
   };
+
   const disconnectWallet = React.useCallback(async () => {
     const authService = new AuthService();
     authService.logout();
@@ -73,17 +92,29 @@ export const Navigation = () => {
       statusMenu: true,
     },
     {
+      id: 6,
       color: "#FF008C",
-      text: <div onClick={onClickProfile}>My Profile</div>,
+      text: (
+        <div>
+          {AuthStore.isLoggedIn ? (
+            <div onClick={onClickProfile}>My Profile</div>
+          ) : (
+            ""
+          )}
+        </div>
+      ),
       statusMenu: false,
     },
     {
+      id: 7,
       color: "#FF008C",
       text: (
         <div>
           {AuthStore.isLoggedIn ? (
             <div>
-              <p>{trim_middle(address ?? "", 7, 8)}</p>
+              <p style={{ fontSize: 14 }}>
+                {trim_middle(address ?? "", 7, 8)}
+              </p>
               <div onClick={disconnectWallet}>Disconnect Wallet</div>
             </div>
           ) : (

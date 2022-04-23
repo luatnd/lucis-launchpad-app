@@ -52,7 +52,17 @@ export const MenuItem = (props: { item: MenuItemType }) => {
   }, []);
 
   return (
-    <div style={props.item.id === 6 ? {position: 'absolute', top: '65%'}: props.item.id === 7 ? {position: 'absolute', top: '72%'} : {}}>
+    <div
+      style={
+        props.item.id === 6
+          ? { position: "absolute", top: "65%" }
+          : props.item.id === 7
+          ? { position: "absolute", top: "72%", pointerEvents: 'none' }
+          : props.item.id === 8
+          ? { position: "absolute", top: "76%" }
+          : {}
+      }
+    >
       <motion.li
         variants={variants}
         whileHover={{ scale: 1.1 }}

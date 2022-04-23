@@ -163,7 +163,7 @@ const Contact = ({ isEdit, email, phone }: Props) => {
                 />
 
                 {!isValidInfo.phone && (
-                  <p className={`${s.invalid}`}>Invalid phone number</p>
+                  <p className={`${s.invalid}`}>Invalid phone number </p>
                 )}
               </>
             ) : (

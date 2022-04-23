@@ -52,7 +52,7 @@ const RecentlyBought = ({
               />
               {item.box_price?.chain_symbol}
             </p>
-            <p className="descGameText pt-3" style={{ whiteSpace: "nowrap" }}>
+            {/* <p className="descGameText pt-3" style={{ whiteSpace: "nowrap" }}>
               <img
                 className={s.logoGame}
                 src={item.box?.game.logo ?? ""}
@@ -60,7 +60,7 @@ const RecentlyBought = ({
               />
               {item.box?.game.name} |{" "}
               {item.box.name ? item.box.name : "Box campaign name"}
-            </p>
+            </p> */}
           </>
         );
       },
@@ -148,6 +148,8 @@ const RecentlyBought = ({
               <a
                 className="block md:hidden"
                 href={`https://testnet.bscscan.com/tx/${item.tx_hash}`}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <img
                   style={{ width: "15px", margin: "5px 0 0 0" }}
@@ -191,7 +193,7 @@ const RecentlyBought = ({
           columns={columns}
           dataSource={[...temp].reverse()}
           pagination={false}
-          footer={() => <></>}
+          // footer={false}
           scroll={{ y: 1000 }}
           rowKey="id"
         />

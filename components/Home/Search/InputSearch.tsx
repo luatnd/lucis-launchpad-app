@@ -18,7 +18,7 @@ const _callFnDebounced = debounce(
 );
 
 const responsiveFontSize = (width: number) => {
-  width < 425 ? "16px" : "18px";
+  // width < 425 ? "16px" : "18px";
   if (width < 425) {
     return "16px";
   } else {
@@ -83,7 +83,7 @@ const InputSearch = () => {
 
   return (
     <div className="lucis-container">
-      <div className={`flex justify-end  md:my-[12px] ${s.searchContainer}`}>
+      <div className={`flex justify-end  md:my-[22px] ${s.searchContainer}`}>
         <AutoComplete
           className={s.temp}
           style={{ width: "400px" }}

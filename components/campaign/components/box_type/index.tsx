@@ -102,6 +102,7 @@ const BoxTypeCard = observer((props: Props) => {
   const handleOk = () => {
     doBuyBox();
     setIsModalVisible(false);
+    // txtAmount.onChange("");
   };
 
   const handleCancel = () => {

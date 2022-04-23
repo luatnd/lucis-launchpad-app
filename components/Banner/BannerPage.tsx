@@ -9,6 +9,7 @@ export default function Banner() {
     >
       <InputSearch />
       <SliderContainer />
+      {/* <InputSearch /> */}
     </section>
   );
 }

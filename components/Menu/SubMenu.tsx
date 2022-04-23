@@ -3,7 +3,7 @@ import { AppEmitter } from "services/emitter";
 import s from "./MenuMobile.module.sass";
 
 export default function SubMenu() {
-  const [isSubMenu, setIsSubMenu] = useState(true);
+  const [isSubMenu, setIsSubMenu] = useState(false);
   const [height, setHeight] = useState(0);
 
   const click = () => {

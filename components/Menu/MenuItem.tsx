@@ -33,6 +33,7 @@ export type MenuItemType = {
   statusMenu?: boolean;
   onClick?: () => void;
   href?: string;
+  id?: number;
 };
 
 export const MenuItem = (props: { item: MenuItemType }) => {
@@ -51,17 +52,19 @@ export const MenuItem = (props: { item: MenuItemType }) => {
   }, []);
 
   return (
-    <motion.li
-      variants={variants}
-      whileHover={{ scale: 1.1 }}
-      // whileTap={{ scale: 0.95 }}
-      onClick={click}
-    >
-      {
-        <div className="text-placeholder font-saira text-white text-20px leading-28px py-15px">
-          <Link href={props.item.href ?? "/"}>{props.item.text}</Link>
-        </div>
-      }
-    </motion.li>
+    <div style={props.item.id === 6 ? {position: 'absolute', top: '65%'}: props.item.id === 7 ? {position: 'absolute', top: '72%'} : {}}>
+      <motion.li
+        variants={variants}
+        whileHover={{ scale: 1.1 }}
+        // whileTap={{ scale: 0.95 }}
+        onClick={click}
+      >
+        {
+          <div className="text-placeholder font-saira text-white text-20px leading-28px py-15px">
+            <Link href={props.item.href ?? "/"}>{props.item.text}</Link>
+          </div>
+        }
+      </motion.li>
+    </div>
   );
 };

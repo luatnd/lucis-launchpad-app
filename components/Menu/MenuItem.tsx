@@ -57,7 +57,7 @@ export const MenuItem = (props: { item: MenuItemType }) => {
         props.item.id === 6
           ? { position: "absolute", top: "65%" }
           : props.item.id === 7
-          ? { position: "absolute", top: "72%", pointerEvents: 'none' }
+          ? { position: "absolute", top: "70%", width: '100%', pointerEvents: 'none' }
           : props.item.id === 8
           ? { position: "absolute", top: "76%" }
           : {}

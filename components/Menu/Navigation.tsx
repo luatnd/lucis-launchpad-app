@@ -96,7 +96,7 @@ export const Navigation = () => {
       color: "#FF008C",
       text: (
         <div>
-          {AuthStore.isLoggedIn ? (
+          {!AuthStore.isLoggedIn ? (
             <div onClick={onClickProfile}>My Profile</div>
           ) : (
             ""
@@ -110,7 +110,7 @@ export const Navigation = () => {
       color: "#FF008C",
       text: (
         <div>
-          {AuthStore.isLoggedIn ? (
+          {!AuthStore.isLoggedIn ? (
             <div>
               <p style={{ fontSize: 14 }}>{trim_middle(address ?? "", 7, 8)}</p>
             </div>
@@ -119,14 +119,14 @@ export const Navigation = () => {
           )}
         </div>
       ),
-      statusMenu: false,
+      statusMenu: true,
     },
     {
       id: 8,
       color: "#FF008C",
       text: (
         <div>
-          {AuthStore.isLoggedIn ? (
+          {!AuthStore.isLoggedIn ? (
             <div>
               <div onClick={disconnectWallet}>Disconnect Wallet</div>
             </div>

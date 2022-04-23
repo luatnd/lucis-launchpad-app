@@ -96,7 +96,7 @@ export const Navigation = () => {
       color: "#FF008C",
       text: (
         <div>
-          {!AuthStore.isLoggedIn ? (
+          {AuthStore.isLoggedIn ? (
             <div onClick={onClickProfile}>My Profile</div>
           ) : (
             ""

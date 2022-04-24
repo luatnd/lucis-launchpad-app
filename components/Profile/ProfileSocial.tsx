@@ -52,15 +52,27 @@ const Social = ({ isEdit, facebook, twitter, tele, discord }: Props) => {
             },
           },
         },
-      }).catch((err) => {
-        message.error(err?.message);
-        // console.log(err?.extensions);
-      });
+      })
+        .then(() => {
+          if (field === "facebook") {
+            AuthStore.facebook = tempSocial.facebook;
+          } else if (field === "discord") {
+            AuthStore.discord = tempSocial.discord;
+          } else if (field === "telegram") {
+            AuthStore.tele = tempSocial.telegram;
+          } else {
+            AuthStore.twitter = tempSocial.twitter;
+          }
+        })
+        .catch((err) => {
+          message.error(err?.message);
+          // console.log(err?.extensions);
+        });
     }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>, field: string) => {
-    console.log(e.target.value === "");
+    // console.log(e.target.value === "");
     setTempSocial({
       ...tempSocial,
       [field]: e.target.value ?? "",
@@ -126,7 +138,9 @@ const Social = ({ isEdit, facebook, twitter, tele, discord }: Props) => {
                         : !isValidSocials.facebook
                         ? facebook
                         : "Not available"} */}
-                      {facebook ? facebook : "Not available"}
+                      {facebook && isValidSocials.facebook
+                        ? facebook
+                        : "Not available"}
                     </p>
                   )}
                 </a>

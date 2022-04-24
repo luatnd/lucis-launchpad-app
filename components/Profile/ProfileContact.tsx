@@ -13,8 +13,8 @@ import { useMutationProfile } from "hooks/profile/useMutationProfile";
 type Props = {
   isEdit: boolean;
   setIsEdit: (value: boolean) => void;
-  phone: string | undefined;
-  email: string | undefined;
+  phone: any;
+  email: any;
 };
 
 function validateEmail(email?: string) {
@@ -46,8 +46,8 @@ const Contact = ({ isEdit, email, phone }: Props) => {
   const [countryCode, setCountryCode] = useState("");
 
   const [tempContact, setTempContact] = useState({
-    phone: phone ?? null,
-    email: email ?? "",
+    phone: phone,
+    email: email,
   });
 
   const { updateProfile } = useMutationProfile();
@@ -65,9 +65,16 @@ const Contact = ({ isEdit, email, phone }: Props) => {
             },
           },
         },
-      }).catch((err) => {
-        message.error(err.message);
-      });
+      })
+        .then(() => {
+          // field === "phone" && AuthStore.phone = tempContact.phone
+          if (field === "phone") {
+            AuthStore.phone = tempContact.phone;
+          }
+        })
+        .catch((err) => {
+          message.error(err.message);
+        });
     }
   };
 

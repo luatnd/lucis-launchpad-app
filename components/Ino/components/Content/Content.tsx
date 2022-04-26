@@ -3,6 +3,10 @@ import s from "./Content.module.sass";
 
 const data = [
   {
+    title: "Variety of currencies",
+    content: "Sell your boxes in your own currency or any popular one.",
+  },
+  {
     title: "Chain-agnostic",
     content: "Lucis supports multi-chain, designed to be chain-agnostic.",
   },

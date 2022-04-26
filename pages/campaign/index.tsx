@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import CampaignDetail from "../update-email/[...slug]";
+import CampaignDetail from "./[...slug]";
 
 /**
  * This has no function in project

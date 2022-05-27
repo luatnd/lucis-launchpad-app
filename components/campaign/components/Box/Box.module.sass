@@ -36,10 +36,16 @@
   backdrop-filter: blur(40px)
   padding: 1px
   .bgImage
+    position: relative
     background-image: url("/assets/Box/image111.png")
     background-repeat: no-repeat
     background-size: cover
     // height: 200px
+    .bgImageBtn
+      position: absolute
+      top: 5px
+      right: 5px
+      border-radius: 5px
     img
       width: 100%
   @media screen and (min-width: 767px)

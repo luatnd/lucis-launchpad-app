@@ -5,7 +5,7 @@ import Footer from "components/Footer/Footer";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/router";
 import { TabPane } from "rc-tabs";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { isClient } from "utils/DOM";
 import AuthStore from "../../components/Auth/AuthStore";
 import Banner from "../../components/campaign/components/Banner/Banner";
@@ -61,6 +61,10 @@ function DetailCampaign() {
     box_campaign_uid: campaignUid,
     user_id: Number(id),
   });
+
+  useEffect(() => {
+    if (router?.query?.r) console.log(router?.query?.r);
+  }, [router]);
 
   const clickToAbout = (key: any) => {
     if (key == 3) {

@@ -250,6 +250,8 @@ export default observer(function SiteMap(props: IRound) {
                     {AuthStore.isLoggedIn ? (
                       <div className="max-w-[250.91px]">
                         {!disableClickWhitelist ? (
+                          <div>
+                          {/* REGISTER WHITELIST free */}
                           <Popconfirm
                             placement="top"
                             title={"You're going to be whitelisted"}
@@ -271,6 +273,30 @@ export default observer(function SiteMap(props: IRound) {
                               APPLY WHITELIST
                             </button>
                           </Popconfirm>
+
+                          {/* REGISTER WHITELIST with fee */}
+                          <Popconfirm
+                            placement="top"
+                            title={"You're going to be whitelisted"}
+                            onConfirm={handleApplyWhiteList}
+                            okText="Yes"
+                            cancelText="No"
+                          >
+                            <button
+                              className={`
+                                    ${s.button} 
+                                    ${
+                                      !whitelistHaSlotLeft ? s.disabledBtn : ""
+                                    } 
+                                    ${isWhitelisted ? s.whitelisted : ""} 
+                                    font-bold text-white text-center uppercase
+                                  `}
+                              style={{ fontWeight: "600" }}
+                            >
+                              APPLY WHITELIST
+                            </button>
+                          </Popconfirm>
+                          </div>
                         ) : (
                           <Tooltip
                             placement="top"

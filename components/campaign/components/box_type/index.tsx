@@ -36,6 +36,8 @@ import AuthStore from "../../../Auth/AuthStore";
 import ApprovalStore from "../../../Auth/Blockchain/ApprovalStore";
 import ModalConfirm from "./ModalConfirm";
 import { useForm } from "antd/lib/form/Form";
+import ModalShare from "../Modal";
+import { useRouter } from "next/router";
 
 type Props = {
   boxType: GBoxType;
@@ -65,6 +67,7 @@ const BoxTypeCard = observer((props: Props) => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
+  const [isModalShareVisible, setIsModalShareVisible] = useState(false);
 
   // --- Detect amount field type wrong
   const [form] = useForm();
@@ -157,6 +160,10 @@ const BoxTypeCard = observer((props: Props) => {
     chains: chains,
   };
 
+  const closeModalShare = () => {
+    setIsModalShareVisible(false);
+  };
+    
   return (
     <div>
       <div className="flex justify-center">
@@ -177,6 +184,13 @@ const BoxTypeCard = observer((props: Props) => {
             className="mx-auto"
             alt=""
           />
+          <Button className={`${s.bgImageBtn}`}
+              onClick={() => {
+                setIsModalShareVisible(true);
+              }}
+            >
+              Share
+            </Button>
         </div>
 
         <div className={`mx-auto ${s.boxMain}`}>
@@ -404,6 +418,8 @@ const BoxTypeCard = observer((props: Props) => {
         </div>
       </div>
       <ModalConfirm {...modalConfirmProps} />
+
+      <ModalShare closeModalShare={closeModalShare} status={isModalShareVisible}/>
     </div>
   );
 });

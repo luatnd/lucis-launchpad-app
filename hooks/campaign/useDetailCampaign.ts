@@ -1,17 +1,21 @@
-import { gql, useQuery, useSubscription } from "@apollo/client";
+import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
 import { useEffect } from "react";
 
 type Props = {
   box_campaign_uid: string;
   user_id: number | undefined;
+  skip?: boolean;
 };
 
-export function useDetailCampaign({ box_campaign_uid, user_id }: Props) {
+export function useDetailCampaign({ box_campaign_uid, user_id, skip }: Props) {
+  const [newBoxCampaignRef] = useMutation(NEW_BOX_CAMPAIGN_REF);
+
   const { loading, error, data } = useQuery(DETAIL_CAMPAIGN, {
     variables: {
       box_campaign_uid,
     },
     fetchPolicy: "cache-and-network",
+    skip: skip
   });
 
   const {
@@ -85,7 +89,7 @@ export function useDetailCampaign({ box_campaign_uid, user_id }: Props) {
     refetchBoxCampaignDetailSubcription,
     refetchBoxHistory,
     refetchIsInWhiteList,
-
+    newBoxCampaignRef,
     boxCampaign: data?.campaignDetail,
     isInWhitelist: dataIsInWhiteList?.isInWhitelist ?? false,
     whitelistRegistered: dataWhitelistRegistered?.whitelistRegistered,
@@ -138,6 +142,7 @@ const DETAIL_CAMPAIGN = gql`
         participant_limit
         start
         end
+        deposit_amount
       }
       game {
         name
@@ -290,5 +295,11 @@ const BOX_CAMPAIGN_SUBSCRIPTION_DETAIL = gql`
     boxCampaignSubscriptionDetail(box_campaign_uid: $box_campaign_uid) {
       enable_notify
     }
+  }
+`;
+
+const NEW_BOX_CAMPAIGN_REF = gql`
+  mutation ($box_campaign_uid: String!, $ref: String!) {
+    newBoxCampaignRef(box_campaign_uid: $box_campaign_uid, ref: $ref)
   }
 `;

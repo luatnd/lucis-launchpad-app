@@ -16,6 +16,7 @@ import DocHead from "../../components/DocHead";
 import { useDetailCampaign } from "../../hooks/campaign/useDetailCampaign";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import s from "./detail.module.sass";
+import { isEmpty } from "lodash";
 
 /**
  * Match all route: /campaign/....
@@ -53,6 +54,7 @@ function DetailCampaign() {
     whitelistRegisteredRecently,
     historiesBox,
     boxCampaignDetailSubcription,
+    newBoxCampaignRef,
 
     refetchBoxCampaignDetailSubcription,
     refetchBoxHistory,
@@ -60,11 +62,22 @@ function DetailCampaign() {
   } = useDetailCampaign({
     box_campaign_uid: campaignUid,
     user_id: Number(id),
+    skip: isEmpty(campaignUid),
   });
 
   useEffect(() => {
-    if (router?.query?.r) console.log(router?.query?.r);
-  }, [router]);
+    if (router?.query?.r && campaignUid) {
+      newBoxCampaignRef({
+        variables: {
+          box_campaign_uid: campaignUid,
+          ref: router?.query?.r,
+        },
+        onError : () => {
+          console.warn("Ref existed");
+        }
+      })
+    }
+  }, [router, campaignUid]);
 
   const clickToAbout = (key: any) => {
     if (key == 3) {

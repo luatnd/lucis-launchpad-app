@@ -1,4 +1,4 @@
-import { Popconfirm, Progress, Tooltip } from "antd";
+import { message, Popconfirm, Progress, Tooltip } from "antd";
 import AuthStore from "components/Auth/AuthStore";
 import { observer } from "mobx-react";
 import timeMoment from "moment-timezone";
@@ -10,6 +10,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { useMutationRegisterWhiteList } from "../../../../hooks/campaign/useRegisterWhiteList";
 import ConnectWalletBtn from "../../../Auth/components/ConnectWalletBtn";
 import s from "./SiteMap.module.sass";
+import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
+import { Web3ProviderErrorCodes } from "components/Auth/ConnectWalletHelper";
+import EthersService from "services/blockchain/Ethers";
+import BigNumber from "bignumber.js";
 
 interface IRound {
   rounds: GBoxCampaignRound[];
@@ -117,6 +121,60 @@ export default observer(function SiteMap(props: IRound) {
         box_campaign_uid: boxCampaignUid,
       },
     });
+  };
+
+  const contract_address = "0x776161E47a91561b3D1B8e8Dc34BFea57B019a60";
+  const currency_address = "0x4bE02BFe61a7ABDd31F8fE5e51a03ABd7028d450"; // address of token to buy BUSD
+
+  const handleApplyWhiteListWithFee = async () => {
+    if (!AuthStore.isLoggedIn) {
+      message.warn("Please connect wallet and verify your address first!");
+      return false;
+    }
+
+    if (!ConnectWalletStore_NonReactiveData.web3Provider) {
+      message.error(
+        "[Critical] This is unexpected behavior occur in our app, please reconnect your wallet to ensure the app run correctly",
+        6
+      );
+      return false;
+    }
+
+    const ethersService = new EthersService(
+      ConnectWalletStore_NonReactiveData.web3Provider
+    );
+
+    const getMyAllowance = await ethersService.getMyAllowanceOf(
+      contract_address,
+      currency_address
+    );
+
+    let bool = false;
+
+    const value = 10;
+    const amount = new BigNumber(Number(value))
+      .multipliedBy(Math.pow(10, 18))
+      .toFormat({ groupSeparator: "" });
+
+    if (getMyAllowance && getMyAllowance < Number(amount)) {
+      bool = await ethersService.requestApproval(
+        contract_address,
+        currency_address
+      );
+    } else {
+      bool = true;
+    }
+
+    if (bool) {
+      const result = await ethersService.transferFT(
+        contract_address,
+        currency_address,
+        10
+      );
+
+      console.log("result", result);
+      return result;
+    }
   };
 
   useEffect(() => {
@@ -251,16 +309,16 @@ export default observer(function SiteMap(props: IRound) {
                       <div className="max-w-[250.91px]">
                         {!disableClickWhitelist ? (
                           <div>
-                          {/* REGISTER WHITELIST free */}
-                          <Popconfirm
-                            placement="top"
-                            title={"You're going to be whitelisted"}
-                            onConfirm={handleApplyWhiteList}
-                            okText="Yes"
-                            cancelText="No"
-                          >
-                            <button
-                              className={`
+                            {/* REGISTER WHITELIST free */}
+                            <Popconfirm
+                              placement="top"
+                              title={"You're going to be whitelisted"}
+                              onConfirm={handleApplyWhiteList}
+                              okText="Yes"
+                              cancelText="No"
+                            >
+                              <button
+                                className={`
                                     ${s.button} 
                                     ${
                                       !whitelistHaSlotLeft ? s.disabledBtn : ""
@@ -268,21 +326,14 @@ export default observer(function SiteMap(props: IRound) {
                                     ${isWhitelisted ? s.whitelisted : ""} 
                                     font-bold text-white text-center uppercase
                                   `}
-                              style={{ fontWeight: "600" }}
-                            >
-                              APPLY WHITELIST
-                            </button>
-                          </Popconfirm>
+                                style={{ fontWeight: "600" }}
+                              >
+                                APPLY WHITELIST
+                              </button>
+                            </Popconfirm>
 
-                          {/* REGISTER WHITELIST with fee */}
-                          <Popconfirm
-                            placement="top"
-                            title={"You're going to be whitelisted"}
-                            onConfirm={handleApplyWhiteList}
-                            okText="Yes"
-                            cancelText="No"
-                          >
-                            <button
+                            {/* REGISTER WHITELIST with fee */}
+                            {/* <button
                               className={`
                                     ${s.button} 
                                     ${
@@ -292,10 +343,10 @@ export default observer(function SiteMap(props: IRound) {
                                     font-bold text-white text-center uppercase
                                   `}
                               style={{ fontWeight: "600" }}
+                              onClick={handleApplyWhiteListWithFee}
                             >
                               APPLY WHITELIST
-                            </button>
-                          </Popconfirm>
+                            </button> */}
                           </div>
                         ) : (
                           <Tooltip

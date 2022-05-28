@@ -38,6 +38,7 @@ import ModalConfirm from "./ModalConfirm";
 import { useForm } from "antd/lib/form/Form";
 import ModalShare from "../Modal";
 import { useRouter } from "next/router";
+import { ShareAltOutlined } from "@ant-design/icons";
 
 type Props = {
   boxType: GBoxType;
@@ -163,7 +164,7 @@ const BoxTypeCard = observer((props: Props) => {
   const closeModalShare = () => {
     setIsModalShareVisible(false);
   };
-    
+
   return (
     <div>
       <div className="flex justify-center">
@@ -184,13 +185,14 @@ const BoxTypeCard = observer((props: Props) => {
             className="mx-auto"
             alt=""
           />
-          <Button className={`${s.bgImageBtn}`}
-              onClick={() => {
-                setIsModalShareVisible(true);
-              }}
-            >
-              Share
-            </Button>
+          <div
+            className={`${s.bgImageBtn}`}
+            onClick={() => {
+              setIsModalShareVisible(true);
+            }}
+          >
+            <ShareAltOutlined width="50px"/>
+          </div>
         </div>
 
         <div className={`mx-auto ${s.boxMain}`}>
@@ -419,7 +421,10 @@ const BoxTypeCard = observer((props: Props) => {
       </div>
       <ModalConfirm {...modalConfirmProps} />
 
-      <ModalShare closeModalShare={closeModalShare} status={isModalShareVisible}/>
+      <ModalShare
+        closeModalShare={closeModalShare}
+        status={isModalShareVisible}
+      />
     </div>
   );
 });

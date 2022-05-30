@@ -1,4 +1,11 @@
-import { message, Popconfirm, Progress, Tooltip } from "antd";
+import {
+  Form,
+  InputNumber,
+  message,
+  Popconfirm,
+  Progress,
+  Tooltip,
+} from "antd";
 import AuthStore from "components/Auth/AuthStore";
 import { observer } from "mobx-react";
 import timeMoment from "moment-timezone";
@@ -10,10 +17,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { useMutationRegisterWhiteList } from "../../../../hooks/campaign/useRegisterWhiteList";
 import ConnectWalletBtn from "../../../Auth/components/ConnectWalletBtn";
 import s from "./SiteMap.module.sass";
-import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
+import ConnectWalletStore, {
+  nonReactive as ConnectWalletStore_NonReactiveData,
+} from "components/Auth/ConnectWalletStore";
 import { Web3ProviderErrorCodes } from "components/Auth/ConnectWalletHelper";
 import EthersService from "services/blockchain/Ethers";
 import BigNumber from "bignumber.js";
+import { useForm } from "antd/lib/form/Form";
+import { isEmpty } from "lodash";
+import { usePresaleRemaining } from "hooks/campaign/useDetailCampaign";
 
 interface IRound {
   rounds: GBoxCampaignRound[];
@@ -29,6 +41,7 @@ interface IRound {
   whitelistRegisteredRecently: WhitelistStatus;
   refetch: any;
   token: string | undefined;
+  presale?: any;
 }
 
 export default observer(function SiteMap(props: IRound) {
@@ -46,14 +59,27 @@ export default observer(function SiteMap(props: IRound) {
     whitelistRegisteredRecently,
     refetch,
     token,
+    presale,
   } = props;
+
+  const { dataPresaleRemaining, refetchPresaleRemaining } = usePresaleRemaining(
+    {
+      box_campaign_uid: boxCampaignUid,
+      skip: isEmpty(boxCampaignUid),
+    }
+  );
 
   const [listRounds, setListRounds] = useState([] as any);
   const [isActiveUpComing, setIsActiveUpComing] = useState(false);
   const { registerWhitelist, error, loading, data } =
     useMutationRegisterWhiteList();
   const [keyActiveSlide, setKeyActiveSlide] = useState(0);
+  const [amountBox, setAmountBox] = useState(0);
   const isWhitelisted = isInWhitelist || data?.registerWhitelist;
+  const [disabledButton, setDisabledButton] = useState(false);
+
+  // --- Detect amount field type wrong
+  const [form] = useForm();
 
   const getCurrentRound = () => {
     const dateNow = timeMoment().tz(tzid).unix();
@@ -150,9 +176,13 @@ export default observer(function SiteMap(props: IRound) {
     );
 
     let bool = false;
+    let value = 0;
 
-    const value = 10;
-    const amount = new BigNumber(Number(value))
+    if (rounds[0]?.presale_price) {
+      value = amountBox * rounds[0]?.presale_price;
+    }
+
+    const amount = new BigNumber(Number(amountBox))
       .multipliedBy(Math.pow(10, 18))
       .toFormat({ groupSeparator: "" });
 
@@ -169,11 +199,30 @@ export default observer(function SiteMap(props: IRound) {
       const result = await ethersService.transferFT(
         contract_address,
         currency_address,
-        10
+        value
       );
 
-      console.log("result", result);
-      return result;
+      if (!result.error) {
+        presale({
+          variables: {
+            box_campaign_uid: boxCampaignUid,
+            quantity: amountBox,
+            tx_hash: result.txHash,
+            address: ConnectWalletStore.address,
+          },
+          onCompleted: () => {
+            refetchPresaleRemaining();
+            message.success("Successfully");
+          },
+          onError: (e: any) => {
+            console.error(e);
+            message.success("Error. Please try again");
+          },
+        });
+      } else {
+        //@ts-ignore
+        message.error(result?.error?.message);
+      }
     }
   };
 
@@ -200,6 +249,13 @@ export default observer(function SiteMap(props: IRound) {
   const whitelistHaSlotLeft =
     whitelist_total_registered < whitelist_total_limit;
   const disableClickWhitelist = isWhitelisted || !whitelistHaSlotLeft;
+
+  const handleFormChange = () => {
+    const hasErrors = form.getFieldsError().some(({ errors }) => errors.length);
+    // console.log(hasErrors);
+
+    setDisabledButton(hasErrors);
+  };
 
   return (
     <div className={`flex justify-center relative ${s.SiteMapContainer}`}>
@@ -402,6 +458,119 @@ export default observer(function SiteMap(props: IRound) {
                           showInfo={false}
                         />
                         <p className="text-right text-white mt-1">{`${whitelist_total_registered} / ${whitelist_total_limit}`}</p>
+                      </div>
+                    ) : (
+                      <div className={`mt-3 ${s.btnConnect}`}>
+                        <ConnectWalletBtn small={widthScreen <= 1024} />
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {item.presale_price && (
+                  <>
+                    {AuthStore.isLoggedIn ? (
+                      <div className="max-w-[250.91px]">
+                        <div className={`${s.amount} font-bold`}>
+                          <label className={s.label}>
+                            <span className="text-[18px] md:text-[24px=">
+                              Amount:{" "}
+                            </span>
+                            <br />
+                          </label>
+                          <Form
+                            className={s.buyForm}
+                            form={form}
+                            onFieldsChange={handleFormChange}
+                          >
+                            <Form.Item
+                              name="amount"
+                              rules={[
+                                {
+                                  required: true,
+                                  message: "Please input amount!",
+                                },
+
+                                {
+                                  type: "number",
+                                  min: 1,
+                                  message: "Amount must be greater than 0",
+                                },
+                                {
+                                  type: "integer",
+                                  message: "Please enter an integer",
+                                },
+                                {
+                                  type: "number",
+                                  max: dataPresaleRemaining?.remain,
+                                  message: `Amount must be less than ${dataPresaleRemaining?.remain}`,
+                                },
+                              ]}
+                              className={s.inputRow}
+                            >
+                              <InputNumber
+                                style={{ background: "none" }}
+                                value={amountBox}
+                                onChange={(value: number) => {
+                                  setAmountBox(value);
+                                }}
+                                controls={false}
+                              />
+                            </Form.Item>
+                          </Form>
+                        </div>
+
+                        <div>
+                          {/* REGISTER WHITELIST with fee */}
+                          <Popconfirm
+                            placement="top"
+                            title={"You're going to be whitelisted"}
+                            onConfirm={handleApplyWhiteListWithFee}
+                            okText="Yes"
+                            cancelText="No"
+                            disabled={
+                              disabledButton ||
+                              dataPresaleRemaining?.presaled >
+                                dataPresaleRemaining?.remain
+                            }
+                          >
+                            <button
+                              className={`
+                                    ${s.button}  
+                                    ${disabledButton ? s.disabledBtn : ""}
+                                    ${
+                                      dataPresaleRemaining?.presaled >
+                                      dataPresaleRemaining?.remain
+                                        ? s.disabledBtn
+                                        : ""
+                                    }
+                                    font-bold text-white text-center uppercase
+                                  `}
+                              style={{ fontWeight: "600" }}
+                            >
+                              APPLY WHITELIST
+                            </button>
+                          </Popconfirm>
+                        </div>
+
+                        <Progress
+                          strokeColor="#0BEBD6"
+                          percent={
+                            dataPresaleRemaining?.presaled
+                              ? (dataPresaleRemaining?.presaled /
+                                  (dataPresaleRemaining?.remain +
+                                    dataPresaleRemaining?.presaled)) *
+                                100
+                              : 0
+                          }
+                          showInfo={false}
+                        />
+                        <p className="text-right text-white mt-1">{`${
+                          dataPresaleRemaining?.presaled
+                        } / ${
+                          dataPresaleRemaining?.remain +
+                          dataPresaleRemaining?.presaled
+                        }`}</p>
                       </div>
                     ) : (
                       <div className={`mt-3 ${s.btnConnect}`}>

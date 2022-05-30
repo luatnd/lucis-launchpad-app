@@ -58,7 +58,7 @@ const ModalShare = (props: Props) => {
     >
       <div className={s.infSocial}>
         <div className={s.infSocialIcons}>
-          <FacebookShareButton url={`urlAffilate`}>
+          <FacebookShareButton url={`https://lucis-lp.koolab.io${router.asPath}?r=${code}`}>
             <a target="_blank" rel="noopener noreferrer">
               <img src={"/assets/Campaign/Banner/svg/fb.svg"} alt="icon" />
             </a>
@@ -74,7 +74,7 @@ const ModalShare = (props: Props) => {
             </a>
           </TwitterShareButton>
           <FacebookMessengerShareButton
-            url={urlAffilate}
+            url={`https://lucis-lp.koolab.io${router.asPath}?r=${code}`}
             appId={"1023048308650581"}
           >
             <a target="_blank" rel="noopener noreferrer">
@@ -88,7 +88,7 @@ const ModalShare = (props: Props) => {
               className={`${s.name} font-[400] text-[14px] sm:text-[18px] md:text-[24px]`}
             >
               Affiliate ID:
-              <span>{code}</span>
+              <span> {code} </span>
               <button onClick={handleCopyAffilateId} disabled={isCopy}>
                 {!isCopy ? (
                   <img src={"/assets/MyProfile/copy.svg"} alt="" />

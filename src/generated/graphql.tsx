@@ -643,6 +643,12 @@ export type PresaleTransaction = {
   user_id: Scalars['Int'];
 };
 
+export type PresaledInfo = {
+  __typename?: 'PresaledInfo';
+  presaled: Scalars['Int'];
+  remain: Scalars['Int'];
+};
+
 export type ProfileUpdateInput = {
   avatar?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   cover?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
@@ -676,6 +682,8 @@ export type Query = {
   isInWhitelist?: Maybe<Scalars['Boolean']>;
   me?: Maybe<UserGraphql>;
   openingBoxCampaign?: Maybe<Array<GBoxCampaign>>;
+  /** Presale remaining */
+  presaleRemaining?: Maybe<PresaledInfo>;
   searchCampaign?: Maybe<Array<GBoxCampaign>>;
   spotlightBoxCampaign?: Maybe<Array<GBoxCampaign>>;
   upcomingBoxCampaign?: Maybe<Array<GBoxCampaign>>;
@@ -707,6 +715,11 @@ export type QueryGetAllowanceAmountArgs = {
 
 
 export type QueryIsInWhitelistArgs = {
+  box_campaign_uid: Scalars['String'];
+};
+
+
+export type QueryPresaleRemainingArgs = {
   box_campaign_uid: Scalars['String'];
 };
 

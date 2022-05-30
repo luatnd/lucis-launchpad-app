@@ -55,6 +55,7 @@ function DetailCampaign() {
     historiesBox,
     boxCampaignDetailSubcription,
     newBoxCampaignRef,
+    presale,
 
     refetchBoxCampaignDetailSubcription,
     refetchBoxHistory,
@@ -132,6 +133,7 @@ function DetailCampaign() {
                       whitelistRegisteredRecently={whitelistRegisteredRecently}
                       refetch={refetchIsInWhiteList}
                       token={token}
+                      presale={presale}
                     />
                   )}
 

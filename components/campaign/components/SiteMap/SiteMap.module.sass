@@ -67,7 +67,30 @@
 
 .SiteMapLineCircleTitleBox
   //cursor: pointer
-
+  .amount
+    display: flex
+    justify-content: space-between
+    min-height: 95px
+    label
+      color: white
+      font-size: 24px
+      padding-right: 10px
+      .max
+        font-size: 16px
+        color: #bbb
+    .inputRow
+      font-size: 24px
+      line-height: 1.3
+      width: 115px
+      :global(.ant-form-item-control-input-content)
+        max-width: 115px
+        :global(.ant-input-number)
+          background: transparent
+          height: 50px
+          min-width: 115px
+          font-size: 28px
+          line-height: 1.7
+          
 .SiteMapLineCircleTitle
   font-style: normal
   font-weight: bold
@@ -183,7 +206,6 @@
     //height: 42px
     margin-bottom: 20px
 
-
 .hSlide
   height: 250px
   @media (min-width: 0px) and (max-width: 639px)
@@ -194,7 +216,7 @@
 .btnConnect
   button
     margin-left: unset !important
-.line 
+.line
   width: 100%
   height: 5px
   background: white
@@ -208,11 +230,11 @@
   @media screen and (min-width: 1023px)
     top: 0
     height: 10px
-.tabContainer 
+.tabContainer
   animation: fadeIn 2s
 
-@keyframes fadeIn 
-  0% 
-    opacity:0
-  100% 
-    opacity:1
+@keyframes fadeIn
+  0%
+    opacity: 0
+  100%
+    opacity: 1

@@ -66,18 +66,18 @@ function DetailCampaign() {
   });
 
   useEffect(() => {
-    if (router?.query?.r && campaignUid) {
+    if (router?.query && router?.query?.r && campaignUid && AuthStore.isLoggedIn) {
       newBoxCampaignRef({
         variables: {
           box_campaign_uid: campaignUid,
-          ref: router?.query?.r,
+          ref: router?.query?.r ? router?.query?.r : "",
         },
-        onError : () => {
+        onError: () => {
           console.warn("Ref existed");
-        }
-      })
+        },
+      });
     }
-  }, [router, campaignUid]);
+  }, [router, campaignUid, AuthStore.isLoggedIn]);
 
   const clickToAbout = (key: any) => {
     if (key == 3) {

@@ -27,6 +27,8 @@ export type AuthGraphql = {
 
 export type BoxCampaign = {
   __typename?: 'BoxCampaign';
+  CampaignRef?: Maybe<Array<CampaignRef>>;
+  PresaleTransaction?: Maybe<Array<PresaleTransaction>>;
   _count: BoxCampaignCount;
   banner_img?: Maybe<Scalars['String']>;
   boxTypes?: Maybe<Array<BoxType>>;
@@ -81,6 +83,8 @@ export type BoxCampaignBuyHistory = {
 
 export type BoxCampaignCount = {
   __typename?: 'BoxCampaignCount';
+  CampaignRef: Scalars['Int'];
+  PresaleTransaction: Scalars['Int'];
   boxTypes: Scalars['Int'];
   buyHistory: Scalars['Int'];
   notification: Scalars['Int'];
@@ -187,6 +191,18 @@ export type BuyBoxInput = {
   round_id: Scalars['Int'];
 };
 
+export type CampaignRef = {
+  __typename?: 'CampaignRef';
+  box: BoxCampaign;
+  box_campaign_uid: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  id: Scalars['ID'];
+  ref_code: Scalars['String'];
+  updated_at: Scalars['DateTime'];
+  user: User;
+  user_id: Scalars['Int'];
+};
+
 export type Chain = {
   __typename?: 'Chain';
   _count: ChainCount;
@@ -242,6 +258,8 @@ export type CurrencyCount = {
 
 export type GBoxCampaign = {
   __typename?: 'GBoxCampaign';
+  CampaignRef?: Maybe<Array<CampaignRef>>;
+  PresaleTransaction?: Maybe<Array<PresaleTransaction>>;
   banner_img?: Maybe<Scalars['String']>;
   boxTypes?: Maybe<Array<GBoxType>>;
   /** get the chains which campaign supports */
@@ -268,6 +286,8 @@ export type GBoxCampaign = {
 
 export type GBoxCampaignBase = {
   __typename?: 'GBoxCampaignBase';
+  CampaignRef?: Maybe<Array<CampaignRef>>;
+  PresaleTransaction?: Maybe<Array<PresaleTransaction>>;
   banner_img?: Maybe<Scalars['String']>;
   cover_img?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
@@ -327,6 +347,8 @@ export type GBoxCampaignRound = {
   name: Scalars['String'];
   /** whitelist limit */
   participant_limit?: Maybe<Scalars['Int']>;
+  presale_price?: Maybe<Scalars['Float']>;
+  require_presale?: Maybe<Scalars['Boolean']>;
   require_whitelist?: Maybe<Scalars['Boolean']>;
   start: Scalars['String'];
 };
@@ -500,6 +522,10 @@ export type Mutation = {
   getNotifications?: Maybe<Array<Notification>>;
   /** User login */
   login: AuthGraphql;
+  /** Box campaign ref */
+  newBoxCampaignRef?: Maybe<Scalars['Boolean']>;
+  /** Presale */
+  presale?: Maybe<Scalars['Boolean']>;
   /** Register whitelist */
   registerWhitelist?: Maybe<Scalars['Boolean']>;
   updateEmail?: Maybe<Scalars['Boolean']>;
@@ -531,6 +557,20 @@ export type MutationGenerateNonceArgs = {
 export type MutationLoginArgs = {
   address: Scalars['String'];
   sign: Scalars['String'];
+};
+
+
+export type MutationNewBoxCampaignRefArgs = {
+  box_campaign_uid: Scalars['String'];
+  ref: Scalars['String'];
+};
+
+
+export type MutationPresaleArgs = {
+  address: Scalars['String'];
+  box_campaign_uid: Scalars['String'];
+  quantity: Scalars['Int'];
+  tx_hash: Scalars['String'];
 };
 
 
@@ -585,6 +625,22 @@ export enum NotificationType {
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: InputMaybe<Scalars['String']>;
+};
+
+export type PresaleTransaction = {
+  __typename?: 'PresaleTransaction';
+  box: BoxCampaign;
+  box_campaign_uid: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  id: Scalars['ID'];
+  price: Scalars['Decimal'];
+  quantity: Scalars['Int'];
+  reason?: Maybe<Scalars['String']>;
+  status: TransactionStatus;
+  tx_hash: Scalars['String'];
+  updated_at: Scalars['DateTime'];
+  user: User;
+  user_id: Scalars['Int'];
 };
 
 export type ProfileUpdateInput = {
@@ -694,8 +750,17 @@ export type SubscriptionWhitelistRegisteredRecentlyArgs = {
   box_campaign_uid: Scalars['String'];
 };
 
+export enum TransactionStatus {
+  Failed = 'FAILED',
+  Pending = 'PENDING',
+  Processing = 'PROCESSING',
+  Succeed = 'SUCCEED'
+}
+
 export type User = {
   __typename?: 'User';
+  CampaignRef?: Maybe<Array<CampaignRef>>;
+  PresaleTransaction?: Maybe<Array<PresaleTransaction>>;
   _count: UserCount;
   address: Scalars['String'];
   code: Scalars['String'];
@@ -715,12 +780,16 @@ export type User = {
 
 export type UserCount = {
   __typename?: 'UserCount';
+  CampaignRef: Scalars['Int'];
+  PresaleTransaction: Scalars['Int'];
   enable_notify: Scalars['Int'];
   notification: Scalars['Int'];
 };
 
 export type UserGraphql = {
   __typename?: 'UserGraphql';
+  CampaignRef?: Maybe<Array<CampaignRef>>;
+  PresaleTransaction?: Maybe<Array<PresaleTransaction>>;
   _count: UserCount;
   address: Scalars['String'];
   code: Scalars['String'];

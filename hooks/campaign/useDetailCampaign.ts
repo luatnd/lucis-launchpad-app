@@ -142,7 +142,8 @@ const DETAIL_CAMPAIGN = gql`
         participant_limit
         start
         end
-        deposit_amount
+        presale_price
+        require_presale
       }
       game {
         name

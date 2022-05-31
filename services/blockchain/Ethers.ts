@@ -168,7 +168,7 @@ export default class EtherContract {
       result.blockNumber = transaction.blockNumber;
       result.txHash = txHash;
     } catch (error) {
-      console.log("{EtherContract.transferNft} error: ", error);
+      console.log("{EtherContract.transferFt} error: ", error);
 
       //@ts-ignore
       result.error = error;

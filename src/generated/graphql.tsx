@@ -235,6 +235,12 @@ export enum ChainSymbol {
   Solana = 'SOLANA'
 }
 
+export type ConfigGql = {
+  __typename?: 'ConfigGql';
+  id: Scalars['ID'];
+  presale_wallet: Scalars['String'];
+};
+
 export type Currency = {
   __typename?: 'Currency';
   _count: CurrencyCount;
@@ -243,9 +249,11 @@ export type Currency = {
   chain: Chain;
   chain_symbol: ChainSymbol;
   created_at: Scalars['DateTime'];
+  decimals?: Maybe<Scalars['Int']>;
   icon?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   owner?: Maybe<Scalars['String']>;
+  presaleTransactions?: Maybe<Array<PresaleTransaction>>;
   symbol: Scalars['String'];
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
@@ -254,6 +262,7 @@ export type Currency = {
 export type CurrencyCount = {
   __typename?: 'CurrencyCount';
   boxPrices: Scalars['Int'];
+  presaleTransactions: Scalars['Int'];
 };
 
 export type GBoxCampaign = {
@@ -266,6 +275,8 @@ export type GBoxCampaign = {
   chains: Array<GChain>;
   cover_img?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
+  /** get the currencies which campaign supports */
+  currencies: Array<GCurrency>;
   desc?: Maybe<Scalars['String']>;
   end: Scalars['DateTime'];
   game: GGame;
@@ -455,9 +466,11 @@ export type GCurrency = {
   chain: Chain;
   chain_symbol: ChainSymbol;
   created_at: Scalars['DateTime'];
+  decimals?: Maybe<Scalars['Int']>;
   icon?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   owner?: Maybe<Scalars['String']>;
+  presaleTransactions?: Maybe<Array<PresaleTransaction>>;
   symbol: Scalars['String'];
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
@@ -569,6 +582,7 @@ export type MutationNewBoxCampaignRefArgs = {
 export type MutationPresaleArgs = {
   address: Scalars['String'];
   box_campaign_uid: Scalars['String'];
+  currency_uid: Scalars['String'];
   quantity: Scalars['Int'];
   tx_hash: Scalars['String'];
 };
@@ -632,6 +646,8 @@ export type PresaleTransaction = {
   box: BoxCampaign;
   box_campaign_uid: Scalars['String'];
   created_at: Scalars['DateTime'];
+  currency: Currency;
+  currency_uid: Scalars['String'];
   id: Scalars['ID'];
   price: Scalars['Decimal'];
   quantity: Scalars['Int'];
@@ -678,6 +694,8 @@ export type Query = {
   closedBoxCampaign?: Maybe<Array<GBoxCampaign>>;
   countUnreadNotifications?: Maybe<Scalars['Int']>;
   getAllowanceAmount: Scalars['Float'];
+  /** Config */
+  getConfig?: Maybe<ConfigGql>;
   /** Check current user joined whitelist */
   isInWhitelist?: Maybe<Scalars['Boolean']>;
   me?: Maybe<UserGraphql>;

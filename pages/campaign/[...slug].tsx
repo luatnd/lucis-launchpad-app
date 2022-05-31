@@ -134,6 +134,7 @@ function DetailCampaign() {
                       refetch={refetchIsInWhiteList}
                       token={token}
                       presale={presale}
+                      currencies={boxCampaign?.currencies}
                     />
                   )}
 

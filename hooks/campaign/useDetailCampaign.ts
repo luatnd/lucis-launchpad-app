@@ -135,6 +135,26 @@ export function usePresaleRemaining(props: Props) {
   };
 }
 
+export function useGetConfig() {
+  const {
+    loading,
+    error,
+    data: dataConfig,
+  } = useQuery(GET_CONFIG, {
+    //variables: {},
+    fetchPolicy: "no-cache",
+    onError: (error) => {
+      console.log("error: ", error);
+    },
+  });
+
+  return {
+    loading,
+    error,
+    dataConfig: dataConfig?.getConfig,
+  };
+}
+
 const DETAIL_CAMPAIGN = gql`
   query ($box_campaign_uid: String!) {
     campaignDetail(
@@ -207,6 +227,17 @@ const DETAIL_CAMPAIGN = gql`
           contract_address
         }
       }
+      currencies {
+        address
+        uid
+        chain_symbol
+        symbol
+        name
+        chain {
+          symbol
+          name
+        }
+      }
     }
   }
 `;
@@ -252,6 +283,15 @@ const PRESALE_REMAINING = gql`
     presaleRemaining(box_campaign_uid: $box_campaign_uid) {
       presaled
       remain
+    }
+  }
+`;
+
+const GET_CONFIG = gql`
+  query{
+    getConfig{
+      id
+      presale_wallet
     }
   }
 `;
@@ -341,16 +381,18 @@ const NEW_BOX_CAMPAIGN_REF = gql`
 
 const PRESALE = gql`
   mutation (
-    $box_campaign_uid: String!
-    $quantity: Int!
-    $tx_hash: String!
-    $address: String!
+    $box_campaign_uid: String!,
+    $quantity: Int!,
+    $tx_hash: String!,
+    $address: String!,
+    $currency_uid: String!
   ) {
     presale(
-      box_campaign_uid: $box_campaign_uid
-      quantity: $quantity
-      tx_hash: $tx_hash
-      address: $address
+      box_campaign_uid: $box_campaign_uid,
+      quantity: $quantity,
+      tx_hash: $tx_hash,
+      address: $address,
+      currency_uid: $currency_uid
     )
   }
 `;

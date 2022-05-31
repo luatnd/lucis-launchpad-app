@@ -25,7 +25,10 @@ import EthersService from "services/blockchain/Ethers";
 import BigNumber from "bignumber.js";
 import { useForm } from "antd/lib/form/Form";
 import { isEmpty } from "lodash";
-import { usePresaleRemaining } from "hooks/campaign/useDetailCampaign";
+import {
+  useGetConfig,
+  usePresaleRemaining,
+} from "hooks/campaign/useDetailCampaign";
 
 interface IRound {
   rounds: GBoxCampaignRound[];
@@ -42,6 +45,7 @@ interface IRound {
   refetch: any;
   token: string | undefined;
   presale?: any;
+  currencies?: any;
 }
 
 export default observer(function SiteMap(props: IRound) {
@@ -60,6 +64,7 @@ export default observer(function SiteMap(props: IRound) {
     refetch,
     token,
     presale,
+    currencies,
   } = props;
 
   const { dataPresaleRemaining, refetchPresaleRemaining } = usePresaleRemaining(
@@ -69,6 +74,8 @@ export default observer(function SiteMap(props: IRound) {
     }
   );
 
+  const { dataConfig } = useGetConfig();
+
   const [listRounds, setListRounds] = useState([] as any);
   const [isActiveUpComing, setIsActiveUpComing] = useState(false);
   const { registerWhitelist, error, loading, data } =
@@ -77,6 +84,7 @@ export default observer(function SiteMap(props: IRound) {
   const [amountBox, setAmountBox] = useState(0);
   const isWhitelisted = isInWhitelist || data?.registerWhitelist;
   const [disabledButton, setDisabledButton] = useState(false);
+  const [chainConfig, setChainConfig] = useState(null);
 
   // --- Detect amount field type wrong
   const [form] = useForm();
@@ -149,10 +157,29 @@ export default observer(function SiteMap(props: IRound) {
     });
   };
 
+  useEffect(() => {
+    console.log("ConnectWalletStore", ConnectWalletStore);
+    console.log("currencies", currencies);
+
+    const chain = currencies.find((item: any) => {
+      return (
+        item.chain_symbol.toLocaleUpperCase() ===
+        ConnectWalletStore.chainNetwork?.toLocaleUpperCase()
+      );
+    });
+
+    console.log("chain", chain);
+    setChainConfig(chain);
+  }, [ConnectWalletStore]);
+
   const contract_address = "0x776161E47a91561b3D1B8e8Dc34BFea57B019a60";
   const currency_address = "0x4bE02BFe61a7ABDd31F8fE5e51a03ABd7028d450"; // address of token to buy BUSD
 
   const handleApplyWhiteListWithFee = async () => {
+    if (!chainConfig) {
+      message.warn("Please switch chain to buy");
+      return false;
+    }
     if (!AuthStore.isLoggedIn) {
       message.warn("Please connect wallet and verify your address first!");
       return false;
@@ -171,8 +198,9 @@ export default observer(function SiteMap(props: IRound) {
     );
 
     const getMyAllowance = await ethersService.getMyAllowanceOf(
-      contract_address,
-      currency_address
+      dataConfig?.presale_wallet,
+      //@ts-ignore
+      chainConfig?.address
     );
 
     let bool = false;
@@ -188,8 +216,9 @@ export default observer(function SiteMap(props: IRound) {
 
     if (getMyAllowance && getMyAllowance < Number(amount)) {
       bool = await ethersService.requestApproval(
-        contract_address,
-        currency_address
+        dataConfig?.presale_wallet,
+        //@ts-ignore
+        chainConfig?.address
       );
     } else {
       bool = true;
@@ -197,8 +226,9 @@ export default observer(function SiteMap(props: IRound) {
 
     if (bool) {
       const result = await ethersService.transferFT(
-        contract_address,
-        currency_address,
+        dataConfig?.presale_wallet,
+        //@ts-ignore
+        chainConfig?.address,
         value
       );
 
@@ -209,6 +239,8 @@ export default observer(function SiteMap(props: IRound) {
             quantity: amountBox,
             tx_hash: result.txHash,
             address: ConnectWalletStore.address,
+            //@ts-ignore
+            currency_uid: chainConfig?.uid,
           },
           onCompleted: () => {
             refetchPresaleRemaining();
@@ -467,16 +499,15 @@ export default observer(function SiteMap(props: IRound) {
                   </>
                 )}
 
-                {item.presale_price && (
+                {item.presale_price && item.isActive && (
                   <>
                     {AuthStore.isLoggedIn ? (
-                      <div className="max-w-[250.91px]">
+                      <div>
                         <div className={`${s.amount} font-bold`}>
                           <label className={s.label}>
-                            <span className="text-[18px] md:text-[24px=">
+                            <span className="text-[18px] md:text-[24px]">
                               Amount:{" "}
                             </span>
-                            <br />
                           </label>
                           <Form
                             className={s.buyForm}
@@ -548,7 +579,7 @@ export default observer(function SiteMap(props: IRound) {
                                   `}
                               style={{ fontWeight: "600" }}
                             >
-                              APPLY WHITELIST
+                              RESERVE
                             </button>
                           </Popconfirm>
                         </div>

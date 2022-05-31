@@ -181,11 +181,21 @@ export function useBuyBox(
     round?.is_whitelist === false && round?.require_whitelist === true;
 
   const isSaleRound = useMemo(() => {
+    if (round == null || round.is_whitelist == null) {
+      return false;
+    }
+    //@ts-ignore
+    return (
+      !round.is_whitelist && !round.require_presale
+    );
+  }, [round]);
+
+  const isSaleRoundWithFee = useMemo(() => {
     if (round == null) {
       return false;
     }
     //@ts-ignore
-    return !round.is_whitelist && !round.is_abstract_round;
+    return round.require_presale;
   }, [round]);
 
   let buyBtnDisabledReason: BuyDisabledReason | undefined = useMemo(() => {
@@ -218,6 +228,16 @@ export function useBuyBox(
     } else if (boxType.sold_amount >= boxType.total_amount) {
       return false;
     } else if (!(requireWhitelist ? isInWhitelist : true)) {
+      return false;
+    }
+    return true;
+  }, [isSaleRound, boxType, isInWhitelist, requireWhitelist]);
+
+  // can buy box: in buy round + enough box to buy + registered whitelist if need + box left
+  const buyFormWithFeeEnabled = useMemo(() => {
+    if (!isSaleRoundWithFee) {
+      return false;
+    } else if (boxType.sold_amount >= boxType.total_amount) {
       return false;
     }
     return true;
@@ -397,7 +417,9 @@ export function useBuyBox(
   return {
     loading,
     isSaleRound,
+    isSaleRoundWithFee,
     buyFormEnabled,
+    buyFormWithFeeEnabled,
     buyBtnDisabledReason,
     err,
     txtAmount,

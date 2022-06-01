@@ -375,8 +375,10 @@ export function useBuyBox(
   };
 
   const requestAllowanceForBoxPrice = async () => {
+    setLoading(true);
     if (!AuthStore.isLoggedIn) {
       message.warn("Please connect wallet and verify your address first!");
+      setLoading(false);
       return false;
     }
 
@@ -385,6 +387,7 @@ export function useBuyBox(
         "[Critical] This is unexpected behavior occur in our app, please reconnect your wallet to ensure the app run correctly",
         6
       );
+      setLoading(false);
       return false;
     }
 
@@ -400,18 +403,19 @@ export function useBuyBox(
         nft_contract_address,
         currency_address
       );
+
       if (success) {
         ApprovalStore.setCurrencyEnabled(
           (boxPrice?.currency.symbol as GQL_Currency) ?? false
         );
       }
-
       return success;
     } catch (error: any) {
       if (error.code === Web3ProviderErrorCodes.provider.userRejectedRequest) {
         message.error("User denied", 5);
       }
     }
+    setLoading(false);
   };
 
   return {

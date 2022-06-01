@@ -169,7 +169,6 @@ export default class EtherContract {
       result.txHash = txHash;
     } catch (error) {
       console.log("{EtherContract.transferFt} error: ", error);
-
       //@ts-ignore
       result.error = error;
     }

@@ -1,9 +1,12 @@
 import {
+  Button,
+  Col,
   Form,
   InputNumber,
   message,
   Popconfirm,
   Progress,
+  Row,
   Tooltip,
 } from "antd";
 import AuthStore from "components/Auth/AuthStore";
@@ -84,7 +87,9 @@ export default observer(function SiteMap(props: IRound) {
   const [amountBox, setAmountBox] = useState(0);
   const isWhitelisted = isInWhitelist || data?.registerWhitelist;
   const [disabledButton, setDisabledButton] = useState(false);
-  const [chainConfig, setChainConfig] = useState(null);
+  const [chainConfig, setChainConfig] = useState(Object as any);
+  const [loadingReserve, setLoadingReserve] = useState(false);
+  const [totalPayment, setTotalPayment] = useState(0);
 
   // --- Detect amount field type wrong
   const [form] = useForm();
@@ -158,9 +163,6 @@ export default observer(function SiteMap(props: IRound) {
   };
 
   useEffect(() => {
-    console.log("ConnectWalletStore", ConnectWalletStore);
-    console.log("currencies", currencies);
-
     const chain = currencies.find((item: any) => {
       return (
         item.chain_symbol.toLocaleUpperCase() ===
@@ -170,18 +172,18 @@ export default observer(function SiteMap(props: IRound) {
 
     console.log("chain", chain);
     setChainConfig(chain);
-  }, [ConnectWalletStore]);
-
-  const contract_address = "0x776161E47a91561b3D1B8e8Dc34BFea57B019a60";
-  const currency_address = "0x4bE02BFe61a7ABDd31F8fE5e51a03ABd7028d450"; // address of token to buy BUSD
+  }, [ConnectWalletStore.chainNetwork]);
 
   const handleApplyWhiteListWithFee = async () => {
+    setLoadingReserve(true);
     if (!chainConfig) {
       message.warn("Please switch chain to buy");
+      setLoadingReserve(false);
       return false;
     }
     if (!AuthStore.isLoggedIn) {
       message.warn("Please connect wallet and verify your address first!");
+      setLoadingReserve(false);
       return false;
     }
 
@@ -190,6 +192,7 @@ export default observer(function SiteMap(props: IRound) {
         "[Critical] This is unexpected behavior occur in our app, please reconnect your wallet to ensure the app run correctly",
         6
       );
+      setLoadingReserve(false);
       return false;
     }
 
@@ -204,13 +207,14 @@ export default observer(function SiteMap(props: IRound) {
     );
 
     let bool = false;
-    let value = 0;
+    // let value = 0;
 
-    if (rounds[0]?.presale_price) {
-      value = amountBox * rounds[0]?.presale_price;
-    }
+    // if (rounds[0]?.presale_price) {
+    //   value = amountBox * rounds[0]?.presale_price;
+    // }
 
-    const amount = new BigNumber(Number(amountBox))
+    // setTotalPayment(value);
+    const amount = new BigNumber(Number(totalPayment))
       .multipliedBy(Math.pow(10, 18))
       .toFormat({ groupSeparator: "" });
 
@@ -229,7 +233,7 @@ export default observer(function SiteMap(props: IRound) {
         dataConfig?.presale_wallet,
         //@ts-ignore
         chainConfig?.address,
-        value
+        totalPayment
       );
 
       if (!result.error) {
@@ -244,18 +248,26 @@ export default observer(function SiteMap(props: IRound) {
           },
           onCompleted: () => {
             refetchPresaleRemaining();
+
             message.success("Successfully");
           },
           onError: (e: any) => {
-            console.error(e);
-            message.success("Error. Please try again");
+            message.error("Error. Please try again");
           },
         });
       } else {
         //@ts-ignore
-        message.error(result?.error?.message);
+        if (result?.error?.error?.code == -32603) {
+          //@ts-ignore
+          message.error(result?.error?.error?.message);
+        } else {
+          //@ts-ignore
+          message.error(result?.error?.message);
+        }
+        // setLoadingReserve(false);
       }
     }
+    setLoadingReserve(false);
   };
 
   useEffect(() => {
@@ -502,86 +514,141 @@ export default observer(function SiteMap(props: IRound) {
                 {item.presale_price && item.isActive && (
                   <>
                     {AuthStore.isLoggedIn ? (
-                      <div>
-                        <div className={`${s.amount} font-bold`}>
-                          <label className={s.label}>
-                            <span className="text-[18px] md:text-[24px]">
-                              Amount:{" "}
-                            </span>
-                          </label>
-                          <Form
-                            className={s.buyForm}
-                            form={form}
-                            onFieldsChange={handleFormChange}
-                          >
-                            <Form.Item
-                              name="amount"
-                              rules={[
-                                {
-                                  required: true,
-                                  message: "Please input amount!",
-                                },
-
-                                {
-                                  type: "number",
-                                  min: 1,
-                                  message: "Amount must be greater than 0",
-                                },
-                                {
-                                  type: "integer",
-                                  message: "Please enter an integer",
-                                },
-                                {
-                                  type: "number",
-                                  max: dataPresaleRemaining?.remain,
-                                  message: `Amount must be less than ${dataPresaleRemaining?.remain}`,
-                                },
-                              ]}
-                              className={s.inputRow}
-                            >
-                              <InputNumber
-                                style={{ background: "none" }}
-                                value={amountBox}
-                                onChange={(value: number) => {
-                                  setAmountBox(value);
-                                }}
-                                controls={false}
-                              />
-                            </Form.Item>
-                          </Form>
+                      <div className={`${s.amount}`}>
+                        <div style={{marginTop: "20px"}}>
+                          <Row>
+                            <Col span={10}>
+                              <label className={s.label}>
+                                <span className="text-[16px] md:text-[20px]">
+                                  Price:
+                                </span>
+                              </label>
+                            </Col>
+                            <Col span={14} className={`${s.presale}`}>
+                              <label className={s.label}>
+                                <span className="text-[16px] md:text-[20px]">
+                                  {rounds[0]?.presale_price
+                                    ? rounds[0]?.presale_price
+                                    : 0}{" "}
+                                  {chainConfig.symbol}
+                                </span>
+                              </label>
+                            </Col>
+                          </Row>
                         </div>
 
                         <div>
-                          {/* REGISTER WHITELIST with fee */}
-                          <Popconfirm
-                            placement="top"
-                            title={"You're going to be whitelisted"}
-                            onConfirm={handleApplyWhiteListWithFee}
-                            okText="Yes"
-                            cancelText="No"
-                            disabled={
-                              disabledButton ||
-                              dataPresaleRemaining?.presaled >
-                                dataPresaleRemaining?.remain
-                            }
-                          >
-                            <button
-                              className={`
+                          <Row>
+                            <Col span={10}>
+                              <label className={s.label}>
+                                <span className="text-[18px] md:text-[24px]">
+                                  Amount:{" "}
+                                </span>
+                              </label>
+                            </Col>
+                            <Col span={14} className={`${s.presale}`}>
+                              <Form
+                                className={s.buyForm}
+                                form={form}
+                                onFieldsChange={handleFormChange}
+                              >
+                                <Form.Item
+                                  name="amount"
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message: "Please input amount!",
+                                    },
+
+                                    {
+                                      type: "number",
+                                      min: 1,
+                                      message: "Amount must be greater than 0",
+                                    },
+                                    {
+                                      type: "integer",
+                                      message: "Please enter an integer",
+                                    },
+                                    {
+                                      type: "number",
+                                      max: dataPresaleRemaining?.remain,
+                                      message: dataPresaleRemaining?.remain > 0 ? `Amount must be less than ${dataPresaleRemaining?.remain}` : "All slot are reserved",
+                                    },
+                                  ]}
+                                  className={s.inputRow}
+                                >
+                                  <InputNumber
+                                    style={{ background: "none" }}
+                                    value={amountBox}
+                                    onChange={(value: number) => {
+                                      setAmountBox(value);
+                                      let val = 0;
+
+                                      if (rounds[0]?.presale_price) {
+                                        val = value * rounds[0]?.presale_price;
+                                      }
+                                      setTotalPayment(val);
+                                    }}
+                                    controls={false}
+                                  />
+                                </Form.Item>
+                              </Form>
+                            </Col>
+                          </Row>
+                        </div>
+
+                        <div className={`${s.amount} font-bold`}>
+                          <Row>
+                            <Col span={10}>
+                              <label className={s.label}>
+                                <span className="text-[18px] md:text-[24px]">
+                                  Total:
+                                </span>
+                              </label>
+                            </Col>
+                            <Col span={14} className={`${s.presale}`}>
+                              <label className={s.label}>
+                                <span className="text-[18px] md:text-[24px]">
+                                  {totalPayment} {chainConfig.symbol}
+                                </span>
+                              </label>
+                            </Col>
+                          </Row>
+                        </div>
+                        <div>
+                          <Button
+                            className={`
                                     ${s.button}  
                                     ${disabledButton ? s.disabledBtn : ""}
                                     ${
-                                      dataPresaleRemaining?.presaled >
-                                      dataPresaleRemaining?.remain
+                                      dataPresaleRemaining?.presaled >=
+                                      dataPresaleRemaining?.remain +
+                                        dataPresaleRemaining?.presaled
+                                        ? s.disabledBtn
+                                        : ""
+                                    }
+                                    ${
+                                      dataPresaleRemaining?.presaled == 0 &&
+                                      dataPresaleRemaining?.remain == 0
                                         ? s.disabledBtn
                                         : ""
                                     }
                                     font-bold text-white text-center uppercase
                                   `}
-                              style={{ fontWeight: "600" }}
-                            >
-                              RESERVE
-                            </button>
-                          </Popconfirm>
+                            style={{ fontWeight: "600" }}
+                            disabled={
+                              disabledButton ||
+                              dataPresaleRemaining?.presaled >=
+                                dataPresaleRemaining?.remain +
+                                  dataPresaleRemaining?.presaled ||
+                              (dataPresaleRemaining?.presaled == 0 &&
+                                dataPresaleRemaining?.remain == 0)
+                            }
+                            onClick={handleApplyWhiteListWithFee}
+                            loading={loadingReserve}
+                          >
+                            RESERVE
+                          </Button>
                         </div>
 
                         <Progress

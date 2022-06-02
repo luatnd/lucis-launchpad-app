@@ -32,6 +32,8 @@ import {
   useGetConfig,
   usePresaleRemaining,
 } from "hooks/campaign/useDetailCampaign";
+import Router from "next/router";
+import { refreshAuthTokenFromLocal } from "utils/apollo_client";
 
 interface IRound {
   rounds: GBoxCampaignRound[];
@@ -170,9 +172,14 @@ export default observer(function SiteMap(props: IRound) {
       );
     });
 
-    console.log("chain", chain);
     setChainConfig(chain);
   }, [ConnectWalletStore.chainNetwork]);
+
+  useEffect(() => {
+    refetchPresaleRemaining();
+    refreshAuthTokenFromLocal();
+    //Router.reload()
+  }, [AuthStore.address]);
 
   const handleApplyWhiteListWithFee = async () => {
     setLoadingReserve(true);
@@ -248,8 +255,7 @@ export default observer(function SiteMap(props: IRound) {
           },
           onCompleted: () => {
             refetchPresaleRemaining();
-
-            message.success("Successfully");
+            message.success("Success");
           },
           onError: (e: any) => {
             message.error("Error. Please try again");
@@ -257,9 +263,10 @@ export default observer(function SiteMap(props: IRound) {
         });
       } else {
         //@ts-ignore
-        if (result?.error?.error?.code == -32603) {
+        if (result?.error?.code == -32603) {
           //@ts-ignore
-          message.error(result?.error?.error?.message);
+          //message.error(result?.error?.data?.message);
+          message.error("Not enough balance");
         } else {
           //@ts-ignore
           message.error(result?.error?.message);
@@ -515,7 +522,7 @@ export default observer(function SiteMap(props: IRound) {
                   <>
                     {AuthStore.isLoggedIn ? (
                       <div className={`${s.amount}`}>
-                        <div style={{marginTop: "20px"}}>
+                        <div style={{ marginTop: "20px" }}>
                           <Row>
                             <Col span={10}>
                               <label className={s.label}>
@@ -530,7 +537,7 @@ export default observer(function SiteMap(props: IRound) {
                                   {rounds[0]?.presale_price
                                     ? rounds[0]?.presale_price
                                     : 0}{" "}
-                                  {chainConfig.symbol}
+                                  {chainConfig?.symbol}
                                 </span>
                               </label>
                             </Col>
@@ -572,7 +579,10 @@ export default observer(function SiteMap(props: IRound) {
                                     {
                                       type: "number",
                                       max: dataPresaleRemaining?.remain,
-                                      message: dataPresaleRemaining?.remain > 0 ? `Amount must be less than ${dataPresaleRemaining?.remain}` : "All slot are reserved",
+                                      message:
+                                        dataPresaleRemaining?.remain > 0
+                                          ? `Amount maximum is ${dataPresaleRemaining?.remain}`
+                                          : "All slots are reserved",
                                     },
                                   ]}
                                   className={s.inputRow}
@@ -609,7 +619,7 @@ export default observer(function SiteMap(props: IRound) {
                             <Col span={14} className={`${s.presale}`}>
                               <label className={s.label}>
                                 <span className="text-[18px] md:text-[24px]">
-                                  {totalPayment} {chainConfig.symbol}
+                                  {totalPayment} {chainConfig?.symbol}
                                 </span>
                               </label>
                             </Col>
@@ -633,6 +643,7 @@ export default observer(function SiteMap(props: IRound) {
                                         ? s.disabledBtn
                                         : ""
                                     }
+                                    ${!amountBox ? s.disabledBtn : ""}
                                     font-bold text-white text-center uppercase
                                   `}
                             style={{ fontWeight: "600" }}
@@ -642,7 +653,8 @@ export default observer(function SiteMap(props: IRound) {
                                 dataPresaleRemaining?.remain +
                                   dataPresaleRemaining?.presaled ||
                               (dataPresaleRemaining?.presaled == 0 &&
-                                dataPresaleRemaining?.remain == 0)
+                                dataPresaleRemaining?.remain == 0) ||
+                              !amountBox
                             }
                             onClick={handleApplyWhiteListWithFee}
                             loading={loadingReserve}

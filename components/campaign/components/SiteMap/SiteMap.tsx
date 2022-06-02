@@ -537,7 +537,7 @@ export default observer(function SiteMap(props: IRound) {
                                   {rounds[0]?.presale_price
                                     ? rounds[0]?.presale_price
                                     : 0}{" "}
-                                  {chainConfig?.symbol}
+                                  {chainConfig?.symbol ? chainConfig?.symbol : currencies[0]?.symbol}
                                 </span>
                               </label>
                             </Col>
@@ -619,7 +619,7 @@ export default observer(function SiteMap(props: IRound) {
                             <Col span={14} className={`${s.presale}`}>
                               <label className={s.label}>
                                 <span className="text-[18px] md:text-[24px]">
-                                  {totalPayment} {chainConfig?.symbol}
+                                  {totalPayment} {chainConfig?.symbol ? chainConfig?.symbol : currencies[0]?.symbol}
                                 </span>
                               </label>
                             </Col>

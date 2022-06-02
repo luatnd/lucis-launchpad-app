@@ -184,7 +184,7 @@ export default observer(function SiteMap(props: IRound) {
   const handleApplyWhiteListWithFee = async () => {
     setLoadingReserve(true);
     if (!chainConfig) {
-      message.warn("Please switch chain to buy");
+      message.warn("Please switch chain to reserve");
       setLoadingReserve(false);
       return false;
     }
@@ -256,9 +256,11 @@ export default observer(function SiteMap(props: IRound) {
           onCompleted: () => {
             refetchPresaleRemaining();
             message.success("Success");
+            form.resetFields(["amount"]);
           },
           onError: (e: any) => {
             message.error("Error. Please try again");
+            form.resetFields(["amount"]);
           },
         });
       } else {

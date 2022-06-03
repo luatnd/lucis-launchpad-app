@@ -409,13 +409,15 @@ export function useBuyBox(
           (boxPrice?.currency.symbol as GQL_Currency) ?? false
         );
       }
+      setLoading(false);
       return success;
     } catch (error: any) {
       if (error.code === Web3ProviderErrorCodes.provider.userRejectedRequest) {
         message.error("User denied", 5);
+        setLoading(false);
       }
     }
-    setLoading(false);
+
   };
 
   return {

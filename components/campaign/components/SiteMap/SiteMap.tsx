@@ -330,7 +330,7 @@ export default observer(function SiteMap(props: IRound) {
             1200: {
               slidesPerView: 4,
             },
-            1300: {
+            1500: {
               slidesPerView: 5,
             },
           }}

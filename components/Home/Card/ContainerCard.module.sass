@@ -1,0 +1,247 @@
+@import styles/common
+.bg_1
+    background: linear-gradient(339deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+    &:global(:before)
+        background: linear-gradient(314deg, #7f6bbdb3 0%, rgba(196, 44, 255, 0) 45%, rgba(196, 44, 255, 0) 30%, #44388b 100%)
+.bg_2
+    background: linear-gradient(19deg, rgba(0, 0, 0, 0.4) 2.22%, rgba(255, 255, 255, 0) 97.78%)
+    &:global(:before)
+        background: linear-gradient(296deg, #7f6bbdb3 0%, rgba(196, 44, 255, 0) 45%, rgba(196, 44, 255, 0) 30%, #44388b 100%)
+.CardContainer
+    backdrop-filter: blur(4px)
+    border-radius: 16px
+    position: relative
+    // margin-bottom: 140px
+    z-index: 1
+    &:global(:before)
+        content: ""
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
+        border-radius: 16px
+        padding: 1px
+        -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
+        -webkit-mask-composite: xor
+        mask-composite: exclude
+    .img_game
+        position: absolute
+        top: -140px
+        left: 0
+        width: 100%
+        text-align: center
+        @media (max-width: 767px)
+        @media (min-width: 1280px)
+            top: -160px
+        @media (min-width: 1439px)
+            top: -170px
+        // img
+        //     width: 100%
+    .content
+        position: relative
+        overflow: hidden
+        height: 100%
+        border-radius: 16px
+        .headingCard
+            padding: 200px 0px 0px 0px
+            .styleTime
+                font-size: 28px
+                font-weight: 700
+                line-height: 32px
+                position: relative
+                padding-left: 44px
+                white-space: nowrap
+                p
+                    color:#0BEBD6
+                    font-size: 18px
+                    font-weight: 700
+                    margin: 0
+                    text-align: left
+                    padding-top: 10px
+                    span
+                        font-weight: 300
+            .styleTime::before
+                content: ''
+                position: absolute
+                left: 22px
+                top: 10px
+                width: 12px
+                height: 12px
+                border-radius: 100%
+            .time
+                color:#0BEBD6
+            .time::before
+                background: #0BEBD6
+                box-shadow: 0px 0px 6px #0BEBD6
+
+            .sold
+                color:#FF8A00
+            .sold::before
+                background: #FF8A00
+                box-shadow: 0px 0px 6px #FF8A00
+            .sale
+                color:#CD28E8
+            .sale::before
+                background: #CD28E8
+                box-shadow: 0px 0px 6px #CD28E8
+            h5
+                color: #FFF
+                font-size: 24px
+                font-weight: 600
+                line-height: 28px
+                padding: 24px 0px 8px 0px
+                margin: 0
+                @media (min-width: 1440px)
+                    padding: 40px 0px 8px 0px
+            .text
+                color: #FFF
+                font-size: 16px
+                font-weight: 300
+                line-height: 24px
+                @include line-camp(3)
+        .groupIcon
+            display: flex
+            align-items: center
+            justify-content: space-between
+            position: absolute
+            bottom: 20px
+            padding: 0px 22px
+            width: 100%
+            z-index: 20
+            .block_iconLeft
+                display: flex
+                align-items: center
+                justify-content: flex-end
+                width: 100%
+                a
+                    margin: 0px 16px
+                    transition: 0.3s
+                    &:hover
+                        transform: scale(1.3)
+                    @media  ( min-width: 992px) and (max-width: 1278px)
+                        margin: 0px 8px   
+        .groupIcon > img
+            width: 24px
+            // .block_iconLeft a img
+            //     padding: 0px 16px
+            //     margin-top: 30px
+                  
+.CardContainer:hover .btnDetail
+    opacity: 1
+
+.titleCard
+    @media ( min-width: 0px )
+        padding: 0px 22px 80px 22px
+        
+
+.btnDetail
+    background: linear-gradient(284deg, rgba(205, 40, 232, 0.2) 0%, rgba(11, 235, 214, 0.2) 100%)
+    border-radius: 0px 0px 16px 16px
+    display: flex
+    align-items: center
+    justify-content: center
+    height: 96%
+    width: 100%
+    position: absolute
+    bottom: 0
+    left: 0
+    opacity: 0
+    transition: 0.5s
+    &:hover 
+        a 
+            color: white
+    // @media screen and (min-width: 415px) 
+    //     height: 80%
+    // @media screen and (min-width: 540px) 
+    //     height: 35%
+    // @media screen and (min-width: 640px) 
+    //     height: 35%
+    // @media screen and (min-width: 768px) 
+    //     height: 45%
+    // @media screen and (min-width: 992px) 
+    //     height: 51%
+    // @media screen and (min-width: 1200px) 
+    //     height: 51%
+    // @media screen and (min-width: 1280px) 
+    //     height: 45%
+    // @media screen and (min-width: 1440px) 
+    //     height: 40%
+
+.styleBtn
+    display: flex
+    align-items: center
+    justify-content: center
+    max-width: 47%
+    width: 100%
+    color: #FFF
+    font-size: 24px
+    font-weight: 600
+    line-height: 28px
+    cursor: pointer
+    padding: 8px 15px
+    @media (min-width: 1023px)
+        padding: 10px 15px    
+
+@media (min-width: 414px)
+    .CardContainer
+        .headingCard
+            padding: 270px 0px 0px 0px !important
+
+@media (min-width: 520px)
+    .CardContainer
+        .headingCard
+            padding: 250px 0px 0px 0px !important
+
+@media (min-width: 540px)
+    .CardContainer
+        .headingCard
+            padding: 280px 0px 0px 0px !important
+
+@media (min-width: 640px)
+    .CardContainer
+        .headingCard
+            padding: 280px 0px 0px 0px !important
+            .styleTime
+                font-size: 24px  !important
+        // .btnDetail
+        //     height: 45% !important
+@media (min-width: 768px)
+    .CardContainer
+        .headingCard
+            padding: 200px 0px 0px 0px !important
+            .styleTime
+                font-size: 24px  !important
+ 
+@media (min-width: 992px)
+    .CardContainer
+        .headingCard
+            padding: 150px 0px 0px 0px !important
+            .styleTime
+                font-size: 24px  !important
+
+@media (min-width: 1279px)
+    .CardContainer
+        .headingCard
+            padding: 220px 0px 0px 0px !important
+            .styleTime
+                font-size: 28px  !important
+            h5
+                font-size: 32px !important
+            .text
+                font-size: 18px !important
+                margin-top: 12px
+
+@media (min-width: 1439px)
+    .CardContainer
+        .headingCard
+            padding: 270px 0px 0px 0px !important
+            .styleTime
+                font-size: 36px  !important
+            h5
+                font-size: 36px !important
+            .text
+                font-size: 20px !important
+                margin-top: 12px
+
+

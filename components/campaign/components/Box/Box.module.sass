@@ -1,39 +1,159 @@
-.boxDetail
-  max-width: 395px
-  height: 798px
-  background: rgba(255,255,255,0.1)
+@use 'styles/common'
+
+.boxContainer
+  overflow: hidden
+  @include common.box-glass
+  @include common.border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
   box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
   backdrop-filter: blur(40px)
-  border-radius: 25px
-
-  .bgImage
-    max-width: 398px
-    height: 545.61px
+  padding: 1px
+  .boxImage
     background-image: url("/assets/Box/image111.png")
-
-  .boxDes
-    width: 13.37px
-    height: 13.37px
-    margin-top: 7px
+    background-repeat: no-repeat
+    background-size: contain
+  .dotBlue
     background: #0BEBD6
     box-shadow: 0px 0px 6px #08D7F9
-    border-radius: 100px
+    width: 15px
+    height: 15px
+    border-radius: 50px
+  button
+    padding: 5px 20px
+    border-radius: 8px
 
-  .boxMain
-    top: 360px
-    left: 20px
-    right: 20px
+.boxContent
+  padding: 0 20px
+
+.priceContainer
+  img
+    width: 30px
+
+// NEW
+.boxDetail
+  @include common.box-glass
+  @include common.border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
+  box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
+  backdrop-filter: blur(40px)
+  padding: 1px
+  .bgImage
+    position: relative
+    background-image: url("/assets/Box/image111.png")
+    background-repeat: no-repeat
+    background-size: cover
+    // height: 200px
+    .bgImageBtn
+      position: absolute
+      top: -5px
+      right: 5px
+      font-size: 25px
+    img
+      width: 100%
+
+    :global(.ant-tabs)
+      font-size: 25px
+  @media screen and (min-width: 767px)
+    // height: 400px
+  @media screen and (min-width: 1023px)
+    // height: 400px
+
+.boxMain
+  padding: 0 20px
+  width: 100%
+  table
+    width: 100%
+
+.buyForm
+  margin-top: 10px
+  .amount
+    display: flex
+    justify-content: space-between
+    min-height: 95px
+    label
+      color: white
+      font-size: 24px
+      padding-right: 10px
+      .max
+        font-size: 16px
+        color: #bbb
+    .inputRow
+      font-size: 24px
+      line-height: 1.3
+      width: 115px
+      :global(.ant-form-item-control-input-content)
+        max-width: 115px
+        :global(.ant-input-number)
+          background: transparent
+          height: 50px
+          min-width: 115px
+          font-size: 28px
+          line-height: 1.7
 
   .submit
     width: 132px
     height: 59px
     background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
     border-radius: 8px
-    font-weight: 500
+    border: none
+    font-weight: 600
     font-size: 36px
+    line-height: 1.5
     color: white
+    @include common.flex-center
+    flex-flow: row nowrap
+    &:hover,
+    &:active,
+    &:focus
+      background: linear-gradient(99.92deg, #d439ee 0%, #2cfce7 100%)
+    &:disabled
+      background: #bbb
+      color: #585858
+    :global(.ant-btn-loading-icon)
+      height: 70px
 
-  .label
-    font-size: 24px !important
-    color: white
-    font-weight: bold
+  .submitApproval
+    @extend .submit
+    width: 220px
+    font-size: 24px
+
+.chainIcoC
+  display: flex
+  justify-items: flex-end
+  gap: 8px
+  img
+    width: 36px
+    height: 36px
+
+.boxDes
+  width: 15px
+  height: 15px
+  background: #0BEBD6
+  box-shadow: 0px 0px 6px #08D7F9
+  border-radius: 100px
+  position: relative
+  top: 5px
+  @media screen and (min-width: 767px)
+  @media screen and (min-width: 1024px)
+    // top: 8px
+
+.seriesContent
+  padding: 10px 0
+  table
+    tbody
+      tr
+        td
+          font-size: 18px
+          font-weight: 600
+        & > :last-child
+          text-align: end
+  @media screen and (min-width: 767px)
+    table
+      tbody
+        tr
+          td
+            font-size: 18px
+  @media screen and (min-width: 1024px)
+    table
+      tbody
+        tr
+          td
+            font-size: 24px

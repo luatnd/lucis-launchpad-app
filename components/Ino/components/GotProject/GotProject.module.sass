@@ -1,0 +1,74 @@
+
+
+.projectContainer 
+    margin-bottom: 20px
+    p
+        color: white
+        margin: 0
+    .line 
+        width: 100px
+        height: 3px
+        background: white
+        margin: auto
+        background: #fac61a
+        border-radius: 3px
+        margin-bottom: 10px
+        margin-top: 10px
+    @media screen and (min-width: 767px)
+        margin-bottom: 30px
+    @media screen and (min-width: 1024px)
+        margin-bottom: 80px
+        .line
+            margin-top: 20px
+            margin-bottom: 20px
+
+.buttonContainer 
+    color: white
+    display: flex
+    justify-content: space-around
+    margin: auto
+    margin-top: 20px
+    margin-bottom: 20px
+    button, a
+        padding: 10px 30px
+        border-radius: 8px
+    & :hover 
+        color: black
+    @media screen and (min-width: 767px)
+        padding: 10px 20px
+        width: 500px
+    @media screen and (min-width: 1024px)
+
+.applyBtn 
+    background: #fac61a
+    color: black
+.contactBtn 
+    background: #1af2fad2
+    color: black
+.teleBtn 
+    // background: #1a78fad2
+    color: white
+    &:hover 
+        color: white
+
+.btnChatContainer
+    text-align: end
+    
+.btnChat
+    color: white
+    flex-basis: 242px
+    // font-size: 28px
+    flex-grow: 0
+    height: 76px
+    background: linear-gradient(83.51deg, #CD28E8 3.41%, #0BEBD6 106.98%)
+    border-radius: 16px
+    padding: 2px 10px
+    &:hover
+        color: white
+        background: linear-gradient(83.51deg, #b62fcc 3.41%, #02af9e 106.98%)
+    &:active
+        background: linear-gradient(83.51deg, #8f20a1 3.41%, #09887c 106.98%)
+    &:disabled
+        cursor: not-allowed
+        color: #e7e7e7!important
+        background: linear-gradient(83.51deg, #b62fcc 3.41%, #02af9e 106.98%)!important

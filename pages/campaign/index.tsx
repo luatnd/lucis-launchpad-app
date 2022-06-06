@@ -1,40 +1,14 @@
-import React from "react";
-import CountDown from "../../components/campaign/components/CountDown/CountDown";
-import SiteMap from "../../components/campaign/components/SiteMap/SiteMap";
-import Team from "../../components/campaign/components/Team/Team";
-import { Tabs } from "antd";
-import { TabPane } from "rc-tabs";
-import Trailer from "../../components/campaign/components/Trailer/Trailer";
-import Banner from "../../components/campaign/components/Banner/Banner";
-import Box from "../../components/campaign/components/Box/Box";
+import type { NextPage } from "next";
+import CampaignDetail from "./[...slug]";
 
-import s from "./detail.module.sass";
-import RecentlyBought from "../../components/campaign/components/RecentlyBought/RecentlyBought";
+/**
+ * This has no function in project
+ * BUT This is for static site generation
+ * To support static generation of: /campaign/index.html
+ * Match route: /campaign
+ */
+const CampaignIndex: NextPage = () => {
+  return <CampaignDetail />;
+};
 
-function DetailCampaign() {
-  return (
-    <div className='lucis-container'>
-      <div className={s.containerApp}>
-        <Banner />
-        <Tabs defaultActiveKey='1' className={s.tabs}>
-          <TabPane tab='TIMELINE' key='1'>
-            <SiteMap />
-            <CountDown />
-            <Box />
-            {/*<RecentlyBought />*/}
-          </TabPane>
-          <TabPane tab='RULE' key='2'>
-            hello rule
-          </TabPane>
-          <TabPane tab='ABOUT PROJECT' key='3'>
-            <Trailer />
-            <Team />
-          </TabPane>
-        </Tabs>
-      </div>
-    </div>
-  );
-
-}
-
-export default DetailCampaign;
+export default CampaignIndex;

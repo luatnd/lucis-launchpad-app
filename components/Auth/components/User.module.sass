@@ -2,26 +2,45 @@
 
 .container
   @include flex-rear
+  gap: 1rem
+  :global(.ant-badge)
+    cursor: pointer
 
 
 .chainBtn
-  background: rgba(200, 200, 200, 0.5)
-  border: none
+  display: flex
+  flex-flow: row nowrap
+  align-items: center
+  justify-content: flex-start
+  background: transparent
+  border: 1px solid rgba(255,255,255,0.5)
   color: white
-  font-size: 20px
+  font-size: 18px
   border-radius: 10px
-  height: 42px
+  height: 46px
   line-height: 35px
   max-width: 200px
   overflow: hidden
-  padding: 2px 6px
+  padding: 4px 10px
   img
     width: 30px
     border-radius: 15px
-    margin-right: 10px
+  span, i
+    padding-left: 10px
+    max-width: 140px
+    overflow: hidden
+    font-style: normal
+    white-space: nowrap
+  span
+    @media (max-width: 500px)
+      display: none
 
-  &:hover
-    background: rgba(0,0,0,0.1)
+  &:hover,
+  &:focus,
+  &:active
+    color: #f772c3
+    border: 1px solid rgba(255,255,255,0.5)
+    background: rgba(0,0,0,0.2)
 
 .avatar
   width: 60px
@@ -29,6 +48,9 @@
   border-radius: 30px
   overflow: hidden
   cursor: pointer
+  @media (max-width: 1024px)
+    width: 46px
+    height: 46px
 
 .avatarC
   display: flex
@@ -54,6 +76,8 @@
   width: 400px
   padding: 20px 0
   color: white
+  @media (max-width: 510px)
+    width: auto
 
 .addr
   color: white

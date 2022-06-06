@@ -1,23 +1,38 @@
-import { ApolloClient, createHttpLink, InMemoryCache, from } from "@apollo/client";
+import {
+  ApolloClient,
+  createHttpLink,
+  InMemoryCache,
+  from,
+  ApolloError,
+  ServerParseError,
+  ServerError,
+  split,
+} from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { isClient } from "./DOM";
-import AuthService from "../components/Auth/AuthService";
-import { getLocalAuthInfo } from "../components/Auth/AuthLocal";
+import {
+  clearLocalAuthInfo,
+  getLocalAuthInfo,
+} from "../components/Auth/AuthLocal";
+import { message as antd_message, notification } from "antd";
+import { GraphQLError } from "graphql";
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { createClient } from "graphql-ws";
+import { getMainDefinition } from "@apollo/client/utilities";
 //   import { CachePersistor } from 'apollo-cache-persist';
 
 // Cache implementation
 const cache = new InMemoryCache();
-
 
 const authCache: {
   /**
    * store tmp auth token to send with graphql requests
    * If you wanna get JWT token of current user, plz get from AuthStore.token instead
    */
-  token: string,
+  token: string;
 } = {
-  token: _fetchInitialAuthTokenFromLocal()
+  token: _fetchInitialAuthTokenFromLocal(),
 };
 
 export function setAuthToken(token: string) {
@@ -37,11 +52,12 @@ function _getAuthToken(): string {
 
 function _fetchInitialAuthTokenFromLocal(): string {
   const u = getLocalAuthInfo();
-  return u ? (u.token ?? '') : '';
+  return u ? u.token ?? "" : "";
 }
 
-
-
+export const refreshAuthTokenFromLocal = () => {
+  _fetchInitialAuthTokenFromLocal();
+};
 // const persistor = new CachePersistor({
 //   cache,
 //   storage: window.localStorage,
@@ -53,25 +69,50 @@ const httpLink = createHttpLink({
   // You should use an absolute URL here
   uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
 });
+var splitLink: any;
+
+if (isClient) {
+  const wsLink = new GraphQLWsLink(
+    createClient({
+      url: process.env.NEXT_PUBLIC_GRAPHQL_SUBSCRIPTION_URL ?? "",
+    })
+  );
+
+  splitLink = split(
+    ({ query }) => {
+      const definition = getMainDefinition(query);
+      return (
+        definition.kind === "OperationDefinition" &&
+        definition.operation === "subscription"
+      );
+    },
+    wsLink,
+    httpLink
+  );
+}
 
 let countGqlErrNetwork = 0;
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
-    graphQLErrors.forEach(({ message, locations, path }) => {
-      console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
-
+  if (graphQLErrors) {
+    graphQLErrors.forEach(({ message, locations, path, extensions }) => {
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path},  extensions: ${extensions?.message}`
+      );
       if (message === "Unauthorized") {
-        // when token expired or die, localStorage clear
-        // localStorage.clear();
+        // Clean auth info in case of auth error
+        // Might be JWT is expired
+        // We do clear info only if there was a logged-in user
+        if (_getAuthToken()) {
+          clearLocalAuthInfo();
+        }
 
-        // redirect to login page
-        // window.location.href = "/auth/login";
-
-        // fire event
-        // AppEmitter.emit('GraphqlError.Unauthorized')
-        console.error('GraphqlError.Unauthorized')
+        // notification.error({
+        //   message: "Unauthorized",
+        //   description: "Please connect your wallet again",
+        // });
       }
     });
+  }
 
   if (networkError) {
     console.log(`[Network error]: ${networkError}`);
@@ -81,13 +122,8 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
-  // TODO: Get token from auth service
-  // let token = "";
-  // if (!!window) {
-  //   token = localStorage.getItem("token") ?? "";
-  // }
   const token = _getAuthToken();
-  console.log('{apolo.authLink} token: ', token);
+  //console.log("{apolo.authLink} token: ", token);
 
   // return the headers to the context so httpLink can read them
   return {
@@ -99,9 +135,69 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const client = new ApolloClient({
-  link: from([errorLink, authLink.concat(httpLink)]),
+  link: from([
+    errorLink,
+    authLink.concat(splitLink != null ? splitLink : httpLink),
+  ]),
   cache,
   connectToDevTools: true,
 });
 
 export default client;
+
+/**
+ * User for external error handling
+ */
+export function handleApolloError(error: ApolloError) {
+  const { graphQLErrors, networkError } = error;
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) => {
+      if (message === "Unauthorized") {
+        // notification["error"]({
+        //   message: "Unauthorized",
+        //   description: "Please connect wallet first!",
+        // });
+        antd_message.error(
+          "Error: Unauthorized: Please connect wallet first!",
+          3
+        );
+      } else {
+        console.log(
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        );
+        // notification["error"]({
+        //   message: "Error!",
+        //   description: message,
+        // });
+        antd_message.error(message, 3);
+      }
+    });
+
+  if (networkError) {
+    console.log(`[Network error]: ${networkError}`);
+  }
+}
+
+export function onApolloError(
+  error: ApolloError,
+  onError: (e: GraphQLError) => void,
+  onAuthError: (e: GraphQLError) => void,
+  onNetworkError: (e: Error | ServerParseError | ServerError) => void
+) {
+  const { graphQLErrors, networkError } = error;
+
+  if (networkError) {
+    onNetworkError(networkError);
+    return;
+  }
+
+  if (graphQLErrors)
+    graphQLErrors.forEach((e) => {
+      const { message, locations, path } = e;
+      if (message === "Unauthorized") {
+        onAuthError(e);
+      } else {
+        onError(e);
+      }
+    });
+}

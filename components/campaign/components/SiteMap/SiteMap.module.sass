@@ -10,14 +10,16 @@
   height: 40px
   background: #049486
   border-radius: 50%
-  top: 245px
+  top: 255px
   left: 0
   transform: translateY(-50%)
   position: absolute
   @media (min-width: 0px) and (max-width: 639px)
+    top: 176px
     width: 20px
     height: 20px
   @media (min-width: 640px) and (max-width: 991px)
+    top: 196px
     width: 30px
     height: 30px
   &::after
@@ -65,6 +67,34 @@
 
 .SiteMapLineCircleTitleBox
   //cursor: pointer
+  .amount
+    //display: flex
+    //justify-content: space-between
+    // min-height: 95px
+    //margin-top: 20px
+    label
+      color: white
+      font-size: 24px
+      .max
+        font-size: 16px
+        color: #bbb
+    .inputRow
+      font-size: 24px
+      line-height: 1.3
+      width: 120px
+      :global(.ant-form-item-control-input-content)
+        max-width: 120px
+        :global(.ant-input-number)
+          background: transparent
+          //height: 50px
+          min-width: 120px
+          font-size: 20px
+          line-height: 1.7
+    :global(.ant-form-item)
+      margin-bottom: 5px
+    :global(.ant-row)
+      display: flex
+      justify-content: flex-end
 
 .SiteMapLineCircleTitle
   font-style: normal
@@ -82,14 +112,14 @@
   font-style: normal
   font-weight: bold
   font-size: 36px
-  line-height: 57px
+  // line-height: 57px
   text-transform: uppercase
   @media (min-width: 0px) and (max-width: 639px)
-    font-size: 24px
-    line-height: 38px
+    font-size: 22px
+    // line-height: 38px
   @media (min-width: 640px) and (max-width: 991px)
-    font-size: 28px
-    line-height: 44px
+    font-size: 26px
+    line-height: 40px
 
 .SiteMapLineCircleTime
   font-style: normal
@@ -138,32 +168,87 @@
   left: 8.5%
   right: 23.5%
   @media (min-width: 0px) and (max-width: 639px)
+    top: 172px
     height: 8px
-    top: 241px
   @media (min-width: 640px) and (max-width: 991px)
     height: 10px
-    top: 240px
+    top: 190px
 
 .SiteMapContainer
   padding-bottom: 6rem
   background: linear-gradient(99.92deg, #00023A 0%, #250D82 100%)
+  animation: fadeIn 2s
 
-.buttom
-  max-width: 250.91px
+.button
+  //max-width: 250.91px
   width: 100%
-  height: 59px
-  background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+  //height: 59px
+  //padding: 15px 10px
+  color: #FFFFFF
+  background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%) !important
   box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
   backdrop-filter: blur(40px)
   border-radius: 8px
-  font-size: 24px
+  font-size: 22px
   margin-top: 20px
-  margin-bottom: 40px
+  margin-bottom: 20px
+  height: 46px
+  line-height: 35px
+  text-align: center
+  border: none
+  &.disabledBtn
+    background: #c4c4c4 !important
+  &.whitelisted
+    background: #049486
+    button
+      display: flex
+      align-items: center
+      justify-content: center
+      gap: 14px
+      margin: 0 auto
   @media (min-width: 0px) and (max-width: 639px)
-    font-size: 16px
-    height: 38px
+    font-size: 14px
+    //height: 38px
     margin-bottom: 20px
   @media (min-width: 640px) and (max-width: 991px)
-    font-size: 20px
-    height: 42px
+    font-size: 16px
+    //height: 42px
     margin-bottom: 20px
+.hSlide
+  height: 250px
+  @media (min-width: 0px) and (max-width: 639px)
+    height: 180px
+  @media (min-width: 640px) and (max-width: 991px)
+    height: 200px
+
+.btnConnect
+  button
+    margin-left: unset !important
+.line
+  width: 100%
+  height: 5px
+  background: white
+  position: relative
+  z-index: -1
+  left: 10px
+  top: -6px
+  @media screen and (min-width: 767px)
+    top: -7px
+    height: 8px
+  @media screen and (min-width: 1023px)
+    top: 0
+    height: 10px
+.tabContainer
+  animation: fadeIn 2s
+.presale
+  display: flex
+  justify-content: flex-end
+@keyframes fadeIn
+  0%
+    opacity: 0
+  100%
+    opacity: 1
+
+
+
+  

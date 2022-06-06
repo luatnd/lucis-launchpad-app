@@ -1,150 +1,122 @@
-.backgroundDetail
-  width: 100%
-  height: 100vh
-  background-image: url("/assets/image103.png")
+@import styles/common
+
+.backgroundBanner
   background-size: cover
   background-repeat: no-repeat
   background-position: center
+  padding: 100px 0px 30px 0
+  animation: fadeIn 2s
+  @media screen and (min-width: 768px)
+    padding: 130px 0 60px 0
+  @media screen and (min-width: 1023px)
+    padding: 170px 0 60px 0
 
-.backgroundContain
-  position: relative
-  width: 1240px
-  margin: 0 auto
-  @media (min-width: 0px) and (max-width: 414px)
-    max-width: 360px
-
-.notification
+.noti 
   display: flex
-  justify-content: space-around
+  justify-content: center
   align-items: center
-  position: absolute
-  width: 304px
-  height: 71px
-  left: 0
-  top: 170px
-  background: rgba(0, 0, 0, 0.3)
-  box-shadow: 0px 4px 35px rgba(234, 211, 12, 0.35)
-  backdrop-filter: blur(40px)
-  border-radius: 10px
-  padding: 1rem
-  @media (min-width: 0px) and (max-width: 360px)
-    margin-left: 10px
-  img
-    border: 2px solid #FFFFFF
-    box-sizing: border-box
-    border-radius: 50%
-    transform: matrix(-1, 0, 0, 1, 0, 0)
-    width: 35px
-    padding: 6px
-  p
-    margin: 0
-    width: 217px
-    height: 28px
-    font-family: Saira
-    font-style: normal
-    font-weight: bold
-    font-size: 24px
-    line-height: 115%
-    text-align: center
-    color: #FFFFFF
+  padding: 10px
+  gap: 20px 10px
+  color: white
+  margin-bottom: 20px
+  animation: fadeIn 2s
+  &:disabled
+    background: #c4c4c4
+    &:before
+      background: none
 
-.info
-  position: absolute
-  max-width: 689px
-  width: 100%
-  height: 387px
-  left: 0
-  top: 280px
+  @include box-glass
+  @include border-grad-3(linear-gradient(290.92deg,#0bebd6,#cd28e8))
   background: linear-gradient(126.08deg, rgba(0, 0, 0, 0.3) 13.84%, rgba(0, 0, 0, 0.1) 74.14%)
   box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
   backdrop-filter: blur(40px)
-  border-radius: 10px
-  @media (min-width: 0px) and (max-width: 360px)
-    max-width: 340px
-    margin-left: 10px
-  @media (min-width: 0px) and (max-width: 639px)
-    height: auto
-    padding: 20px
+  min-width: 180px
+  img
+    width: 16px
+  p 
+    margin: 0
+    font-weight: 700
+  @media screen and (min-width: 767px)
+    padding: 10px 20px
+    img
+      width: 25px
+    p
+      font-size: 24px
 
-.info_contain
-  // width: 135px
-  // height: 74.63px
-  // position: absolute
-  // left: 45px
-  // top: 21px
-  padding: 1.3rem 3rem
 
-@media (min-width: 992px) and (max-width: 1024px)
-  .info_contain
-    padding: .8rem 2rem
-@media (min-width: 0px) and (max-width: 414px)
-  .info_contain
-    padding: .3rem
+.inf
+  animation: fadeIn 2s
+  max-width: 689px
+  width: 95%
+  padding: 20px
+  @include border-grad-3(linear-gradient(290.92deg,#0bebd6,#cd28e8))
+  @include box-glass
+  background: linear-gradient(126.08deg, rgba(0, 0, 0, 0.3) 13.84%, rgba(0, 0, 0, 0.1) 74.14%)
+  background: linear-gradient(126.08deg, rgba(0, 0, 0, 0.3) 13.84%, rgba(0, 0, 0, 0.1) 74.14%)
+  box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
+  backdrop-filter: blur(40px)
+  @media screen and (min-width: 767px) 
+    padding: 20px 34px 38px 34px
 
-.info_logo
-  width: 135px
-  height: 74.63px
-  background: url('/assets/logo.png')
-  @media (min-width: 0px) and (max-width: 414px)
-    background-size: 100px
-    background-repeat: no-repeat
+.infLogo 
+  img
+    width: 70px
 
-.info_title
-  // width: 600px
-  margin: .7rem 0
-  font-family: Saira
-  font-style: normal
-  font-weight: 500
-  font-size: 36px
-  line-height: 115%
-  text-transform: uppercase
-  color: #FFFFFF
-  @media (min-width: 0px) and (max-width: 639px)
-    font-size: 24px
-    margin-top: 0
+  @media screen and (min-width: 767px) 
+    img
+      width: 135px
 
-.info_content
-  // width: 600px
-  font-family: Saira
-  font-style: normal
-  font-weight: 300
-  font-size: 24px
-  line-height: 150%
-  text-align: justify
-  color: #FFFFFF
-  margin-bottom: 28px
-  @media (min-width: 0px) and (max-width: 639px)
-    font-size: 16px
-    margin-bottom: 15px
+.infContainer
+  p
+    margin: 0
+  .infTitle 
+    margin-top: 12px
 
-.info_read
+
+.infSocial
   display: flex
   justify-content: space-between
-  @media (min-width: 0px) and (max-width: 639px)
-    flex-direction: column-reverse
-  // width: 600px
-  &>span
-    font-family: Saira
-    font-style: normal
-    font-weight: bold
-    font-size: 24px
-    line-height: 115%
-    text-align: justify
-    text-decoration-line: underline
-    color: #08D7F9
-    cursor: pointer
-    @media (min-width: 0px) and (max-width: 639px)
-      font-size: 16px
-      text-align: right
-      margin-bottom: 20px
-      padding-right: 10px
+  align-items: center
+  margin-top: 30px
 
-.info_button_group
-  display: inline-flex
-  width: 304px
-  height: 30px
-  justify-content: space-between
-  @media (min-width: 0px) and (max-width: 414px)
-    margin: 0 auto
-  span
-    cursor: pointer
+  .infSocialIcons
+    display: flex
+    gap: 10px
+    img
+      width: 24px
+      transition: 0.3s
+      &:hover 
+        transform: scale(1.2)
+  .infSocialRead
+    font-size: 14px
+    font-weight: 700
+    color: rgba(8, 215, 249, 1)
+    button 
+      text-decoration: underline
+  @media screen and (min-width: 767px)
+    .infSocialIcons
+      gap: 20px
+    .infSocialRead
+      font-size: 24px
+      a
+        text-decoration: underline
+    .infSocialIcons
+      img
+        width: 36px
+
+.modalContainer 
+  :global(.anticon)
+    color: red
+
+
+
+@keyframes fadeIn 
+  0% 
+    opacity:0
+
+  100% 
+    opacity:1
+
+
+  
+

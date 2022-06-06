@@ -1,24 +1,47 @@
 import DocHead from "components/DocHead";
-import Footer from "components/Footer";
+import Footer from "components/Footer/Footer";
+import BuyHistory from "components/HistoryTable/BuyHistory";
+import { observer } from "mobx-react-lite";
 import { useState } from "react";
-import { useQueryProfile } from "../../hooks/profile/useQueryProfile";
+import AuthStore from "../../components/Auth/AuthStore";
+import Contact from "../../components/Profile/ProfileContact";
+import Info from "../../components/Profile/ProfileInfo";
+import Social from "../../components/Profile/ProfileSocial";
 import s from "./index.module.sass";
-import Box from "../../components/profile/ProfileSocial";
-import Contact from "../../components/profile/ProfileContact";
-import Info from "../../components/profile/ProfileInfo";
 
 const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
-  const { data, loading, error } = useQueryProfile();
+  const {
+    name,
+    address,
+    balance,
+    phone,
+    email,
+    discord,
+    facebook,
+    twitter,
+    tele,
+    code,
+    token,
+  } = AuthStore;
 
-  if (loading) {
-    return <>Loading ...</>;
-  }
-  if (error) {
-    return <>Error...</>;
-  }
+  const props = {
+    isEdit,
+    setIsEdit,
+    name,
+    address,
+    balance,
+    code,
+    phone,
+    email,
+    discord,
+    facebook,
+    twitter,
+    tele,
+    token,
+  };
 
-  const props = { isEdit, setIsEdit, profile: data };
+  // console.log("Page", AuthStore);
 
   return (
     <>
@@ -26,15 +49,26 @@ const MyProfile = () => {
       <div className={s.banner}>
         <img src="/assets/MyProfile/banner.png" alt="" />
 
-        <div className="container">
-          <Info {...props} />
-          <Contact {...props} />
-          <Box {...props} />
-        </div>
-        <Footer />
+        {AuthStore.isLoggedIn ? (
+          <div className={`${s.profileContainer} container`}>
+            <Info {...props} />
+            <Contact {...props} />
+            <Social {...props} />
+            <BuyHistory title="History" {...props} />
+          </div>
+        ) : (
+          <h1
+            className="py-[100px] md:py-[200px] text-24px md:text-36px text-center m-0"
+            style={{ color: "white" }}
+          >
+            Please connect your wallet
+          </h1>
+        )}
       </div>
+
+      <Footer />
     </>
   );
 };
 
-export default MyProfile;
+export default observer(MyProfile);

@@ -1,32 +1,209 @@
+@import styles/common
 .containerBanner
     position: relative
-.bgItemSlider
-    position: absolute
-    left: 0
-    background: linear-gradient(99.92deg, rgba(11, 235, 214, 0) 0%, #CD28E8 100%)
-    opacity: 0.4
-    width: 100%
-    z-index: -1
-    @media (max-width: 413px)
-        height: 178px
-        top: 22%
-    @media (min-width: 414px)
-        height: 178px
-        top: 24%
-    @media (min-width: 540px)
-        height: 300px
-        top: 20%
-    @media (min-width: 768px)
-        height: 300px
-        top: 22%
-    @media (min-width: 992px)
-        height: 340px
-        top: 22%
-    @media (min-width: 1025px)
-        height: 350px
-        top: 100px
-    @media (min-width: 1280px)
-        height: 430px
-        top: 50%
-        transform: translateY(-56%)
+    animation: fadeIn 2s
+    a
+        margin: 0
+    @media screen and (min-width: 1024px)
+        padding-top: 116px
+        // height: 811px
+
+.btnApplyINO 
+    padding: 5px 20px
+    color: white
+    margin-bottom: 20px
+    max-height: 70px
+    @include box-glass
+    @include border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
+    background: linear-gradient(126.08deg, rgba(0, 0, 0, 0.3) 13.84%, rgba(0, 0, 0, 0.1) 74.14%)
+    box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
+    backdrop-filter: blur(40px)
+    display: flex
+    align-items: center
+    justify-content: center
+    gap: 10px
+    background-color: rgba(0,0,0, 0.3)
+    transition: 0.3s
+    &:hover 
+        transform: scale(1.1)
+    span
+      font-size: 18px
+      font-weight: 700
+      line-height: 42px
+      background: -webkit-linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+      -webkit-background-clip: text
+      -webkit-text-fill-color: transparent
+    img
+        width: 16px
+    @media screen and (min-width: 767px)
+        padding: 10px 30px
+        span
+            font-size: 24px
+            white-space: nowrap
+        img
+            width: 24px
+    @media screen and (min-width: 1023px)
+        padding: 15px 60px
+        span
+            font-size: 36px
+        img
+            width: 42px
+
+.mainSliderContainer 
+    color: white
+    display: flex
+    justify-content: space-between
+    align-items: center
+    p
+        margin: 0
+    .descContainer
+        width: 70%
+    .bannerContainer
+        width: 30%
+    @media screen and (min-width: 767px) 
+    @media screen and (min-width: 1023px) 
+        height: 595px
+
+.thumbContainer 
+    // flex-direction: column-reverse
+    @media screen and (min-width: 767px) 
+        display: flex
+        flex-direction: row
+        justify-content: space-between
+        align-items: center
+    @media screen and (min-width: 1023px) 
+
+.subSliderContainer
+    // width: 100%
+    // height: 100px
+    // display: flex
+    // justify-content: center
+    // align-items: center
+    // overflow-x: auto
+    // padding: 5px
+    // position: relative
+    // top: -500px
+    display: none
+    .thumbs 
+        display: flex
+        gap: 5px
+        .thumbItem
+            transition: 0.3s
+            cursor: pointer
+            width: 77px
+            height: 56px
+            background-repeat: no-repeat
+            background-size: contain
+            background-position: center
+            overflow: hidden
+            @include box-glass
+            @include border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
+            background-color: linear-gradient(126.08deg, rgba(0, 0, 0, 0.3) 13.84%, rgba(0, 0, 0, 0.1) 74.14%)
+            box-shadow: 0px 0px 5px 2px rgba(255, 255, 255, 0.69)
+            img
+                width: 100%
+                height: 100%
+                padding: 1px
+                border-radius: 10px
+        .active
+            transform: translateY(-10px)
+            // top: -10px
+    @media screen and (min-width: 540px)
+        top: -525px 
+        .thumbs
+            .thumbItem
+                width: 110px
+                height: 70px
+    @media screen and (min-width: 640px)
+        top: -495px 
+        .thumbs
+            .thumbItem
+                width: 135px
+                height: 70px
+    @media screen and (min-width: 768px) 
+        display: flex
+        justify-content: flex-end
+        align-items: center
+        top: 0
+        width: 500px
+        .thumbs
+            .thumbItem
+                width: 100px
+                height: 60px
+    @media screen and (min-width: 1024px) 
+        justify-content: center
+
+    
+.active 
+    display: block
+
+.hidden 
+    display: none
+ 
+.logo
+    img 
+        width: 100px
+
+.contentItemBottom
+    display: flex
+    align-items: center
+    justify-content: space-between
+    .btnMore
+        text-decoration-line: underline
+        color: #FFF
+        font-size: 22px
+        line-height: 28px
+        font-weight: 700
+        padding: 14px 34px
+        background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+        border-radius: 8px
+        cursor: pointer
+        transition: 0.3s
+        text-align: center
+        @media (max-width: 539px)
+        font-size: 16px
+        line-height: 20px
+        padding: 8px 6px
+        width: 160px
+        @media (min-width: 540px) and (max-width: 767px)
+        font-size: 16px
+        line-height: 20px
+        padding: 8px 6px
+        width: 160px
+        @media (min-width: 768px) and (max-width: 1279px)
+        font-size: 16px
+        line-height: 20px
+        padding: 8px 6px
+        width: 160px
+        &:hover 
+            transform: scale(1.1)
         
+.countDown 
+    padding: 10px 20px
+    background: black
+    border-radius: 8px
+    font-weight: 700
+    font-size: 16px
+    @media screen and (min-width: 767px)
+        font-size: 24px
+    @media screen and (min-width: 767px)
+        font-size: 36px
+
+.status 
+    padding: 10px 20px
+    text-transform: uppercase
+    color: rgba(11, 235, 214, 1)
+    background: rgba(11, 235, 214, 0.2)
+    border-radius: 8px
+    font-weight: 700
+    font-size: 16px
+    @media screen and (min-width: 767px)
+        font-size: 24px
+    @media screen and (min-width: 1023px)
+        font-size: 36px
+
+@keyframes fadeIn 
+  0% 
+    opacity:0
+  100% 
+    opacity:1

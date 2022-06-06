@@ -1,0 +1,306 @@
+.mainSlider 
+  // padding-bottom: 15px
+  // padding-top: 60px
+  // height: 672px
+  @media (max-width: 425px)
+    // padding-top: 80px
+    // padding-bottom: 80px
+    min-height: 715px
+  @media (min-width: 540px)
+    // padding-top: 80px
+    min-height: 767px
+  @media (min-width: 768px)
+    // padding-top: 90px
+    min-height: 332px
+  @media (min-width: 992px)
+    // padding-top: 90px
+    min-height: 428px
+  @media (min-width: 1024px)
+    // padding-top: 30px
+    min-height: 388px
+  @media (min-width: 1280px)
+    // padding-top: 60px
+    min-height: 499.5px 
+  @media (min-width: 1440px)
+    min-height: 580px 
+    // padding-top: 20px
+
+.contentItemSilder
+  padding-bottom: 15px
+  .contentDetail
+    position: relative
+    display: flex
+    align-items: center
+    justify-content: space-between
+    p
+      margin: 0
+    // @media (max-width: 424px)
+    @media (max-width: 767px)
+      flex-direction: column
+      // gap: 90px
+    @media (min-width: 767px)
+      gap: 20px
+    // @media (min-width: 1024px)
+    //   gap: 40px
+    @media (min-width: 1024px)
+      gap: 60px
+    .headingItem
+      animation: fadeIn 2s
+      flex: 50% 0 0 
+      @media (max-width: 767px)
+        order: 1
+        margin-top: 20px
+      .contentItemTop
+        display: flex
+        align-items: center
+        justify-content: space-between
+        .statusGame
+          color: #0BEBD6
+          text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
+          font-family: 'Transformer'
+          text-transform: uppercase
+          font-weight: 700
+          background-color: #0bebd633
+          border-radius: 8px
+          padding: 7px 20px
+          @media (max-width: 991px)
+            font-size: 18px
+            padding: 10px
+          @media (min-width: 992px)
+            font-size: 22px
+          @media (min-width: 1279px)
+            font-size: 36px
+
+        .Time
+          color: #FFF
+          font-weight: 700
+          background-color: #00000033
+          border-radius: 8px
+          padding: 7px 20px
+          @media (max-width: 991px)
+            font-size: 18px
+            padding: 10px
+            margin-left: 16px
+          @media (min-width: 767px)
+            // margin-left: 32px
+          @media (min-width: 992px)
+            font-size: 22px
+            // margin-left: 32px
+          @media (min-width: 1279px)
+            font-size: 36px
+      .logoGame
+        margin-top: 52px
+        img
+          width: 80px
+        @media screen and (min-width: 767px)
+          img
+            width: 110px
+        @media (max-width: 1279px)
+          margin-top: 16px
+      .nameCampaign
+        font-size: 14px
+        @media (min-width: 768px)
+        font-size: 18px
+        @media (min-width: 992px)
+        font-size: 22px
+      .desc
+        font-size: 22px 
+        line-height: 32px
+        font-weight: 300
+        color: #FFF
+        margin-top: 8px
+        @media (max-width: 539px)
+          font-size: 16px 
+          line-height: 24px
+        @media (min-width: 768px)
+          font-size: 16px 
+          line-height: 24px
+        @media (min-width: 992px)
+          font-size: 18px 
+          line-height: 28px
+      .contentItemBottom
+        display: flex
+        align-items: center
+        justify-content: space-between
+        @media (max-width: 767px)
+          margin-top: 30px
+        .btnMore
+          text-decoration-line: underline
+          color: #FFF
+          font-size: 22px
+          line-height: 28px
+          font-weight: 700
+          padding: 14px 34px
+          background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+          border-radius: 8px
+          cursor: pointer
+          transition: 0.3s
+          text-align: center
+          @media (max-width: 539px)
+            font-size: 16px
+            line-height: 20px
+            padding: 8px 6px
+          @media (min-width: 540px) and (max-width: 767px)
+            font-size: 16px
+            line-height: 20px
+            padding: 8px 6px
+            width: 160px
+          @media (min-width: 768px) and (max-width: 1279px)
+            font-size: 16px
+            line-height: 20px
+            padding: 8px 6px
+            width: 160px
+
+        .btnMore:hover
+          transform: scale(1.1)
+        .groupLink
+          display: flex
+          align-items: center
+          justify-content: space-between
+          gap: 12px
+          a
+            width: 24px
+            transition: 0.3s
+            &:hover 
+              transform: scale(1.25)
+          @media (min-width: 420px )
+            a
+              width: 28px
+          @media (min-width: 768px )
+            gap: 12px
+            a
+              width: 22px
+          @media (min-width: 1024px )
+            gap: 24px
+            a
+              width: 28px
+          @media (min-width: 1279px )
+            a
+              width: 36px
+
+  .btnApplyINO
+    display: flex
+    align-items: center
+    justify-content: center
+    position: relative
+    background: #0000004d
+    padding: 18px 0px
+    box-shadow: 0px 4px 35px rgba(234, 211, 12, 0.35)
+    backdrop-filter: blur(10px)
+    border-radius: 10px
+    max-width: 36.5%
+    cursor: pointer
+    @media (max-width: 767px)
+      padding: 10px 0px
+      margin: 40px auto 0px auto
+      max-width: 100%
+    @media (min-width: 768px)
+      padding: 10px 0px
+      margin: 60px 0px 0px 20px
+    @media (min-width: 992px)
+      margin: 0px 0px 0px 20px
+      padding: 12px 0px
+    @media (min-width: 1440px)
+      margin: 0px 0px 0px 20px
+      padding: 20px 0px
+    
+    &:global(:before)
+      content: ""
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
+      border-radius: 10px
+      padding: 2px
+      //background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+      background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+      -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
+      -webkit-mask-composite: xor
+      mask-composite: exclude
+    span
+      font-size: 36px
+      font-weight: 700
+      line-height: 42px
+      background: -webkit-linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+      -webkit-background-clip: text
+      -webkit-text-fill-color: transparent
+      @media (max-width: 767px)
+        font-size: 20px 
+        line-height: 28px
+        padding-left: 10px
+      @media (min-width: 768px)
+        font-size: 20px 
+        line-height: 28px
+        padding-left: 10px
+      @media (min-width: 992px)
+        font-size: 24px
+        line-height: 32px
+      @media (min-width: 1440px)
+        font-size: 36px
+        line-height: 42px
+    img
+      @media (max-width: 539px)
+        width: 8%
+    img
+      @media (min-width: 768px)
+        width: 8%
+
+.opening, .closed, .upcoming
+  letter-spacing: 0.8px
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
+  font-family: 'Transformer'
+  border-radius: 8px
+  padding: 7px 20px 5px 20px
+  font-size: 14px
+  @media (max-width: 991px)
+    font-size: 18px
+  @media (min-width: 992px)
+    font-size: 24px
+  @media (min-width: 1279px)
+    font-size: 32px
+
+.opening  
+  background: rgba(255, 138, 0, 0.2)
+  color: #FF8A00
+
+.closed
+  background: rgba(255, 0, 199, 0.2)
+  color: #FF00C7
+
+.upcoming
+  color: #0BEBD6
+  background: rgba(11, 235, 214, 0.2)
+
+.imgGame
+  animation-name: move
+  animation-duration: 1.5s
+  animation-iteration-count: infinite
+  animation-timing-function: ease-in-out
+  animation-direction: alternate
+  img
+    margin: auto
+    max-width: 100%
+    animation: fadeIn 2s
+  @media screen and (min-width: 768px)
+    width: 100%
+    img
+      width: 100%
+  
+@keyframes fadeIn 
+  0% 
+    opacity:0
+      
+  100% 
+    opacity:1
+
+@keyframes move 
+  0% 
+    transform: translate3d(0,-4px,0)
+  
+
+  to 
+    transform: translate3d(0,10px,0)
+  
+
+

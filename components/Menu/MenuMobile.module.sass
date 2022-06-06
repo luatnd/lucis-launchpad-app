@@ -1,23 +1,54 @@
 .pcMenu
-  border-bottom: 1px solid #010242
+  border-bottom: 1px solid #cfcfcf78
+  backdrop-filter: blur(4px)
+
 
 .mobileMenu
-  border-bottom: 1px solid #010242
+  border-bottom: 1px solid #cfcfcf73
   padding: 10px 0
+  backdrop-filter: blur(4px)
 
 .mHumber
   position: absolute
   right: 30px
   top: 10px
 
-.container
-  padding: 0 30px
 
 .mobileAuthBox
-  max-width: 200px
+  max-width: 250px
   margin-right: 20px
+  @media (max-width: 500px)
+    max-width: 200px
 
 //@media (min-width: 992px) and (max-width: 1024px)
 //  .container
 //    max-width: 992px
 //    padding: 0px 3rem
+
+.containerMobile
+  display: flex
+  align-items: center
+  justify-content: space-between
+  padding: 0px 30px
+
+.submenu
+  align-items: start !important
+  // .removeRotate
+  //   transform: translateY(100px)
+  img
+    margin-left: 8px
+    transition: 0.3s
+  .addRotate
+    transform: rotate(-180deg)
+  .removeRotate
+    transform: rotate(0deg)
+
+  .contentSubMenu
+    overflow: hidden
+    text-align: left
+    padding-left: 20px
+    padding-top: 8px
+    transition: 0.3s
+    font-size: 18px
+    a:hover
+      opacity: 0.6

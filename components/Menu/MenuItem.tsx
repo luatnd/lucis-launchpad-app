@@ -2,12 +2,12 @@ import * as React from "react";
 import { ReactElement, useCallback } from "react";
 
 import { motion } from "framer-motion";
-import { Menu } from 'antd';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
-
+import { Menu } from "antd";
 const { SubMenu } = Menu;
 import { scrollToSection } from "../../utils/DOM";
 import { AppEmitter } from "../../services/emitter";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 const variants = {
   open: {
@@ -27,51 +27,54 @@ const variants = {
 };
 
 export type MenuItemType = {
-  color: string,
-  text: string | ReactElement,
-  scrollTarget?: string, // CSS selector of target scroll
-  statusMenu: boolean;
-  onClick?: () => void,
-}
+  color: string;
+  text: string | ReactElement;
+  scrollTarget?: string; // CSS selector of target scroll
+  statusMenu?: boolean;
+  onClick?: () => void;
+  href?: string;
+  id?: number;
+};
 
 export const MenuItem = (props: { item: MenuItemType }) => {
   const click = useCallback(() => {
     if (props.item.statusMenu == false) {
-      if (props.item.scrollTarget) {
-        scrollToSection(props.item.scrollTarget ?? '', true, -90)
-      }
-      if (props.item.onClick) {
-        props.item.onClick()
-      }
-  
-      AppEmitter.emit("setMbMenuVisible", false)
+      setTimeout(() => {
+        if (props.item.scrollTarget) {
+          scrollToSection(props.item.scrollTarget ?? "", true, -90);
+        }
+        if (props.item.onClick) {
+          props.item.onClick();
+        }
+      }, 50);
+      AppEmitter.emit("setMbMenuVisible", false);
     }
-    }, [])
+  }, []);
 
   return (
-    <motion.li
-      variants={variants}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
-      onClick={click}
-    >
-      {/* <div className="icon-placeholder" style={style} /> */}
-      {
-      props.item.statusMenu == true?
-        <Menu
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
-        mode="inline"
-      >
-        <SubMenu key="sub1" title="Guide">
-          <Menu.Item key="1">For Game Publisher</Menu.Item>
-          <Menu.Item key="2">For Personal Investor</Menu.Item>
-        </SubMenu>
-      </Menu>
-      :<div className="text-placeholder font-saira text-white text-20px leading-28px py-15px">
-        {props.item.text}
-      </div>
+    <div
+      style={
+        props.item.id === 6
+          ? { position: "absolute", top: "65%" }
+          : props.item.id === 7
+          ? { position: "absolute", top: "70%", width: '100%', pointerEvents: 'none' }
+          : props.item.id === 8
+          ? { position: "absolute", top: "76%" }
+          : {}
       }
-    </motion.li>
+    >
+      <motion.li
+        variants={variants}
+        whileHover={{ scale: 1.1 }}
+        // whileTap={{ scale: 0.95 }}
+        onClick={click}
+      >
+        {
+          <div className="text-placeholder font-saira text-white text-20px leading-28px py-15px">
+            <Link href={props.item.href ?? "/"}>{props.item.text}</Link>
+          </div>
+        }
+      </motion.li>
+    </div>
   );
 };

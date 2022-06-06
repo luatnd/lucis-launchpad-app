@@ -113,7 +113,7 @@ const BuyHistory = ({ id, title, token }: Props) => {
                 item.box_price &&
                 item.quantity * item.box_price.price
               } ${
-                item.box_price && item.box_price?.currency_name?.toUpperCase()
+                item.box_price && item.box_price?.currency_symbol?.toUpperCase()
               }`}
             </p>
 

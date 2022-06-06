@@ -44,6 +44,7 @@ const BOX_HISTORIES = gql`
         chain_icon
         chain_name
         currency_name
+        currency_symbol
         boxType {
           name
           thumb_img

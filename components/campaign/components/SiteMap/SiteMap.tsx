@@ -34,6 +34,7 @@ import {
 } from "hooks/campaign/useDetailCampaign";
 import Router from "next/router";
 import { refreshAuthTokenFromLocal } from "utils/apollo_client";
+import { currency, format } from "utils/Number";
 
 interface IRound {
   rounds: GBoxCampaignRound[];
@@ -257,6 +258,7 @@ export default observer(function SiteMap(props: IRound) {
             refetchPresaleRemaining();
             message.success("Success");
             form.resetFields(["amount"]);
+            setTotalPayment(0);
           },
           onError: (e: any) => {
             message.error("Error. Please try again");
@@ -599,6 +601,7 @@ export default observer(function SiteMap(props: IRound) {
                                       if (rounds[0]?.presale_price) {
                                         val = value * rounds[0]?.presale_price;
                                       }
+                                      
                                       setTotalPayment(val);
                                     }}
                                     controls={false}
@@ -621,7 +624,7 @@ export default observer(function SiteMap(props: IRound) {
                             <Col span={14} className={`${s.presale}`}>
                               <label className={s.label}>
                                 <span className="text-[18px] md:text-[24px]">
-                                  {totalPayment} {chainConfig?.symbol ? chainConfig?.symbol : currencies[0]?.symbol}
+                                  {currency(totalPayment,2)} {chainConfig?.symbol ? chainConfig?.symbol : currencies[0]?.symbol}
                                 </span>
                               </label>
                             </Col>

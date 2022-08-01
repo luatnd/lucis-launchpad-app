@@ -1,3 +1,5 @@
+import { Tabs } from "antd";
+import AffiliateTable from "components/AffiliateTable/AffiliateTable";
 import DocHead from "components/DocHead";
 import Footer from "components/Footer/Footer";
 import BuyHistory from "components/HistoryTable/BuyHistory";
@@ -8,6 +10,8 @@ import Contact from "../../components/Profile/ProfileContact";
 import Info from "../../components/Profile/ProfileInfo";
 import Social from "../../components/Profile/ProfileSocial";
 import s from "./index.module.sass";
+
+const { TabPane } = Tabs;
 
 const MyProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
@@ -54,7 +58,14 @@ const MyProfile = () => {
             <Info {...props} />
             <Contact {...props} />
             <Social {...props} />
-            <BuyHistory title="History" {...props} />
+            <Tabs defaultActiveKey="1" className={`${s.tabProfile}`}>
+              <TabPane tab="History" key="1">
+                <BuyHistory title="History" {...props} />
+              </TabPane>
+              <TabPane tab="Refer" key="2">
+                <AffiliateTable></AffiliateTable>
+              </TabPane>
+            </Tabs>
           </div>
         ) : (
           <h1

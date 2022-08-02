@@ -19,6 +19,12 @@ export type Scalars = {
   JSON: any;
 };
 
+export type AffiliateTracking = {
+  __typename?: 'AffiliateTracking';
+  commission_range?: Maybe<Array<CommissionRange>>;
+  users?: Maybe<Array<UserGql>>;
+};
+
 export enum AffilicateStatus {
   BuyBox = 'BuyBox',
   Joined = 'Joined',
@@ -272,6 +278,15 @@ export enum ChainSymbol {
   Polygon = 'POLYGON',
   Solana = 'SOLANA'
 }
+
+export type CommissionRange = {
+  __typename?: 'CommissionRange';
+  commission: Scalars['Float'];
+  created_at: Scalars['DateTime'];
+  id: Scalars['ID'];
+  range: Scalars['JSON'];
+  updated_at: Scalars['DateTime'];
+};
 
 export type ConfigGql = {
   __typename?: 'ConfigGql';
@@ -742,7 +757,7 @@ export type Query = {
   getAllowanceAmount: Scalars['Float'];
   /** Config */
   getConfig?: Maybe<ConfigGql>;
-  getUserReferFriend?: Maybe<Array<UserGql>>;
+  getUserReferFriend?: Maybe<AffiliateTracking>;
   /** Check current user joined whitelist */
   isInWhitelist?: Maybe<Scalars['Boolean']>;
   me?: Maybe<UserGraphql>;

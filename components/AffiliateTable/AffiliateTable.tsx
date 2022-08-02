@@ -13,14 +13,15 @@ const AffiliateTable = (props: Props) => {
   const [dataAffConvert, setDataAffConvert] = useState<any[]>([]);
   useEffect(() => {
     let data: any[] = [];
-    if (dataAffiliate) {
-      dataAffiliate.forEach((item: UserGql) => {
+    if (dataAffiliate && dataAffiliate?.users) {
+      dataAffiliate?.users.forEach((item: UserGql) => {
         item?.box_campaigns?.forEach((itemBoxCampaign) => {
           let checked = { ...item, box_campaigns: itemBoxCampaign, rowspan: item?.box_campaigns?.length};
           data.push(checked);
         });
       });
     }
+    console.log("data", data);
     setDataAffConvert(data);
   }, [dataAffiliate]);
   const columns = [
@@ -42,6 +43,14 @@ const AffiliateTable = (props: Props) => {
             {trim_middle(data?.address ?? "", 7, 8)}
           </div>
         );
+      },
+    },
+    {
+      title: "Campaign",
+      dataIndex: "campaign",
+      key: "campaign",
+      render: (_: any, data: any) => {
+        return <div className={s.prizeWrap}>{data?.box_campaigns?.name}</div>;
       },
     },
     // {
@@ -93,15 +102,7 @@ const AffiliateTable = (props: Props) => {
       },
     },
     {
-      title: "Campaign",
-      dataIndex: "campaign",
-      key: "campaign",
-      render: (_: any, data: any) => {
-        return <div className={s.prizeWrap}>{data?.box_campaigns?.name}</div>;
-      },
-    },
-    {
-      title: "Commission",
+      title: `Commission`,
       dataIndex: "commission",
       key: "commission",
       render: (_: any, data: any) => {

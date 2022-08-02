@@ -1,11 +1,11 @@
 import { ApolloError, ApolloQueryResult, gql, useQuery } from "@apollo/client";
-import { UserGql } from "src/generated/graphql";
+import { AffiliateTracking } from "src/generated/graphql";
 
 export function useQueryAffiliate(): {
   loading: boolean,
   errorDataAffiliate: ApolloError | undefined,
   refetchDataAffiliate: () => Promise<ApolloQueryResult<any>>;
-  dataAffiliate: any[] | undefined
+  dataAffiliate: AffiliateTracking | undefined
 } {
   const { loading, error, data, refetch } = useQuery(GET_USER_REFER_FRIEND, {
     variables: {},
@@ -23,19 +23,26 @@ export function useQueryAffiliate(): {
 const GET_USER_REFER_FRIEND = gql`
   query {
     getUserReferFriend {
-      id
-      address
-      code
-      box_campaigns{
-        uid
-        name
-        affiliate_status
-        paid {
-          amount
-          currency
-          commission
+      users { 
+        id
+        address
+        code
+        box_campaigns{
+          uid
+          name
+          affiliate_status
+          paid {
+            amount
+            currency
+            commission
+          }
         }
       }
+      commission_range {
+        id
+        range
+        commission
+      } 
     }
   }
 `;

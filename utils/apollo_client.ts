@@ -129,8 +129,8 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      //authorization: `Bearer ${token}`,
-      authorization: `bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsInRpbWVzdGFtcCI6MTY1OTE1OTIxMDAyOCwiaWF0IjoxNjU5MTU5MjEwLCJleHAiOjE2NjE3NTEyMTB9.wRxT-9n8jS6P63DxgwcSkKTUvMdiGqice4BQB8nEeBw`,
+      authorization: `Bearer ${token}`,
+      //authorization: `bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsInRpbWVzdGFtcCI6MTY1OTE1OTIxMDAyOCwiaWF0IjoxNjU5MTU5MjEwLCJleHAiOjE2NjE3NTEyMTB9.wRxT-9n8jS6P63DxgwcSkKTUvMdiGqice4BQB8nEeBw`,
     },
   };
 });

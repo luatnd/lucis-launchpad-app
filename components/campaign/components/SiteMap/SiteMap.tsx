@@ -23,16 +23,15 @@ import s from "./SiteMap.module.sass";
 import ConnectWalletStore, {
   nonReactive as ConnectWalletStore_NonReactiveData,
 } from "components/Auth/ConnectWalletStore";
-import { Web3ProviderErrorCodes } from "components/Auth/ConnectWalletHelper";
 import EthersService from "services/blockchain/Ethers";
 import BigNumber from "bignumber.js";
 import { useForm } from "antd/lib/form/Form";
 import { isEmpty } from "lodash";
 import {
+  useGetBoxPresale,
   useGetConfig,
   usePresaleRemaining,
 } from "hooks/campaign/useDetailCampaign";
-import Router from "next/router";
 import { refreshAuthTokenFromLocal } from "utils/apollo_client";
 import { currency, format } from "utils/Number";
 
@@ -74,6 +73,13 @@ export default observer(function SiteMap(props: IRound) {
   } = props;
 
   const { dataPresaleRemaining, refetchPresaleRemaining } = usePresaleRemaining(
+    {
+      box_campaign_uid: boxCampaignUid,
+      skip: isEmpty(boxCampaignUid),
+    }
+  );
+
+  const { dataGetBoxPresale, refetchDataGetBoxPresale } = useGetBoxPresale(
     {
       box_campaign_uid: boxCampaignUid,
       skip: isEmpty(boxCampaignUid),
@@ -413,6 +419,13 @@ export default observer(function SiteMap(props: IRound) {
                 >
                   {item.description}
                 </div>
+
+                {
+                  item?.require_presale &&
+                  <div className={`text-white mt-5 w-full ${s.SiteMapLineBoxPresaleContent}`}>
+                    Reserved amount: {dataGetBoxPresale?.total_quantity} {dataGetBoxPresale?.total_quantity > 1 ? 'boxes' : 'box'}
+                  </div>
+                }
 
                 {item.is_whitelist && item.isActive && (
                   <>

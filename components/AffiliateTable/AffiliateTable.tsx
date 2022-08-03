@@ -16,8 +16,16 @@ const AffiliateTable = (props: Props) => {
     if (dataAffiliate && dataAffiliate?.users) {
       dataAffiliate?.users.forEach((item: UserGql) => {
         item?.box_campaigns?.forEach((itemBoxCampaign) => {
-          let checked = { ...item, box_campaigns: itemBoxCampaign, rowspan: item?.box_campaigns?.length};
-          data.push(checked);
+          if(itemBoxCampaign?.affiliate_status !== "Joined") {
+            itemBoxCampaign?.paid?.forEach((itemPaid) => {
+              let checked = { ...item, box_campaigns: {...itemBoxCampaign, paid: itemPaid}};
+              data.push(checked);
+            }) 
+          }
+          else {
+            let checked = { ...item, box_campaigns: itemBoxCampaign};
+              data.push(checked);
+          }
         });
       });
     }
@@ -95,8 +103,8 @@ const AffiliateTable = (props: Props) => {
       render: (_: any, data: any) => {
         return (
           <div className={s.prizeWrap}>
-            {data?.box_campaigns?.paid[0]?.amount}{" "}
-            {data?.box_campaigns?.paid[0]?.currency.toUpperCase()}
+            {data?.box_campaigns?.paid?.amount}{" "}
+            {data?.box_campaigns?.paid?.currency?.toUpperCase()}
           </div>
         );
       },
@@ -106,8 +114,8 @@ const AffiliateTable = (props: Props) => {
       dataIndex: "commission",
       key: "commission",
       render: (_: any, data: any) => {
-        return <div className={s.prizeWrap}>{data?.box_campaigns?.paid[0]?.commission}{" "}
-        {data?.box_campaigns?.paid[0]?.currency.toUpperCase()}</div>;
+        return <div className={s.prizeWrap}>{data?.box_campaigns?.paid?.commission}{" "}
+        {data?.box_campaigns?.paid?.currency?.toUpperCase()}</div>;
       },
     },
     // {

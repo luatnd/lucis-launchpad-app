@@ -318,6 +318,7 @@ export default observer(function SiteMap(props: IRound) {
     setDisabledButton(hasErrors);
   };
 
+  console.log("listRounds", listRounds);
   return (
     <div className={`flex justify-center relative ${s.SiteMapContainer}`}>
       {/* <div className={`${s.SiteMapLineTimeLine} w-10/12`}></div> */}
@@ -419,11 +420,10 @@ export default observer(function SiteMap(props: IRound) {
                 >
                   {item.description}
                 </div>
-
                 {
-                  item?.require_presale &&
+                  item?.require_presale && (new Date() > new Date(item?.start)) &&
                   <div className={`text-white mt-5 w-full ${s.SiteMapLineBoxPresaleContent}`}>
-                    Reserved amount: {dataGetBoxPresale?.total_quantity} {dataGetBoxPresale?.total_quantity > 1 ? 'boxes' : 'box'}
+                    Reserved amount: {dataGetBoxPresale?.total_quantity ? dataGetBoxPresale?.total_quantity : 0} {dataGetBoxPresale?.total_quantity > 1 ? 'boxes' : 'box'}
                   </div>
                 }
 
@@ -637,7 +637,7 @@ export default observer(function SiteMap(props: IRound) {
                             <Col span={14} className={`${s.presale}`}>
                               <label className={s.label}>
                                 <span className="text-[18px] md:text-[24px]">
-                                  {currency(totalPayment,2)} {chainConfig?.symbol ? chainConfig?.symbol : currencies[0]?.symbol}
+                                  {format(totalPayment,2, {zero_trim: true})} {chainConfig?.symbol ? chainConfig?.symbol : currencies[0]?.symbol}
                                 </span>
                               </label>
                             </Col>

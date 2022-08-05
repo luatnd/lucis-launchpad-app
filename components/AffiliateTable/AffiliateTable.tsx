@@ -3,6 +3,7 @@ import { useQueryAffiliate } from "hooks/profile/useQueryAffiliate";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { UserGql } from "src/generated/graphql";
+import { format } from "utils/Number";
 import { trim_middle } from "utils/String";
 import s from "./AffiliateTable.module.sass";
 
@@ -16,20 +17,21 @@ const AffiliateTable = (props: Props) => {
     if (dataAffiliate && dataAffiliate?.users) {
       dataAffiliate?.users.forEach((item: UserGql) => {
         item?.box_campaigns?.forEach((itemBoxCampaign) => {
-          if(itemBoxCampaign?.affiliate_status !== "Joined") {
+          if (itemBoxCampaign?.affiliate_status !== "Joined") {
             itemBoxCampaign?.paid?.forEach((itemPaid) => {
-              let checked = { ...item, box_campaigns: {...itemBoxCampaign, paid: itemPaid}};
+              let checked = {
+                ...item,
+                box_campaigns: { ...itemBoxCampaign, paid: itemPaid },
+              };
               data.push(checked);
-            }) 
-          }
-          else {
-            let checked = { ...item, box_campaigns: itemBoxCampaign};
-              data.push(checked);
+            });
+          } else {
+            let checked = { ...item, box_campaigns: itemBoxCampaign };
+            data.push(checked);
           }
         });
       });
     }
-    console.log("data", data);
     setDataAffConvert(data);
   }, [dataAffiliate]);
   const columns = [
@@ -103,7 +105,7 @@ const AffiliateTable = (props: Props) => {
       render: (_: any, data: any) => {
         return (
           <div className={s.prizeWrap}>
-            {data?.box_campaigns?.paid?.amount}{" "}
+            {format(data?.box_campaigns?.paid?.amount, 2, { zero_trim: true })}{" "}
             {data?.box_campaigns?.paid?.currency?.toUpperCase()}
           </div>
         );
@@ -114,8 +116,14 @@ const AffiliateTable = (props: Props) => {
       dataIndex: "commission",
       key: "commission",
       render: (_: any, data: any) => {
-        return <div className={s.prizeWrap}>{data?.box_campaigns?.paid?.commission}{" "}
-        {data?.box_campaigns?.paid?.currency?.toUpperCase()}</div>;
+        return (
+          <div className={s.prizeWrap}>
+            {format(data?.box_campaigns?.paid?.commission, 2, {
+              zero_trim: true,
+            })}{" "}
+            {data?.box_campaigns?.paid?.currency?.toUpperCase()}
+          </div>
+        );
       },
     },
     // {

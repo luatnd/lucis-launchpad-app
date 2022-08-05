@@ -26,7 +26,6 @@ const ModalShare = (props: Props) => {
   const { code } = AuthStore;
 
   const handleCopyAffilateId = () => {
-    console.log("router", router);
     if (code) {
       if (isClient) {
         setIsCopy(true);

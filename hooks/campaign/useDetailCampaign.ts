@@ -406,7 +406,7 @@ const BOX_CAMPAIGN_SUBSCRIPTION_DETAIL = gql`
   }
 `;
 
-const NEW_BOX_CAMPAIGN_REF = gql`
+export const NEW_BOX_CAMPAIGN_REF = gql`
   mutation ($box_campaign_uid: String!, $ref: String!) {
     newBoxCampaignRef(box_campaign_uid: $box_campaign_uid, ref: $ref)
   }

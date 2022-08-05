@@ -67,16 +67,23 @@ function DetailCampaign() {
   });
 
   useEffect(() => {
+    console.log("campaignUid", campaignUid);
     if (router?.query && router?.query?.r && campaignUid && AuthStore.isLoggedIn) {
-      newBoxCampaignRef({
-        variables: {
-          box_campaign_uid: campaignUid,
-          ref: router?.query?.r ? router?.query?.r : "",
-        },
-        onError: () => {
-          console.warn("Ref existed");
-        },
-      });
+      // newBoxCampaignRef({
+      //   variables: {
+      //     box_campaign_uid: campaignUid,
+      //     ref: router?.query?.r ? router?.query?.r : "",
+      //   },
+      //   onError: () => {
+      //     console.warn("Ref existed");
+      //   },
+      // });
+    }
+    else {
+      localStorage.setItem('ref', JSON.stringify({
+        box_campaign_uid: campaignUid,
+        ref: router?.query?.r ? router?.query?.r : "",
+      }));
     }
   }, [router, campaignUid, AuthStore.isLoggedIn]);
 

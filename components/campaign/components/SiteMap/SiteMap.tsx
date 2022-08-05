@@ -318,7 +318,6 @@ export default observer(function SiteMap(props: IRound) {
     setDisabledButton(hasErrors);
   };
 
-  console.log("listRounds", listRounds);
   return (
     <div className={`flex justify-center relative ${s.SiteMapContainer}`}>
       {/* <div className={`${s.SiteMapLineTimeLine} w-10/12`}></div> */}

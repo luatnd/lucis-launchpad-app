@@ -26,12 +26,21 @@ const ModalShare = (props: Props) => {
   const { code } = AuthStore;
 
   const handleCopyAffilateId = () => {
+    console.log("router", router);
     if (code) {
       if (isClient) {
         setIsCopy(true);
         message.success("Copied to clipboard");
+        let path = "";
+        if(router.asPath.includes("?r=")) {
+          path = router.asPath.split("?")[0];
+        }
+        else {
+          path = router.asPath
+        }
+        
         navigator.clipboard.writeText(
-          `${window.location.origin}${router.asPath}?r=${code}`
+          `${window.location.origin}${path}?r=${code}`
         );
       }
     }

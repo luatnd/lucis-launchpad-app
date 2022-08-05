@@ -111,7 +111,6 @@ export default class EtherContract {
     address: string,
     erc20Address: string
   ): Promise<number | null> {
-    console.log("Vao day khongg");
     const myAddress = await this.getMyAddress();
     const contract = await this.getContractWithSignerErc20(erc20Address);
 

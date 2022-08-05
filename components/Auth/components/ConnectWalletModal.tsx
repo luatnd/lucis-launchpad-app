@@ -196,7 +196,6 @@ export default observer(function ConnectWalletModal(props: Props) {
             }, 300);
 
             const ref = localStorage.getItem("ref");
-            console.log(ref);
             if(ref) {
               const obj = JSON.parse(ref);
               saveBoxCampaignRef(obj);

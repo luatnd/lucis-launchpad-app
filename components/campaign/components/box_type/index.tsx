@@ -187,14 +187,14 @@ const BoxTypeCard = observer((props: Props) => {
             className="mx-auto"
             alt=""
           />
-          <div
+          {/* <div
             className={`${s.bgImageBtn}`}
             onClick={() => {
               setIsModalShareVisible(true);
             }}
           >
-            <ShareAltOutlined width="50px" />
-          </div>
+            <img src="/assets/Box/btn_share.svg" alt=""/>
+          </div> */}
         </div>
 
         <div className={`mx-auto ${s.boxMain}`}>

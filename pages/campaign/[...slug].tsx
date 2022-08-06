@@ -17,6 +17,7 @@ import { useDetailCampaign } from "../../hooks/campaign/useDetailCampaign";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import s from "./detail.module.sass";
 import { isEmpty } from "lodash";
+import ShareCampaign from "components/campaign/components/ShareCamp";
 
 /**
  * Match all route: /campaign/....
@@ -150,6 +151,10 @@ function DetailCampaign() {
                     />
                   )}
 
+                  {!!boxCampaign && (
+                    <ShareCampaign />
+                  )}
+                  
                   {textNow.length > 0 && (
                     <CountDown
                       timeCountDown={timeCountDown}

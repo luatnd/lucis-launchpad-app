@@ -265,10 +265,12 @@ export default observer(function SiteMap(props: IRound) {
             message.success("Success");
             form.resetFields(["amount"]);
             setTotalPayment(0);
+            setAmountBox(0);
           },
           onError: (e: any) => {
             message.error("Error. Please try again");
             form.resetFields(["amount"]);
+            setAmountBox(0);
           },
         });
       } else {
@@ -582,15 +584,14 @@ export default observer(function SiteMap(props: IRound) {
                                       required: true,
                                       message: "Please input amount!",
                                     },
-
+                                    {
+                                      type: "integer",
+                                      message: "Please enter an integer",
+                                    },
                                     {
                                       type: "number",
                                       min: 1,
                                       message: "Amount must be greater than 0",
-                                    },
-                                    {
-                                      type: "integer",
-                                      message: "Please enter an integer",
                                     },
                                     {
                                       type: "number",
@@ -671,7 +672,7 @@ export default observer(function SiteMap(props: IRound) {
                                   dataPresaleRemaining?.presaled ||
                               (dataPresaleRemaining?.presaled == 0 &&
                                 dataPresaleRemaining?.remain == 0) ||
-                              !amountBox
+                              amountBox == 0
                             }
                             onClick={handleApplyWhiteListWithFee}
                             loading={loadingReserve}
@@ -682,7 +683,7 @@ export default observer(function SiteMap(props: IRound) {
 
                         <Progress
                           strokeColor="#0BEBD6"
-                          percent={
+                          percent={ 
                             dataPresaleRemaining?.presaled
                               ? (dataPresaleRemaining?.presaled /
                                   (dataPresaleRemaining?.remain +
@@ -692,9 +693,9 @@ export default observer(function SiteMap(props: IRound) {
                           }
                           showInfo={false}
                         />
-                        <p className="text-right text-white mt-1">{`${
+                        <p className={` ${s.textCapacity} text-right text-white mt-1`}>{`Your capacity: ${
                           dataPresaleRemaining?.presaled
-                        } / ${
+                        }/${
                           dataPresaleRemaining?.remain +
                           dataPresaleRemaining?.presaled
                         }`}</p>

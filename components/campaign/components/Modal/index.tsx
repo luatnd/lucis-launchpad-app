@@ -6,7 +6,7 @@ import {
   TwitterShareButton,
   FacebookMessengerShareButton,
 } from "react-share";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { isClient } from "utils/DOM";
 import { CheckOutlined } from "@ant-design/icons";
 import AuthStore from "components/Auth/AuthStore";
@@ -22,25 +22,17 @@ const ModalShare = (props: Props) => {
   const [isCopy, setIsCopy] = useState(false);
   const router = useRouter();
   const [urlAffilate, setUrlAffilate] = useState("");
+  const [urlLinkShare, setUrlLinkShare] = useState("");
 
   const { code } = AuthStore;
 
-  const handleCopyAffilateId = () => {
+  const handleCopyLink = () => {
     if (code) {
       if (isClient) {
         setIsCopy(true);
         message.success("Copied to clipboard");
-        let path = "";
-        if(router.asPath.includes("?r=")) {
-          path = router.asPath.split("?")[0];
-        }
-        else {
-          path = router.asPath
-        }
         
-        navigator.clipboard.writeText(
-          `${window.location.origin}${path}?r=${code}`
-        );
+        navigator.clipboard.writeText(urlLinkShare);
       }
     }
   };
@@ -52,6 +44,9 @@ const ModalShare = (props: Props) => {
 
   useEffect(() => {
     const url = `${window.location.origin}${router.asPath}?r=${code}`;
+    console.log(router)
+    const linkShare = `${window.location.origin}/c/${router.query?.slug?.[0]}?r=${code}`;
+    setUrlLinkShare(linkShare);
     setUrlAffilate(url);  
   }, [code]);
 
@@ -61,10 +56,13 @@ const ModalShare = (props: Props) => {
       centered
       className={s.content_modal}
       footer={null}
-      title="Share to"
+      title="Share this campaign"
       onCancel={closeModalShare}
     >
       <div className={s.infSocial}>
+        <div className={s.title}>
+          <h2>Refer friend and get commission up to 5%</h2>
+        </div>
         <div className={s.infSocialIcons}>
           <FacebookShareButton url={`https://lucis-lp.koolab.io${router.asPath}?r=${code}`}>
             <a target="_blank" rel="noopener noreferrer">
@@ -90,23 +88,44 @@ const ModalShare = (props: Props) => {
             </a>
           </FacebookMessengerShareButton>
         </div>
-        {code && (
-          <div className={`${s.info} sm:mt-2 lg:mt-5 `}>
-            <div
-              className={`${s.name} font-[400] text-[14px] sm:text-[18px] md:text-[24px]`}
-            >
-              Affiliate ID:
-              <span> {code} </span>
-              <button onClick={handleCopyAffilateId} disabled={isCopy}>
-                {!isCopy ? (
-                  <img src={"/assets/MyProfile/copy.svg"} alt="" />
-                ) : (
-                  <CheckOutlined />
-                )}
-              </button>
-            </div>
-          </div>
-        )}
+        {/*{code && (*/}
+        {/*  <div className={`${s.info} sm:mt-2 lg:mt-5 `}>*/}
+        {/*    <div*/}
+        {/*      className={`${s.name} font-[400] text-[14px] sm:text-[18px] md:text-[24px]`}*/}
+        {/*    >*/}
+        {/*      Affiliate ID:*/}
+        {/*      <span> {code} </span>*/}
+        {/*      <button onClick={handleCopyAffilateId} disabled={isCopy}>*/}
+        {/*        {!isCopy ? (*/}
+        {/*          <img src={"/assets/MyProfile/copy.svg"} alt="" />*/}
+        {/*        ) : (*/}
+        {/*          <CheckOutlined />*/}
+        {/*        )}*/}
+        {/*      </button>*/}
+        {/*    </div>*/}
+        {/*  </div>*/}
+        {/*)}*/}
+
+        <div className={s.urlLink}>
+          <input
+            title={urlLinkShare}
+            readOnly
+            value={urlLinkShare}
+            className={s.inputUrl}
+          ></input>
+          <button onClick={handleCopyLink} disabled={isCopy}>
+            {!isCopy ? (
+              <div style={{padding: "0px 8px"}}>
+                <img src={"/assets/MyProfile/copy.svg"} alt="" />
+              </div>
+
+            ) : (
+              <div style={{padding: "0px 8px"}}>
+                <CheckOutlined />
+              </div>
+            )}
+          </button>
+        </div>
       </div>
     </Modal>
   );

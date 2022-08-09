@@ -1,16 +1,26 @@
 import s from "./index.module.sass";
-import React, { useEffect, useState } from "react";
-import { Button } from "antd";
+import React, {useCallback, useEffect, useState} from "react";
+import {Button, Popconfirm} from "antd";
 import ModalShare from "../Modal";
+import AuthStore from "../../../Auth/AuthStore";
+import ConnectWalletStore from "../../../Auth/ConnectWalletStore";
+import {AppEmitter} from "../../../../services/emitter";
+import {observer} from "mobx-react";
 
-export default function ShareCampaign() {
+const ShareCampaign =  observer(function () {
   const [isModalShareVisible, setIsModalShareVisible] = useState(false);
-  
+  const { chainNetwork } = ConnectWalletStore;
+  const showConnectWalletModal = useCallback(() => {
+    AppEmitter.emit("showConnectWalletModal");
+  }, []);
   const closeModalShare = () => {
     setIsModalShareVisible(false);
   };
 
   const openShare = () => {
+    if (!AuthStore.isLoggedIn) {
+      return;
+    }
     setIsModalShareVisible(true);
   }
 
@@ -22,7 +32,23 @@ export default function ShareCampaign() {
             <h2>Refer friend and get commission up to 5%</h2>
           </div>
           <div className={s.btn}>
-            <Button className={`${s.button}`} onClick={openShare}>Share this campaign</Button>
+            {!AuthStore.isLoggedIn
+              ? <Popconfirm
+              title={
+                <span>
+                        You need to {chainNetwork ? "verify" : "connect"} wallet
+                        <br /> in order to buy this box
+                      </span>
+              }
+              onConfirm={showConnectWalletModal}
+              // onCancel={cancel}
+              okText={chainNetwork ? "Verify Wallet" : "Connect Wallet"}
+              cancelText="Close"
+            >
+                <Button className={`${s.button}`} onClick={openShare}>Share this campaign</Button>
+              </Popconfirm>
+              : <Button className={`${s.button}`} onClick={openShare}>Share this campaign</Button>
+            }
           </div>
         </div>
       </div>
@@ -32,4 +58,7 @@ export default function ShareCampaign() {
       />
     </>
   );
-}
+})
+
+export default ShareCampaign;
+

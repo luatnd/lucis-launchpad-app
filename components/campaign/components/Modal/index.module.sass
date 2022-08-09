@@ -2,7 +2,26 @@
   //display: flex
   // justify-content: space-between
   // align-items: center
+  .title
+    text-align: center
+    h2
+      color: #fff
+      @media (max-width: 425px)
+        font-size: 15px
+  .urlLink
+    display: flex
+    margin-top: 16px
 
+    .inputUrl
+      color: white
+      width: 100%
+      border-radius: 2px
+      border: 1px solid #fff
+      padding: 0 10px
+      font-size: 16px
+      background: transparent !important
+      @media (max-width: 425px)
+        font-size: 15px
   .infSocialIcons
     display: flex
     justify-content: center
@@ -11,5 +30,7 @@
     img
       width: 50px
       transition: 0.3s
+      @media (max-width: 425px)
+        width: 40px
       &:hover
         transform: scale(1.2)

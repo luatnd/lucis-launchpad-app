@@ -1,0 +1,54 @@
+.containerApp
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+.tabs
+  animation: fadeIn 2s
+  margin-bottom: 140px
+  & :global(.ant-tabs-nav-wrap)
+    justify-content: center
+  & :global(.ant-tabs-nav)
+    padding: 2rem 0
+    margin: 0
+    background: linear-gradient(99.92deg, #000037 0%, #03036F 100%)
+    @media (min-width: 0px) and (max-width: 639px)
+      padding: 0.5rem 0
+    @media (min-width: 640px) and (max-width: 991px)
+      padding: 1rem 0
+    &::before
+      border: none
+  & :global(.ant-tabs-tab)
+    padding: 0 2rem
+    font-family: Saira
+    font-style: normal
+    font-weight: normal
+    font-size: 36px
+    line-height: 57px
+    text-transform: uppercase
+    color: #FFFFFF
+    @media (min-width: 0px) and (max-width: 639px)
+      font-size: 16px
+      padding: 0 0.5rem
+    @media (min-width: 640px) and (max-width: 991px)
+      font-size: 24px
+      padding: 0 1rem
+  & :global(.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn)
+    color: #00FFE7
+    font-weight: 700
+  & :global(.ant-tabs-ink-bar.ant-tabs-ink-bar-animated)
+    width: 0 !important
+  @media (min-width: 0px) and (max-width: 414px)
+    & :global(.ant-tabs-tab + .ant-tabs-tab)
+      margin: 0 0 0 10px
+
+.textSize
+  font-size: 24px
+  @media (min-width: 0px) and (max-width: 639px)
+    font-size: 16px
+
+@keyframes fadeIn 
+  0% 
+    opacity:0
+  100% 
+    opacity:1

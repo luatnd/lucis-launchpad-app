@@ -63,7 +63,7 @@ const MyProfile = () => {
                 <BuyHistory title="History" {...props} />
               </TabPane>
               <TabPane tab="Refer" key="2">
-                <AffiliateTable></AffiliateTable>
+                <AffiliateTable title="Refer history"/>
               </TabPane>
             </Tabs>
           </div>

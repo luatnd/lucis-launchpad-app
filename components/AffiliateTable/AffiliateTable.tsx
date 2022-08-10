@@ -2,15 +2,19 @@ import { Button, Table } from "antd";
 import { useQueryAffiliate } from "hooks/profile/useQueryAffiliate";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
-import { UserGql } from "src/generated/graphql";
+import {AffiliateTracking, UserGql} from "src/generated/graphql";
 import { format } from "utils/Number";
 import { trim_middle } from "utils/String";
 import s from "./AffiliateTable.module.sass";
 
-type Props = {};
+type Props = {
+  title?: string;
+  campaignId?: string;
+  dataAffiliate?: AffiliateTracking;
+};
 
 const AffiliateTable = (props: Props) => {
-  const { dataAffiliate, loading, refetchDataAffiliate } = useQueryAffiliate();
+  const { dataAffiliate } = props;
   const [dataAffConvert, setDataAffConvert] = useState<any[]>([]);
   useEffect(() => {
     let data: any[] = [];
@@ -32,8 +36,12 @@ const AffiliateTable = (props: Props) => {
         });
       });
     }
+
+    if (props.campaignId) {
+      data = data.filter(item => item.box_campaigns.uid == props.campaignId);
+    }
     setDataAffConvert(data);
-  }, [dataAffiliate]);
+  }, [dataAffiliate, props.campaignId]);
   const columns = [
     {
       title: "No",
@@ -142,7 +150,7 @@ const AffiliateTable = (props: Props) => {
 
   return (
     <div className={s.wrapper}>
-      <h1>Refer history</h1>
+      <h1>{props?.title ?? ""}</h1>
       <Table
         dataSource={dataAffConvert}
         columns={columns}

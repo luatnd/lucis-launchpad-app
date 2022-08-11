@@ -83,7 +83,7 @@ const ModalShare = (props: Props) => {
             appId={"1023048308650581"}
           >
             <a target="_blank" rel="noopener noreferrer">
-              <img src={"/assets/Campaign/Banner/svg/win.svg"} alt="icon" />
+              <img src={"/assets/MyProfile/messenger.svg"} alt="icon" />
             </a>
           </FacebookMessengerShareButton>
         </div>

@@ -44,11 +44,10 @@ const ModalShare = (props: Props) => {
 
   useEffect(() => {
     const url = `${window.location.origin}${router.asPath}?r=${code}`;
-    console.log(router)
     const linkShare = `${window.location.origin}/c/${router.query?.slug?.[0]}?r=${code}`;
     setUrlLinkShare(linkShare);
     setUrlAffilate(url);  
-  }, [code]);
+  }, [code, router]);
 
   return (
     <Modal

@@ -18,6 +18,9 @@ import { useWindowSize } from "../../hooks/useWindowSize";
 import s from "./detail.module.sass";
 import { isEmpty } from "lodash";
 import ShareCampaign from "components/campaign/components/ShareCamp";
+import BuyHistory from "../../components/HistoryTable/BuyHistory";
+import AffiliateTable from "../../components/AffiliateTable/AffiliateTable";
+import {useQueryAffiliate} from "../../hooks/profile/useQueryAffiliate";
 
 /**
  * Match all route: /campaign/....
@@ -25,8 +28,34 @@ import ShareCampaign from "components/campaign/components/ShareCamp";
 function DetailCampaign() {
   const router = useRouter();
 
-  const { token, id } = AuthStore;
+  const {
+    name,
+    address,
+    balance,
+    phone,
+    email,
+    discord,
+    facebook,
+    twitter,
+    tele,
+    code,
+    token,
+    id
+  } = AuthStore;
 
+  const props = {
+    name,
+    address,
+    balance,
+    code,
+    phone,
+    email,
+    discord,
+    facebook,
+    twitter,
+    tele,
+    token,
+  };
   const campaignUid = useMemo(() => {
     const { slug } = router.query;
     if (slug) {
@@ -45,7 +74,7 @@ function DetailCampaign() {
   const [textNow, setTextNow] = useState("");
   const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [widthScreen, height] = useWindowSize();
-
+  const { dataAffiliate, loading, refetchDataAffiliate } = useQueryAffiliate();
   const {
     boxCampaign,
     isInWhitelist,
@@ -110,7 +139,17 @@ function DetailCampaign() {
   // const temp = JSON.parse(JSON.stringify(historiesBox));
   // // recentlyPurchasedBox && temp.push(recentlyPurchasedBox);
   // console.log(temp.push(recentlyPurchasedBox));
-
+  const hasReferFriendList = () => {
+    if (!dataAffiliate?.users) {
+      return false;
+    }
+    return dataAffiliate?.users?.findIndex(item => {
+      if (!item?.box_campaigns) {
+        return false;
+      }
+      return (item?.box_campaigns as any)?.findIndex((x: any) => x?.uid == campaignUid) > -1
+    }) > -1;
+  }
   return (
     <>
       <DocHead />
@@ -175,14 +214,33 @@ function DetailCampaign() {
                     // <div className="container">
                     //   <BuyHistory id={campaignUid} title="recently bought" />
                     // </div>
-                    historiesBox && (
-                      <RecentlyBought
-                        historiesBox={historiesBox}
-                        recentlyPurchasedBox={recentlyPurchasedBox}
-                        token={token}
-                        refetch={refetchBoxHistory}
-                      />
-                    )}
+
+
+                      // <RecentlyBought
+                      //   historiesBox={historiesBox}
+                      //   recentlyPurchasedBox={recentlyPurchasedBox}
+                      //   token={token}
+                      //   title={"RECENTLY BOUGHT"}
+                      //   refetch={refetchBoxHistory}
+                      // />
+                      <div className="container">
+                        <Tabs defaultActiveKey="1" className={`${s.tabHistory}`}>
+                          { historiesBox?.length && <TabPane tab="RECENTLY BOUGHT" key="1">
+                            <RecentlyBought
+                              historiesBox={historiesBox}
+                              recentlyPurchasedBox={recentlyPurchasedBox}
+                              token={token}
+                              refetch={refetchBoxHistory}
+                            />
+                          </TabPane>
+                          }
+                          { hasReferFriendList() && <TabPane tab="REFER HISTORY" key="2">
+                            <AffiliateTable dataAffiliate={dataAffiliate} campaignId={campaignUid}/>
+                          </TabPane>
+                          }
+                        </Tabs>
+                      </div>
+                    }
                 </TabPane>
 
                 <TabPane tab="RULE" key="2">

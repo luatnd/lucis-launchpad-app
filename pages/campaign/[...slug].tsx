@@ -144,7 +144,7 @@ function DetailCampaign() {
       return false;
     }
     return dataAffiliate?.users?.findIndex(item => {
-      if (item?.box_campaigns) {
+      if (!item?.box_campaigns) {
         return false;
       }
       return (item?.box_campaigns as any)?.findIndex((x: any) => x?.uid == campaignUid) > -1

@@ -10,6 +10,7 @@ import Contact from "../../components/Profile/ProfileContact";
 import Info from "../../components/Profile/ProfileInfo";
 import Social from "../../components/Profile/ProfileSocial";
 import s from "./index.module.sass";
+import {useQueryAffiliate} from "../../hooks/profile/useQueryAffiliate";
 
 const { TabPane } = Tabs;
 
@@ -46,7 +47,7 @@ const MyProfile = () => {
   };
 
   // console.log("Page", AuthStore);
-
+  const { dataAffiliate, loading, refetchDataAffiliate } = useQueryAffiliate();
   return (
     <>
       <DocHead title="My Profile" />
@@ -63,7 +64,7 @@ const MyProfile = () => {
                 <BuyHistory title="History" {...props} />
               </TabPane>
               <TabPane tab="Refer" key="2">
-                <AffiliateTable title="Refer history"/>
+                <AffiliateTable dataAffiliate={dataAffiliate} title="Refer history"/>
               </TabPane>
             </Tabs>
           </div>

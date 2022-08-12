@@ -36,6 +36,9 @@ import AuthStore from "../../../Auth/AuthStore";
 import ApprovalStore from "../../../Auth/Blockchain/ApprovalStore";
 import ModalConfirm from "./ModalConfirm";
 import { useForm } from "antd/lib/form/Form";
+import ModalShare from "../Modal";
+import { useRouter } from "next/router";
+import { ShareAltOutlined } from "@ant-design/icons";
 
 type Props = {
   boxType: GBoxType;
@@ -65,6 +68,7 @@ const BoxTypeCard = observer((props: Props) => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
+  const [isModalShareVisible, setIsModalShareVisible] = useState(false);
 
   // --- Detect amount field type wrong
   const [form] = useForm();
@@ -73,7 +77,9 @@ const BoxTypeCard = observer((props: Props) => {
     loading,
     txtAmount,
     isSaleRound,
+    isSaleRoundWithFee,
     buyFormEnabled,
+    buyFormWithFeeEnabled,
     buyBtnDisabledReason,
     err,
     requireWhitelist,
@@ -102,6 +108,7 @@ const BoxTypeCard = observer((props: Props) => {
   const handleOk = () => {
     doBuyBox();
     setIsModalVisible(false);
+    // txtAmount.onChange("");
   };
 
   const handleCancel = () => {
@@ -156,6 +163,10 @@ const BoxTypeCard = observer((props: Props) => {
     chains: chains,
   };
 
+  const closeModalShare = () => {
+    setIsModalShareVisible(false);
+  };
+
   return (
     <div>
       <div className="flex justify-center">
@@ -176,6 +187,14 @@ const BoxTypeCard = observer((props: Props) => {
             className="mx-auto"
             alt=""
           />
+          {/* <div
+            className={`${s.bgImageBtn}`}
+            onClick={() => {
+              setIsModalShareVisible(true);
+            }}
+          >
+            <img src="/assets/Box/btn_share.svg" alt=""/>
+          </div> */}
         </div>
 
         <div className={`mx-auto ${s.boxMain}`}>
@@ -355,6 +374,135 @@ const BoxTypeCard = observer((props: Props) => {
             </Form>
           )}
 
+          {isSaleRoundWithFee && (
+            <Form
+              className={s.buyForm}
+              form={form}
+              onFieldsChange={handleFormChange}
+              onFinish={handleFinish}
+            >
+              <div className={`${s.amount} font-bold`}>
+                <label className={s.label}>
+                  <span className="text-[18px] md:text-[24px=">Amount: </span>
+                  <br />
+                  {boxType.limit_per_user != null && (
+                    <span className={s.max}>Max: {boxType.limit_per_user}</span>
+                  )}
+                </label>
+                <Form.Item
+                  name="amount"
+                  rules={[
+                    { required: true, message: "Please input amount!" },
+
+                    {
+                      type: "number",
+                      min: 1,
+                      message: "Amount must be greater than 0",
+                    },
+                    {
+                      type: "integer",
+                      message: "Please enter an integer",
+                    },
+                    {
+                      type: "number",
+                      max: boxType.limit_per_user ?? boxType.total_amount,
+                      message: `Amount must be less than ${
+                        boxType.limit_per_user ?? boxType.total_amount
+                      }`,
+                    },
+                  ]}
+                  className={s.inputRow}
+                >
+                  <InputNumber
+                    style={{ background: "none" }}
+                    value={txtAmount.value}
+                    onChange={txtAmount.onChange}
+                    controls={false}
+                  />
+                </Form.Item>
+              </div>
+
+              <div className="flex justify-between text-white items-center font-bold text-24px">
+                {!buyFormWithFeeEnabled ? (
+                  // if btn is disable, show tooltip
+                  <Tooltip
+                    placement="top"
+                    title={
+                      buyBtnDisabledReason !== undefined
+                        ? buyFormDisabledMsg[buyBtnDisabledReason]
+                        : ""
+                    }
+                  >
+                    <div>
+                      <Button className={s.submit} disabled={true}>
+                        BUY
+                      </Button>
+                    </div>
+                  </Tooltip>
+                ) : !AuthStore.isLoggedIn ? (
+                  // if wallet was not connected => popconfirm
+                  <Popconfirm
+                    title={
+                      <span>
+                        You need to {chainNetwork ? "verify" : "connect"} wallet
+                        <br /> in order to buy this box
+                      </span>
+                    }
+                    onConfirm={showConnectWalletModal}
+                    // onCancel={cancel}
+                    okText={chainNetwork ? "Verify Wallet" : "Connect Wallet"}
+                    cancelText="Close"
+                  >
+                    <div>
+                      <Button className={s.submit} loading={loading}>
+                        BUY
+                      </Button>
+                    </div>
+                  </Popconfirm>
+                ) : !isSupportedConnectedChain ? (
+                  <Tooltip placement="top" title="Switch chain to buy">
+                    <div>
+                      <Button className={s.submit} disabled={true}>
+                        BUY
+                      </Button>
+                    </div>
+                  </Tooltip>
+                ) : !currencyEnabled ? (
+                  <Button
+                    className={s.submitApproval}
+                    onClick={requestAllowanceForBoxPrice}
+                    loading={loading}
+                  >
+                    Enable {boxPrice?.currency.symbol}
+                  </Button>
+                ) : (
+                  <Button
+                    className={s.submit}
+                    //onClick={handleOpen}
+                    htmlType="submit"
+                    loading={loading}
+                    //disabled={disabledButton}
+                  >
+                    BUY
+                  </Button>
+                )}
+
+                {requireWhitelist && (
+                  <span style={{ paddingLeft: 20, lineHeight: 1.3 }}>
+                    Whitelist only
+                  </span>
+                )}
+              </div>
+
+              {/*{buyBtnDisabledReason === BuyDisabledReason.SoldOut &&*/}
+              {/*<p style={{paddingLeft: 20, lineHeight: 1.3}}>Sold out</p>}*/}
+
+              {!!err && (
+                <span style={{ color: "red", fontSize: "13px" }}>{err}</span>
+              )}
+            </Form>
+          )}
+
           <div className="font-bold text-white text-18px mt-[29px]">
             <div className="flex justify-between items-center">
               <span>Price per 1 box:</span>
@@ -403,6 +551,11 @@ const BoxTypeCard = observer((props: Props) => {
         </div>
       </div>
       <ModalConfirm {...modalConfirmProps} />
+
+      <ModalShare
+        closeModalShare={closeModalShare}
+        status={isModalShareVisible}
+      />
     </div>
   );
 });

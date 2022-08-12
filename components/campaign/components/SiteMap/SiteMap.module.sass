@@ -67,6 +67,36 @@
 
 .SiteMapLineCircleTitleBox
   //cursor: pointer
+  .amount
+    //display: flex
+    //justify-content: space-between
+    // min-height: 95px
+    //margin-top: 20px
+    label
+      color: white
+      font-size: 24px
+      .max
+        font-size: 16px
+        color: #bbb
+    .inputRow
+      font-size: 24px
+      line-height: 1.3
+      width: 120px
+      :global(.ant-form-item-control-input-content)
+        max-width: 120px
+        :global(.ant-input-number)
+          background: transparent
+          //height: 50px
+          min-width: 120px
+          font-size: 20px
+          line-height: 1.7
+      :global(.ant-form-item-explain .ant-form-item-explain-error:not(:first-child))
+        display: none     
+    :global(.ant-form-item)
+      margin-bottom: 5px
+    :global(.ant-row)
+      display: flex
+      justify-content: flex-end
 
 .SiteMapLineCircleTitle
   font-style: normal
@@ -132,6 +162,25 @@
     font-size: 20px
     line-height: 30px
 
+.SiteMapLineBoxPresaleContent
+  font-family: Saira
+  font-style: normal
+  font-weight: normal
+  font-size: 18px
+  line-height: 18px
+  position: relative
+  background: #7c97d980
+  padding: 10px 15px
+  backdrop-filter: blur(40px)
+  border-radius: 20px
+  text-align: center
+  @media (min-width: 0px) and (max-width: 639px)
+    font-size: 14px
+    line-height: 14px
+  @media (min-width: 640px) and (max-width: 991px)
+    font-size: 12px
+    line-height: 12px
+
 .SiteMapLineTimeLine
   height: 12px
   background-color: #fff
@@ -152,20 +201,24 @@
   animation: fadeIn 2s
 
 .button
-  max-width: 250.91px
+  //max-width: 250.91px
   width: 100%
   //height: 59px
-  padding: 15px 10px
-  background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+  //padding: 15px 10px
+  color: #FFFFFF
+  background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%) !important
   box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
   backdrop-filter: blur(40px)
   border-radius: 8px
   font-size: 22px
   margin-top: 20px
-  margin-bottom: 40px
+  margin-bottom: 20px
+  height: 46px
+  line-height: 35px
   text-align: center
+  border: none
   &.disabledBtn
-    background: #c4c4c4
+    background: #c4c4c4 !important
   &.whitelisted
     background: #049486
     button
@@ -182,8 +235,6 @@
     font-size: 16px
     //height: 42px
     margin-bottom: 20px
-
-
 .hSlide
   height: 250px
   @media (min-width: 0px) and (max-width: 639px)
@@ -194,7 +245,7 @@
 .btnConnect
   button
     margin-left: unset !important
-.line 
+.line
   width: 100%
   height: 5px
   background: white
@@ -208,11 +259,18 @@
   @media screen and (min-width: 1023px)
     top: 0
     height: 10px
-.tabContainer 
+.tabContainer
   animation: fadeIn 2s
-
-@keyframes fadeIn 
-  0% 
-    opacity:0
-  100% 
-    opacity:1
+.presale
+  display: flex
+  justify-content: flex-end
+@keyframes fadeIn
+  0%
+    opacity: 0
+  100%
+    opacity: 1
+.textCapacity
+  font-family: Saira
+  font-weight: 400
+  font-size: 18px
+  line-height: 24px

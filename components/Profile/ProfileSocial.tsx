@@ -2,7 +2,7 @@ import { Col, message, Row } from "antd";
 import Input from "components/Input/Input";
 import { useMutationProfile } from "hooks/profile/useMutationProfile";
 import { observer } from "mobx-react-lite";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import s from "../../pages/profile/index.module.sass";
 import AuthStore from "../Auth/AuthStore";
 
@@ -52,15 +52,27 @@ const Social = ({ isEdit, facebook, twitter, tele, discord }: Props) => {
             },
           },
         },
-      }).catch((err) => {
-        message.error(err?.message);
-        // console.log(err?.extensions);
-      });
+      })
+        .then(() => {
+          if (field === "facebook") {
+            AuthStore.facebook = tempSocial.facebook;
+          } else if (field === "discord") {
+            AuthStore.discord = tempSocial.discord;
+          } else if (field === "telegram") {
+            AuthStore.tele = tempSocial.telegram;
+          } else {
+            AuthStore.twitter = tempSocial.twitter;
+          }
+        })
+        .catch((err) => {
+          message.error(err?.message);
+          // console.log(err?.extensions);
+        });
     }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>, field: string) => {
-    console.log(e.target.value === "");
+    // console.log(e.target.value === "");
     setTempSocial({
       ...tempSocial,
       [field]: e.target.value ?? "",
@@ -84,6 +96,15 @@ const Social = ({ isEdit, facebook, twitter, tele, discord }: Props) => {
         : setIsValidSocials({ ...isValidSocials, twitter: false });
     }
   };
+
+  useEffect(() => {
+    setTempSocial({
+      facebook,
+      twitter,
+      telegram: tele,
+      discord,
+    });
+  }, [facebook, twitter, tele, discord]);
 
   return (
     <>
@@ -117,7 +138,9 @@ const Social = ({ isEdit, facebook, twitter, tele, discord }: Props) => {
                         : !isValidSocials.facebook
                         ? facebook
                         : "Not available"} */}
-                      {facebook ? facebook : "Not available"}
+                      {facebook && isValidSocials.facebook
+                        ? facebook
+                        : "Not available"}
                     </p>
                   )}
                 </a>

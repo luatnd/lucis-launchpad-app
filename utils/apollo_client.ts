@@ -55,6 +55,9 @@ function _fetchInitialAuthTokenFromLocal(): string {
   return u ? u.token ?? "" : "";
 }
 
+export const refreshAuthTokenFromLocal = () => {
+  _fetchInitialAuthTokenFromLocal();
+};
 // const persistor = new CachePersistor({
 //   cache,
 //   storage: window.localStorage,
@@ -120,13 +123,14 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
   const token = _getAuthToken();
-  // console.log("{apolo.authLink} token: ", token);
+  //console.log("{apolo.authLink} token: ", token);
 
   // return the headers to the context so httpLink can read them
   return {
     headers: {
       ...headers,
       authorization: `Bearer ${token}`,
+      //authorization: `bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsInRpbWVzdGFtcCI6MTY1OTE1OTIxMDAyOCwiaWF0IjoxNjU5MTU5MjEwLCJleHAiOjE2NjE3NTEyMTB9.wRxT-9n8jS6P63DxgwcSkKTUvMdiGqice4BQB8nEeBw`,
     },
   };
 });

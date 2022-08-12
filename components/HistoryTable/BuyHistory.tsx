@@ -1,6 +1,5 @@
 import { useQueryBoxHistories } from "hooks/profile/useQueryBoxHistories";
 import { observer } from "mobx-react-lite";
-import HistoryTable from "./HistoryTable";
 import s from "./History.module.sass";
 import { Table, Tooltip } from "antd";
 import moment from "moment";
@@ -44,7 +43,7 @@ const BuyHistory = ({ id, title, token }: Props) => {
       render: (_, item: GBoxCampaignBuyHistory) => {
         return <img src={item.box_price?.boxType?.thumb_img ?? ""} alt="" />;
       },
-      width: "10%",
+      width: "15%",
     },
     {
       title: "Box name",
@@ -114,7 +113,7 @@ const BuyHistory = ({ id, title, token }: Props) => {
                 item.box_price &&
                 item.quantity * item.box_price.price
               } ${
-                item.box_price && item.box_price?.currency_name?.toUpperCase()
+                item.box_price && item.box_price?.currency_symbol?.toUpperCase()
               }`}
             </p>
 
@@ -165,6 +164,8 @@ const BuyHistory = ({ id, title, token }: Props) => {
               <a
                 className="block md:hidden"
                 href={`https://testnet.bscscan.com/tx/${item.tx_hash}`}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <img
                   style={{ width: "15px", margin: "5px 0 0 0" }}

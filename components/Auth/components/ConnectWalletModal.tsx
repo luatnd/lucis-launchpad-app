@@ -26,6 +26,8 @@ import AuthBoxStore from "./AuthBoxStore";
 import { AppEmitter } from "../../../services/emitter";
 import EthersService from "services/blockchain/Ethers";
 import { isMobile } from "web3modal";
+import { useMutation } from "@apollo/client";
+import { NEW_BOX_CAMPAIGN_REF } from "hooks/campaign/useDetailCampaign";
 
 type Props = {};
 export default observer(function ConnectWalletModal(props: Props) {
@@ -55,6 +57,8 @@ export default observer(function ConnectWalletModal(props: Props) {
     wallet: connectedWallet,
   } = ConnectWalletStore;
 
+  const [newBoxCampaignRef] = useMutation(NEW_BOX_CAMPAIGN_REF);
+  
   const { isLoggedIn: logged_in_with_lucis, loading: authing } = AuthStore;
   const [network, setNetwork] = useState<ChainNetwork | undefined>(
     connectedChain
@@ -189,7 +193,15 @@ export default observer(function ConnectWalletModal(props: Props) {
             AuthBoxStore.verified = true;
             setTimeout(() => {
               setIsModalVisible(false);
-            }, 2000);
+            }, 300);
+
+            const ref = localStorage.getItem("ref");
+            if(ref) {
+              const obj = JSON.parse(ref);
+              saveBoxCampaignRef(obj);
+              localStorage.removeItem("ref");
+            }
+            
             break;
 
           case AuthError.UserDeniedMsgSignature:
@@ -231,6 +243,18 @@ export default observer(function ConnectWalletModal(props: Props) {
     },
     [address]
   );
+
+  const saveBoxCampaignRef = (obj: any) => {
+    newBoxCampaignRef({
+      variables: {
+        box_campaign_uid: obj?.box_campaign_uid,
+        ref: obj?.ref,
+      },
+      onError: () => {
+        console.warn("Ref existed");
+      },
+    });
+  }
 
   const changeWallet = useCallback(
     async (w: Wallet, network?: ChainNetwork) => {

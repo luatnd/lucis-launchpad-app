@@ -36,17 +36,30 @@
   backdrop-filter: blur(40px)
   padding: 1px
   .bgImage
+    position: relative
     background-image: url("/assets/Box/image111.png")
     background-repeat: no-repeat
     background-size: cover
     // height: 200px
+    .bgImageBtn
+      position: absolute
+      top: 20px
+      right: 20px
+      background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+      border-radius: 49px
+      padding: 10px 28px
+      img
+        width: 24px
+        height: 24px
     img
       width: 100%
+
+    :global(.ant-tabs)
+      font-size: 25px
   @media screen and (min-width: 767px)
     // height: 400px
   @media screen and (min-width: 1023px)
     // height: 400px
-
 
 .boxMain
   padding: 0 20px
@@ -56,7 +69,7 @@
 
 .buyForm
   margin-top: 10px
-  .amount 
+  .amount
     display: flex
     justify-content: space-between
     min-height: 95px
@@ -79,7 +92,6 @@
           min-width: 115px
           font-size: 28px
           line-height: 1.7
-
   .submit
     width: 132px
     height: 59px
@@ -126,7 +138,6 @@
   @media screen and (min-width: 767px)
   @media screen and (min-width: 1024px)
     // top: 8px
-
 
 .seriesContent
   padding: 10px 0

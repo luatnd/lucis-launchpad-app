@@ -1,17 +1,22 @@
-import { gql, useQuery, useSubscription } from "@apollo/client";
+import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
 import { useEffect } from "react";
 
 type Props = {
   box_campaign_uid: string;
-  user_id: number | undefined;
+  user_id?: number | undefined;
+  skip?: boolean;
 };
 
-export function useDetailCampaign({ box_campaign_uid, user_id }: Props) {
+export function useDetailCampaign({ box_campaign_uid, user_id, skip }: Props) {
+  const [newBoxCampaignRef] = useMutation(NEW_BOX_CAMPAIGN_REF);
+  const [presale] = useMutation(PRESALE);
+
   const { loading, error, data } = useQuery(DETAIL_CAMPAIGN, {
     variables: {
       box_campaign_uid,
     },
     fetchPolicy: "cache-and-network",
+    skip: skip,
   });
 
   const {
@@ -76,6 +81,7 @@ export function useDetailCampaign({ box_campaign_uid, user_id }: Props) {
     variables: {
       box_campaign_uid,
     },
+    fetchPolicy: "no-cache",
   });
 
   return {
@@ -84,7 +90,8 @@ export function useDetailCampaign({ box_campaign_uid, user_id }: Props) {
     refetchBoxCampaignDetailSubcription,
     refetchBoxHistory,
     refetchIsInWhiteList,
-
+    newBoxCampaignRef,
+    presale,
     boxCampaign: data?.campaignDetail,
     isInWhitelist: dataIsInWhiteList?.isInWhitelist ?? false,
     whitelistRegistered: dataWhitelistRegistered?.whitelistRegistered,
@@ -102,6 +109,72 @@ export function useDetailCampaign({ box_campaign_uid, user_id }: Props) {
     historiesBox: historiesBox?.boxCampaignBuyHistories.filter(
       (box: any) => box.box_campaign_uid === box_campaign_uid
     ),
+  };
+}
+
+export function usePresaleRemaining(props: Props) {
+  const {
+    loading,
+    error,
+    data: dataPresaleRemaining,
+    refetch: refetchPresaleRemaining,
+  } = useQuery(PRESALE_REMAINING, {
+    variables: { box_campaign_uid: props?.box_campaign_uid },
+    fetchPolicy: "no-cache",
+    onError: (error) => {
+      console.log("error: ", error);
+    },
+    skip: props?.skip,
+  });
+
+  return {
+    loading,
+    error,
+    dataPresaleRemaining: dataPresaleRemaining?.presaleRemaining,
+    refetchPresaleRemaining,
+  };
+}
+
+export function useGetBoxPresale(props: Props) {
+  const {
+    loading,
+    error,
+    data,
+    refetch,
+  } = useQuery(GET_BOX_PRESALE, {
+    variables: { box_campaign_uid: props?.box_campaign_uid },
+    fetchPolicy: "no-cache",
+    onError: (error) => {
+      console.log("error: ", error);
+    },
+    skip: props?.skip,
+  });
+
+  return {
+    loading,
+    error,
+    dataGetBoxPresale: data?.getBoxPresale,
+    refetchDataGetBoxPresale: refetch,
+  };
+}
+
+export function useGetConfig() {
+  const {
+    loading,
+    error,
+    data: dataConfig,
+  } = useQuery(GET_CONFIG, {
+    //variables: {},
+    fetchPolicy: "no-cache",
+    onError: (error) => {
+      console.log("error: ", error);
+    },
+  });
+
+  return {
+    loading,
+    error,
+    dataConfig: dataConfig?.getConfig,
   };
 }
 
@@ -137,6 +210,8 @@ const DETAIL_CAMPAIGN = gql`
         participant_limit
         start
         end
+        presale_price
+        require_presale
       }
       game {
         name
@@ -173,6 +248,17 @@ const DETAIL_CAMPAIGN = gql`
             address
           }
           contract_address
+        }
+      }
+      currencies {
+        address
+        uid
+        chain_symbol
+        symbol
+        name
+        chain {
+          symbol
+          name
         }
       }
     }
@@ -215,6 +301,32 @@ const PURCHASED_BOX_SUBSCRIPTION = gql`
   }
 `;
 
+const PRESALE_REMAINING = gql`
+  query ($box_campaign_uid: String!) {
+    presaleRemaining(box_campaign_uid: $box_campaign_uid) {
+      presaled
+      remain
+    }
+  }
+`;
+
+const GET_BOX_PRESALE = gql`
+  query ($box_campaign_uid: String!) {
+    getBoxPresale(box_campaign_uid: $box_campaign_uid) {
+      total_quantity
+    }
+  }
+`;
+
+const GET_CONFIG = gql`
+  query{
+    getConfig{
+      id
+      presale_wallet
+    }
+  }
+`;
+
 const BUY_BOX_HISTORIES = gql`
   query historyBox($include: GBoxCampaignInclude) {
     boxCampaignBuyHistories(include: $include) {
@@ -239,6 +351,7 @@ const BUY_BOX_HISTORIES = gql`
         chain_icon
         chain_name
         currency_name
+        currency_symbol
         boxType {
           name
           thumb_img
@@ -275,6 +388,7 @@ const PURCHASED_RECENTLY_BOX_SUBSCRIPTION = gql`
         chain_icon
         chain_name
         currency_name
+        currency_symbol
         boxType {
           name
           thumb_img
@@ -289,5 +403,29 @@ const BOX_CAMPAIGN_SUBSCRIPTION_DETAIL = gql`
     boxCampaignSubscriptionDetail(box_campaign_uid: $box_campaign_uid) {
       enable_notify
     }
+  }
+`;
+
+export const NEW_BOX_CAMPAIGN_REF = gql`
+  mutation ($box_campaign_uid: String!, $ref: String!) {
+    newBoxCampaignRef(box_campaign_uid: $box_campaign_uid, ref: $ref)
+  }
+`;
+
+const PRESALE = gql`
+  mutation (
+    $box_campaign_uid: String!,
+    $quantity: Int!,
+    $tx_hash: String!,
+    $address: String!,
+    $currency_uid: String!
+  ) {
+    presale(
+      box_campaign_uid: $box_campaign_uid,
+      quantity: $quantity,
+      tx_hash: $tx_hash,
+      address: $address,
+      currency_uid: $currency_uid
+    )
   }
 `;

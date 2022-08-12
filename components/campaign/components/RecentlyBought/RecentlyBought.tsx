@@ -10,6 +10,7 @@ type Props = {
   recentlyPurchasedBox: GBoxCampaignBuyHistory;
   token: string | undefined;
   refetch: any;
+  title?: string;
 };
 
 const RecentlyBought = ({
@@ -17,6 +18,7 @@ const RecentlyBought = ({
   recentlyPurchasedBox,
   token,
   refetch,
+  title
 }: Props) => {
   const columns = [
     {
@@ -52,7 +54,7 @@ const RecentlyBought = ({
               />
               {item.box_price?.chain_symbol}
             </p>
-            <p className="descGameText pt-3" style={{ whiteSpace: "nowrap" }}>
+            {/* <p className="descGameText pt-3" style={{ whiteSpace: "nowrap" }}>
               <img
                 className={s.logoGame}
                 src={item.box?.game.logo ?? ""}
@@ -60,7 +62,7 @@ const RecentlyBought = ({
               />
               {item.box?.game.name} |{" "}
               {item.box.name ? item.box.name : "Box campaign name"}
-            </p>
+            </p> */}
           </>
         );
       },
@@ -97,7 +99,7 @@ const RecentlyBought = ({
                 item.box_price &&
                 item.quantity * item.box_price.price
               } ${
-                item.box_price && item.box_price?.currency_name?.toUpperCase()
+                item.box_price && item.box_price?.currency_symbol?.toUpperCase()
               }`}
             </p>
 
@@ -148,6 +150,8 @@ const RecentlyBought = ({
               <a
                 className="block md:hidden"
                 href={`https://testnet.bscscan.com/tx/${item.tx_hash}`}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <img
                   style={{ width: "15px", margin: "5px 0 0 0" }}
@@ -176,7 +180,7 @@ const RecentlyBought = ({
 
   return temp.length > 0 ? (
     <div className={`${s.history} lucis-container mt-[50px] md:mt-[100px]`}>
-      <h1 className="text-center">RECENTLY BOUGHT</h1>
+      <h1 className="text-center">{title ?? ""}</h1>
 
       <div style={{ position: "relative" }}>
         <div
@@ -191,7 +195,7 @@ const RecentlyBought = ({
           columns={columns}
           dataSource={[...temp].reverse()}
           pagination={false}
-          footer={() => <></>}
+          // footer={false}
           scroll={{ y: 1000 }}
           rowKey="id"
         />

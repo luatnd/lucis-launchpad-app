@@ -1,9 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { message } from "antd";
 import useNotification from "hooks/campaign/useEnableNotification";
+import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { GBoxCampaign } from "src/generated/graphql";
 import s from "./Banner.module.sass";
+import AuthStore from "../../../Auth/AuthStore";
 
 type Props = {
   boxCampaign: GBoxCampaign;
@@ -35,9 +37,9 @@ const Banner = ({ boxCampaign, isSubcribed, token, refetch }: Props) => {
   useEffect(() => {
     // console.log(isSubcribed);
 
-    refetch();
+    // refetch();
     setIsEnableNotification(isSubcribed);
-  }, [token]);
+  }, [token, isSubcribed]);
 
   return (
     <div
@@ -45,16 +47,24 @@ const Banner = ({ boxCampaign, isSubcribed, token, refetch }: Props) => {
       style={{ backgroundImage: `url(${boxCampaign?.banner_img ?? ""})` }}
     >
       <div className="container">
-        <button className={s.noti} onClick={handleSubscription}>
+        <button
+          className={s.noti}
+          onClick={handleSubscription}
+          disabled={!AuthStore.isLoggedIn}
+        >
           <img
             src={
-              isEnableNotification
+              isEnableNotification && AuthStore.isLoggedIn
                 ? "/assets/Campaign/Banner/svg/subcribed.svg"
                 : "/assets/Campaign/Banner/svg/Sign_in_circle.svg"
             }
             alt="icon"
           />
-          <p>{isEnableNotification ? "Subscribed" : "Enable Notification"}</p>
+          <p>
+            {isEnableNotification && AuthStore.isLoggedIn
+              ? "Subscribed"
+              : "Enable Notification"}
+          </p>
         </button>
 
         {boxCampaign && (
@@ -164,4 +174,4 @@ const Banner = ({ boxCampaign, isSubcribed, token, refetch }: Props) => {
   );
 };
 
-export default Banner;
+export default observer(Banner);

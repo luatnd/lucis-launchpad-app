@@ -1,4 +1,14 @@
-import { Popconfirm, Progress, Tooltip } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  InputNumber,
+  message,
+  Popconfirm,
+  Progress,
+  Row,
+  Tooltip,
+} from "antd";
 import AuthStore from "components/Auth/AuthStore";
 import { observer } from "mobx-react";
 import timeMoment from "moment-timezone";
@@ -10,6 +20,20 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { useMutationRegisterWhiteList } from "../../../../hooks/campaign/useRegisterWhiteList";
 import ConnectWalletBtn from "../../../Auth/components/ConnectWalletBtn";
 import s from "./SiteMap.module.sass";
+import ConnectWalletStore, {
+  nonReactive as ConnectWalletStore_NonReactiveData,
+} from "components/Auth/ConnectWalletStore";
+import EthersService from "services/blockchain/Ethers";
+import BigNumber from "bignumber.js";
+import { useForm } from "antd/lib/form/Form";
+import { isEmpty } from "lodash";
+import {
+  useGetBoxPresale,
+  useGetConfig,
+  usePresaleRemaining,
+} from "hooks/campaign/useDetailCampaign";
+import { refreshAuthTokenFromLocal } from "utils/apollo_client";
+import { currency, format } from "utils/Number";
 
 interface IRound {
   rounds: GBoxCampaignRound[];
@@ -25,6 +49,8 @@ interface IRound {
   whitelistRegisteredRecently: WhitelistStatus;
   refetch: any;
   token: string | undefined;
+  presale?: any;
+  currencies?: any;
 }
 
 export default observer(function SiteMap(props: IRound) {
@@ -42,14 +68,40 @@ export default observer(function SiteMap(props: IRound) {
     whitelistRegisteredRecently,
     refetch,
     token,
+    presale,
+    currencies,
   } = props;
+
+  const { dataPresaleRemaining, refetchPresaleRemaining } = usePresaleRemaining(
+    {
+      box_campaign_uid: boxCampaignUid,
+      skip: isEmpty(boxCampaignUid),
+    }
+  );
+
+  const { dataGetBoxPresale, refetchDataGetBoxPresale } = useGetBoxPresale(
+    {
+      box_campaign_uid: boxCampaignUid,
+      skip: isEmpty(boxCampaignUid),
+    }
+  );
+
+  const { dataConfig } = useGetConfig();
 
   const [listRounds, setListRounds] = useState([] as any);
   const [isActiveUpComing, setIsActiveUpComing] = useState(false);
   const { registerWhitelist, error, loading, data } =
     useMutationRegisterWhiteList();
   const [keyActiveSlide, setKeyActiveSlide] = useState(0);
+  const [amountBox, setAmountBox] = useState(0);
   const isWhitelisted = isInWhitelist || data?.registerWhitelist;
+  const [disabledButton, setDisabledButton] = useState(false);
+  const [chainConfig, setChainConfig] = useState(Object as any);
+  const [loadingReserve, setLoadingReserve] = useState(false);
+  const [totalPayment, setTotalPayment] = useState(0);
+
+  // --- Detect amount field type wrong
+  const [form] = useForm();
 
   const getCurrentRound = () => {
     const dateNow = timeMoment().tz(tzid).unix();
@@ -120,6 +172,124 @@ export default observer(function SiteMap(props: IRound) {
   };
 
   useEffect(() => {
+    const chain = currencies.find((item: any) => {
+      return (
+        item.chain_symbol.toLocaleUpperCase() ===
+        ConnectWalletStore.chainNetwork?.toLocaleUpperCase()
+      );
+    });
+
+    setChainConfig(chain);
+  }, [ConnectWalletStore.chainNetwork]);
+
+  useEffect(() => {
+    refetchPresaleRemaining();
+    refreshAuthTokenFromLocal();
+    //Router.reload()
+  }, [AuthStore.address]);
+
+  const handleApplyWhiteListWithFee = async () => {
+    setLoadingReserve(true);
+    if (!chainConfig) {
+      message.warn("Please switch chain to reserve");
+      setLoadingReserve(false);
+      return false;
+    }
+    if (!AuthStore.isLoggedIn) {
+      message.warn("Please connect wallet and verify your address first!");
+      setLoadingReserve(false);
+      return false;
+    }
+
+    if (!ConnectWalletStore_NonReactiveData.web3Provider) {
+      message.error(
+        "[Critical] This is unexpected behavior occur in our app, please reconnect your wallet to ensure the app run correctly",
+        6
+      );
+      setLoadingReserve(false);
+      return false;
+    }
+
+    const ethersService = new EthersService(
+      ConnectWalletStore_NonReactiveData.web3Provider
+    );
+
+    const getMyAllowance = await ethersService.getMyAllowanceOf(
+      dataConfig?.presale_wallet,
+      //@ts-ignore
+      chainConfig?.address
+    );
+
+    let bool = false;
+    // let value = 0;
+
+    // if (rounds[0]?.presale_price) {
+    //   value = amountBox * rounds[0]?.presale_price;
+    // }
+
+    // setTotalPayment(value);
+    const amount = new BigNumber(Number(totalPayment))
+      .multipliedBy(Math.pow(10, 18))
+      .toFormat({ groupSeparator: "" });
+
+    if (getMyAllowance && getMyAllowance < Number(amount)) {
+      bool = await ethersService.requestApproval(
+        dataConfig?.presale_wallet,
+        //@ts-ignore
+        chainConfig?.address
+      );
+    } else {
+      bool = true;
+    }
+
+    if (bool) {
+      const result = await ethersService.transferFT(
+        dataConfig?.presale_wallet,
+        //@ts-ignore
+        chainConfig?.address,
+        totalPayment
+      );
+
+      if (!result.error) {
+        presale({
+          variables: {
+            box_campaign_uid: boxCampaignUid,
+            quantity: amountBox,
+            tx_hash: result.txHash,
+            address: ConnectWalletStore.address,
+            //@ts-ignore
+            currency_uid: chainConfig?.uid,
+          },
+          onCompleted: () => {
+            refetchPresaleRemaining();
+            message.success("Success");
+            form.resetFields(["amount"]);
+            setTotalPayment(0);
+            setAmountBox(0);
+          },
+          onError: (e: any) => {
+            message.error("Error. Please try again");
+            form.resetFields(["amount"]);
+            setAmountBox(0);
+          },
+        });
+      } else {
+        //@ts-ignore
+        if (result?.error?.code == -32603) {
+          //@ts-ignore
+          //message.error(result?.error?.data?.message);
+          message.error("Not enough balance");
+        } else {
+          //@ts-ignore
+          message.error(result?.error?.message);
+        }
+        // setLoadingReserve(false);
+      }
+    }
+    setLoadingReserve(false);
+  };
+
+  useEffect(() => {
     getCurrentRound();
   }, [start, end, rounds]);
 
@@ -143,6 +313,13 @@ export default observer(function SiteMap(props: IRound) {
     whitelist_total_registered < whitelist_total_limit;
   const disableClickWhitelist = isWhitelisted || !whitelistHaSlotLeft;
 
+  const handleFormChange = () => {
+    const hasErrors = form.getFieldsError().some(({ errors }) => errors.length);
+    // console.log(hasErrors);
+
+    setDisabledButton(hasErrors);
+  };
+
   return (
     <div className={`flex justify-center relative ${s.SiteMapContainer}`}>
       {/* <div className={`${s.SiteMapLineTimeLine} w-10/12`}></div> */}
@@ -163,7 +340,7 @@ export default observer(function SiteMap(props: IRound) {
             1200: {
               slidesPerView: 4,
             },
-            1300: {
+            1500: {
               slidesPerView: 5,
             },
           }}
@@ -244,20 +421,44 @@ export default observer(function SiteMap(props: IRound) {
                 >
                   {item.description}
                 </div>
+                {
+                  item?.require_presale && (new Date() > new Date(item?.start)) &&
+                  <div className={`text-white mt-5 w-full ${s.SiteMapLineBoxPresaleContent}`}>
+                    Reserved amount: {dataGetBoxPresale?.total_quantity ? dataGetBoxPresale?.total_quantity : 0} {dataGetBoxPresale?.total_quantity > 1 ? 'boxes' : 'box'}
+                  </div>
+                }
 
                 {item.is_whitelist && item.isActive && (
                   <>
                     {AuthStore.isLoggedIn ? (
                       <div className="max-w-[250.91px]">
                         {!disableClickWhitelist ? (
-                          <Popconfirm
-                            placement="top"
-                            title={"You're going to be whitelisted"}
-                            onConfirm={handleApplyWhiteList}
-                            okText="Yes"
-                            cancelText="No"
-                          >
-                            <button
+                          <div>
+                            {/* REGISTER WHITELIST free */}
+                            <Popconfirm
+                              placement="top"
+                              title={"You're going to be whitelisted"}
+                              onConfirm={handleApplyWhiteList}
+                              okText="Yes"
+                              cancelText="No"
+                            >
+                              <button
+                                className={`
+                                    ${s.button} 
+                                    ${
+                                      !whitelistHaSlotLeft ? s.disabledBtn : ""
+                                    } 
+                                    ${isWhitelisted ? s.whitelisted : ""} 
+                                    font-bold text-white text-center uppercase
+                                  `}
+                                style={{ fontWeight: "600" }}
+                              >
+                                APPLY WHITELIST
+                              </button>
+                            </Popconfirm>
+
+                            {/* REGISTER WHITELIST with fee */}
+                            {/* <button
                               className={`
                                     ${s.button} 
                                     ${
@@ -267,10 +468,11 @@ export default observer(function SiteMap(props: IRound) {
                                     font-bold text-white text-center uppercase
                                   `}
                               style={{ fontWeight: "600" }}
+                              onClick={handleApplyWhiteListWithFee}
                             >
                               APPLY WHITELIST
-                            </button>
-                          </Popconfirm>
+                            </button> */}
+                          </div>
                         ) : (
                           <Tooltip
                             placement="top"
@@ -325,6 +527,178 @@ export default observer(function SiteMap(props: IRound) {
                           showInfo={false}
                         />
                         <p className="text-right text-white mt-1">{`${whitelist_total_registered} / ${whitelist_total_limit}`}</p>
+                      </div>
+                    ) : (
+                      <div className={`mt-3 ${s.btnConnect}`}>
+                        <ConnectWalletBtn small={widthScreen <= 1024} />
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {item.presale_price && item.isActive && (
+                  <>
+                    {AuthStore.isLoggedIn ? (
+                      <div className={`${s.amount}`}>
+                        <div style={{ marginTop: "20px" }}>
+                          <Row>
+                            <Col span={10}>
+                              <label className={s.label}>
+                                <span className="text-[16px] md:text-[20px]">
+                                  Price:
+                                </span>
+                              </label>
+                            </Col>
+                            <Col span={14} className={`${s.presale}`}>
+                              <label className={s.label}>
+                                <span className="text-[16px] md:text-[20px]">
+                                  {rounds[0]?.presale_price
+                                    ? rounds[0]?.presale_price
+                                    : 0}{" "}
+                                  {chainConfig?.symbol ? chainConfig?.symbol : currencies[0]?.symbol}
+                                </span>
+                              </label>
+                            </Col>
+                          </Row>
+                        </div>
+
+                        <div>
+                          <Row>
+                            <Col span={10}>
+                              <label className={s.label}>
+                                <span className="text-[18px] md:text-[24px]">
+                                  Amount:{" "}
+                                </span>
+                              </label>
+                            </Col>
+                            <Col span={14} className={`${s.presale}`}>
+                              <Form
+                                className={s.buyForm}
+                                form={form}
+                                onFieldsChange={handleFormChange}
+                              >
+                                <Form.Item
+                                  name="amount"
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message: "Please input amount!",
+                                    },
+                                    {
+                                      type: "integer",
+                                      message: "Please enter an integer",
+                                    },
+                                    {
+                                      type: "number",
+                                      min: 1,
+                                      message: "Amount must be greater than 0",
+                                    },
+                                    {
+                                      type: "number",
+                                      max: dataPresaleRemaining?.remain,
+                                      message:
+                                        dataPresaleRemaining?.remain > 0
+                                          ? `Amount maximum is ${dataPresaleRemaining?.remain}`
+                                          : "All slots are reserved",
+                                    },
+                                  ]}
+                                  className={s.inputRow}
+                                >
+                                  <InputNumber
+                                    style={{ background: "none" }}
+                                    value={amountBox}
+                                    onChange={(value: number) => {
+                                      setAmountBox(value);
+                                      let val = 0;
+
+                                      if (rounds[0]?.presale_price) {
+                                        val = value * rounds[0]?.presale_price;
+                                      }
+                                      
+                                      setTotalPayment(val);
+                                    }}
+                                    controls={false}
+                                  />
+                                </Form.Item>
+                              </Form>
+                            </Col>
+                          </Row>
+                        </div>
+
+                        <div className={`${s.amount} font-bold`}>
+                          <Row>
+                            <Col span={10}>
+                              <label className={s.label}>
+                                <span className="text-[18px] md:text-[24px]">
+                                  Total:
+                                </span>
+                              </label>
+                            </Col>
+                            <Col span={14} className={`${s.presale}`}>
+                              <label className={s.label}>
+                                <span className="text-[18px] md:text-[24px]">
+                                  {format(totalPayment,2, {zero_trim: true})} {chainConfig?.symbol ? chainConfig?.symbol : currencies[0]?.symbol}
+                                </span>
+                              </label>
+                            </Col>
+                          </Row>
+                        </div>
+                        <div>
+                          <Button
+                            className={`
+                                    ${s.button}  
+                                    ${disabledButton ? s.disabledBtn : ""}
+                                    ${
+                                      dataPresaleRemaining?.presaled >=
+                                      dataPresaleRemaining?.remain +
+                                        dataPresaleRemaining?.presaled
+                                        ? s.disabledBtn
+                                        : ""
+                                    }
+                                    ${
+                                      dataPresaleRemaining?.presaled == 0 &&
+                                      dataPresaleRemaining?.remain == 0
+                                        ? s.disabledBtn
+                                        : ""
+                                    }
+                                    ${!amountBox ? s.disabledBtn : ""}
+                                    font-bold text-white text-center uppercase
+                                  `}
+                            style={{ fontWeight: "600" }}
+                            disabled={
+                              disabledButton ||
+                              dataPresaleRemaining?.presaled >=
+                                dataPresaleRemaining?.remain +
+                                  dataPresaleRemaining?.presaled ||
+                              (dataPresaleRemaining?.presaled == 0 &&
+                                dataPresaleRemaining?.remain == 0) ||
+                              amountBox == 0
+                            }
+                            onClick={handleApplyWhiteListWithFee}
+                            loading={loadingReserve}
+                          >
+                            RESERVE
+                          </Button>
+                        </div>
+
+                        <Progress
+                          strokeColor="#0BEBD6"
+                          percent={ 
+                            dataPresaleRemaining?.presaled
+                              ? (dataPresaleRemaining?.presaled /
+                                  (dataPresaleRemaining?.remain +
+                                    dataPresaleRemaining?.presaled)) *
+                                100
+                              : 0
+                          }
+                          showInfo={false}
+                        />
+                        <p className={` ${s.textCapacity} text-right text-white mt-1`}>{`Your capacity: ${
+                          dataPresaleRemaining?.presaled
+                        }/${
+                          dataPresaleRemaining?.remain +
+                          dataPresaleRemaining?.presaled
+                        }`}</p>
                       </div>
                     ) : (
                       <div className={`mt-3 ${s.btnConnect}`}>

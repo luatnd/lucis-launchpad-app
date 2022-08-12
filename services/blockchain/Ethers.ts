@@ -2,6 +2,13 @@ import { ethers } from "ethers";
 import AnimTokenErc20Abi from "./abi/AnimTokenErc20Abi.json";
 import Erc721Abi from "./abi/Erc721Abi.json";
 import { makeError } from "../../utils/Error";
+import BigNumber from "bignumber.js";
+
+type ResultTranferFT = {
+  txHash: string;
+  blockNumber?: number;
+  error: null;
+};
 
 /*
 Usage:
@@ -139,6 +146,35 @@ export default class EtherContract {
       });
   }
 
+  async transferFT(
+    toAddress: string,
+    tokenAddress: string,
+    amount: number
+  ): Promise<ResultTranferFT> {
+    const result: ResultTranferFT = {
+      txHash: "",
+      error: null,
+    };
+    try {
+      const contract = await this.getContractWithSignerErc20(tokenAddress);
+      const decimal = await contract.decimals();
+
+      const totalAmount = new BigNumber(amount)
+        .multipliedBy(Math.pow(10, decimal))
+        .toFormat({ groupSeparator: "" });
+
+      const transaction = await contract.transfer(toAddress, totalAmount);
+      const txHash = transaction.hash;
+      result.blockNumber = transaction.blockNumber;
+      result.txHash = txHash;
+    } catch (error) {
+      console.log("{EtherContract.transferFt} error: ", error);
+      //@ts-ignore
+      result.error = error;
+    }
+    return result;
+  }
+  
   async transferNft(
     toAddress: string,
     nftBoxContractAddress: string,

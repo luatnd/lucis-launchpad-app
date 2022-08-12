@@ -181,11 +181,21 @@ export function useBuyBox(
     round?.is_whitelist === false && round?.require_whitelist === true;
 
   const isSaleRound = useMemo(() => {
+    if (round == null || round.is_whitelist == null) {
+      return false;
+    }
+    //@ts-ignore
+    return (
+      !round.is_whitelist && !round.require_presale
+    );
+  }, [round]);
+
+  const isSaleRoundWithFee = useMemo(() => {
     if (round == null) {
       return false;
     }
     //@ts-ignore
-    return !round.is_whitelist && !round.is_abstract_round;
+    return round.require_presale;
   }, [round]);
 
   let buyBtnDisabledReason: BuyDisabledReason | undefined = useMemo(() => {
@@ -218,6 +228,16 @@ export function useBuyBox(
     } else if (boxType.sold_amount >= boxType.total_amount) {
       return false;
     } else if (!(requireWhitelist ? isInWhitelist : true)) {
+      return false;
+    }
+    return true;
+  }, [isSaleRound, boxType, isInWhitelist, requireWhitelist]);
+
+  // can buy box: in buy round + enough box to buy + registered whitelist if need + box left
+  const buyFormWithFeeEnabled = useMemo(() => {
+    if (!isSaleRoundWithFee) {
+      return false;
+    } else if (boxType.sold_amount >= boxType.total_amount) {
       return false;
     }
     return true;
@@ -321,6 +341,7 @@ export function useBuyBox(
             "Success!",
             5
           );
+          txtAmount.setValue("");
         } else {
           message.error("Buy box failed");
         }
@@ -354,8 +375,10 @@ export function useBuyBox(
   };
 
   const requestAllowanceForBoxPrice = async () => {
+    setLoading(true);
     if (!AuthStore.isLoggedIn) {
       message.warn("Please connect wallet and verify your address first!");
+      setLoading(false);
       return false;
     }
 
@@ -364,6 +387,7 @@ export function useBuyBox(
         "[Critical] This is unexpected behavior occur in our app, please reconnect your wallet to ensure the app run correctly",
         6
       );
+      setLoading(false);
       return false;
     }
 
@@ -379,24 +403,29 @@ export function useBuyBox(
         nft_contract_address,
         currency_address
       );
+
       if (success) {
         ApprovalStore.setCurrencyEnabled(
           (boxPrice?.currency.symbol as GQL_Currency) ?? false
         );
       }
-
+      setLoading(false);
       return success;
     } catch (error: any) {
       if (error.code === Web3ProviderErrorCodes.provider.userRejectedRequest) {
         message.error("User denied", 5);
+        setLoading(false);
       }
     }
+
   };
 
   return {
     loading,
     isSaleRound,
+    isSaleRoundWithFee,
     buyFormEnabled,
+    buyFormWithFeeEnabled,
     buyBtnDisabledReason,
     err,
     txtAmount,

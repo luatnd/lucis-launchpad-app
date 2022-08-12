@@ -10,6 +10,7 @@ type Props = {
   recentlyPurchasedBox: GBoxCampaignBuyHistory;
   token: string | undefined;
   refetch: any;
+  title?: string;
 };
 
 const RecentlyBought = ({
@@ -17,6 +18,7 @@ const RecentlyBought = ({
   recentlyPurchasedBox,
   token,
   refetch,
+  title
 }: Props) => {
   const columns = [
     {
@@ -178,7 +180,7 @@ const RecentlyBought = ({
 
   return temp.length > 0 ? (
     <div className={`${s.history} lucis-container mt-[50px] md:mt-[100px]`}>
-      <h1 className="text-center">RECENTLY BOUGHT</h1>
+      <h1 className="text-center">{title ?? ""}</h1>
 
       <div style={{ position: "relative" }}>
         <div

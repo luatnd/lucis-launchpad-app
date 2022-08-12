@@ -1,6 +1,10 @@
 import numeral from 'numeral'
 import {isClientDevMode} from "./Env";
 
+export function randInt(min: number, max: number) {
+  return Math.max(min, Math.min(max, Math.floor(Math.random() * 10)))
+}
+
 type NumberFormatOption = {
   // whether to show +/- sign before formatter number
   sign?: boolean
@@ -12,7 +16,9 @@ type NumberFormatOption = {
 }
 
 export function currency(num: number, decimal = 0): string {
-  return format(num, decimal)
+  return format(num, decimal, {
+    zero_trim: true,
+  })
 }
 
 export function format(num: number, decimal = 0, option?: NumberFormatOption): string {
@@ -21,17 +27,29 @@ export function format(num: number, decimal = 0, option?: NumberFormatOption): s
   if (decimal > 0) {
     // 0,0.00
     format += '.'.padEnd(decimal + 1, '0')
+
+    // add an additional 0 then trim it to ignore rounding
+    if (option?.no_round) {
+      format += '000000';
+    }
   }
 
-  if (option?.no_round) {
-    throw new Error("option.no_round was not implemented")
-  }
 
   let s = numeral(num).format(format);
 
+
   if (option) {
+    if (option?.no_round && decimal > 0) {
+      // remove last rounded character
+      s = s.substring(0, s.length - 6)
+    }
+
     if (option.zero_trim) {
       s = s.replace(/0+$/, '')
+    }
+
+    if(s.charAt(s.length-1) == '.') {
+      s = s.replace('.', '');
     }
 
     if (option.separator) {
@@ -47,6 +65,9 @@ export function format(num: number, decimal = 0, option?: NumberFormatOption): s
   return s
 }
 
+export function fomatNumber (value: number) : string {
+  return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+};
 
 if (isClientDevMode) {
   const test_cases: {
@@ -94,13 +115,22 @@ if (isClientDevMode) {
       expected: '+12_345_678.129',
     },
     {
-      msg: 'Can trim non-meaningful 0',
+      msg: 'Can not trim meaningful 0',
       input: {
-        num: 12345678.12600012312,
+        num: 12345678000.000129,
         decimal: 5,
         option: {zero_trim: true},
       },
-      expected: '12,345,678.126',
+      expected: '12,345,678,000.00013',
+    },
+    {
+      msg: 'Can not trim meaningful 0',
+      input: {
+        num: 12345678000.00012312,
+        decimal: 2,
+        option: {zero_trim: true},
+      },
+      expected: '12,345,678,000',
     },
   ]
 
@@ -132,3 +162,11 @@ if (isClientDevMode) {
     }
   }
 }
+
+export const formatNumber = (number: number, style?: string, currency?: string) => {
+  return number.toLocaleString("en-US", {
+    style: style ?? "currency",
+    currency: currency ?? "USD",
+    maximumFractionDigits: 0,
+  });
+};

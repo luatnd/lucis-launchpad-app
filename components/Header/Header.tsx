@@ -34,7 +34,10 @@ const Header = (props: Props) => {
                   <Image src={Logo} alt="logo" priority />
                 </a>
               </Link>
-              {"IS_TESTNET" && <p>Testnet</p>}
+              {
+                // @ts-ignore
+                ("IS_TESTNET" === true) && <p>Testnet</p>
+              }
             </div>
             <nav>
               <ul className="flex gap-4 justify-between items-center m-0">

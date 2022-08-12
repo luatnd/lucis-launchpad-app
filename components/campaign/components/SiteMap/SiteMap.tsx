@@ -23,17 +23,17 @@ import s from "./SiteMap.module.sass";
 import ConnectWalletStore, {
   nonReactive as ConnectWalletStore_NonReactiveData,
 } from "components/Auth/ConnectWalletStore";
-import { Web3ProviderErrorCodes } from "components/Auth/ConnectWalletHelper";
 import EthersService from "services/blockchain/Ethers";
 import BigNumber from "bignumber.js";
 import { useForm } from "antd/lib/form/Form";
 import { isEmpty } from "lodash";
 import {
+  useGetBoxPresale,
   useGetConfig,
   usePresaleRemaining,
 } from "hooks/campaign/useDetailCampaign";
-import Router from "next/router";
 import { refreshAuthTokenFromLocal } from "utils/apollo_client";
+import { currency, format } from "utils/Number";
 
 interface IRound {
   rounds: GBoxCampaignRound[];
@@ -73,6 +73,13 @@ export default observer(function SiteMap(props: IRound) {
   } = props;
 
   const { dataPresaleRemaining, refetchPresaleRemaining } = usePresaleRemaining(
+    {
+      box_campaign_uid: boxCampaignUid,
+      skip: isEmpty(boxCampaignUid),
+    }
+  );
+
+  const { dataGetBoxPresale, refetchDataGetBoxPresale } = useGetBoxPresale(
     {
       box_campaign_uid: boxCampaignUid,
       skip: isEmpty(boxCampaignUid),
@@ -257,10 +264,13 @@ export default observer(function SiteMap(props: IRound) {
             refetchPresaleRemaining();
             message.success("Success");
             form.resetFields(["amount"]);
+            setTotalPayment(0);
+            setAmountBox(0);
           },
           onError: (e: any) => {
             message.error("Error. Please try again");
             form.resetFields(["amount"]);
+            setAmountBox(0);
           },
         });
       } else {
@@ -411,6 +421,12 @@ export default observer(function SiteMap(props: IRound) {
                 >
                   {item.description}
                 </div>
+                {
+                  item?.require_presale && (new Date() > new Date(item?.start)) &&
+                  <div className={`text-white mt-5 w-full ${s.SiteMapLineBoxPresaleContent}`}>
+                    Reserved amount: {dataGetBoxPresale?.total_quantity ? dataGetBoxPresale?.total_quantity : 0} {dataGetBoxPresale?.total_quantity > 1 ? 'boxes' : 'box'}
+                  </div>
+                }
 
                 {item.is_whitelist && item.isActive && (
                   <>
@@ -568,15 +584,14 @@ export default observer(function SiteMap(props: IRound) {
                                       required: true,
                                       message: "Please input amount!",
                                     },
-
+                                    {
+                                      type: "integer",
+                                      message: "Please enter an integer",
+                                    },
                                     {
                                       type: "number",
                                       min: 1,
                                       message: "Amount must be greater than 0",
-                                    },
-                                    {
-                                      type: "integer",
-                                      message: "Please enter an integer",
                                     },
                                     {
                                       type: "number",
@@ -599,6 +614,7 @@ export default observer(function SiteMap(props: IRound) {
                                       if (rounds[0]?.presale_price) {
                                         val = value * rounds[0]?.presale_price;
                                       }
+                                      
                                       setTotalPayment(val);
                                     }}
                                     controls={false}
@@ -621,7 +637,7 @@ export default observer(function SiteMap(props: IRound) {
                             <Col span={14} className={`${s.presale}`}>
                               <label className={s.label}>
                                 <span className="text-[18px] md:text-[24px]">
-                                  {totalPayment} {chainConfig?.symbol ? chainConfig?.symbol : currencies[0]?.symbol}
+                                  {format(totalPayment,2, {zero_trim: true})} {chainConfig?.symbol ? chainConfig?.symbol : currencies[0]?.symbol}
                                 </span>
                               </label>
                             </Col>
@@ -656,7 +672,7 @@ export default observer(function SiteMap(props: IRound) {
                                   dataPresaleRemaining?.presaled ||
                               (dataPresaleRemaining?.presaled == 0 &&
                                 dataPresaleRemaining?.remain == 0) ||
-                              !amountBox
+                              amountBox == 0
                             }
                             onClick={handleApplyWhiteListWithFee}
                             loading={loadingReserve}
@@ -667,7 +683,7 @@ export default observer(function SiteMap(props: IRound) {
 
                         <Progress
                           strokeColor="#0BEBD6"
-                          percent={
+                          percent={ 
                             dataPresaleRemaining?.presaled
                               ? (dataPresaleRemaining?.presaled /
                                   (dataPresaleRemaining?.remain +
@@ -677,9 +693,9 @@ export default observer(function SiteMap(props: IRound) {
                           }
                           showInfo={false}
                         />
-                        <p className="text-right text-white mt-1">{`${
+                        <p className={` ${s.textCapacity} text-right text-white mt-1`}>{`Your capacity: ${
                           dataPresaleRemaining?.presaled
-                        } / ${
+                        }/${
                           dataPresaleRemaining?.remain +
                           dataPresaleRemaining?.presaled
                         }`}</p>

@@ -691,6 +691,6 @@ body .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
 /* body .ant-select-dropdown-hidden {
   display: block;
 } */
-body .ant-popover-inner-content {
-  padding: 0;
-}
+/*body .ant-popover-inner-content {*/
+/*  padding: 0;*/
+/*}*/

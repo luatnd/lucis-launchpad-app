@@ -135,6 +135,29 @@ export function usePresaleRemaining(props: Props) {
   };
 }
 
+export function useGetBoxPresale(props: Props) {
+  const {
+    loading,
+    error,
+    data,
+    refetch,
+  } = useQuery(GET_BOX_PRESALE, {
+    variables: { box_campaign_uid: props?.box_campaign_uid },
+    fetchPolicy: "no-cache",
+    onError: (error) => {
+      console.log("error: ", error);
+    },
+    skip: props?.skip,
+  });
+
+  return {
+    loading,
+    error,
+    dataGetBoxPresale: data?.getBoxPresale,
+    refetchDataGetBoxPresale: refetch,
+  };
+}
+
 export function useGetConfig() {
   const {
     loading,
@@ -287,6 +310,14 @@ const PRESALE_REMAINING = gql`
   }
 `;
 
+const GET_BOX_PRESALE = gql`
+  query ($box_campaign_uid: String!) {
+    getBoxPresale(box_campaign_uid: $box_campaign_uid) {
+      total_quantity
+    }
+  }
+`;
+
 const GET_CONFIG = gql`
   query{
     getConfig{
@@ -375,7 +406,7 @@ const BOX_CAMPAIGN_SUBSCRIPTION_DETAIL = gql`
   }
 `;
 
-const NEW_BOX_CAMPAIGN_REF = gql`
+export const NEW_BOX_CAMPAIGN_REF = gql`
   mutation ($box_campaign_uid: String!, $ref: String!) {
     newBoxCampaignRef(box_campaign_uid: $box_campaign_uid, ref: $ref)
   }

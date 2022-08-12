@@ -122,8 +122,8 @@ const BuyHistory = ({ id, title, token }: Props) => {
               target="_blank"
               href={
                 item.box_price?.chain_symbol === "BSC"
-                  ? `https://bscscan.com/tx/${item.tx_hash}`
-                  : `https://etherscan.io/tx/${item.tx_hash}`
+                  ? `https://testnet.bscscan.com/tx/${item.tx_hash}`
+                  : `https://rinkeby.etherscan.io/tx/${item.tx_hash}`
               }
               style={{ whiteSpace: "nowrap" }}
               rel="noopener noreferrer"

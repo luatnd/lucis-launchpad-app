@@ -55,7 +55,7 @@ module.exports = withAntdLess({
       .toString()
       .trim();
     rules.push({
-      test: /components\/Header\.tsx$/,
+      test: /components\/Header\/Header\.tsx$/,
       loader: "string-replace-loader",
       options: {
         search: '"IS_TESTNET"',

@@ -90,6 +90,8 @@
           min-width: 120px
           font-size: 20px
           line-height: 1.7
+      :global(.ant-form-item-explain .ant-form-item-explain-error:not(:first-child))
+        display: none     
     :global(.ant-form-item)
       margin-bottom: 5px
     :global(.ant-row)
@@ -159,6 +161,25 @@
   @media (min-width: 640px) and (max-width: 991px)
     font-size: 20px
     line-height: 30px
+
+.SiteMapLineBoxPresaleContent
+  font-family: Saira
+  font-style: normal
+  font-weight: normal
+  font-size: 18px
+  line-height: 18px
+  position: relative
+  background: #7c97d980
+  padding: 10px 15px
+  backdrop-filter: blur(40px)
+  border-radius: 20px
+  text-align: center
+  @media (min-width: 0px) and (max-width: 639px)
+    font-size: 14px
+    line-height: 14px
+  @media (min-width: 640px) and (max-width: 991px)
+    font-size: 12px
+    line-height: 12px
 
 .SiteMapLineTimeLine
   height: 12px
@@ -248,7 +269,8 @@
     opacity: 0
   100%
     opacity: 1
-
-
-
-  
+.textCapacity
+  font-family: Saira
+  font-weight: 400
+  font-size: 18px
+  line-height: 24px

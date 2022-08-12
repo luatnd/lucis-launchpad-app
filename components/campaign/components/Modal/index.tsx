@@ -60,7 +60,7 @@ const ModalShare = (props: Props) => {
     >
       <div className={s.infSocial}>
         <div className={s.title}>
-          <h2>Refer friend and get commission up to 5%</h2>
+          <h2>Refer friend and get commission up to 12%</h2>
         </div>
         <div className={s.infSocialIcons}>
           <FacebookShareButton url={`https://lucis-lp.koolab.io${router.asPath}?r=${code}`}>

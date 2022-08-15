@@ -33,7 +33,9 @@ import {
   usePresaleRemaining,
 } from "hooks/campaign/useDetailCampaign";
 import { refreshAuthTokenFromLocal } from "utils/apollo_client";
-import { currency, format } from "utils/Number";
+import { format } from "utils/Number";
+import PopupPurchasedSuccess from "../popup/popupSuccess";
+import CampaignStore from "src/store/CampaignStore";
 
 interface IRound {
   rounds: GBoxCampaignRound[];
@@ -99,7 +101,7 @@ export default observer(function SiteMap(props: IRound) {
   const [chainConfig, setChainConfig] = useState(Object as any);
   const [loadingReserve, setLoadingReserve] = useState(false);
   const [totalPayment, setTotalPayment] = useState(0);
-
+  const isModalVisible = CampaignStore.connectModalVisible;
   // --- Detect amount field type wrong
   const [form] = useForm();
 
@@ -262,7 +264,9 @@ export default observer(function SiteMap(props: IRound) {
           },
           onCompleted: () => {
             refetchPresaleRemaining();
-            message.success("Success");
+            //message.success("Success");
+            //setIsPopupSuccessVisiable(true);
+            CampaignStore.connectModalVisible = true;
             form.resetFields(["amount"]);
             setTotalPayment(0);
             setAmountBox(0);
@@ -759,6 +763,11 @@ export default observer(function SiteMap(props: IRound) {
           </SwiperSlide>
         </Swiper>
       </div>
+
+      {
+        isModalVisible &&
+        <PopupPurchasedSuccess></PopupPurchasedSuccess>
+      }
     </div>
   );
 });

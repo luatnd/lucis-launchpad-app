@@ -17,6 +17,7 @@ import ApprovalStore, {
 import { Transaction } from "ethers";
 import { Web3ProviderErrorCodes } from "components/Auth/ConnectWalletHelper";
 import AuthStore from "../../components/Auth/AuthStore";
+import CampaignStore from "../../src/store/CampaignStore";
 
 export enum BuyDisabledReason {
   WalletNotConnected,
@@ -336,12 +337,13 @@ export function useBuyBox(
         console.log("{onBuyBox.res} res: ", res);
         const success = res.data.buyBox;
         if (success) {
-          message.success(
-            // '<span>Successfully buy the box (TODO: INFO) | tx hash: (TODO: txhash)</span>',
-            "Success!",
-            5
-          );
+          // message.success(
+          //   // '<span>Successfully buy the box (TODO: INFO) | tx hash: (TODO: txhash)</span>',
+          //   "Success!",
+          //   5
+          // );
           txtAmount.setValue("");
+          CampaignStore.connectModalVisible = true;
         } else {
           message.error("Buy box failed");
         }

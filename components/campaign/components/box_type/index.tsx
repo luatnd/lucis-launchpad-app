@@ -39,6 +39,8 @@ import { useForm } from "antd/lib/form/Form";
 import ModalShare from "../Modal";
 import { useRouter } from "next/router";
 import { ShareAltOutlined } from "@ant-design/icons";
+import CampaignStore from "../../../../src/store/CampaignStore";
+import PopupPurchasedSuccess from "../popup/popupSuccess";
 
 type Props = {
   boxType: GBoxType;
@@ -69,6 +71,7 @@ const BoxTypeCard = observer((props: Props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
   const [isModalShareVisible, setIsModalShareVisible] = useState(false);
+  const isModalPopupSuccessVisible = CampaignStore.connectModalVisible;
 
   // --- Detect amount field type wrong
   const [form] = useForm();
@@ -556,6 +559,10 @@ const BoxTypeCard = observer((props: Props) => {
         closeModalShare={closeModalShare}
         status={isModalShareVisible}
       />
+      {
+        isModalPopupSuccessVisible &&
+          <PopupPurchasedSuccess></PopupPurchasedSuccess>
+      }
     </div>
   );
 });

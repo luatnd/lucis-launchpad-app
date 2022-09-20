@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import {
   Button,
   Form,
+  Input,
   InputNumber,
   message,
   notification,
@@ -87,11 +88,13 @@ const BoxTypeCard = observer((props: Props) => {
     err,
     requireWhitelist,
     boxPrice,
-
+    txtCoupon,
     doBuyBox,
     requestAllowanceForBoxPrice,
     currencyEnabled,
     isSupportedConnectedChain,
+    checkCoupon,
+    coupon,
   } = useBuyBox(
     boxType,
     round,
@@ -118,7 +121,7 @@ const BoxTypeCard = observer((props: Props) => {
     setIsModalVisible(false);
   };
 
-  const handleFinish = () => {
+  const handleFinish = async () => {
     if (txtAmount.value !== "") {
       if (!isSupportedConnectedChain) {
         message.warn(
@@ -127,7 +130,7 @@ const BoxTypeCard = observer((props: Props) => {
         );
         return;
       }
-
+      await checkCoupon(txtCoupon.value);
       setIsModalVisible(true);
     }
   };
@@ -160,6 +163,7 @@ const BoxTypeCard = observer((props: Props) => {
     boxName: boxType.name,
     chainIcon: supported_chains_avatars,
     amount: txtAmount.value,
+    coupon: coupon,
     price: boxPrice?.price,
     symbol: boxPrice?.currency.symbol,
     boxImg: boxType.thumb_img,
@@ -425,6 +429,19 @@ const BoxTypeCard = observer((props: Props) => {
                 </Form.Item>
               </div>
 
+              <div className={`${s.amount} font-bold`}>
+                <label className={s.label}>
+                  <span className="text-[18px] md:text-[24px=">Coupon: </span>
+                </label>
+                <Form.Item name="Coupon" className={s.inputText}>
+                  <Input
+                    style={{ background: "none" }}
+                    value={txtCoupon.value}
+                    onChange={txtCoupon.onChange}
+                  />
+                </Form.Item>
+              </div>
+
               <div className="flex justify-between text-white items-center font-bold text-24px">
                 {!buyFormWithFeeEnabled ? (
                   // if btn is disable, show tooltip
@@ -559,10 +576,9 @@ const BoxTypeCard = observer((props: Props) => {
         closeModalShare={closeModalShare}
         status={isModalShareVisible}
       />
-      {
-        isModalPopupSuccessVisible &&
-          <PopupPurchasedSuccess></PopupPurchasedSuccess>
-      }
+      {isModalPopupSuccessVisible && (
+        <PopupPurchasedSuccess></PopupPurchasedSuccess>
+      )}
     </div>
   );
 });

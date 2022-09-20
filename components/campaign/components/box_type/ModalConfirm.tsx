@@ -1,6 +1,7 @@
 import Modal from "antd/lib/modal/Modal";
 import { Maybe } from "graphql/jsutils/Maybe";
-import { ChainSymbol, GChain } from "src/generated/graphql";
+import { ChainSymbol, Coupon, GChain } from "src/generated/graphql";
+import { KMath } from "utils/math.helper";
 import s from "../Box/Box.module.sass";
 
 type ChainProps = {
@@ -15,6 +16,7 @@ type Props = {
   boxName: Maybe<string> | undefined;
   chainIcon: ChainProps[];
   price: string;
+  coupon?: Coupon;
   amount: string;
   symbol: Maybe<string> | undefined;
   boxImg: Maybe<string> | undefined;
@@ -29,11 +31,22 @@ const ModalConfirm = (props: Props) => {
     boxName,
     chainIcon,
     price,
+    coupon,
     amount,
     symbol,
     boxImg,
     chains,
   } = props;
+  let totalAmount = KMath.mul(amount, price).toNumber();
+  if (coupon != null) {
+    let discount = KMath.mul(coupon.discount ?? "0", totalAmount)
+      .div(100)
+      .toNumber();
+    if (coupon.max_value_off) {
+      discount = Math.min(discount, coupon.max_value_off);
+    }
+    totalAmount -= discount;
+  }
 
   return (
     <Modal
@@ -63,7 +76,7 @@ const ModalConfirm = (props: Props) => {
         <p>Chain: {chains.map((i) => i.symbol)}</p>
         <p>Amount: {amount}</p>
         <p>
-          Total price: {Number(amount) * Number(price)} {symbol}
+          Total price: {totalAmount} {symbol}
         </p>
         <p style={{ color: "#00c4ff" }}>
           Note: After confirmation, your balance will be deduced directly on

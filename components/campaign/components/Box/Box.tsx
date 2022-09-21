@@ -19,7 +19,7 @@ export default function BoxCard(props: BoxCardProps) {
   const boxTypes = props.boxCampaign.boxTypes ?? [];
   const chains = props.boxCampaign.chains ?? [];
 
-  const {boxCampaign} = props
+  const { boxCampaign } = props;
 
   const currentRound = getOriginCurrentCampaignRound(props.boxCampaign);
   // console.log(props.recentlyPurchasedBox);

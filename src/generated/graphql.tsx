@@ -206,11 +206,26 @@ export type BoxPrice = {
   updated_at: Scalars['DateTime'];
 };
 
+export type BoxPriceConfig = {
+  __typename?: 'BoxPriceConfig';
+  box_type: BoxType;
+  box_type_uid: Scalars['String'];
+  contract_address?: Maybe<Scalars['String']>;
+  created_at: Scalars['DateTime'];
+  currency: Currency;
+  currency_uid: Scalars['String'];
+  price: Scalars['Decimal'];
+  time_start?: Maybe<Scalars['DateTime']>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+};
+
 export type BoxType = {
   __typename?: 'BoxType';
   _count: BoxTypeCount;
   box_campaign_uid: Scalars['String'];
   campaign: BoxCampaign;
+  configs?: Maybe<Array<BoxPriceConfig>>;
   created_at: Scalars['DateTime'];
   desc?: Maybe<Scalars['String']>;
   limit_per_user?: Maybe<Scalars['Int']>;
@@ -226,6 +241,7 @@ export type BoxType = {
 
 export type BoxTypeCount = {
   __typename?: 'BoxTypeCount';
+  configs: Scalars['Int'];
   prices: Scalars['Int'];
 };
 
@@ -294,10 +310,19 @@ export type ConfigGql = {
   presale_wallet: Scalars['String'];
 };
 
+export type Coupon = {
+  __typename?: 'Coupon';
+  currency_uid?: Maybe<Scalars['String']>;
+  discount?: Maybe<Scalars['Int']>;
+  is_used?: Maybe<Scalars['Boolean']>;
+  max_value_off?: Maybe<Scalars['Float']>;
+};
+
 export type Currency = {
   __typename?: 'Currency';
   _count: CurrencyCount;
   address: Scalars['String'];
+  boxPriceConfigs?: Maybe<Array<BoxPriceConfig>>;
   boxPrices?: Maybe<Array<BoxPrice>>;
   chain: Chain;
   chain_symbol: ChainSymbol;
@@ -314,6 +339,7 @@ export type Currency = {
 
 export type CurrencyCount = {
   __typename?: 'CurrencyCount';
+  boxPriceConfigs: Scalars['Int'];
   boxPrices: Scalars['Int'];
   presaleTransactions: Scalars['Int'];
 };
@@ -476,6 +502,7 @@ export type GBoxPriceHistory = {
 export type GBoxType = {
   __typename?: 'GBoxType';
   box_campaign_uid: Scalars['String'];
+  configs?: Maybe<Array<BoxPriceConfig>>;
   created_at: Scalars['DateTime'];
   desc?: Maybe<Scalars['String']>;
   limit_per_user?: Maybe<Scalars['Int']>;
@@ -492,6 +519,7 @@ export type GBoxType = {
 export type GBoxTypeHistory = {
   __typename?: 'GBoxTypeHistory';
   box_campaign_uid: Scalars['String'];
+  configs?: Maybe<Array<BoxPriceConfig>>;
   created_at: Scalars['DateTime'];
   desc?: Maybe<Scalars['String']>;
   limit_per_user?: Maybe<Scalars['Int']>;
@@ -517,6 +545,7 @@ export type GChain = {
 export type GCurrency = {
   __typename?: 'GCurrency';
   address: Scalars['String'];
+  boxPriceConfigs?: Maybe<Array<BoxPriceConfig>>;
   chain: Chain;
   chain_symbol: ChainSymbol;
   created_at: Scalars['DateTime'];
@@ -602,6 +631,7 @@ export type Mutation = {
 
 
 export type MutationBuyBoxArgs = {
+  coupon_code?: InputMaybe<Scalars['String']>;
   input: BuyBoxInput;
 };
 
@@ -700,6 +730,7 @@ export type Paid = {
   amount?: Maybe<Scalars['Float']>;
   commission?: Maybe<Scalars['Float']>;
   currency?: Maybe<Scalars['String']>;
+  currency_id?: Maybe<Scalars['String']>;
 };
 
 export type PresaleTransaction = {
@@ -718,6 +749,12 @@ export type PresaleTransaction = {
   updated_at: Scalars['DateTime'];
   user: User;
   user_id: Scalars['Int'];
+};
+
+export type PresaleTransactionGql = {
+  __typename?: 'PresaleTransactionGql';
+  presale_transaction: Array<PresaleTransaction>;
+  total_quantity: Scalars['Float'];
 };
 
 export type PresaledInfo = {
@@ -755,8 +792,10 @@ export type Query = {
   closedBoxCampaign?: Maybe<Array<GBoxCampaign>>;
   countUnreadNotifications?: Maybe<Scalars['Int']>;
   getAllowanceAmount: Scalars['Float'];
+  getBoxPresale?: Maybe<PresaleTransactionGql>;
   /** Config */
   getConfig?: Maybe<ConfigGql>;
+  getCoupon?: Maybe<Coupon>;
   getUserReferFriend?: Maybe<AffiliateTracking>;
   /** Check current user joined whitelist */
   isInWhitelist?: Maybe<Scalars['Boolean']>;
@@ -791,6 +830,21 @@ export type QueryCampaignDetailArgs = {
 export type QueryGetAllowanceAmountArgs = {
   address: Scalars['String'];
   boxPriceUid: Scalars['String'];
+};
+
+
+export type QueryGetBoxPresaleArgs = {
+  box_campaign_uid: Scalars['String'];
+};
+
+
+export type QueryGetCouponArgs = {
+  code: Scalars['String'];
+};
+
+
+export type QueryGetUserReferFriendArgs = {
+  box_campaign_uid?: InputMaybe<Scalars['String']>;
 };
 
 

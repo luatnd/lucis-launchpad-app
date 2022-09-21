@@ -1,6 +1,6 @@
 import { motion } from "framer-motion-3d";
 import { MotionConfig } from "framer-motion";
-import React, { useRef, useLayoutEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { transition } from "./settings";
 import { Canvas, useThree } from "@react-three/fiber";
 import { useSmoothTransform } from "./use-smooth-transform";
@@ -155,7 +155,7 @@ function Camera({
   const scene = useThree(({ scene }) => scene);
   const cameraRef = useRef();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const { current: cam } = cameraRef;
     if (cam) {
       //@ts-ignore
@@ -165,7 +165,7 @@ function Camera({
     }
   }, [size, props]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (cameraRef.current) {
       const oldCam = camera;
       set(() => ({ camera: cameraRef.current }));
@@ -173,7 +173,7 @@ function Camera({
     }
   }, [camera, cameraRef, set]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     return cameraX.onChange(() => camera.lookAt(scene.position));
   }, [camera, scene, cameraX]);
 

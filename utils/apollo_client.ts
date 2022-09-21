@@ -202,3 +202,11 @@ export function onApolloError(
       }
     });
 }
+
+export function extractError(error: ApolloError) {
+  const { graphQLErrors, networkError } = error;
+  if (graphQLErrors && graphQLErrors.length > 0) {
+    return graphQLErrors[0].message;
+  }
+  return networkError?.message ?? "Request failed";
+}

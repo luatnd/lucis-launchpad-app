@@ -8,7 +8,7 @@ import {
   GBoxPrice,
   GBoxType,
 } from "src/generated/graphql";
-import apoloClient, { onApolloError } from "utils/apollo_client";
+import apoloClient, { extractError, onApolloError } from "utils/apollo_client";
 import { debounce } from "@github/mini-throttle";
 
 import EthersService from "services/blockchain/Ethers";
@@ -55,6 +55,7 @@ export function useBuyBox(
   const txtAmount = useInput("");
   const txtCoupon = useInput("");
   const [err, setErr] = useState<string | undefined>();
+  const [couponError, setCouponError] = useState<string>();
   const [coupon, setCoupon] = useState<Coupon>();
   // const [buyFormEnabled, setBuyFormEnabled] = useState(false)
 
@@ -455,9 +456,11 @@ export function useBuyBox(
   }
 
   async function checkCoupon(code: string): Promise<any> {
+    setCoupon(undefined);
+    setCouponError(undefined);
+
     if (!code) {
-      setCoupon(undefined);
-      return;
+      return true;
     }
 
     if (!AuthStore.isLoggedIn) {
@@ -474,11 +477,18 @@ export function useBuyBox(
         fetchPolicy: "network-only",
       });
       let _coupon = res.data.getCoupon as Coupon;
-      if (_coupon && _coupon) {
-        setCoupon(res.data.getCoupon);
+      if (!_coupon) {
+        return false;
       }
-    } catch (err) {
-      setCoupon(undefined);
+      if (_coupon.is_used) {
+        setCouponError("Invalid coupon");
+        return false;
+      }
+      setCoupon(res.data.getCoupon);
+      return true;
+    } catch (err: any) {
+      setCouponError(extractError(err));
+      return false;
     }
   }
 
@@ -502,6 +512,7 @@ export function useBuyBox(
     isSupportedConnectedChain,
     checkCoupon,
     coupon,
+    couponError,
   };
 }
 

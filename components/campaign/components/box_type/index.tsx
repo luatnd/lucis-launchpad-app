@@ -95,6 +95,7 @@ const BoxTypeCard = observer((props: Props) => {
     isSupportedConnectedChain,
     checkCoupon,
     coupon,
+    couponError,
   } = useBuyBox(
     boxType,
     round,
@@ -130,7 +131,9 @@ const BoxTypeCard = observer((props: Props) => {
         );
         return;
       }
-      await checkCoupon(txtCoupon.value);
+      if (!(await checkCoupon(txtCoupon.value))) {
+        return;
+      }
       setIsModalVisible(true);
     }
   };
@@ -281,7 +284,7 @@ const BoxTypeCard = observer((props: Props) => {
                   className={s.inputRow}
                 >
                   <InputNumber
-                    style={{ background: "none" }}
+                    style={{ background: "none", width: "100%" }}
                     value={txtAmount.value}
                     onChange={txtAmount.onChange}
                     controls={false}
@@ -300,6 +303,22 @@ const BoxTypeCard = observer((props: Props) => {
                   {txtAmount.err}
                 </span>
               )} */}
+              <div className={`${s.amount} font-bold`}>
+                <label className={s.label}>
+                  <span className="text-[18px] md:text-[24px=">Coupon: </span>
+                </label>
+                <Form.Item name="Coupon" className={s.inputText}>
+                  <Input
+                    style={{ background: "none", width: "100%" }}
+                    value={txtCoupon.value}
+                    onChange={txtCoupon.onChange}
+                  />
+                  {!!couponError && (
+                    <span className={s.errorText}>{couponError}</span>
+                  )}
+                </Form.Item>
+              </div>
+
               <div className="flex justify-between text-white items-center font-bold text-24px">
                 {!buyFormEnabled ? (
                   // if btn is disable, show tooltip
@@ -439,6 +458,9 @@ const BoxTypeCard = observer((props: Props) => {
                     value={txtCoupon.value}
                     onChange={txtCoupon.onChange}
                   />
+                  {!!couponError && (
+                    <span className={s.errorText}>{couponError}</span>
+                  )}
                 </Form.Item>
               </div>
 

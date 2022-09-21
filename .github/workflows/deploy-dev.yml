@@ -1,4 +1,4 @@
-name: Node.js CD - Deploy to dev
+name: Deploy to dev
 
 on:
   push:

@@ -8,6 +8,7 @@ export function useInput(defaultValue: string) {
     // console.log("_value: ", _value);
     setErr(undefined);
     if (
+      _value &&
       typeof _value === "object" &&
       _value.target != null &&
       _value.target.value != null

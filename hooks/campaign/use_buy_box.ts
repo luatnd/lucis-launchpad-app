@@ -2,8 +2,13 @@ import { gql, ServerError, ServerParseError } from "@apollo/client";
 import { message } from "antd";
 import { useInput } from "hooks/common/use_input";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { GBoxCampaignRound, GBoxPrice, GBoxType } from "src/generated/graphql";
-import apoloClient, { onApolloError } from "utils/apollo_client";
+import {
+  Coupon,
+  GBoxCampaignRound,
+  GBoxPrice,
+  GBoxType,
+} from "src/generated/graphql";
+import apoloClient, { extractError, onApolloError } from "utils/apollo_client";
 import { debounce } from "@github/mini-throttle";
 
 import EthersService from "services/blockchain/Ethers";
@@ -17,6 +22,8 @@ import ApprovalStore, {
 import { Transaction } from "ethers";
 import { Web3ProviderErrorCodes } from "components/Auth/ConnectWalletHelper";
 import AuthStore from "../../components/Auth/AuthStore";
+import CampaignStore from "../../src/store/CampaignStore";
+import { KMath } from "utils/math.helper";
 
 export enum BuyDisabledReason {
   WalletNotConnected,
@@ -45,6 +52,11 @@ export function useBuyBox(
   // const [buyBox, { data, loading, error }] = useMutation(BUY_BOX_MUT);
 
   const [loading, setLoading] = useState(false);
+  const txtAmount = useInput("");
+  const txtCoupon = useInput("");
+  const [err, setErr] = useState<string | undefined>();
+  const [couponError, setCouponError] = useState<string>();
+  const [coupon, setCoupon] = useState<Coupon>();
   // const [buyFormEnabled, setBuyFormEnabled] = useState(false)
 
   const chainSymbol = connectedChainNetwork;
@@ -185,9 +197,7 @@ export function useBuyBox(
       return false;
     }
     //@ts-ignore
-    return (
-      !round.is_whitelist && !round.require_presale
-    );
+    return !round.is_whitelist && !round.require_presale;
   }, [round]);
 
   const isSaleRoundWithFee = useMemo(() => {
@@ -242,9 +252,6 @@ export function useBuyBox(
     }
     return true;
   }, [isSaleRound, boxType, isInWhitelist, requireWhitelist]);
-
-  const txtAmount = useInput("");
-  const [err, setErr] = useState<string | undefined>();
 
   const onBuyBoxError = (e: GraphQLError) => {
     // show message and handle
@@ -331,17 +338,23 @@ export function useBuyBox(
     // - User have enabled (approve allowance for BUSD) => Enable Buy button
 
     // request buy box async, allowance is ensured at this time
-    return buyBox(boxPrice?.uid, round?.id ?? 0, quantity)
+    return buyBox(
+      boxPrice?.uid,
+      round?.id ?? 0,
+      quantity,
+      coupon?.is_used == false ? txtCoupon.value : undefined
+    )
       .then((res) => {
         console.log("{onBuyBox.res} res: ", res);
         const success = res.data.buyBox;
         if (success) {
-          message.success(
-            // '<span>Successfully buy the box (TODO: INFO) | tx hash: (TODO: txhash)</span>',
-            "Success!",
-            5
-          );
+          // message.success(
+          //   // '<span>Successfully buy the box (TODO: INFO) | tx hash: (TODO: txhash)</span>',
+          //   "Success!",
+          //   5
+          // );
           txtAmount.setValue("");
+          CampaignStore.connectModalVisible = true;
         } else {
           message.error("Buy box failed");
         }
@@ -358,6 +371,8 @@ export function useBuyBox(
       })
       .finally(() => {
         setLoading(false);
+        setCoupon(undefined);
+        txtCoupon.onChange("");
       });
   };
 
@@ -417,8 +432,65 @@ export function useBuyBox(
         setLoading(false);
       }
     }
-
   };
+
+  async function buyBox(
+    box_price_uid: string,
+    round_id: number,
+    quantity: number,
+    coupon_code?: string
+  ): Promise<any> {
+    const res = await apoloClient.mutate({
+      mutation: gql`
+        mutation buyBox($input: BuyBoxInput!) {
+          buyBox(input: $input)
+        }
+      `,
+      variables: {
+        input: { box_price_uid, round_id, quantity },
+        coupon_code,
+      },
+    });
+
+    return res;
+  }
+
+  async function checkCoupon(code: string): Promise<any> {
+    setCoupon(undefined);
+    setCouponError(undefined);
+
+    if (!code) {
+      return true;
+    }
+
+    if (!AuthStore.isLoggedIn) {
+      message.error("Failed - You've not complete the verification!");
+      return;
+    }
+
+    try {
+      const res = await apoloClient.query({
+        query: CHECK_COUPON_QUERY,
+        variables: {
+          code: `${code}`,
+        },
+        fetchPolicy: "network-only",
+      });
+      let _coupon = res.data.getCoupon as Coupon;
+      if (!_coupon) {
+        return false;
+      }
+      if (_coupon.is_used) {
+        setCouponError("Invalid coupon");
+        return false;
+      }
+      setCoupon(res.data.getCoupon);
+      return true;
+    } catch (err: any) {
+      setCouponError(extractError(err));
+      return false;
+    }
+  }
 
   return {
     loading,
@@ -429,6 +501,7 @@ export function useBuyBox(
     buyBtnDisabledReason,
     err,
     txtAmount,
+    txtCoupon,
     requireWhitelist,
     boxPrice,
 
@@ -437,6 +510,9 @@ export function useBuyBox(
     requestAllowanceForBoxPrice,
     currencyEnabled,
     isSupportedConnectedChain,
+    checkCoupon,
+    coupon,
+    couponError,
   };
 }
 
@@ -446,21 +522,24 @@ const BUY_BOX_MUT = gql`
   }
 `;
 
-async function buyBox(
-  box_price_uid: string,
-  round_id: number,
-  quantity: number
-): Promise<any> {
-  const res = await apoloClient.mutate({
-    mutation: gql`
-      mutation buyBox($input: BuyBoxInput!) {
-        buyBox(input: $input)
-      }
-    `,
-    variables: {
-      input: { box_price_uid, round_id, quantity },
-    },
-  });
+const CHECK_COUPON_QUERY = gql`
+  query getCoupon($code: String!) {
+    getCoupon(code: $code) {
+      discount
+      max_value_off
+      currency_uid
+      is_used
+    }
+  }
+`;
 
+async function getCoupon(code: string) {
+  const res = await apoloClient.query({
+    query: CHECK_COUPON_QUERY,
+    variables: {
+      code,
+    },
+    fetchPolicy: "network-only",
+  });
   return res;
 }

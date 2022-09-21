@@ -29,7 +29,7 @@ const ShareCampaign =  observer(function () {
       <div className={s.wrapper}>
         <div className={`${s.container}`}>
           <div className={s.title}>
-            <h2>Refer friend and get commission up to 5%</h2>
+            <h2>Refer friend and get commission up to 12%</h2>
           </div>
           <div className={s.btn}>
             {!AuthStore.isLoggedIn

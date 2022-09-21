@@ -1,4 +1,4 @@
-import { Tabs } from "antd";
+  import { Tabs } from "antd";
 import RecentlyBought from "components/campaign/components/RecentlyBought/RecentlyBought";
 import SiteMap from "components/campaign/components/SiteMap/SiteMap";
 import Footer from "components/Footer/Footer";

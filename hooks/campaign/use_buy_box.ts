@@ -481,13 +481,13 @@ export function useBuyBox(
         return false;
       }
       if (_coupon.is_used) {
-        setCouponError("Invalid coupon");
+        setCouponError("This coupon has already been used");
         return false;
       }
       setCoupon(res.data.getCoupon);
       return true;
     } catch (err: any) {
-      setCouponError(extractError(err));
+      setCouponError("Coupon code does not exist");
       return false;
     }
   }

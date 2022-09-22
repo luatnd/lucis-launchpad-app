@@ -1,3 +1,4 @@
+import { Divider } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import { Maybe } from "graphql/jsutils/Maybe";
 import { ChainSymbol, Coupon, GChain } from "src/generated/graphql";
@@ -88,7 +89,8 @@ const ModalConfirm = (props: Props) => {
             Discount: {formatNum(discount)} {symbol}
           </p>
         )}
-        <p>
+        <Divider style={{ backgroundColor: "white" }} />
+        <p style={{ fontWeight: "600", fontSize: "22px" }}>
           Total payment: {formatNum(totalPayment)} {symbol}
         </p>
         <p style={{ color: "#00c4ff" }}>

@@ -78,8 +78,16 @@ const ModalConfirm = (props: Props) => {
         </p> */}
         <p>Chain: {chains.map((i) => i.symbol)}</p>
         <p>Amount: {amount}</p>
-        {discount > 0 && <p>Subtotal: {formatNum(totalAmount)}</p>}
-        {discount > 0 && <p>Discount: {formatNum(discount)}</p>}
+        {discount > 0 && (
+          <p>
+            Subtotal: {formatNum(totalAmount)} {symbol}
+          </p>
+        )}
+        {discount > 0 && (
+          <p>
+            Discount: {formatNum(discount)} {symbol}
+          </p>
+        )}
         <p>
           Total payment: {formatNum(totalPayment)} {symbol}
         </p>

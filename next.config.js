@@ -3,6 +3,9 @@ const path = require("path");
 
 /** @type {import('next').NextConfig} */
 module.exports = withAntdLess({
+  // https://nextjs.org/docs/advanced-features/output-file-tracing#automatically-copying-traced-files
+  output: 'standalone',
+
   reactStrictMode: true,
 
   /**

@@ -6,6 +6,6 @@ services:
       context: ../
       dockerfile: docker/Dockerfile
     image: launchpad_fe
-    container_name: "fe_isr"
+    container_name: "launchpad_fe_isr"
     ports:
       - ${APP_PORT}:3000
